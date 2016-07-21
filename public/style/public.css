@@ -1,0 +1,13 @@
+.opera_layer{display: none;}
+.fa-icon-right{margin-right: 5px;}
+.fa-icon-left{margin-left: 5px;}
+.list{padding: 0;}
+.list-table{border: 1px solid #dfdfdf}
+.list-header{margin: 0px 0 15px 0px;padding: 0;}
+.list-lyout{margin: 0px 0 15px 0px;padding: 0;}
+.list-header .col-xs-6{margin: 0;padding: 0;}
+td{vertical-align: middle!important;}
+th{vertical-align: middle!important;height: 51px;}
+.table{margin-bottom: 0px;}
+.pagination-sm{margin-right: -15px;}
+.ng-table-counts{margin: 20px 0;}
