@@ -1,0 +1,15 @@
+#sortlist{padding:0}
+#sortlist .panel{padding:20px 0;padding-top:0;margin-top:20px}
+#sortlist .panel .panel-options{padding-top:10px}
+#sortlist .panel-heading{margin:0}
+#sortlist .table-title{height:50px;line-height:50px;width:100%;display:table;background:#000;text-align:center}
+#sortlist .table-title .name_tit{display:table-cell}
+#sortlist .table-title .btn_tit{width:450px;display:table-cell;text-align:center}
+#sortlist .table-list{padding:0;border:1px solid #DFDFDF;border-bottom: 0;}
+#sortlist .table-list li{display:table;width:100%;height:50px;line-height:50px;border-bottom:1px solid #DFDFDF}
+#sortlist .table-list li .table-name{display:table-cell;padding-left:30px;color:#333;}
+#sortlist .table-list li .table-name i{margin-right:7px;cursor:pointer;font-size: 20px;vertical-align: calc(-2px);}
+#sortlist .table-list li .childrenpy{padding-left:50px}
+#sortlist .table-list li .table-btn{display:table-cell;width:450px;text-align:center}
+#sortlist .table-list li .table-btn .btn-main{display:inline-block;width:230px;text-align:left;}
+#sortlist .table-list li .childrenlist{display:table-row;border-top:1px solid #DFDFDF;}
