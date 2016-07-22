@@ -20,6 +20,8 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
     vm.index=$stateParams.index;    
     PublicResource.navclass(vm.index)
     
+	alert(1)
+	
     //分页点击事件
     vm.pageChanged = function(){
         PublicResource.Urllogin();

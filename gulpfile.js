@@ -8,7 +8,6 @@ var wrap = require("gulp-wrap");                          //
 var minify = require('gulp-minify-css');                  //压缩css
 var rename = require('gulp-rename');                      //
 var nodemon = require('gulp-nodemon');                    //
-var browserSync = require('browser-sync');                //
 var autoprefixer = require('gulp-autoprefixer');          //
 var plumber = require('gulp-plumber');                    //
 var notify = require('gulp-notify');                      //提示信息
@@ -16,6 +15,10 @@ var less = require('gulp-less');                          //编译less
 var replace=require("gulp-replace");                      //替换字符串
 var zip = require('gulp-zip');                            //打包
 var gulpSequence = require('gulp-sequence');              //
+
+var browserSync = require('browser-sync').create();       //
+var reload = browserSync.reload;
+
 var files = {
   app: ['./app/index.module.js', './app/**/*.js'],  
   styles: ['./public/style/**/**.css'],
@@ -47,8 +50,8 @@ gulp.task('concat', function () {
     .pipe(wrap('(function(){\n"use strict"\n<%= contents %>\n})();'))
     .pipe(concat('app.js'))
     .pipe(gulp.dest('public/'))    
-      .pipe(notify({ message: 'js合并成功' }))
-  //.pipe(browserSync.stream())
+    .pipe(reload({stream:true}))
+    .pipe(notify({ message: 'js合并成功' }))
 })
 // 合并、压缩、重命名css
 gulp.task('css', function() {
@@ -58,8 +61,17 @@ gulp.task('css', function() {
         .pipe(rename({ suffix: '.min' }))
         .pipe(minify())                
         .pipe(gulp.dest('public/'))
+        .pipe(reload({stream:true}))
         .pipe(notify({ message: 'css压缩执行成功' }));
 });
+
+gulp.task('browser',function(){
+  browserSync.init({
+    server:{
+      baseDir:'./'
+    }
+  })
+})
 
 //Beep only for OSX
 function beep() {
