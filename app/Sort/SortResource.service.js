@@ -6,10 +6,10 @@ SortResource.$inject = ['$http','device','version'];
 function SortResource($http,device,version) {
     return {
         list:list,
-        addlist:addlist,
-        removelist:removelist,
-        getlist:getlist,
-        updatelist:updatelist
+        add:add,
+        remove:remove,
+        get:get,
+        update:update
     };
     
 	/**
@@ -25,7 +25,7 @@ function SortResource($http,device,version) {
     /**
      * 添加分类
      */
-    function addlist(obj,seid){    	     
+    function add(seid,obj){    	     
         return $http({
             url:"/api-admin/category/add",
             method: 'post',
@@ -42,7 +42,7 @@ function SortResource($http,device,version) {
      * @param {Object} seid
      * @param {Object} name
      */
-    function updatelist(id,seid,name){
+    function update(seid,id,name){
          return $http({
             url:"/api-admin/category/"+id+"/update",
             method: 'post',
@@ -56,7 +56,7 @@ function SortResource($http,device,version) {
     /**
      * 删除分类
      */
-    function removelist(id,seid){
+    function remove(seid,id){
          return $http({
             url:"/api-admin/category/"+id+"/remove",
             method: 'post',
@@ -70,7 +70,7 @@ function SortResource($http,device,version) {
     /**
      * 获取某个分类
      */
-    function getlist(id,seid){
+    function get(seid,id){
         return $http({
             url:"/api-admin/category/"+id+"/get",
             method: 'post',

@@ -19,9 +19,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
     //获取页面坐标
     vm.index=$stateParams.index;    
     PublicResource.navclass(vm.index)
-    
-	alert(1)
-	
     //分页点击事件
     vm.pageChanged = function(){
         PublicResource.Urllogin();
@@ -45,7 +42,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
     })
     
     //查询分类列表
-   info_list(vm.seid);
+   list(vm.seid);
     
     //新增子类框
 	vm.openmask = function(size){				
@@ -70,7 +67,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 					layer.closeAll();
 				}
 				layer.alert("添加成功~",{icon:1});
-				info_list(vm.seid);
+				list(vm.seid);
 			}else{
 				layer.alert(data.data.message,{icon:2})
 			}
@@ -82,67 +79,67 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	}
 	
 	//删除节点
-	vm.delchilren = function(id){
+	vm.del = function(id){
 		layer.confirm('您确定要删除分类？', {
 			  btn: ['确定','取消'] //按钮
 		}, function(){
-			SortResource.removelist(id,vm.seid).then(function(data){				
-				if (data.data.status=="OK") {					
-					layer.alert('删除成功~', {icon: 1});
-					info_list(vm.seid);
-				} else{
-					layer.alert(data.data.message,{icon:2})
-				}
-				
-			})
+			remove(id)
 		  
 		});
 	}
 	
 	vm.getlist = function(id){
-		SortResource.list(vm.seid,id).then(function(data){
-	    	vm.list=data.result.root;	    	
-	    })
+		get(id)
 	}
 	
 	/**
 	 * 修改分类
 	 * @param {Object} id
 	 */
-	function updatechildren(id,name){
-		 SortResource.updatelist(id,vm.seid,name).then(function(data){	    	
+	function update(id,name){
+		 SortResource.update(id,vm.seid,name).then(function(data){	    	
 	    	console.log(data);
 	    	if(data.data.status=="OK"){				
 				layer.closeAll();
 				layer.alert("修改成功~");
-				info_list(vm.seid);
+				list(vm.seid);
 			}else{
 				layer.alert(data.data.message,{icon:2})
 			}
 	    })
+	}
+
+	function get(id){
+		SortResource.list(vm.seid,id).then(function(data){
+	    	vm.list=data.result.root;	    	
+	    })
+	}
+
+	//删除
+	function remove(id){
+		console.log(id);
+		SortResource.remove(vm.seid,id).then(function(data){				
+			if (data.data.status=="OK") {					
+				layer.alert('删除成功~', {icon: 1});
+				list(vm.seid);
+			} else{
+				layer.alert(data.data.message,{icon:2})
+			}
+			
+		})
 	}
 	
 	/**
 	 * 分类集合
 	 * @param {Object} seid
 	 */
-	function info_list(seid){
+	function list(seid){
 		 SortResource.list(vm.seid).then(function(data){
 	    	vm.list=data.data.result.root;
 	    	for (var item in vm.list.children) {
 	    		vm.list.children[item].status=0;
 	    	}
 	    	console.log(vm.list)
-	    })
-	}
-	
-	/**
-	 * 搜素分类
-	 * sea_list
-	 */
-	function sea_list(seid,id){
-		SortResource.getlist(vm.seid,id).then(function(data){
-	    	vm.list=data.result.root;	    	
 	    })
 	}
 	
@@ -165,27 +162,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 			}
 		}
 	}
-	
-	/**
-	 * 搜索分类
-	 */
-	vm.searchSort = function(){
-		console.log(vm.sea_info);
-		if(typeof(vm.sea_info)=="undefined"){
-			layer.msg("分类不可为空",{icon:2})
-			return false;
-		}
-		for(var i = 0;i<vm.list.children.length;i++){
-			if(vm.list.children[i].data.name!=vm.sea_info){
-				vm.list.children.splice(i,1);
-				i--;
-			}
-		}
-		if(vm.list.children.length==0){
-			layer.msg("没有相关分类",{icon:2})
-			info_list(vm.seid);
-		}		
-	}
+
 	vm.children = function(num){			
 		if(num.status==0){			
 			num.status=1;			

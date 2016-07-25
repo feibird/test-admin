@@ -5,49 +5,52 @@ angular
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $urlRouterProvider.otherwise("/stores/list");
         $stateProvider
-           .state("/sort/list", {											//分类管理
+        .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",
                 templateUrl: "Sort/list.html",
                  controller: 'SortlistCtrl as SortlistCtrl',
                  params: {'index':3}
-         }).state("/supplierlogo/list", {									//供应商品牌
+        })
+        .state("/supplierlogo/list", {									                      //供应商品牌
                 url: "/supplierlogo/list",
                 templateUrl: "Supplierlogo/list.html",
                  controller: 'SupplierLogolistCtrl as SupplierLogolistCtrl',
                  params: {'index':5}
-         }).state("/brandstores/list", {									//连锁品牌
+        })
+         .state("/brandstores/list", {								                       	//连锁品牌
                 url: "/brandstores/list",
                 templateUrl: "BrandStores/list.html",
                 controller: 'BrandStoreslistCtrl as BrandStoreslistCtrl',
                 params: {'index':5}
-         })
+        })
+        .state("/stores/list", {                                                             //门店管理
+                url: "/stores/list",
+                templateUrl: "stores/list.html",
+                controller: 'StoreslistCtrl as StoreslistCtrl',
+                params: {'index':5}
+        })
+        .state("/label/list", {                                                              //标签管理
+                url: "/label/list",
+                templateUrl: "Label/list.html",
+                controller: 'LabellistCtrl as LabellistCtrl',
+                params: {'index':5}
+        })
+        .state("/order/list", {                                                              //订单管理
+                url: "/order/list",
+                templateUrl: "Order/list.html",
+                controller: 'OrderlistCtrl as OrderlistCtrl',
+            params: {'index':5}
+        })
+        .state("/good/list", {                                                               //商品管理
+                url: "/good/list",
+                templateUrl: "Good/list.html",
+                controller: 'GoodlistCtrl as GoodlistCtrl',
+                params: {'index':5}
+        })
           //去掉#号  
         /*$locationProvider.html5Mode(true);*/
     })
-    .config(httpConfig)
     .run(run);
-
-httpConfig.$inject = ['$httpProvider']
-function httpConfig($httpProvider) {
-    //http拦截器拦截非401状态码的错误请求，err_msg
-    $httpProvider.interceptors.push(['$q',
-        function($q) {
-            return {
-                responseError: function(rejection) {
-                    if (rejection.status != 401) {
-                       /* layer.open({
-                            content: rejection.data.err_msg,
-                            style: 'background-color:#333847; color:#fff; border:none;',
-                            time: 1.5
-                        });*/
-
-                    }
-                    return $q.reject(rejection);
-                }
-            }
-        }])
-}
-
 run.$inject = ['$rootScope', '$state', '$location', 'localStorageService']
 function run($rootScope, $state, $location, localStorageService) {
   

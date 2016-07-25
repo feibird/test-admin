@@ -31,12 +31,15 @@
 			</div>
 			<ul class="table-list">
 				<li ng-repeat="item in SortlistCtrl.list.children">
-					<div class="table-name"><i ng-show="item.children.length>0" ng-class="{'true':{'fa-angle-down':item.status==1,'fa-angle-up':item.status==0}}[item.children.length>0]" ></i>{{item.data.name}}</div>
+					<div class="table-name">
+						<i ng-show="item.children.length>0" ng-class="{'true':{'fa-angle-down':item.status==1,'fa-angle-up':item.status==0}}[item.children.length>0]" ></i>
+						<input type="text" ng-model="item.data.name" class="form-control input-inline-block input-disabled" disabled="">
+						</div>
 					<div class="table-btn">
 						<div class="btn-main">
 							<a href="javascript:;" ng-click="SortlistCtrl.openmask(lg)"	 class="btn btn-primary">新增子类</a>
 							<a href="javascript:;" ng-click="SortlistCtrl.openmask(item.data.id,true,item.data.name)" class="btn btn-primary">编辑</a>
-							<a href="javascript:;" class="btn btn-primary">删除</a>
+							<a href="javascript:;" class="btn btn-primary" ng-click="SortlistCtrl.del(item.data.id)">删除</a>
 						</div>
 					</div>
 					<div class="childrenlist" ng-repeat="list in item.children" ng-hide="item.status==0">
@@ -44,7 +47,7 @@
 						<div class="table-btn">							
 							<div class="btn-main">
 								<a href="javascript:;" class="btn btn-primary">编辑</a>
-								<a href="javascript:;" class="btn btn-primary">删除</a>
+								<a href="javascript:;" class="btn btn-primary" ng-click="SortlistCtrl.del(list.data.id)">删除</a>
 							</div>
 						</div>
 					</div>

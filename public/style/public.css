@@ -11,3 +11,5 @@ th{vertical-align: middle!important;height: 51px;}
 .table{margin-bottom: 0px;}
 .pagination-sm{margin-right: -15px;}
 .ng-table-counts{margin: 20px 0;}
+.input-inline-block{display: inline-block;width: auto;}
+.input-disabled{border:0;box-shadow:none;background-color: transparent!important;cursor: default!important;}
