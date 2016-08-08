@@ -41,7 +41,7 @@ function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,formatGood
    	function gooddetail(id){
    		GoodResource.get(vm.seid,id).then(function(data){   			
    			if(data.data.status!="OK"){
-   				layer.open(data.data.message,{icon:1})
+   				
    			}else{
    				vm.data = data.data.result;
           arrayImage(vm.data)

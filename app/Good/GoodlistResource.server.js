@@ -67,7 +67,7 @@ function GoodResource($http,device,version) {
 				"name":obj.name,
 				"shortName":obj.shortName,
 				"onSell":obj.onSell,
-				"canSell":obj.cancell,
+				"canSell":true,
 				"categoryId":obj.sortId.data.id,
 				"bLogo":obj.bLogo[0],
 				"cLogo":obj.cLogo[0],

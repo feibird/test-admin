@@ -1,7 +1,7 @@
 angular
-    .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable'])
+    .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
-    .constant("version","1.0.0")		//定义全局变量:版本号
+    .constant("version","2.0.0")		//定义全局变量:版本号
     .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         $urlRouterProvider.otherwise("/stores/list");
         $stateProvider
@@ -53,5 +53,5 @@ angular
     .run(run);
 run.$inject = ['$rootScope', '$state', '$location', 'localStorageService']
 function run($rootScope, $state, $location, localStorageService) {
-  
+        
 }

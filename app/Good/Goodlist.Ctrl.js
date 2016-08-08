@@ -8,8 +8,8 @@ function config($stateProvider){
     $stateProvider
     .state("addgood", {
     url: "/good/add",
-    templateUrl: "Good/addgood.html",
-    controller: 'GoodaddCtrl as GoodaddCtrl'
+    templateUrl: "Good/AddGood.html",
+    controller: 'AddGoodCtrl as AddGoodCtrl'
     })
     .state("updategood",{
     url: "/good/update/{id:string}",
@@ -21,7 +21,7 @@ function config($stateProvider){
     controller: 'GoodformatCtrl as GoodformatCtrl'
     }).state("good/gooddetail", {
     url: "/good/gooddetail/{id:string}&{is:string}",
-    templateUrl: "Good/gooddetail.html",
+    templateUrl: "Good/goodDetail.html",
     controller: 'GooddetialCtrl as GooddetialCtrl'
     }).state("good/storegooddetail", {
     url: "/good/storegooddetail/{id:string}",

@@ -1,12 +1,12 @@
-angular.module('index_area').factory('SupplierLogoResourrce',SupplierLogoResourrce);
-SupplierLogoResourrce.$inject = ['$http','device','version'];
-function SupplierLogoResourrce($http,device,version) {
+angular.module('index_area').factory('SupplierLogoResource',SupplierLogoResource);
+SupplierLogoResource.$inject = ['$http','device','version'];
+function SupplierLogoResource($http,device,version) {
     return {
 		list:list,
-		infoget:infoget,
-		addlist:addlist,
-		updateinfo:updateinfo,
-		dellist:dellist
+		get:get,
+		add:add,
+		update:update,
+		remove:remove
     };
     
 	
@@ -20,12 +20,12 @@ function SupplierLogoResourrce($http,device,version) {
 	}
 
 	/**
-	 * [infoget 获取单个数据]
+	 * [get 获取单个数据]
 	 * @param  {[type]} seid [sessionID]
 	 * @param  {[type]} id   [数据ID]
 	 * @return {[type]}      [description]
 	 */
-	function infoget(seid,id){		
+	function get(seid,id){		
 		return $.ajax({
 				type:"get",
 				url:"/api-admin/provider/brand/"+id+"/get",
@@ -41,58 +41,52 @@ function SupplierLogoResourrce($http,device,version) {
 	/**
 	 * 添加基础商品
 	 */
-	function addlist(seid,obj){
-		return $.ajax({
-				type:"get",
-				url:"/api-admin/provider/brand/add",
-				async:false,
-				data:{
-					"device":device,
-					"version":version,
-					"sessionId":seid,
-					"name":obj.name,
-					"category.id":obj.category.data.id,
-					"logo":obj.logo,
-					"sort":obj.sort,
-					"serialPrefix":obj.serialPrefix
-				},
-				dataType:"json",
-				success:function(response){
-					return response.data;
-				}
-		});
+	function add(seid,obj){
+		return $http({
+            url:"/api-admin/provider/brand/add",
+            method:'post',
+            params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"logo":obj.logo,
+				"sort":obj.sort,
+				"serialPrefix":obj.serialPrefix
+			}
+        })
+        .then(function (data) {
+             return data
+        })  
 	}
 	
 	/**
 	 * 修改商品
 	 */
-	function updateinfo(seid,obj){
-		
-		return $.ajax({
-				type:"post",
-				url:"/api-admin/provider/brand/"+obj.id+"/update",
-				async:false,
-				data:{
-					"device":device,
-					"version":version,
-					"sessionId":seid,
-					"name":obj.name,
-					"category.id":obj.category.data.id,
-					"logo":obj.logo,
-					"sort":obj.sort,
-					"serialPrefix":obj.serialPrefix
-				},
-				dataType:"json",
-				success:function(response){
-					return response.data;
-				}
-		});
+	function update(seid,obj){
+		console.log(obj)
+		return $http({
+            url:"/api-admin/provider/brand/"+obj.id+"/update",
+            method: 'post',
+            params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"logo":obj.logo,
+				"sort":obj.sort,
+				"serialPrefix":obj.serialPrefix
+			}
+        })
+        .then(function (data) {
+             return data
+        })  
 	}
 	
 	/**
 	 * 删除商品
 	 */
-	function dellist(seid,id){
+	function remove(seid,id){
 		return $.ajax({
 			type:"post",
 			url:"/api-admin/provider/brand/"+id+"/remove",

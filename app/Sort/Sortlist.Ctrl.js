@@ -11,18 +11,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
     vm.pageint=5;
     vm.list;						//对象集合
     vm.addinfo= new Object;			//新增分类对象
-    vm.sea_info;					//搜索分类
-    vm.updatename;					//修改名字
-    vm.updateid;					//修改id
-    vm.info_address;
-    vm.show;
-    //获取页面坐标
-    vm.index=$stateParams.index;    
-    PublicResource.navclass(vm.index)
-    //分页点击事件
-    vm.pageChanged = function(){
-        PublicResource.Urllogin();
-    }
+	vm.addinfo.id=1;
     //获取sessionId
    	login()
 	function login(){
@@ -92,56 +81,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 		get(id)
 	}
 	
-	/**
-	 * 修改分类
-	 * @param {Object} id
-	 */
-	function update(id,name){
-		 SortResource.update(id,vm.seid,name).then(function(data){	    	
-	    	console.log(data);
-	    	if(data.data.status=="OK"){				
-				layer.closeAll();
-				layer.alert("修改成功~");
-				list(vm.seid);
-			}else{
-				layer.alert(data.data.message,{icon:2})
-			}
-	    })
-	}
-
-	function get(id){
-		SortResource.list(vm.seid,id).then(function(data){
-	    	vm.list=data.result.root;	    	
-	    })
-	}
-
-	//删除
-	function remove(id){
-		console.log(id);
-		SortResource.remove(vm.seid,id).then(function(data){				
-			if (data.data.status=="OK") {					
-				layer.alert('删除成功~', {icon: 1});
-				list(vm.seid);
-			} else{
-				layer.alert(data.data.message,{icon:2})
-			}
-			
-		})
-	}
-	
-	/**
-	 * 分类集合
-	 * @param {Object} seid
-	 */
-	function list(seid){
-		 SortResource.list(vm.seid).then(function(data){
-	    	vm.list=data.data.result.root;
-	    	for (var item in vm.list.children) {
-	    		vm.list.children[item].status=0;
-	    	}
-	    	console.log(vm.list)
-	    })
-	}
 	
 	/**
 	 * 收起分类
@@ -155,20 +94,99 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	/**
 	 * 展开分类
 	 */
-	vm.showchildren = function(item){
-		if(!item){
-			for (var item in vm.list.children) {
-				vm.list.children[item].status=0;
-			}
+	vm.toggle = function(item){
+		console.log(item);
+		if(item.status==1){
+			item.status=0;
+		}else{
+			item.status=1;
 		}
 	}
 
-	vm.children = function(num){			
-		if(num.status==0){			
-			num.status=1;			
-			console.log(num);
-		}else{			
-			num.status=0;
-		}		
+	vm.addbtn = function(data,is){	
+		console.log(data);
+		add(data)
 	}
+
+	/**
+	 * 编辑
+	 */
+	vm.edit = function(data){
+		if(data.isedit){
+			data.isedit=false;
+			data.btnName="编辑";
+			update(data.data.id,data.data.name)
+		}else{
+			data.isedit=true;
+			data.btnName="保存";
+		}
+	}
+
+	/**
+	 * 添加
+	 */
+	function add(datainfo){		
+		console.log(datainfo)
+		SortResource.add(vm.seid,datainfo).then(function(data){
+			if(data.data.status=="OK"){
+				layer.msg('添加成功',{icon:1});
+			}else{
+				layer.msg(data.data.message,{icon:2});
+			}
+			list(vm.seid);
+		})
+	}
+
+	/**
+	 * 修改
+	 */
+	function update(id,name){
+		SortResource.update(vm.seid,id,name).then(function(data){
+			console.log(data.data.result);
+			if(data.data.status=="OK"){
+				layer.msg("修改成功",{icon:1});
+			}else{
+				layer.msg(data.data.message,{icon:2});
+			}
+			list(vm.seid);
+		})
+	}
+
+	/**
+	 * 分类集合
+	 * @param {Object} seid
+	 */
+	function list(seid){
+		 SortResource.list(vm.seid).then(function(data){
+	    	vm.list=data.data.result.root;
+	    	for (var item in vm.list.children) {
+	    		vm.list.children[item].status=0;
+				vm.list.children[item].isedit=false;
+				vm.list.children[item].btnName="编辑";
+				for(var list in vm.list.children[item].children){
+					vm.list.children[item].children[list].isedit=false;
+					vm.list.children[item].children[list].btnName="编辑";
+				}
+	    	}
+	    	console.log(vm.list)
+	    })
+	}
+
+	/**
+	 * 删除
+	 */
+	function remove(id){
+		console.log(id);
+		SortResource.remove(vm.seid,id).then(function(data){				
+			if (data.data.status=="OK") {					
+				layer.alert('删除成功~', {icon: 1});
+				list(vm.seid);
+			} else{
+				layer.alert(data.data.message,{icon:2})
+			}
+			
+		})
+	}
+	
+	
 }

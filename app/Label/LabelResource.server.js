@@ -1,9 +1,9 @@
 /**
  * 标签管理功能API封装
  */
-angular.module('index_area').factory('LabelResourrce', LabelResourrce);
-LabelResourrce.$inject = ['$http','device','version'];
-function LabelResourrce($http,device,version) {
+angular.module('index_area').factory('LabelResource', LabelResource);
+LabelResource.$inject = ['$http','device','version'];
+function LabelResource($http,device,version) {
     return {
         list:list,
         get:get,
@@ -50,7 +50,8 @@ function LabelResourrce($http,device,version) {
         })        
     }
 
-    function add (seid,info) {        
+    function add (seid,info) {   
+        console.log(info)     
         return $http({
             url:"/api-admin/label/add",
             method: 'post',

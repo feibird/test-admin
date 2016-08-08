@@ -1,1 +1,5 @@
-.layui-layer-shade{z-index: 1!important;}
+.page-container .main-content{z-index: inherit;}
+.page-container .main-content:hover{z-index: inherit;}
+.layui-layer-setwin .layui-layer-close2{z-index: 100; }
+.input-show{text-align: left;}
+.input-hide{text-align: center;cursor:auto!important;background-color:transparent!important;border: 0;box-shadow:none;}
