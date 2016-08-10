@@ -1,6 +1,6 @@
-angular.module('index_area').factory('formatGoodResource', formatGoodResource);
-formatGoodResource.$inject = ['$http','device','version'];
-function formatGoodResource($http,device,version) {
+angular.module('index_area').factory('FormatResource', FormatResource);
+FormatResource.$inject = ['$http','device','version'];
+function FormatResource($http,device,version) {
     return {
     	add:add,
     	list:list,

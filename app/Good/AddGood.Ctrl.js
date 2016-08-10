@@ -2,9 +2,9 @@ angular.module('index_area').controller('AddGoodCtrl',AddGoodCtrl);
 AddGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','GoodResource',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource",'FileUploader'];
 /***调用接口***/
 function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource,FileUploader) {
-    document.title ="商品详情";
+    document.title ="添加规格";
     $rootScope.name="商品管理";
-    $rootScope.childrenName="添加基础商品";
+    $rootScope.childrenName="添加规格";
     var vm = this;
     vm.skip=0;				//起始数据下标FileUploader
     vm.limit=12;			//最大数据下标
@@ -197,7 +197,12 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
          GoodResource.add(vm.seid,vm.info).then(function(data){
              console.log(data)
              if(data.data.status=="OK"){
-                 layer.msg("商品添加成功",{icon:1})
+                 layer.confirm('商品添加成功~是否添加商品规格？', {
+                        btn: ['确定','取消'] //按钮
+                    }, function(){
+                        layer.closeAll()
+                        $state.go('format',{id:data.data.result})
+                    });
              }else{
                  layer.msg(data.data.message,{icon:2})
              }

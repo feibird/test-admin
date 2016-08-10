@@ -4,7 +4,7 @@ function GoodResource($http,device,version) {
     return {
 		list:list,
 		add:add,
-		updist:update,
+		update:update,
 		del:del,
 		get:get
     };
@@ -86,7 +86,7 @@ function GoodResource($http,device,version) {
 	/**
 	 * 修改商品
 	 */
-	function update(seid,obj,id){
+	function update(seid,obj){
 		console.log(obj)
 			var bPhotos="";
 			var cPhotos="";
@@ -104,7 +104,7 @@ function GoodResource($http,device,version) {
 			cPhotos=cPhotos.substring(0,cPhotos.length-1);
 			bPhotos=bPhotos.substring(0,bPhotos.length-1);	
 		return $http({
-        url:"/api-admin/base/product/"+id+"/update",
+        url:"/api-admin/base/product/"+obj.id+"/update",
         method: 'post',
         params:{
 				"device":device,
@@ -116,14 +116,13 @@ function GoodResource($http,device,version) {
 				"shortName":obj.shortName,
 				"onSell":obj.onSell,
 				"canSell":obj.cancell,
-				"categoryId":obj.categories.children[0].data.id,
+				"categoryId":obj.categories.children[0].id,
 				"bLogo":obj.bLogo,
 				"cLogo":obj.cLogo,
 				"bPhotos":bPhotos,
 				"cPhotos":cPhotos,
 				"terse":obj.terse,
 				"detail":obj.detail,
-				"baseProductId":id,
 				"labelIds":lables
 			}
     })

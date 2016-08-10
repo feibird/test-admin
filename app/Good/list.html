@@ -13,12 +13,12 @@
                         <td data-title="'商品编号'" filter="{serialNumber: 'text'}" sortable="'serialNumber'" >{{item.serialNumber}}</td>
                         <td data-title="'供应商品牌'" filter="{'providerBrand.name': 'text'}" sortable="'providerBrand.name'" >{{item.providerBrand.name}}</td>
                         <td data-title="'连锁品牌'" filter="{'brand.name': 'number'}" sortable="'brand.name'" >{{item.brand.name}}</td>
-                        <td data-title="'商品规格'"><a href="javascript:;" >查看</a></td>
+                        <td data-title="'商品规格'"><a href="javascript:;" ui-sref = 'format({id:item.id})' >查看</a></td>
                         <td data-title="'上下架状态'">{{item.onsell==true?'是':'否'}}</td>
                         <td data-title="'操作'">
                             <a href="javascript:;" class="btn" ui-sref="good/gooddetail({id:item.id})"><span class="fa-trash fa-icon-right"></span>查看</a>
-                            <a href="javascript:;" class="btn"><span class="fa-eye fa-icon-right"></span>修改</a>
-                            <a href="javascript:;" class="btn" ng-click="GoodlistCtrl.updateinfo(list)"><span class="fa-edit fa-icon-right"></span>删除</a>
+                            <a href="javascript:;" class="btn" ui-sref="update({id:item.id})" ><span class="fa-eye fa-icon-right"></span>修改</a>
+                            <a href="javascript:;" class="btn" ng-click="GoodlistCtrl.delBtn(item.id)"><span class="fa-edit fa-icon-right"></span>删除</a>
                         </td>
                     </tr>
                 </table>

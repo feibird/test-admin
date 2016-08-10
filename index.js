@@ -35,8 +35,8 @@ app.get('/wxpay/redirect', function(req, res) {
 
 // proxy
 
-var test_host = 'http://139.196.240.36:8081';	//本地http
-/*var test_host = '139.224.5.120:443';			//测试https*/ 
+// var test_host = 'http://139.196.240.36:8081';	//本地http
+	var test_host = '139.224.5.120:443';			//测试https*/ 
 app.use('/api-admin', proxy(test_host, {
 	forwardPath: function(req, res) {
 		return '/api-admin'+require('url').parse(req.url).path;

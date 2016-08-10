@@ -39,7 +39,6 @@ function StoresResource($http,device,version) {
                 "latitude":obj.latitude,
                 "location":obj.location,
                 "areaId":obj.areas[3].id,
-                "type":"DIRECT_STORE",
                 "legalPerson":obj.legalPerson,
                 "sort":obj.sort,
                 "device":device,
@@ -67,7 +66,6 @@ function StoresResource($http,device,version) {
             params:{
                 "name":obj.name,
                 "terse":obj.terse,
-                "brandId":obj.brandId,
                 "longitude":obj.longitude,
                 "latitude":obj.latitude,
                 "location":obj.location,
@@ -82,25 +80,28 @@ function StoresResource($http,device,version) {
                 "legalPersonTelephone":obj.legalPersonTelephone
             }
         })
-            .then(function (data) {
-                return data
-            })
+        .then(function (data) {
+            return data
+        })
     }
 
     /**
      * 删除分类
      */
     function remove(seid,id){
-        return $.ajax({
-            type:"post",
+        return $http({
             url:"/api-admin/store/"+id+"/remove",
-            dataType:"json",
-            data:{"device":device,"version":version,"sessionId":seid,"id":id},
-            async:false,
-            success:function(response){
-                return response.data;
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "id":id
             }
-        });
+        })
+        .then(function (data) {
+            return data
+        })
     }
 
     /**
@@ -109,13 +110,13 @@ function StoresResource($http,device,version) {
     function get(seid,id){
         return $.ajax({
             type:"get",
-            url:"/api-admin/store/"+id+"/get",
-            dataType:"json",
-            data:{"device":device,"version":version,"sessionId":seid,"id":id},
             async:false,
-            success:function(response){
-                return response.data;
+            dataType:'json',
+            data:{"device":device,"version":version,"sessionId":seid},
+            url:"/api-admin/store/"+id+"/get",
+            success:function(data){
+                return data
             }
-        });
+        })
     }
 }

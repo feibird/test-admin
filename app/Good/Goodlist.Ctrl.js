@@ -11,14 +11,14 @@ function config($stateProvider){
     templateUrl: "Good/AddGood.html",
     controller: 'AddGoodCtrl as AddGoodCtrl'
     })
-    .state("updategood",{
+    .state("update",{
     url: "/good/update/{id:string}",
-    templateUrl: "Good/updategood.html",
-    controller: 'GoodupdateCtrl as GoodupdateCtrl'
+    templateUrl: "Good/UpdateGood.html",
+    controller: 'UpdateGoodCtrl as UpdateGoodCtrl'
     }).state("format", {
     url: "/good/format/{id:string}",
-    templateUrl: "Good/format.html",
-    controller: 'GoodformatCtrl as GoodformatCtrl'
+    templateUrl: "Good/Format.html",
+    controller: 'FormatCtrl as FormatCtrl'
     }).state("good/gooddetail", {
     url: "/good/gooddetail/{id:string}&{is:string}",
     templateUrl: "Good/goodDetail.html",
@@ -60,6 +60,14 @@ function GoodlistCtrl($scope,$rootScope,$state,GoodResource,PublicResource,$stat
 			vm.seid = PublicResource.seid(vm.user);
 		}
 	}
+
+    vm.delBtn = function(id){
+        layer.confirm('是否删除商品？',{
+            btn:["确定",'取消']
+        },function(){
+            remove(id);
+        })
+    }
     
     /**
      * 基础商品集合
@@ -75,11 +83,11 @@ function GoodlistCtrl($scope,$rootScope,$state,GoodResource,PublicResource,$stat
     }
 
     function remove(id){
-    	GoodResource.dellist(vm.seid,id).then(function(data){
+    	GoodResource.del(vm.seid,id).then(function(data){
     		console.log(data)
     		 if (data.data.status=="OK") {					
 				layer.alert('删除成功~', {icon: 1});
-				info_list(vm.seid);
+				list(vm.seid);
 				layer.closeAll();
 			} else{
 				layer.msg('删除异常，请联系管理员~', {icon: 0});

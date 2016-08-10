@@ -1,4 +1,4 @@
-b<div class="AddGood">
+<div class="AddGood">
     <div class="panel panel-inverted detail-spec">
         <div class="panel-heading">查看详情</div>
         <div class="panel-body">
@@ -20,13 +20,13 @@ b<div class="AddGood">
             <div class="col-xs-6 colmt10">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">供应商品牌</div>
-                    <input type="text" ng-model="AddGoodCtrl.info.brandId" uib-typeahead="state as state.name for state in AddGoodCtrl.logolist.data | filter:$viewValue | limitTo:10" class="form-control">
+                    <input type="text" ng-model="AddGoodCtrl.info.providerBrandId" typeahead-min-length="0" typeahead-show-hint="true"  uib-typeahead="state as state.name for state in AddGoodCtrl.logolist.data | filter:$viewValue | limitTo:10" class="form-control">
                 </div>
             </div>
             <div class="col-xs-6 colmt10">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">连锁品牌</div>
-                    <input type="text" ng-model="AddGoodCtrl.info.providerBrandId" uib-typeahead="state as state.name for state in AddGoodCtrl.brandlist.data | filter:$viewValue | limitTo:10" class="form-control">
+                    <input type="text" ng-model="AddGoodCtrl.info.brandId" uib-typeahead="state as state.name for state in AddGoodCtrl.brandlist.data | filter:$viewValue | limitTo:10" class="form-control">
                 </div>
             </div>
             <div class="col-xs-6 colmt10">

@@ -1,7 +1,7 @@
 angular.module('index_area').controller('GooddetialCtrl',GooddetialCtrl);
-GooddetialCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','formatGoodResource','GoodResource'];
+GooddetialCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource','GoodResource'];
 /***调用接口***/
-function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,formatGoodResource,GoodResource) {
+function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource,GoodResource) {
 	document.title ="商品详情";
 	$rootScope.name="商品管理";
 	$rootScope.childrenName="商品详情";
