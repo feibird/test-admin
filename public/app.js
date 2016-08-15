@@ -49,6 +49,12 @@ angular
                 controller: 'GoodlistCtrl as GoodlistCtrl',
                 params: {'index':5}
         })
+        .state("/finance/list", {                                                               //财务管理
+                url: "/Finance/drawlist",
+                templateUrl: "Finance/drawlist.html",
+                controller: 'DrawlistCtrl as DrawlistCtrl',
+                params: {'index':5}
+        })
           //去掉#号  
         /*$locationProvider.html5Mode(true);*/
     })
@@ -383,6 +389,474 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 			}
 		},1200)
 	}
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('DrawDetailCtrl',DrawDetailCtrl);
+DrawDetailCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','DrawResource','NgTableParams'];
+/***调用接口***/
+function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,DrawResource,NgTableParams) {
+    document.title ="提现管理";
+    $rootScope.name="提现管理";
+	   $rootScope.childrenName="提现管理列表";
+    var vm = this;
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').config(config).controller('DrawlistCtrl',DrawlistCtrl);
+function config($stateProvider){
+    $stateProvider
+    .state("detail", {
+        url: "/finance/drawdetail{id:string}",
+        templateUrl: "Finance/DrawDetail.html",
+        controller: 'DrawDetailCtrl as DrawDetailCtrl'
+    })
+}
+DrawlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','DrawResource','NgTableParams'];
+/***调用接口***/
+function DrawlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,DrawResource,NgTableParams) {
+    document.title ="提现管理";
+    $rootScope.name="提现管理";
+	  $rootScope.childrenName="提现管理列表";
+    var vm = this;
+    vm.skip=0;              //起始数据下标
+    vm.limit=12;            //最大数据下标
+    vm.stores;              //门店集合
+    vm.list;
+    vm.get = new Object();
+    vm.get.status="";
+    vm.get.id="";
+    vm.fusName;
+    vm.updateinfo=new Object();
+    vm.updateinfo.serialNumber="";
+    vm.updateinfo.storeId="";
+    vm.updateinfo.applyStartDate=null;
+    vm.updateinfo.applyEndDate=null;
+    vm.updateinfo.completetStartDate="";
+    vm.updateinfo.completeEndDate="";
+    vm.updateinfo.ids = new Array();
+    vm.filer = new Object();
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			});
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+
+    //财务审核成功
+    function FinanOk(){
+        DrawResource.FinanOk(vm.seid,vm.updateinfo).then(function(data) {
+            layer.msg(data.data.result)
+            list();
+        })
+    }
+
+    //财务审核失败
+    function FinanNo(){
+        DrawResource.FinanNo(vm.seid,vm.updateinfo).then(function(data) {
+            layer.msg(data.data.result)
+            list();
+        })
+    }
+
+    //运营审核成功
+    function operaOk(){
+        DrawResource.operaOk(vm.seid,vm.updateinfo,0,100).then(function(data) {
+            layer.msg(data.data.result)
+            list();
+        })
+    }
+
+    //运营审核失败
+    function operaNo(){
+        DrawResource.operaNo(vm.seid,vm.updateinfom0,100).then(function(data) {
+          layer.msg(data.data.result)
+          list();
+        })
+    }
+
+
+    //确认打款
+    function complete(){
+        DrawResource.complete(vm.seid,vm.updateinfo,0,100).then(function (data) {
+           console.log(data);
+           if(data.status=="OK"){
+               layer.alert("操作成功~",{icon:1});
+           }else{
+               layer.alert(data.message,{icon:2});
+           }
+        });
+    }
+
+    vm.statusBtn = function(fusName,id) {
+        vm.updateinfo.ids=[];
+        vm.fusName=fusName;
+        vm.updateinfo.ids.push(id);
+        console.log(vm.updateinfo)
+        layer.open({
+            type: 1,
+            title:"信息",
+            area: ['450px',"330px"], //宽高
+            content:$('.alertDiv')
+        });
+    };
+
+    vm.Get =function(){
+        list();
+};
+
+    vm.alertBtn = function() {
+      console.log(vm.updateinfo);
+        switch (vm.fusName) {
+          case "operaNo":
+              operaNo();
+          break;
+          case "operaOk":
+              operaOk();
+          break;
+          case "complete":
+              complete();
+          break;
+        }
+        layer.closeAll();
+    }
+    var num=true;
+    vm.All = function(){
+        for(var i in vm.list){
+            if(num){
+                 vm.list[i].active=true;
+            }else{
+                 vm.list[i].active=false;
+            }
+        }
+         num=!num;
+    }
+
+    vm.operaBtn=function(status,fusName){
+        vm.updateinfo.ids=[];
+        var x = 0;
+      for(var i in vm.list){
+          if(vm.list[i].active==true){
+                if(vm.list[i].status==status){
+                    vm.updateinfo.ids.push(vm.list[i].id)
+                }else{
+                     x+=1;
+                }
+          }else{
+             
+          }
+      }
+      if(x!=0){
+          layer.msg("有"+x+"条数据状态不符合,请先筛选订单状态！",{icon:2})
+          return false;
+      }
+
+      switch(fusName){
+          case "operaNo":
+                operaNo();
+          break;
+          case "operaOk":
+                operaOk();
+          break;
+          case "FinanNo":
+                FinanNo();
+          break;
+          case "FinanOk":
+                FinanOk();
+          break;
+          case "complete":
+                complete();
+          break;
+      }
+
+
+    }
+
+    /**
+     * 初始化
+     */
+    initialize();
+    function initialize(){
+        store();
+        list();
+    }
+
+    function store(){
+        StoresResource.list(vm.seid,0,0).then(function (data) {
+            vm.stores = data.data.result.data;
+            console.log(vm.stores);
+        });
+    }
+
+    function list(){
+        DrawResource.list(vm.seid,vm.updateinfo,0,100).then(function(data){
+            vm.list = data.data.result.data;
+            for(var i in vm.list){
+                vm.list[i].active=false;
+                vm.list[i].createDate=chang_time(new Date(vm.list[i].createDate));
+               if(vm.list[i].endDate!=null){
+                    vm.list[i].endDate = chang_time(new Date(vm.list[i].endDate));
+               }
+            }
+            vm.tableParams = new NgTableParams({},{dataset:vm.list});
+            console.log(vm.list);
+        });
+    }
+
+
+    function chang_time (date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
+        if(m.length<3){
+            m="0"+m;
+        }
+        if(s<9){
+            s="0"+s;
+        }
+        return Y+M+D+h+m+s;
+    }
+
+    function update(status,id){
+        DrawResource.update(vm.seid,status,id).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.alert('修改成功',{icon:1});
+            }else{
+                layer.alert(data.data.message,{icon:2});
+            }
+            list();
+        });
+    }
+
+    $(".cr_date").click(function(){
+        console.log($('.date').length)
+        for(var i in $('.date')){
+            // vm.updateinfo[$('.date').eq(i).name]=$(".date").eq(i).val();
+            if(typeof($('.date').eq(i).val())=='undefined' || $('.date').eq(i).val()==""){
+                return false;
+            }else{
+                vm.updateinfo[$('.date').eq(i).attr('name')]=$('.date').eq(i).val()
+            }
+        }
+        console.log(vm.updateinfo)
+    })
+}
+
+})();
+(function(){
+"use strict"
+/**
+ * 提供功能API封装
+ */
+angular.module('index_area').factory('DrawResource', DrawResource);
+DrawResource.$inject = ['$http','device','version'];
+function DrawResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        update:update,
+        complete:complete,
+        operaOk:operaOk,
+        operaNo:operaNo,
+        FinanNo:FinanNo,
+        FinanOk:FinanOk
+    };
+
+
+	/**
+	 * list
+	 * 获取门店列表
+	 */
+    function list(seid,obj,skip,limit){
+        obj.applyEndDate!=null ? dateTime(obj.applyEndDate):null;
+        obj.applyStartDate!=null ? dateTime(obj.applyStartDate):null;
+        obj.completetStartDate!=null ? dateTime(obj.completetStartDate):null;
+        obj.completeEndDate!=null ? dateTime(obj.completeEndDate):null;
+        return $http.get("/api-admin/draw/list",
+                {params:{"device":device,
+                        "version":version,
+                        "sessionId":seid,
+                        "skip":skip,
+                        "limit":limit,
+                        'storeId':obj.storeId,
+                        'status':obj.status,
+                        "applyStartDate":dateTime(obj.applyStartDate)?dateTime(obj.applyStartDate):null,
+                        "applyEndDate":dateTime(obj.applyEndDate)?dateTime(obj.applyEndDate):null,
+                        "completetStartDate":dateTime(obj.completetStartDate)?dateTime(obj.completetStartDate):null,
+                        "completeEndDate":dateTime(obj.completeEndDate)?dateTime(obj.completeEndDate):null,
+                        "serialNumber":obj.serialNumber
+                    }}).then(function(data){
+            return data
+        })
+    }
+
+    /**
+     * 修改信息
+     * @param {Object} id
+     * @param {Object} seid
+     * @param {Object} name
+     */
+    function update(seid,status,id){
+        return $http({
+            url:"/api-admin/draw/"+id+"/update",
+            method: 'post',
+            params:{
+                  "status":status,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    /**
+     * 获取某个订单
+     */
+    function get(seid,id){
+        return $http.get("/api-admin/draw/"+id+"/get",
+                {params:{"device":device,
+                        "version":version,
+                        "sessionId":seid
+                    }}).then(function(data){
+            return data
+        })
+    }
+
+    //确认打款
+    function complete(seid,obj){
+        var ids = arry(obj.ids);
+        return $http({
+            url:"/api-admin/draw/complete",
+            method: 'post',
+            params:{
+                  "ids":ids,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid,
+                  "remark":obj.remark
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    //运营审核通过
+    function operaOk(seid,obj){
+        var ids = arry(obj.ids);
+        return $http({
+            url:"/api-admin/draw/approve-operate",
+            method: 'post',
+            params:{
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid,
+                  "ids":ids,
+                  "remark":obj.remark
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    //运营审核通过
+    function operaNo(seid,obj){
+      var ids = arry(obj.ids);
+        return $http({
+            url:"/api-admin/draw/reject-operate",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "ids":ids,
+                "remark":obj.remark
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    //财务审核不通过
+    function FinanNo(seid,obj){
+      var ids = arry(obj.ids);
+        return $http({
+            url:"/api-admin/draw/reject-finance",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "ids":ids,
+                "remark":obj.remark
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    //财务审核通过
+    function FinanOk(seid,obj){
+      var ids = arry(obj.ids);
+        return $http({
+            url:"/api-admin/draw/approve-finance",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "ids":ids,
+                "remark":obj.remark
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    function arry(obj){
+      var ids="";
+      for(var i in obj){
+				ids+=obj[i]+","
+			}
+      console.log(ids);
+			ids=ids.substring(0,ids.length-1);
+
+      return ids;
+    }
+
+    function dateTime(data){
+        if(data==null||data.length<1){
+            return false;
+        }
+        console.log(data)
+        var date = data.split('-');
+        console.log(date);
+        var time = new Date(date[0],date[1],date[2]).getTime();
+        return time*0.001;
+    }
 }
 
 })();
@@ -1412,173 +1886,6 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
 (function(){
 "use strict"
 /**
- * 提供功能API封装
- */
-angular.module('index_area').factory('OrderResource', OrderResource);
-OrderResource.$inject = ['$http','device','version'];
-function OrderResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        update:update,
-    };
-    
-    
-	/**
-	 * list
-	 * 获取门店列表
-	 */
-    function list(seid,obj,skip,limit){    	
-        return $http.get("/api-admin/draw/list",
-                {params:{"device":device,
-                        "version":version,
-                        "sessionId":seid,
-                        "skip":skip,
-                        "limit":limit,
-                        'storeId':obj.storeId,
-                        'status':obj.status
-                    }}).then(function(data){
-            return data
-        })
-    }
-    
-    /**
-     * 修改信息
-     * @param {Object} id
-     * @param {Object} seid
-     * @param {Object} name
-     */
-    function update(seid,status,id){
-        return $http({
-            url:"/api-admin/draw/"+id+"/update",
-            method: 'post',
-            params:{
-                  "status":status,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
-        })
-        .then(function (data) {
-             return data;
-        })
-    }
-    
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){
-    	return $.ajax({
-    		type:"get",
-    		url:"/api-admin/draw/"+id+"/get",
-    		dataType:"json",
-    		data:{"device":device,"version":version,"sessionId":seid},
-    		async:false,    		
-    		success:function(response){
-    			return response.data;
-    		}
-    	});
-    }
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
-OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
-/***调用接口***/
-function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
-    document.title ="提现管理";
-    $rootScope.name="提现管理";
-	$rootScope.childrenName="提现管理列表";
-    var vm = this;
-    vm.skip=0;              //起始数据下标
-    vm.limit=12;            //最大数据下标
-    vm.pagecount=0;
-    vm.pageint=5;
-    vm.stores;              //门店集合
-    vm.list;
-    vm.get = new Object();
-    vm.get.status="";
-    vm.get.stores="";
-    //获取页面坐标
-    vm.index=$stateParams.index;        
-    PublicResource.navclass(vm.index)
-
-    //分页点击事件
-    vm.pageChanged = function(){
-    vm.skip = (vm.pageint-1)*12;
-        vm.limit = vm.skip+12;
-        list()
-    }
-    //获取sessionId
-     login();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-
-    /**
-     * 初始化
-     */
-    initialize();
-    function initialize(){
-        store();
-        list();
-    }
-
-    function store(){
-        StoresResource.list(vm.seid,0,0).then(function (data) {
-            vm.stores = data.data.result.data
-            console.log(vm.stores);            
-        })
-    }
-
-    function list(){
-        OrderResource.list(vm.seid,vm.get,vm.skip,vm.limit).then(function(data){
-            vm.list = data.data.result.data;
-            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
-            vm.pagecount =data.data.result.total;            
-            console.log(data);
-            for(var i in vm.list){
-                vm.list[i].createDate=change_time(vm.list[i].createDate);
-               if(vm.list[i].endDate!=null){
-                    vm.list[i].endDate = change_time(vm.list[i].endDate)
-               }
-            }
-            console.log(vm.list);
-        })
-    }
-
-    function change_time(nS){
-        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
-    }
-
-    function update(status,id){
-        OrderResource.update(vm.seid,status,id).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.alert('修改成功',{icon:1})
-            }else{
-                layer.alert(data.data.message,{icon:2})
-            }
-            list();
-        })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-/**
  * 标签管理功能API封装
  */
 angular.module('index_area').factory('LabelResource', LabelResource);
@@ -1786,6 +2093,173 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 			}
 		})  
 	}
+}
+
+})();
+(function(){
+"use strict"
+/**
+ * 提供功能API封装
+ */
+angular.module('index_area').factory('OrderResource',OrderResource);
+OrderResource.$inject = ['$http','device','version'];
+function OrderResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        update:update,
+    };
+    
+    
+	/**
+	 * list
+	 * 获取门店列表
+	 */
+    function list(seid,obj,skip,limit){    	
+        return $http.get("/api-admin/draw/list",
+                {params:{"device":device,
+                        "version":version,
+                        "sessionId":seid,
+                        "skip":skip,
+                        "limit":limit,
+                        'storeId':obj.storeId,
+                        'status':obj.status
+                    }}).then(function(data){
+            return data
+        })
+    }
+    
+    /**
+     * 修改信息
+     * @param {Object} id
+     * @param {Object} seid
+     * @param {Object} name
+     */
+    function update(seid,status,id){
+        return $http({
+            url:"/api-admin/draw/"+id+"/update",
+            method: 'post',
+            params:{
+                  "status":status,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+    
+    /**
+     * 获取某个分类
+     */
+    function get(seid,id){
+    	return $.ajax({
+    		type:"get",
+    		url:"/api-admin/draw/"+id+"/get",
+    		dataType:"json",
+    		data:{"device":device,"version":version,"sessionId":seid},
+    		async:false,    		
+    		success:function(response){
+    			return response.data;
+    		}
+    	});
+    }
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
+OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
+/***调用接口***/
+function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
+    document.title ="提现管理";
+    $rootScope.name="提现管理";
+	$rootScope.childrenName="提现管理列表";
+    var vm = this;
+    vm.skip=0;              //起始数据下标
+    vm.limit=12;            //最大数据下标
+    vm.pagecount=0;
+    vm.pageint=5;
+    vm.stores;              //门店集合
+    vm.list;
+    vm.get = new Object();
+    vm.get.status="";
+    vm.get.stores="";
+    //获取页面坐标
+    vm.index=$stateParams.index;        
+    PublicResource.navclass(vm.index)
+
+    //分页点击事件
+    vm.pageChanged = function(){
+    vm.skip = (vm.pageint-1)*12;
+        vm.limit = vm.skip+12;
+        list()
+    }
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+
+    /**
+     * 初始化
+     */
+    initialize();
+    function initialize(){
+        store();
+        list();
+    }
+
+    function store(){
+        StoresResource.list(vm.seid,0,0).then(function (data) {
+            vm.stores = data.data.result.data
+            console.log(vm.stores);            
+        })
+    }
+
+    function list(){
+        OrderResource.list(vm.seid,vm.get,vm.skip,vm.limit).then(function(data){
+            vm.list = data.data.result.data;
+            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
+            vm.pagecount =data.data.result.total;            
+            console.log(data);
+            for(var i in vm.list){
+                vm.list[i].createDate=change_time(vm.list[i].createDate);
+               if(vm.list[i].endDate!=null){
+                    vm.list[i].endDate = change_time(vm.list[i].endDate)
+               }
+            }
+            console.log(vm.list);
+        })
+    }
+
+    function change_time(nS){
+        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
+    }
+
+    function update(status,id){
+        OrderResource.update(vm.seid,status,id).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.alert('修改成功',{icon:1})
+            }else{
+                layer.alert(data.data.message,{icon:2})
+            }
+            list();
+        })
+    }
+
 }
 
 })();
@@ -2072,6 +2546,10 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 })();
 (function(){
 "use strict"
+
+})();
+(function(){
+"use strict"
 angular.module('index_area').config(config).controller('StoreslistCtrl',StoreslistCtrl);
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
@@ -2335,6 +2813,10 @@ function StoresResource($http,device,version) {
         })
     }
 }
+})();
+(function(){
+"use strict"
+
 })();
 (function(){
 "use strict"

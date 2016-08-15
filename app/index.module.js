@@ -47,6 +47,12 @@ angular
                 controller: 'GoodlistCtrl as GoodlistCtrl',
                 params: {'index':5}
         })
+        .state("/finance/list", {                                                               //财务管理
+                url: "/Finance/drawlist",
+                templateUrl: "Finance/drawlist.html",
+                controller: 'DrawlistCtrl as DrawlistCtrl',
+                params: {'index':5}
+        })
           //去掉#号  
         /*$locationProvider.html5Mode(true);*/
     })

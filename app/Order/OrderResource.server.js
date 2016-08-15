@@ -1,7 +1,7 @@
 /**
  * 提供功能API封装
  */
-angular.module('index_area').factory('OrderResource', OrderResource);
+angular.module('index_area').factory('OrderResource',OrderResource);
 OrderResource.$inject = ['$http','device','version'];
 function OrderResource($http,device,version) {
     return {
