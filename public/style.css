@@ -51,6 +51,51 @@ th{vertical-align: middle!important;height: 51px;}
 .alertDiv p{margin-bottom: 10px;margin-left: 10px;}
 .alertDiv textarea{margin: 0 10px;width: calc(100% - 20px);resize: none;margin-bottom: 10px;}
 .c0{margin: 0;padding: 0;}
+.count{padding:0 10px;display: none;}
+.count p{margin: 0;height: 30px;line-height: 30px;color: black;}
+.count i{font-style: normal;vertical-align: middle;}
+.count .count-title{height: 50px;line-height: 50px;text-align: center;font-size: 16px;color: #333;margin: 0;}
+.count .count-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+.count .count-lyout table tr{height: 40px;border:1px solid black;}
+.count .count-lyout table tr td{height: 40px;border:1px solid black;padding-left: 10px;}
+.count-detail{padding:0 10px;display: none;}
+.count-detail i{font-style: normal;vertical-align: middle;}
+.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;}
+.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
+.count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+.count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
+.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
+
+
+
+
+/****print****/
+@media print{
+	.count-detail{padding:0 10px;display: none;}
+	.count-detail i{font-style: normal;vertical-align: middle;}
+	.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;}
+	.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
+	.count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+	.count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
+	.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
+}
+/****end****/
+#sortlist{padding:0}
+#sortlist .panel{padding:20px 0;padding-top:0;margin-top:20px}
+#sortlist .panel .panel-options{padding-top:10px}
+#sortlist .panel-heading{margin:0}
+#sortlist .table-title{height:50px;line-height:50px;width:100%;display:table;background:#000;text-align:center}
+#sortlist .table-title .name_tit{display:table-cell}
+#sortlist .table-title .btn_tit{width:450px;display:table-cell;text-align:center}
+#sortlist .table-list{padding:0;border:1px solid #DFDFDF;border-bottom: 0;}
+#sortlist .table-list li{display:table;width:100%;height:50px;line-height:50px;border-bottom:1px solid #DFDFDF}
+#sortlist .table-list li .table-name{display:table-cell;padding-left:30px;color:#333;}
+#sortlist .table-list li .table-name i{margin-right:7px;cursor:pointer;font-size: 20px;vertical-align: calc(-2px);}
+#sortlist .table-list li .childrenpy{padding-left:50px}
+#sortlist .table-list li .table-btn{display:table-cell;width:450px;text-align:center}
+#sortlist .table-list li .table-btn .btn-main{display:inline-block;width:230px;text-align:left;}
+#sortlist .table-list li .childrenlist{display:table-row;border-top:1px solid #DFDFDF;}
+
 .spec-title{
     display: inline-block;
     width: 100px;
@@ -88,18 +133,3 @@ th{vertical-align: middle!important;height: 51px;}
     z-index: 1;
     opacity: 0;
 }
-#sortlist{padding:0}
-#sortlist .panel{padding:20px 0;padding-top:0;margin-top:20px}
-#sortlist .panel .panel-options{padding-top:10px}
-#sortlist .panel-heading{margin:0}
-#sortlist .table-title{height:50px;line-height:50px;width:100%;display:table;background:#000;text-align:center}
-#sortlist .table-title .name_tit{display:table-cell}
-#sortlist .table-title .btn_tit{width:450px;display:table-cell;text-align:center}
-#sortlist .table-list{padding:0;border:1px solid #DFDFDF;border-bottom: 0;}
-#sortlist .table-list li{display:table;width:100%;height:50px;line-height:50px;border-bottom:1px solid #DFDFDF}
-#sortlist .table-list li .table-name{display:table-cell;padding-left:30px;color:#333;}
-#sortlist .table-list li .table-name i{margin-right:7px;cursor:pointer;font-size: 20px;vertical-align: calc(-2px);}
-#sortlist .table-list li .childrenpy{padding-left:50px}
-#sortlist .table-list li .table-btn{display:table-cell;width:450px;text-align:center}
-#sortlist .table-list li .table-btn .btn-main{display:inline-block;width:230px;text-align:left;}
-#sortlist .table-list li .childrenlist{display:table-row;border-top:1px solid #DFDFDF;}

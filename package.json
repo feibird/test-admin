@@ -7,6 +7,7 @@
     "angular-ui-select2": "0.0.5",
     "dotenv": "^1.1.0",
     "express": "^4.12.3",
+    "jquery-migrate": "^3.0.0",
     "morgan": "^1.5.3",
     "ng-table": "^1.0.0",
     "wechat-oauth": "^1.1.0"

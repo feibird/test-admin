@@ -43,9 +43,10 @@
 				</div>
 				<div class="ser_lyoutDiv">
 					<a href="javascript:;" class="btn btn-secondary cr_date" ng-click="DrawlistCtrl.Get()">查询</a>
-					<a href="javascript:;" class="btn btn-orange">报表导出</a>
-					<a href="javascript:;" class="btn btn-info">汇总凭据打印</a>
-					<a href="javascript:;" class="btn btn-blue">明细凭据打印</a>
+					<a href="javascript:;" class="btn btn-orange  cr_date">报表导出</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.count()' class="btn btn-info cr_date">汇总凭据打印</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.count_detail()'  class="btn cr_date btn-blue">明细凭据打印</a>
+					<a href="javascript:;" id="test" class="btn btn-black">打印测试</a>
 				</div>
 			</div>
 		</div>
@@ -113,8 +114,6 @@
 			</div>
 		</div>
 	</div>
-	<a href="#" class="show1" >获取</a>
-	
 	<div class="alertDiv">
 		<div class="alertDiv-tit">您即将对{{DrawlistCtrl.updateinfo.ids.length}}条数据进行批量操作</div>
 		<p>您可以填写备注</p>
@@ -123,3 +122,101 @@
 			<a href="javascript:;" ng-click="DrawlistCtrl.alertBtn()" class="btn btn-blue">确定</a>
 		</div>
 	</div>
+	<div class="count">
+		<p class="count-title">提现日汇总凭据</p>
+		<div class="count-lyout">
+			<table>
+				<tr>
+					<td class='text-center' >提现日期</td>
+					<td>2016-08-19</td>
+					<td class='text-center' >连锁品牌</td>
+					<td>芭比馒头</td>
+				</tr>
+				<tr>
+					<td class='text-center' >提现笔数</td>
+					<td>{{DrawlistCtrl.count.count}}笔</td>
+					<td class='text-center' >申请提现总额</td>
+					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfApply}}</td>
+				</tr>
+				<tr>
+					<td class='text-center' >提现门店总数</td>
+					<td>{{DrawlistCtrl.count.storeNum}}</td>
+					<td class='text-center' >审核通过笔数</td>
+					<td>{{DrawlistCtrl.count.approve}}笔</td>
+				</tr>
+				<tr>
+					<td class='text-center' >审核拒绝笔数</td>
+					<td>{{DrawlistCtrl.count.reject}}笔</td>
+					<td class='text-center' >打款总额</td>
+					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfComplete}}</td>
+				</tr>
+				<tr>
+					<td class='text-center' >运营审核人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.COMPLETE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center' >财务审核人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.FINANCE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center' >运营打款人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.OPERATE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-xs-12 text-center">
+			<a href="javascript:;" id='countBtn'  class="btn btn-black">打印</a>
+		</div>
+	</div>
+	<div class="count-detail">
+		<div class="detail-title">明细凭据<a href="javascript:;" id='detailBtn' class="btn btn-black" >打印明细</a></div>
+		<div class="detail-lyout">
+			<table>
+				<tr>
+					<th width='150'>申请时间</th>
+					<th width='150'>流水号</th>
+					<th width='100' >提现金额</th>
+					<th width='150' >提现门店</th>
+					<th width='70' >店长姓名</th>
+					<th width='120' >手机号</th>
+					<th width='70' >运营人员</th>
+					<th width='70' >财务人员</th>
+					<th width='70' >打款人员</th>
+					<th width='150'>打款时间</th>
+				</tr>
+				<tr ng-repeat='item in DrawlistCtrl.count_detail'>
+					<td class='w50'>{{item.createDate}}</td>
+					<td><span class="w100">{{item.serialNumber}}</span></td>
+					<td class='w10'><i>￥</i>{{item.amount}}</td>
+					<td><span  class='w80'>{{item.store.name}}</span></td>
+					<td class='w50'>{{item.applyUser.name}}</td>
+					<td>{{item.applyUser.phoneNumber}}</td>
+					<td class='w50'>{{item.operatorUser.name==null?'暂无':item.operatorUser.name}}</td>
+					<td class='w50'>{{item.financeUser.name==null?'暂无':item.financeUser.name}}</td>
+					<td class='w50'>{{item.completeUser.name==null?'暂无':item.completeUser.name}}</td>
+					<td>{{item.endDate==null?'暂无':item.endDate}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			$("#countBtn").click(function(){
+				$(this).hide();
+				$('.count').jqprint();
+				$(this).show();
+			})
+
+			$("#detailBtn").click(function(){
+				$(this).hide();
+				$('.count-detail').jqprint();
+				$(this).show();
+			})
+		})
+	</script>

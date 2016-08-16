@@ -34,3 +34,32 @@ th{vertical-align: middle!important;height: 51px;}
 .alertDiv p{margin-bottom: 10px;margin-left: 10px;}
 .alertDiv textarea{margin: 0 10px;width: calc(100% - 20px);resize: none;margin-bottom: 10px;}
 .c0{margin: 0;padding: 0;}
+.count{padding:0 10px;display: none;}
+.count p{margin: 0;height: 30px;line-height: 30px;color: black;}
+.count i{font-style: normal;vertical-align: middle;}
+.count .count-title{height: 50px;line-height: 50px;text-align: center;font-size: 16px;color: #333;margin: 0;}
+.count .count-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+.count .count-lyout table tr{height: 40px;border:1px solid black;}
+.count .count-lyout table tr td{height: 40px;border:1px solid black;padding-left: 10px;}
+.count-detail{padding:0 10px;display: none;}
+.count-detail i{font-style: normal;vertical-align: middle;}
+.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;}
+.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
+.count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+.count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
+.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
+
+
+
+
+/****print****/
+@media print{
+	.count-detail{padding:0 10px;display: none;}
+	.count-detail i{font-style: normal;vertical-align: middle;}
+	.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;}
+	.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
+	.count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+	.count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
+	.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
+}
+/****end****/
