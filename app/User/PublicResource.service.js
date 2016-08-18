@@ -5,7 +5,8 @@ function PublicResource($http,device,version) {
         seid:seid,
         user:user,
         Urllogin:Urllogin,
-		getarea:getarea
+		getarea:getarea,
+		logout:logout
     };
     
     
@@ -44,8 +45,19 @@ function PublicResource($http,device,version) {
 	}
 	
 
-	//获取用户信息
-
+	//退出
+	function logout(seid){
+		return $.ajax({
+			type:"post",
+			url:"/api-admin/session/logout",
+			async:false,
+			data:{"sessionId":seid,"device":device,"version":version},
+			dataType:'json',
+			success:function(data){
+				return data;
+			}
+		})
+	}
 	
 	/**
 	 * 地区查询
@@ -62,4 +74,6 @@ function PublicResource($http,device,version) {
 			}
 		})
 	}
+
+
 }

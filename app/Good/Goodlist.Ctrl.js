@@ -19,11 +19,11 @@ function config($stateProvider){
     url: "/good/format/{id:string}",
     templateUrl: "Good/Format.html",
     controller: 'FormatCtrl as FormatCtrl'
-    }).state("good/gooddetail", {
+    }).state("gooddetail", {
     url: "/good/gooddetail/{id:string}&{is:string}",
     templateUrl: "Good/goodDetail.html",
     controller: 'GooddetialCtrl as GooddetialCtrl'
-    }).state("good/storegooddetail", {
+    }).state("storegooddetail", {
     url: "/good/storegooddetail/{id:string}",
     templateUrl: "Good/storegooddetail.html",
     controller: 'StoreGooddetailCtrl as StoreGooddetailCtrl'

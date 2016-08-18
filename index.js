@@ -44,7 +44,7 @@ app.use('/api-admin', proxy(test_host, {
 }));
 
 app.use(express.static(path.join(__dirname,'app')));
-/*app.use(express.static(path.join(__dirname,'dist')));*/
+// app.use(express.static(path.join(__dirname,'dist')));
 /*app.use(require('./routes/auth'))
 app.use(function(req, res, next) {
 	if (req.originalUrl != '/') return res.redirect('/');

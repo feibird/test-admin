@@ -13,9 +13,6 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	vm.list;																//数据列表集合
 	vm.sortlist;															//分类列表集合															
 	vm.getlist = new Object();															//修改数据对象
-    //获取页面坐标
-    vm.index=$stateParams.index;    
-    PublicResource.navclass(vm.index)
     /**
      * 删除
      */

@@ -25,10 +25,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 			vm.seid = PublicResource.seid(vm.user);
 		}
 	}
-    //当前用户状态
-    PublicResource.verification(vm.seid).then(function(data){
-    	console.log(data)
-    })
     
     //查询分类列表
    list(vm.seid);

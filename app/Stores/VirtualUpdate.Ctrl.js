@@ -10,7 +10,7 @@ function VirtualUpdateCtrl($scope,$rootScope,$state,SortResource,PublicResource,
     vm.limit=12;			//最大数据下标
     vm.list;
     vm.info;
-    //获取页面坐标
+
     vm.storeid = $stateParams.storeid;
  
     vm.delbtn = function(id,storeID){

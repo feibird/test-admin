@@ -13,10 +13,6 @@ function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
     vm.updata=new Object();
 	  vm.matlist=new Array();
 
-    //获取商品id
-    vm.id=$stateParams.id;
-    console.log(vm.id)
-      
     //获取sessionId
     
     

@@ -15,9 +15,7 @@ function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Stor
     vm.get = new Object();
     vm.get.status="";
     vm.get.stores="";
-    //获取页面坐标
-    vm.index=$stateParams.index;        
-    PublicResource.navclass(vm.index)
+
 
     //分页点击事件
     vm.pageChanged = function(){

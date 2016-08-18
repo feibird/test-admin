@@ -13,10 +13,7 @@ function SupplierLogolistCtrl($scope,$state,$rootScope,NgTableParams,PublicResou
     vm.getlist = new Object();
     vm.sortlist = new Object();             //分类集合
     vm.infolist = new Object();            //数据集合；  
-    vm.if_status;  
-    //获取页面坐标
-    vm.index=$stateParams.index;    
-    PublicResource.navclass(vm.index)
+    
     login();
 
 

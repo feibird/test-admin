@@ -13,7 +13,7 @@ angular
         })
         .state("/supplierlogo/list", {									                      //供应商品牌
                 url: "/supplierlogo/list",
-                templateUrl: "Supplierlogo/list.html",
+                templateUrl: "SupplierLogo/list.html",
                  controller: 'SupplierLogolistCtrl as SupplierLogolistCtrl',
                  params: {'index':5}
         })
@@ -25,7 +25,7 @@ angular
         })
         .state("/stores/list", {                                                             //门店管理
                 url: "/stores/list",
-                templateUrl: "stores/list.html",
+                templateUrl: "Stores/list.html",
                 controller: 'StoreslistCtrl as StoreslistCtrl',
                 params: {'index':5}
         })
@@ -62,12 +62,14 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
     var seid;
     login();
     var userName;
+    var user;
+
     PublicResource.user(seid).then(function(data){
         userName = data.result.name;
     });
     $rootScope.userName =userName;
         function login(){
-        var user=PublicResource.seid("admin");           
+        user=PublicResource.seid("admin");           
         if(typeof(user)=="undefined"){
             layer.alert("尚未登录！",{icon:2},function(index){
                 layer.close(index);
@@ -77,4 +79,19 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
             seid = PublicResource.seid(user);
         }
     }
+
+    $rootScope.logout = function(){
+        PublicResource.logout(seid).then(function(data){
+            console.log(data);
+            if(data.status=='OK'){
+                layer.alert('退出成功~',{icon:1},function(){
+                    $.session.remove('admin');
+                    $.session.remove(user);
+                    layer.closeAll();
+                    PublicResource.Urllogin();
+                })
+            }
+        })
+    }
+
 }

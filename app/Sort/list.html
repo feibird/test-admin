@@ -34,8 +34,8 @@
 					<div class="table-btn">
 						<div class="btn-main">
 							<a href="javascript:;" ng-click="isChildren=true" class="btn btn-primary">新增子类</a>
-							<a href="javascript:;" ng-click="SortlistCtrl.edit(item)" class="btn btn-primary">{{item.btnName}}</a>
-							<a href="javascript:;" class="btn btn-primary" ng-click="SortlistCtrl.del(item.data.id)">删除</a>
+							<a href="javascript:;" ng-click="SortlistCtrl.edit(item)" class="btn btn-blue">{{item.btnName}}</a>
+							<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(item.data.id)">删除</a>
 						</div>
 					</div>
 					<div class="childrenlist" ng-show="isChildren">
@@ -56,8 +56,8 @@
 						</div>
 						<div class="table-btn">							
 							<div class="btn-main">
-								<a href="javascript:;" ng-click="SortlistCtrl.edit(list)" class="btn btn-primary">{{list.btnName}}</a>
-								<a href="javascript:;" class="btn btn-primary" ng-click="SortlistCtrl.del(list.data.id)">删除</a>
+								<a href="javascript:;" ng-click="SortlistCtrl.edit(list)" class="btn btn-blue">{{list.btnName}}</a>
+								<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(list.data.id)">删除</a>
 							</div>
 						</div>
 					</div>

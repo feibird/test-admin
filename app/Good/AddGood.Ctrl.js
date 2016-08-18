@@ -18,13 +18,8 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
     vm.info.cPhotos = [];
     vm.info.bPhotos = [];
     vm.info.name="";
-    // vm.info.sort=new Object();
-    // vm.info.sortId=new Object();
     vm.info.detail = "";
-    // vm.info.roviderBrandId = new Object();
     vm.info.shortName="";
-    // vm.info.brandId=new Object();
-    //获取商品id
     vm.id=$stateParams.id;
     console.log(vm.id)
 

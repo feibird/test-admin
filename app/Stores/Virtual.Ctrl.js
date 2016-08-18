@@ -11,7 +11,7 @@ function VirtualCtrl($scope,$rootScope,$state,SortResource,PublicResource,$state
     vm.limit=12;			//最大数据下标
     vm.list;
     vm.info;
-    //获取页面坐标
+   
     vm.storeid = $stateParams.id;
     
     
