@@ -7,6 +7,11 @@ function config($stateProvider) {
       templateUrl: "Finance/DrawDetail.html",
       controller: 'DrawDetailCtrl as DrawDetailCtrl'
     })
+    .state("recordedlist", {
+      url: "/finance/recordedlist",
+      templateUrl: "Finance/Recordedlist.html",
+      controller: 'RecordedlistCtrl as RecordedlistCtrl'
+    })
 }
 DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams'];
 /***调用接口***/
@@ -26,10 +31,11 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.updateinfo = new Object();
   vm.updateinfo.serialNumber = "";
   vm.updateinfo.storeId = "";
-  vm.updateinfo.applyStartDate = null;
-  vm.updateinfo.applyEndDate = null;
+  vm.updateinfo.applyStartDate = "";
+  vm.updateinfo.applyEndDate = "";
   vm.updateinfo.completetStartDate = "";
   vm.updateinfo.completeEndDate = "";
+  vm.updateinfo.status = "";
   vm.updateinfo.ids = new Array();
   vm.filer = new Object();
   //获取sessionId
@@ -48,8 +54,6 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       vm.seid = PublicResource.seid(vm.user);
     }
   }
-
-
   //财务审核成功
   function FinanOk() {
     DrawResource.FinanOk(vm.seid, vm.updateinfo).then(function(data) {
@@ -90,20 +94,39 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     })
   }
 
+  //导出表格
+  function exel() {
+    var applyStartDate = dateTime(vm.updateinfo.applyStartDate)?dateTime(vm.updateinfo.applyStartDate):"";
+    var applyEndDate = dateTime(vm.updateinfo.applyEndDate)?dateTime(vm.updateinfo.applyEndDate):"";
+    var completetStartDate = dateTime(vm.updateinfo.completetStartDate)?dateTime(vm.updateinfo.completetStartDate):"";
+    var completeEndDate = dateTime(vm.updateinfo.completeEndDate)?dateTime(vm.updateinfo.completeEndDate):"";
+    window.open("/api-admin/report/draw/excel?sessionId="+vm.seid
+      +"&device="+'pc'
+      +"&version="+'2.0.0'
+      +"&status="+vm.updateinfo.status
+      +"&serialNumber="+vm.updateinfo.serialNumber
+      +"&storeId="+vm.updateinfo.storeId
+      +"&applyStartDate="+applyStartDate
+      +"&applyEndDate="+applyEndDate
+      +"&completetStartDate="+completetStartDate
+      +"&completeEndDate="+completeEndDate
+      )
+  }
 
   //确认打款
   function complete() {
     DrawResource.complete(vm.seid, vm.updateinfo,0,100).then(function(data) {
       console.log(data);
-      if (data.status == "OK") {
-        layer.alert("操作成功~", {
+      if (data.data.status == "OK") {
+        layer.msg("操作成功~", {
           icon: 1
         });
       } else {
-        layer.alert(data.message, {
+        layer.msg(data.data.message, {
           icon: 2
         });
       }
+      list();
     });
   }
 
@@ -124,6 +147,10 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     list();
   };
 
+  vm.exel = function(){
+      exel()
+  }
+
   vm.count = function(){
     layer.open({
       type: 1,
@@ -132,6 +159,16 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       content:$('.count')
     })
     count();
+  }
+
+  vm.Credential = function(id) {
+    get(id)
+    layer.open({
+      type: 1,
+      title:'提现详情',
+      area: ['700px',"550px"], //宽高
+      content:$('.credential')
+    })
   }
 
   vm.count_detail = function(){
@@ -153,6 +190,12 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       case "operaOk":
         operaOk();
         break;
+      case "FinanNo":
+        FinanNo();
+      break;
+      case "FinanOk":
+        FinanOk();
+      break;
       case "complete":
         complete();
         break;
@@ -247,6 +290,17 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     });
   }
 
+  function get(id){
+    DrawResource.get(vm.seid,id).then(function(data){
+      vm.credential = data.data.result;
+      console.log(vm.credential);
+      vm.credential.createDate = chang_time(new Date(vm.credential.createDate));
+      if (vm.credential.endDate != null) {
+          vm.credential.endDate = chang_time(new Date(vm.credential.endDate));
+        }
+      })
+   }
+
   function count_list() {
     DrawResource.list(vm.seid, vm.updateinfo, 0, 100).then(function(data) {
       vm.count_detail = data.data.result.data;
@@ -284,6 +338,18 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     return Y + M + D + h + m + s;
   }
 
+  //修改时间格式(时间戳转换)
+  function dateTime(data) {
+    if (data == null || data.length < 1) {
+      return false;
+    }
+    console.log(data)
+    var date = data.split('-');
+    console.log(date);
+    var time = new Date(date[0], date[1] - 1, date[2]).getTime();
+    return time;
+  }
+
   function update(status, id) {
     DrawResource.update(vm.seid, status, id).then(function(data) {
       console.log(data);
@@ -312,4 +378,15 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     }
     console.log(vm.updateinfo)
   })
+
+  $(function(){
+      $(".printBtn").click(function(){
+        var ClassName  = $(this).attr('name');
+        console.log(ClassName);
+        $(this).hide();
+        $(ClassName).jqprint();
+        $(this).show();
+      })
+    })
+
 }

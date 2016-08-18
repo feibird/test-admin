@@ -6,9 +6,11 @@
 .list-header{margin: 0px 0 15px 0px;padding: 0;}
 .list-lyout{margin: 0px 0 15px 0px;padding: 0;}
 .list-header .col-xs-6{margin: 0;padding: 0;}
+p{margin-bottom: 0;color: #333;}
 td{vertical-align: middle!important;}
 th{vertical-align: middle!important;height: 51px;}
 .table{margin-bottom: 0px;}
+.mr10{margin-right: 10px;vertical-align: inherit;}
 .pagination-sm{margin-right: -15px;}
 .ng-table-counts{margin: 20px 0;}
 .input-inline-block{display: inline-block;width: auto;}
@@ -48,18 +50,18 @@ th{vertical-align: middle!important;height: 51px;}
 .count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
 .count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
 .count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
-
-
-
-
-/****print****/
-@media print{
-	.count-detail{padding:0 10px;display: none;}
-	.count-detail i{font-style: normal;vertical-align: middle;}
-	.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;}
-	.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
-	.count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
-	.count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
-	.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
-}
+.detail-layout{margin: 10px 0;}
+.detail-layout p{margin-left: 10px;display: inline-block;}
+.detail-layout p span{color: red;}
+.count{padding:0 10px;display: none;}
+.credential{padding:0 10px;display: none;}
+.credential i{font-style: normal;vertical-align: middle;}
+.credential .credential-title{height: 50px;line-height: 50px;text-align: center;font-size: 16px;color: #333;margin: 0;position: relative;}
+.credential .credential-content table {width: 100%;border:1px solid black;}
+.credential .credential-content table tr{height: 40px;border:1px solid black;}
+.credential .credential-content table tr td{height: 40px;border:1px solid black;padding-left: 10px;}
+.count,.count-detail,.credential{position: relative;}
+.count,.count-detail,.credential .btn{position: absolute;top:10px;right: 0;}
+.user-info-menu li{min-height: 0!important;}
+.user-profile{min-height: 0!important;}
 /****end****/

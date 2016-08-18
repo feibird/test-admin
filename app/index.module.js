@@ -57,7 +57,24 @@ angular
         /*$locationProvider.html5Mode(true);*/
     })
     .run(run);
-run.$inject = ['$rootScope', '$state', '$location', 'localStorageService']
-function run($rootScope, $state, $location, localStorageService) {
-        
+run.$inject = ['$rootScope', '$state', '$location','localStorageService','PublicResource']
+function run($rootScope, $state, $location, localStorageService,PublicResource) {
+    var seid;
+    login();
+    var userName;
+    PublicResource.user(seid).then(function(data){
+        userName = data.result.name;
+    });
+    $rootScope.userName =userName;
+        function login(){
+        var user=PublicResource.seid("admin");           
+        if(typeof(user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            seid = PublicResource.seid(user);
+        }
+    }
 }

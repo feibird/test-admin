@@ -230,13 +230,14 @@ var public_vars = public_vars || {};
 		// Close Modal on Escape Keydown
 		$(window).on('keydown', function(ev)
 		{
-			// Escape
-			if(ev.keyCode == 27)
-			{
-				// Close opened modal
-				if(public_vars.$body.hasClass('modal-open'))
-					$(".modal-open .modal:visible").modal('hide');
-			}
+			
+			// // Escape
+			// if(ev.keyCode == 27)
+			// {
+			// 	// Close opened modal
+			// 	if(public_vars.$body.hasClass('modal-open'))
+			// 		$(".modal-open .modal:visible").modal('hide');
+			// }
 		});
 		
 		

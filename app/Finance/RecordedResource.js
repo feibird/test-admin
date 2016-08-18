@@ -1,10 +1,10 @@
 /**
  * 提供功能API封装
  */
-angular.module('index_area').factory('DrawResource', DrawResource);
-DrawResource.$inject = ['$http', 'device', 'version'];
+angular.module('index_area').factory('RecordedResource', RecordedResource);
+RecordedResource.$inject = ['$http', 'device', 'version'];
 
-function DrawResource($http, device, version) {
+function RecordedResource($http, device, version) {
   return {
     list: list,
     get: get,

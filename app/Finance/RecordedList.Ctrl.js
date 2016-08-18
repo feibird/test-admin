@@ -1,29 +1,13 @@
-angular.module('index_area').controller('DrawDetailCtrl',DrawDetailCtrl);
-DrawDetailCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','DrawResource','NgTableParams'];
+angular.module('index_area').controller('RecordedlistCtrl',RecordedlistCtrl);
+RecordedlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','RecordedResource','NgTableParams'];
 /***调用接口***/
-function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,DrawResource,NgTableParams) {
-    document.title ="提现管理";
-    $rootScope.name="提现管理";
-	$rootScope.childrenName="提现管理列表";
+function RecordedlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,RecordedResource,NgTableParams) {
+    document.title ="入账管理";
+    $rootScope.name="入账管理";
+	$rootScope.childrenName="入账管理列表";
     var vm = this;
-    vm.id = $stateParams.id;
     
     login();
-    get();
-   
-
-   function get(){
-   	DrawResource.get(vm.seid,vm.id).then(function(data){
-   		vm.info = data.data.result;
-   		console.log(vm.info);
-   		vm.info.createDate = chang_time(new Date(vm.info.createDate));
-   		if (vm.info.endDate != null) {
-          vm.info.endDate = chang_time(new Date(vm.info.endDate));
-        }
-      })
-   }
-
-
 
   function login() {
     vm.user = PublicResource.seid("admin");

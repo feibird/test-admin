@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	
+	<link rel="shortcut icon" href="http://io.bestfood520.com/4782ba95-220f-4f20-897a-dfe1a9dc0197.ico" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="Xenon Boostrap Admin Panel" />
-	<meta name="author" content="" />
+
 	
-	<title>Xenon - Dashbo1ard</title>
+	<title>鲜食一号管理系统</title>
 	<link rel="stylesheet" href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">
 	<link rel="stylesheet" href="../public/css/fonts/linecons/css/linecons.css">
 	<link rel="stylesheet" href="../public/css/fonts/fontawesome/css/font-awesome.min.css">	
@@ -18,10 +18,8 @@
 	<link rel="stylesheet" href="../public/css/xenon-components.css">
 	<link rel="stylesheet" href="../public/css/xenon-skins.css">
 	<link rel="stylesheet" href="../public/css/custom.css">
-	<!--<link rel="stylesheet" href="../public/css/bootstrap.min.css">-->
 	<link rel="stylesheet" href="../public/style.css" >
-	<link rel="stylesheet" type="text/css" media="print" href="../public/test.css" />
-	<script src="../public/js/jquery-1.11.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" media="print" href="../public/print.css" />
 </head>
 <body class="page-body">
 
@@ -75,7 +73,7 @@
 					<!-- logo -->
 					<div class="logo">
 						<a href="javascript:;" class="logo-expanded">
-							<img src="../public/images/logo@2x.png" width="80" alt="" />
+							<img src="../public/images/logo.png" alt="" width="150" />
 						</a>
 						
 						<a href="javascript:;" class="logo-collapsed">
@@ -94,8 +92,6 @@
 							<i class="fa-bars"></i>
 						</a>
 					</div>
-					
-					<!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
 					<div class="settings-icon">
 						<a href="javascript:;" data-toggle="settings-pane" data-animate="true">
 							<i class="linecons-cog"></i>
@@ -103,8 +99,6 @@
 					</div>
 				</header>		
 				<ul id="main-menu" class="main-menu">
-					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
-					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 					<li class="active opened active">
 						<a href="javascript:;" ui-sref="/good/list">
 							<i class="linecons-cog"></i>
@@ -204,7 +198,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="javascript:;" ui-sref="/brandstores/list">
+								<a href="javascript:;" ui-sref="recordedlist">
 									<span class="title">入账列表</span>
 								</a>
 							</li>
@@ -217,31 +211,72 @@
 		</div>
 		
 		<div class="main-content">
+		<nav class="navbar user-info-navbar" role="navigation">
+				
+				<!-- Left links for user info navbar -->
+				<ul class="user-info-menu left-links list-inline list-unstyled">
+					
+					<li class="hidden-sm hidden-xs">
+						<a href="#" data-toggle="sidebar">
+							<i class="fa-bars"></i>
+						</a>
+					</li>
+				</ul>
+				
+				
+				<!-- Right links for user info navbar -->
+				<ul class="user-info-menu right-links list-inline list-unstyled">
+					
+					<li class="dropdown user-profile">
+						<a href="#" data-toggle="dropdown">
+							<span>
+								{{userName}}&nbsp;&nbsp;&nbsp;
+								<i class="fa-angle-down"></i>
+							</span>
+						</a>
+						
+						<ul class="dropdown-menu user-profile-menu list-unstyled">
+							<li>
+								<a href="javascript:;">
+									<i class="fa-info"></i>
+									帮助
+								</a>
+							</li>
+							<li class="last">
+								<a href="javascript:;">
+									<i class="fa-lock"></i>
+									退出
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li>
+						<a href="#" data-toggle="chat">
+							<i class="fa-comments-o"></i>
+						</a>
+					</li>
+					
+				</ul>
+				
+			</nav>
 		<div class="col-xs-12">
-				<ol class="breadcrumb auto-hidden">
-					<li>
-						<a href="dashboard-1.html">
-							<i class="fa-home"></i>
-							分类管理
-						</a>
-					</li>
-					<li>
-						<a href="ui-panels.html">
-							<i class="fa-home"></i>
-							{{name}}
-						</a>
-					</li>
-					<li class="active">
-						<strong>{{childrenName}}</strong>
-					</li>
-				</ol>
-			</div>
+			<ol class="breadcrumb bc-2">
+				<li>
+					<a href="dashboard-1.html"><i class="fa-home"></i>首页</a>
+				</li>
+				<li>
+					<a href="ui-panels.html">{{name}}</a>
+				</li>
+				<li class="active">
+					<strong>{{childrenName}}</strong>
+				</li>
+			</ol>
 			<ui-view class="col-xs-12"></ui-view>
 		</div>	
 	</div>
 	<script src="../public/libs/angular.js"></script>
-	<!--<script src="../public/min/jquery.min.js" type="text/javascript" charset="utf-8"></script>    -->
-	<script src="../public/js/jquery-1.11.1.min.js"></script>
+	<script src="../public/min/jquery-1.9.min.js" type="text/javascript" charset="utf-8"></script>    
     <script src="../public/min/bootstrap-select.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../public/min/ui-bootstrap-tpls.js" type="text/javascript" charset="utf-8"></script>
     <script src="../public/min/jquerysession.js" type="text/javascript" charset="utf-8"></script>

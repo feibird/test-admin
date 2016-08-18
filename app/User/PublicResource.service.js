@@ -3,10 +3,8 @@ PublicResource.$inject = ['$http','device','version'];
 function PublicResource($http,device,version) {
     return {
         seid:seid,
-        verification:verification,
+        user:user,
         Urllogin:Urllogin,
-        navclass:navclass,
-		imgUpload:imgUpload,
 		getarea:getarea
     };
     
@@ -22,10 +20,10 @@ function PublicResource($http,device,version) {
 	
 	
 	/**
-	 * 验证sessID是否可用
+	 * 获取user信息
 	 * seid:当前sessionID
 	 */
-	function verification(seid){
+	function user(seid){
 	return $.ajax({
 			type:"get",
 			url:"/api-admin/session/get-user-info",
@@ -38,7 +36,6 @@ function PublicResource($http,device,version) {
 		});
 	}
 	
-	
 	/**
 	 * 跳转到登录页
 	 */
@@ -47,31 +44,8 @@ function PublicResource($http,device,version) {
 	}
 	
 
-	
+	//获取用户信息
 
-	/**
-	 * 图片上传
-	 */
-	function imgUpload(seid,img){		
-		console.log(img)
-		var fd = new FormData();
-		fd.append("device",device);
-		fd.append("version",version);
-		fd.append("sessionId",seid);
-		fd.append("upload",img);
-		return $.ajax({
-			type:"post",
-			url:"/api-admin/attach/upload",
-			async:false,
-			processData: false,
-			contentType: false,
-			data:fd,
-			dataType:"json",
-			success:function(data){
-				return data;
-			}
-		})
-	}
 	
 	/**
 	 * 地区查询
@@ -87,9 +61,5 @@ function PublicResource($http,device,version) {
 				return data;
 			}
 		})
-	}
-
-	function navclass(index){		
-		$(".navdiv").eq(index-1).find(".navdiv-span").addClass("nav-activer");
 	}
 }
