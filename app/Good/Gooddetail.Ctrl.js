@@ -8,7 +8,6 @@ function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
     var vm = this;
     vm.skip=0;				//起始数据下标
     vm.limit=12;			//最大数据下标
-    vm.pagecount=60;
     vm.data;                //规格
     vm.updata=new Object();
 	  vm.matlist=new Array();

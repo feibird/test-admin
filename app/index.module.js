@@ -35,10 +35,16 @@ angular
                 controller: 'LabellistCtrl as LabellistCtrl',
                 params: {'index':5}
         })
-        .state("/order/list", {                                                              //订单管理
-                url: "/order/list",
-                templateUrl: "Order/list.html",
+        .state("/order/orderlist", {                                                              //订单管理
+                url: "/order/orderlist",
+                templateUrl: "Order/Orderlist.html",
                 controller: 'OrderlistCtrl as OrderlistCtrl',
+            params: {'index':5}
+        })
+        .state("/order/Drawlist", {                                                              //结账管理
+                url: "/order/Drawlist",
+                templateUrl: "Order/Drawlist.html",
+                controller: 'DrawlistCtrl as DrawlistCtrl',
             params: {'index':5}
         })
         .state("/good/list", {                                                               //商品管理
@@ -51,6 +57,12 @@ angular
                 url: "/Finance/drawlist",
                 templateUrl: "Finance/drawlist.html",
                 controller: 'DrawlistCtrl as DrawlistCtrl',
+                params: {'index':5}
+        })
+        .state("/market/list", {                                                               //财务管理
+                url: "/market/list",
+                templateUrl: "Market/list.html",
+                controller: 'MarketListCtrl as MarketListCtrl',
                 params: {'index':5}
         })
           //去掉#号  

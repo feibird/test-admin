@@ -152,10 +152,42 @@
 						</ul>						
 					</li>
 					<li>
-						<a href="javascript:;">
+						<a href="javascript:;" >
 							<i class="linecons-database"></i>
 							<span class="title">运营管理</span>
 						</a>
+						<ul>
+							<li>
+								<a href="javascript:;"  ui-sref="/market/list">
+									<span class="title">运营活动列表</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<span class="title">新增运营活动</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<span class="title">商品组合管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<span class="title">商品促销管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<span class="title">优惠券管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="javascript:;">
+									<span class="title">赠品管理</span>
+								</a>
+							</li>
+						</ul>
 					</li>
 					<li>
 						<a href="javascript:;" ui-sref="/label/list">
@@ -170,12 +202,12 @@
 						</a>
 						<ul>
 							<li>
-								<a href="javascript:;" ui-sref="/order/list">
+								<a href="javascript:;" ui-sref="/order/orderlist" >
 									<span class="title">订单列表</span>
 								</a>
 							</li>
 							<li>
-								<a href="javascript:;">
+								<a href="javascript:;" ui-sref="/order/Drawlist" >
 									<span class="title">结账管理</span>
 								</a>
 							</li>
@@ -273,7 +305,7 @@
 					<strong>{{childrenName}}</strong>
 				</li>
 			</ol>
-			<ui-view class="col-xs-12"></ui-view>
+			<ui-view class="col-xs-12 p0"></ui-view>
 		</div>	
 	</div>
 	<script src="../public/libs/angular.js"></script>

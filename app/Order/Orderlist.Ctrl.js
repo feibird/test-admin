@@ -2,27 +2,14 @@ angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
 OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
 /***调用接口***/
 function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
-    document.title ="提现管理";
-    $rootScope.name="提现管理";
-	$rootScope.childrenName="提现管理列表";
+    document.title ="订单管理";
+    $rootScope.name="订单管理";
+	$rootScope.childrenName="订单管理列表";
     var vm = this;
-    vm.skip=0;              //起始数据下标
-    vm.limit=12;            //最大数据下标
-    vm.pagecount=0;
-    vm.pageint=5;
     vm.stores;              //门店集合
     vm.list;
     vm.get = new Object();
-    vm.get.status="";
-    vm.get.stores="";
 
-
-    //分页点击事件
-    vm.pageChanged = function(){
-    vm.skip = (vm.pageint-1)*12;
-        vm.limit = vm.skip+12;
-        list()
-    }
     //获取sessionId
      login();
     function login(){
@@ -37,25 +24,14 @@ function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Stor
 		}
 	}
 
-
-    /**
-     * 初始化
-     */
-    initialize();
-    function initialize(){
-        store();
+    vm.St_order = function(){
         list();
     }
 
-    function store(){
-        StoresResource.list(vm.seid,0,0).then(function (data) {
-            vm.stores = data.data.result.data
-            console.log(vm.stores);            
-        })
-    }
+    list();
 
     function list(){
-        OrderResource.list(vm.seid,vm.get,vm.skip,vm.limit).then(function(data){
+        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
             vm.list = data.data.result.data;
             vm.tableParams = new NgTableParams({},{dataset:vm.list});   
             vm.pagecount =data.data.result.total;            
