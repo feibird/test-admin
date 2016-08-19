@@ -151,7 +151,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       exel()
   }
 
-  vm.count = function(){
+  vm.countBtn = function(){
     layer.open({
       type: 1,
       title:'详情',
@@ -171,7 +171,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     })
   }
 
-  vm.count_detail = function(){
+  vm.count_detailBtn = function(){
     layer.open({
       type: 1,
       title:'详情',

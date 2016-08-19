@@ -2,38 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad0c60e8-db01-478c-a917-90041f7ef4e9" name="默认的" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/public/modal.Ctrl.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/public/modal.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/custom.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/fonts/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/xenon-components.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/xenon-core.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/xenon-forms.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/xenon-skins.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/css/xenon.css" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/BrandStores/BrandStoreslist.Ctrl.js" afterPath="$PROJECT_DIR$/app/BrandStores/BrandStoreslist.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Good/AddGood.Ctrl.js" afterPath="$PROJECT_DIR$/app/Good/AddGood.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Good/Gooddetail.Ctrl.js" afterPath="$PROJECT_DIR$/app/Good/Gooddetail.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Good/Goodlist.Ctrl.js" afterPath="$PROJECT_DIR$/app/Good/Goodlist.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Good/list.html" afterPath="$PROJECT_DIR$/app/Good/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Order/Orderlist.Ctrl.js" afterPath="$PROJECT_DIR$/app/Order/Orderlist.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Sort/Sortlist.Ctrl.js" afterPath="$PROJECT_DIR$/app/Sort/Sortlist.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Stores/Virtual.Ctrl.js" afterPath="$PROJECT_DIR$/app/Stores/Virtual.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Stores/VirtualGet.Ctrl.js" afterPath="$PROJECT_DIR$/app/Stores/VirtualGet.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Stores/VirtualGood.Ctrl.js" afterPath="$PROJECT_DIR$/app/Stores/VirtualGood.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Stores/VirtualSort.Ctrl.js" afterPath="$PROJECT_DIR$/app/Stores/VirtualSort.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Stores/VirtualUpdate.Ctrl.js" afterPath="$PROJECT_DIR$/app/Stores/VirtualUpdate.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/SupplierLogo/SupplierLogo.Ctrl.js" afterPath="$PROJECT_DIR$/app/SupplierLogo/SupplierLogo.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/User/login.html" afterPath="$PROJECT_DIR$/app/User/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.module.js" afterPath="$PROJECT_DIR$/app/index.module.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/app.js" afterPath="$PROJECT_DIR$/public/app.js" />
     </list>
     <ignored path="test-admin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,7 +37,7 @@
         <entry file="file://$PROJECT_DIR$/app/index.module.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
-              <caret line="1" column="83" selection-start-line="1" selection-start-column="83" selection-end-line="1" selection-end-column="83" />
+              <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -89,62 +58,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding>
-                <marker date="1471499586000" expanded="true" signature="736:757" ph="/** 删除 ...*/" />
-                <marker date="1471499586000" expanded="true" signature="786:912" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="841:873" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="885:904" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="940:956" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1014:1263" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1093:1208" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1142:1203" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1212:1260" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1287:1379" ph="/*...*/" />
-                <marker date="1471499586000" expanded="true" signature="1467:1885" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1515:1768" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1782:1877" ph="{&quot;type&quot;: 1...}" />
-                <marker date="1471499586000" expanded="true" signature="1927:1953" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="1957:2001" ph="/** 连锁品牌集合 ...*/" />
-                <marker date="1471499586000" expanded="true" signature="2018:2271" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2093:2267" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2291:2576" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2387:2572" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2420:2519" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2463:2493" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2523:2568" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2593:2873" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2660:2869" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2714:2815" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2759:2789" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2819:2865" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2892:3015" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="2951:3011" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3037:3294" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3099:3290" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3154:3206" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3211:3268" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3316:3442" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3366:3438" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3483:3593" ph="{&quot;url&quot;: &quot;/api-admin/attach/upload&quot;...}" />
-                <marker date="1471499586000" expanded="true" signature="3638:4048" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3665:3901" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3708:3842" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="3906:4045" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4078:4303" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4130:4294" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4180:4290" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4231:4283" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4311:4367" ph="/** [logo description] ...*/" />
-                <marker date="1471499586000" expanded="true" signature="4409:4519" ph="{&quot;url&quot;: &quot;/api-admin/attach/upload&quot;...}" />
-                <marker date="1471499586000" expanded="true" signature="4565:4979" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4592:4831" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4636:4772" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="4836:4976" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="5009:5234" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="5061:5225" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="5111:5221" ph="{...}" />
-                <marker date="1471499586000" expanded="true" signature="5162:5214" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/public/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="179">
-              <caret line="2491" column="33" selection-start-line="2491" selection-start-column="21" selection-end-line="2491" selection-end-column="33" />
+              <caret line="2560" column="7" selection-start-line="2560" selection-start-column="7" selection-end-line="2560" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -194,9 +108,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
-              <folding>
-                <marker date="1471517704000" expanded="true" signature="843:1003" ph="{&quot;url&quot;: &quot;/good/storegooddetail/{id:string}&quot;...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -253,6 +165,7 @@
         <option value="$PROJECT_DIR$/app/Stores/Virtual.Ctrl.js" />
         <option value="$PROJECT_DIR$/app/Stores/VirtualUpdate.Ctrl.js" />
         <option value="$PROJECT_DIR$/app/Sort/Sortlist.Ctrl.js" />
+        <option value="$PROJECT_DIR$/public/app.js" />
       </list>
     </option>
   </component>
@@ -298,6 +211,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -313,20 +227,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zip" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -360,7 +260,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -452,12 +351,13 @@
       <workItem from="1469496223433" duration="93000" />
       <workItem from="1471498843409" duration="285000" />
       <workItem from="1471499354245" duration="351000" />
-      <workItem from="1471515932986" duration="311000" />
+      <workItem from="1471515932986" duration="506000" />
+      <workItem from="1471569449491" duration="26000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17991000" />
+    <option name="totallyTimeSpent" value="18212000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -470,16 +370,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="709" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21683876" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21683876" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27620396" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243626" sideWeight="0.51231134" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32546374" sideWeight="0.48768863" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32715008" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282572" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -491,6 +390,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32715008" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -784,7 +684,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="36" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -792,7 +691,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -807,7 +705,7 @@
     <entry file="file://$PROJECT_DIR$/app/index.module.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
-          <caret line="1" column="83" selection-start-line="1" selection-start-column="83" selection-end-line="1" selection-end-column="83" />
+          <caret line="3" column="52" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -824,62 +722,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <marker date="1471499586000" expanded="true" signature="736:757" ph="/** 删除 ...*/" />
-            <marker date="1471499586000" expanded="true" signature="786:912" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="841:873" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="885:904" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="940:956" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1014:1263" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1093:1208" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1142:1203" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1212:1260" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1287:1379" ph="/*...*/" />
-            <marker date="1471499586000" expanded="true" signature="1467:1885" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1515:1768" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1782:1877" ph="{&quot;type&quot;: 1...}" />
-            <marker date="1471499586000" expanded="true" signature="1927:1953" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="1957:2001" ph="/** 连锁品牌集合 ...*/" />
-            <marker date="1471499586000" expanded="true" signature="2018:2271" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2093:2267" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2291:2576" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2387:2572" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2420:2519" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2463:2493" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2523:2568" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2593:2873" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2660:2869" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2714:2815" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2759:2789" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2819:2865" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2892:3015" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="2951:3011" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3037:3294" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3099:3290" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3154:3206" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3211:3268" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3316:3442" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3366:3438" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3483:3593" ph="{&quot;url&quot;: &quot;/api-admin/attach/upload&quot;...}" />
-            <marker date="1471499586000" expanded="true" signature="3638:4048" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3665:3901" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3708:3842" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="3906:4045" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4078:4303" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4130:4294" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4180:4290" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4231:4283" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4311:4367" ph="/** [logo description] ...*/" />
-            <marker date="1471499586000" expanded="true" signature="4409:4519" ph="{&quot;url&quot;: &quot;/api-admin/attach/upload&quot;...}" />
-            <marker date="1471499586000" expanded="true" signature="4565:4979" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4592:4831" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4636:4772" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="4836:4976" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="5009:5234" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="5061:5225" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="5111:5221" ph="{...}" />
-            <marker date="1471499586000" expanded="true" signature="5162:5214" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -903,9 +746,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
-          <folding>
-            <marker date="1471517704000" expanded="true" signature="843:1003" ph="{&quot;url&quot;: &quot;/good/storegooddetail/{id:string}&quot;...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -928,7 +769,7 @@
     <entry file="file://$PROJECT_DIR$/public/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
-          <caret line="2491" column="33" selection-start-line="2491" selection-start-column="21" selection-end-line="2491" selection-end-column="33" />
+          <caret line="2560" column="7" selection-start-line="2560" selection-start-column="7" selection-end-line="2560" selection-end-column="7" />
           <folding />
         </state>
       </provider>
