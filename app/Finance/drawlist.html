@@ -71,7 +71,7 @@
 			<div class="panel-body">
 				<table ng-table="DrawlistCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
 					<tr ng-repeat="item in $data">
-						<td width='50' header="'Finance/checkbox.html'"><input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.active" ng-click="!item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+						<td width='50' header="'Finance/checkbox.html'">v</td>
 						<td data-title="'流水号'" filter="{serialNumber:'number'}" sortable="'serialNumber'"><span ng-class="{false:'textId',true:'textId-hover'}[ishover]" class="textId">{{item.serialNumber}}</span></td>
 						<td data-title="'门店名称'" filter="{name: 'text'}" sortable="'name'">{{item.store.name}}</td>
 						<td data-title="'联系法人'" filter="{legalPerson: 'text'}" sortable="'legalPerson'">{{item.store.legalPerson}}</td>

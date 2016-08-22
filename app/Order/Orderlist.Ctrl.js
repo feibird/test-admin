@@ -9,7 +9,13 @@ function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Stor
     vm.stores;              //门店集合
     vm.list;
     vm.get = new Object();
-
+    vm.filerPay=[
+        {title:'微信公众号',id:'WECHAT_WEB'},  
+        {title:'微信支付',id:'WECHAT_APP'},  
+        {title:'支付宝网页',id:'ZHIFUBAO_WEB'},  
+        {title:'支付宝应用',id:'ZHIFUBAO_APP'},  
+        {title:'线下支付',id:null}
+    ]
     //获取sessionId
      login();
     function login(){

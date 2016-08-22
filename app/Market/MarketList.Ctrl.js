@@ -1,11 +1,17 @@
 angular.module('index_area').config(config).controller('MarketListCtrl',MarketListCtrl);
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
-    $stateProvider.state("list", {
-                        url: "/good/add",
-                        templateUrl: "Good/AddGood.html",
-                        controller: 'AddGoodCtrl as AddGoodCtrl'
-                    })
+    $stateProvider
+        .state("task_1", {
+                url: "/market/task_1",
+                templateUrl: "Market/task_1.html",
+                controller: 'task_1Ctrl as task_1Ctrl'
+        })
+        .state("task_2", {
+                url: "/market/task_2",
+                templateUrl: "Market/task_2.html",
+                controller: 'task_2Ctrl as task_2Ctrl'
+        })
 }
 MarketListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','MarketResource'];
 function MarketListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,MarketResource){

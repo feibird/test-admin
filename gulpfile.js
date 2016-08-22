@@ -46,7 +46,6 @@ gulp.task('concat', function () {
     .pipe(concat('app.js'))
     .pipe(gulp.dest('public/'))
     .pipe(gulp.dest('dist/'))    
-    .pipe(notify({ message: 'js合并成功' }))
 })
 
 // 合并、压缩、重命名css
@@ -58,7 +57,6 @@ gulp.task('css', function() {
         .pipe(minify())                
         .pipe(gulp.dest('public/'))
         .pipe(gulp.dest('dist/'))
-        .pipe(notify({ message: 'css压缩执行成功' }));
 });
 
 gulp.task('frame',function(){
@@ -68,7 +66,6 @@ gulp.task('frame',function(){
             .pipe(rename({ suffix: '.min' }))
             .pipe(minify())                
             .pipe(gulp.dest('./dist/public/css/'))
-            .pipe(notify({ message: 'frame压缩执行成功' }));
 })
 
 //html压缩

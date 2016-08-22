@@ -43,8 +43,8 @@
                         <td data-title="'取餐号'" filter="{name: 'text'}" sortable="'name'" >{{item.takeNo==null?'暂无':item.takeNo}}</td>
                         <td data-title="'门店名称'" filter="{serialNumber: 'text'}" sortable="'serialNumber'" >{{item.store.name}}</td>
                         <td data-title="'手机号'" filter="{'providerBrand.name': 'text'}" sortable="'providerBrand.name'" >{{item.user.phoneNumber}}</td>
-                        <td data-title="'订单来源'" filter="{'brand.name': 'number'}" sortable="'brand.name'" >{{item.source}}</td>
-                        <td data-title="'支付方式'" filter="{'brand.name': 'number'}" sortable="'brand.name'" >
+                        <td data-title="'订单来源'" filter="{'source': 'text'}" sortable="'brand.name'" >{{item.source}}</td>
+                        <td data-title="'支付方式'" filter="{'channel': 'select'}" filter-data='OrderlistCtrl.filerPay' sortable="'channel'" >
                             {{item.channel=="WECHAT_WEB"?'微信公众号':''}}
                             {{item.channel=="WECHAT_APP"?'微信支付':''}}
                             {{item.channel=="ZHIFUBAO_WEB"?'支付宝网页':''}}

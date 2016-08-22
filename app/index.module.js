@@ -11,25 +11,25 @@ angular
                  controller: 'SortlistCtrl as SortlistCtrl',
                  params: {'index':3}
         })
-        .state("/supplierlogo/list", {									                      //供应商品牌
-                url: "/supplierlogo/list",
+        .state("/supplierlogo/list", {									                          //供应商品牌
+                url: "/supplierlogo/list",  
                 templateUrl: "SupplierLogo/list.html",
                  controller: 'SupplierLogolistCtrl as SupplierLogolistCtrl',
                  params: {'index':5}
         })
-         .state("/brandstores/list", {								                       	//连锁品牌
+         .state("/brandstores/list", {								                        	//连锁品牌
                 url: "/brandstores/list",
                 templateUrl: "BrandStores/list.html",
                 controller: 'BrandStoreslistCtrl as BrandStoreslistCtrl',
                 params: {'index':5}
         })
-        .state("/stores/list", {                                                             //门店管理
+        .state("/stores/list", {                                                                 //门店管理
                 url: "/stores/list",
                 templateUrl: "Stores/list.html",
                 controller: 'StoreslistCtrl as StoreslistCtrl',
                 params: {'index':5}
         })
-        .state("/label/list", {                                                              //标签管理
+    .state("/label/list", {                                                                      //标签管理
                 url: "/label/list",
                 templateUrl: "Label/list.html",
                 controller: 'LabellistCtrl as LabellistCtrl',
@@ -47,22 +47,34 @@ angular
                 controller: 'DrawlistCtrl as DrawlistCtrl',
             params: {'index':5}
         })
-        .state("/good/list", {                                                               //商品管理
+        .state("/good/list", {                                                                   //商品管理
                 url: "/good/list",
                 templateUrl: "Good/list.html",
                 controller: 'GoodlistCtrl as GoodlistCtrl',
                 params: {'index':5}
         })
         .state("/finance/list", {                                                               //财务管理
-                url: "/Finance/drawlist",
+                url: "/finance/drawlist",
                 templateUrl: "Finance/drawlist.html",
                 controller: 'DrawlistCtrl as DrawlistCtrl',
                 params: {'index':5}
         })
-        .state("/market/list", {                                                               //财务管理
+        .state("/market/list", {                                                               //运营管理
                 url: "/market/list",
                 templateUrl: "Market/list.html",
                 controller: 'MarketListCtrl as MarketListCtrl',
+                params: {'index':5}
+        })
+        .state("/user/userlist", {                                                               //用户管理
+                url: "/user/userlist",
+                templateUrl: "User/Userlist.html",
+                controller: 'UserListCtrl as UserListCtrl',
+                params: {'index':5}
+        })
+        .state("/user/rolelist", {                                                               //用户管理
+                url: "/user/rolelist",
+                templateUrl: "User/Rolelist.html",
+                controller: 'RoleListCtrl as RolelistCtrl',
                 params: {'index':5}
         })
           //去掉#号  
