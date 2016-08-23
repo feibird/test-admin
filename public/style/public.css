@@ -88,6 +88,6 @@ th{vertical-align: middle!important;height: 51px;}
 
 .Filter-title{height: 40px;line-height: 40px;background: black;color: white;padding-left: 10px;}
 .Filter-title .btn{margin-top: 4px;margin-right: 4px;}
-.RoleDiv{padding:10px;}
+.RoleDiv,.addRole,.operList{padding:10px;}
 
 /****end****/

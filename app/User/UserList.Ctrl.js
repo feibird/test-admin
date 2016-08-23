@@ -9,6 +9,9 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
 
     vm.get = function(userId){
         vm.userId = userId;
+        for(var i in vm.Rolelist){
+            vm.Rolelist[i].status=false;
+        }
         get(userId);
         layer.open({
             title:'权限管理',
@@ -46,9 +49,13 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
 
     function list(){
         UserResource.list(vm.seid,0,0).then(function(data){
-            vm.list = data.data.result;
-            vm.TableList = new NgTableParams({},{dataset:vm.list});
-            console.log(vm.list)
+            if(data.data.status=="OK"){
+                vm.list = data.data.result;
+                vm.TableList = new NgTableParams({},{dataset:vm.list});
+                console.log(vm.list)
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
 
         RoleResource.list(vm.seid,0,0).then(function(data){
@@ -61,6 +68,13 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     function get(id){
          RoleResource.get(vm.seid,id).then(function(data){
             vm.info = data.data.result;
+            for(var i in vm.info){
+                if(typeof(vm.Rolelist[i])!='undefined'){
+                    if(vm.info[i].id == vm.Rolelist[i].id){
+                        vm.Rolelist[i].status=true;
+                    }
+                }
+            }
             console.log(vm.info)
         })
     }

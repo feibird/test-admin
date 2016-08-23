@@ -1,11 +1,11 @@
-angular.module('index_area').factory('RoleResource', RoleResourcee);
-RoleResourcee.$inject = ['$http','device','version'];
-function RoleResourcee($http,device,version) {
+angular.module('index_area').factory('RoleResource', RoleResource);
+RoleResource.$inject = ['$http','device','version'];
+function RoleResource($http,device,version) {
     return {
 		list:list,
         get:get,
         add:add,
-        del:del
+        update:update
     };
 
     function list(seid,skip,limit){
@@ -20,22 +20,22 @@ function RoleResourcee($http,device,version) {
 		})
     }
 
-    function add(seid,userId,roleId){
+    function add(seid,obj){
         return $http({
-            url:"/api-admin/authority/role/user/add",
+            url:"/api-admin/authority/role/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,"roleId":roleId}
+            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
         })
         .then(function (data) {
              return data
         })
     }
 
-    function del(seid,userId,roleId){
+    function update(seid,obj){
         return $http({
-            url:"/api-admin/authority/role/user/remove",
+            url:"/api-admin/authority/role/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,"roleId":roleId}
+            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
         })
         .then(function (data) {
              return data

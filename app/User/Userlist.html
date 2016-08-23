@@ -19,10 +19,8 @@
 <div class="RoleDiv display_none">
     <div class="checkbox" ng-repeat="item in UserListCtrl.Rolelist" >
         <label>
-            <input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="status" ng-change='UserListCtrl.statusBtn(status,item.id)' value="">
+            <input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.status" ng-change='UserListCtrl.statusBtn(item.status,item.id)' value="">
             {{item.name}}
         </label>
-    </div>
-    <div class="col-xs-12 text-center" style="margin-bottom:10px;">
     </div>
 </div>

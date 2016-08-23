@@ -5,10 +5,9 @@ function task_1Ctrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTable
     $rootScope.name="运营管理"
     $rootScope.childrenName="新建运营活动"
     var vm = this;
-    vm.skip=0;				//起始数据下标
-    vm.limit=12;			//最大数据下标
     vm.seid;
     vm.stores = new Object();
+    vm.task = new Object();
     vm.FilterStores = new Array();
     login();
 
@@ -18,6 +17,10 @@ function task_1Ctrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTable
             list.status=false;
             console.log(vm.FilterStores);
         }
+    }
+
+    vm.taskBtn = function(){
+        console.log(vm.task)
     }
 
     vm.delStores = function(i){
