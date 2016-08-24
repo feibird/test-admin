@@ -7,6 +7,8 @@
 .list-header{margin: 0px 0 15px 0px;padding: 0;}
 .list-lyout{margin: 0px 0 15px 0px;padding: 0;}
 .list-header .col-xs-6{margin: 0;padding: 0;}
+.input_radio{width: 50px;height: 20px;margin: 0 10px;outline: none;}
+.input_radio:focus{border:1px solid rgba(104,184,40,.5);padding: 0 5px;}
 p{margin-bottom: 0;color: #333;}
 td{vertical-align: middle!important;}
 th{vertical-align: middle!important;height: 51px;}
@@ -84,7 +86,7 @@ th{vertical-align: middle!important;height: 51px;}
 .task .task-header .task-sequence{display: inline-block;font-size: 0;}
 .task .task-header .task-sequence .task_list{display: inline-block;width: 40px;height: 40px;line-height: 36px;text-align: center;border-radius: 50%;font-size: 24px;border:2px solid #169BD5;color: #169BD5;margin: 0 25px;}
 .task .task-header .task-sequence span{display: inline-block;margin: 7px -22px;width: 62px;border: 1px dashed #169BD5;}
-
+.task .taskBtn{background: white;padding: 10px;margin-bottom: 30px;text-align: center;}
 
 .Filter-title{height: 40px;line-height: 40px;background: black;color: white;padding-left: 10px;}
 .Filter-title .btn{margin-top: 4px;margin-right: 4px;}
