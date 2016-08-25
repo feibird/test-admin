@@ -1,6 +1,6 @@
 angular.module('index_area').controller('UserListCtrl',UserListCtrl);
-UserListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','UserResource','RoleResource'];
-function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,UserResource,RoleResource){
+UserListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','UserResource','RoleResource','OperationResource'];
+function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,UserResource,RoleResource,OperationResource){
     document.title ="角色管理";
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
@@ -41,9 +41,9 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
     vm.statusBtn = function(status,id){
         if(status){
-            add(vm.userId,id);
+            addUser(vm.userId,id);
         }else{
-            del(vm.userId,id);
+            delUser(vm.userId,id);
         }
     }
 
@@ -79,8 +79,8 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
         })
     }
 
-    function del(userId,roleId){
-        RoleResource.del(vm.seid,userId,roleId).then(function(data){
+    function delUser(userId,roleId){
+        RoleResource.delUser(vm.seid,userId,roleId).then(function(data){
             console.log(data)
             if(data.data.status=="OK"){
                 layer.msg('修改成功',{icon:1})
@@ -90,8 +90,10 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
         })
     }
 
-    function add(userId,roleId){
-        RoleResource.add(vm.seid,userId,roleId).then(function(data){
+    function addUser(userId,roleId){
+        console.log(userId);
+        console.log(roleId)
+       RoleResource.addUser(vm.seid,userId,roleId).then(function(data){
             console.log(data)
             if(data.data.status=="OK"){
                 layer.msg('添加成功',{icon:1})

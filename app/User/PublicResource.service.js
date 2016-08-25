@@ -6,7 +6,8 @@ function PublicResource($http,device,version) {
         user:user,
         Urllogin:Urllogin,
 		getarea:getarea,
-		logout:logout
+		logout:logout,
+		RoleUser:RoleUser
     };
     
     
@@ -37,6 +38,20 @@ function PublicResource($http,device,version) {
 		});
 	}
 	
+	function RoleUser(seid,userid){
+		return $.ajax({
+			type:"get",
+			url:"/api-admin/authority/user/roles",
+			async:false,
+			data:{"sessionId":seid,"device":device,"version":version,"userId":userid},
+			dataType:"json",
+			success:function(data){
+				return data
+			}
+		});
+	}
+
+
 	/**
 	 * 跳转到登录页
 	 */

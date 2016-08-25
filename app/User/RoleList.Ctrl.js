@@ -73,6 +73,14 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
         }
     }
 
+    vm.delBtn = function(id){
+        layer.confirm('是否删除角色？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                delRole(id)
+            });
+    }
+
     function list(){
         RoleResource.list(vm.seid,0,0).then(function(data){
             if(data.data.status=="OK"){
@@ -109,6 +117,7 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function add(){
+        console.log(vm.data)
         OperationResource.add(vm.seid,vm.data).then(function(data){
             if(data.data.status=="OK"){
                 layer.msg('添加成功',{icon:1});
@@ -118,10 +127,10 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
         })
     }
 
-    function del(){
-         OperationResource.del(vm.seid,vm.data).then(function(data){
+    function del(id){
+         OperationResource.del(vm.seid,id).then(function(data){
             if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1});
+                layer.msg('删除成功',{icon:1});
             }else{
                 layer.msg(data.data.message,{icon:2})
             }
@@ -154,10 +163,10 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
         })
     }
 
-    function delRole(){
-         RoleResource.update(vm.seid,vm.addinfo).then(function(data){
+    function delRole(id){
+         RoleResource.del(vm.seid,id).then(function(data){
             if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1},function(){
+                layer.msg('删除成功',{icon:1},function(){
                      layer.closeAll();
                     list();
                 });

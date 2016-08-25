@@ -58,11 +58,11 @@
 				</button>
 
 				<ul class="dropdown-menu dropdown-red no-spacing">
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('INIT','operaOk')">批量运营审核成功</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','FinanOk')">批量财务审核成功</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('INIT','operaNo')">批量运营审核打回</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','operaNo')">批量财务审核打回</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('FINANCE_APPROVED','complete')">批量打款</a></li>
+					<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('INIT','operaOk')">批量运营审核成功</a></li>
+					<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','FinanOk')">批量财务审核成功</a></li>
+					<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('INIT','operaNo')">批量运营审核打回</a></li>
+					<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','operaNo')">批量财务审核打回</a></li>
+					<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('FINANCE_APPROVED','complete')">批量打款</a></li>
 				</ul>
 			</div>
 	</div>

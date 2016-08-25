@@ -5,7 +5,10 @@ function RoleResource($http,device,version) {
 		list:list,
         get:get,
         add:add,
-        update:update
+        update:update,
+        del:del,
+        addUser:addUser,
+        delUser:delUser
     };
 
     function list(seid,skip,limit){
@@ -20,7 +23,33 @@ function RoleResource($http,device,version) {
 		})
     }
 
+
+    //角色添加用户
+    function addUser(seid,userId,roleId){
+        return $http({
+            url:"/api-admin/authority/role/user/add",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+        })
+        .then(function (data) {
+             return data
+        })
+    }
+
+     //角色添加用户
+    function delUser(seid,userId,roleId){
+        return $http({
+            url:"/api-admin/authority/role/user/remove",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+        })
+        .then(function (data) {
+             return data
+        })
+    }
+
     function add(seid,obj){
+        console.log(obj)
         return $http({
             url:"/api-admin/authority/role/add",
             method: 'post',
@@ -36,6 +65,17 @@ function RoleResource($http,device,version) {
             url:"/api-admin/authority/role/update",
             method: 'post',
             params:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
+        })
+        .then(function (data) {
+             return data
+        })
+    }
+
+    function del(seid,id){
+        return $http({
+            url:"/api-admin/authority/role/remove",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,'roleId':id}
         })
         .then(function (data) {
              return data

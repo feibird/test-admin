@@ -7,7 +7,7 @@
 .list-header{margin: 0px 0 15px 0px;padding: 0;}
 .list-lyout{margin: 0px 0 15px 0px;padding: 0;}
 .list-header .col-xs-6{margin: 0;padding: 0;}
-.input_radio{width: 50px;height: 20px;margin: 0 10px;outline: none;}
+.input_radio{width: 50px;height: 20px;margin: 0 10px;outline: none;padding: 0 5px;}
 .input_radio:focus{border:1px solid rgba(104,184,40,.5);padding: 0 5px;}
 p{margin-bottom: 0;color: #333;}
 td{vertical-align: middle!important;}

@@ -28,6 +28,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.get.status = "";
   vm.get.id = "";
   vm.fusName;
+  vm.oper;
   vm.updateinfo = new Object();
   vm.updateinfo.serialNumber = "";
   vm.updateinfo.storeId = "";
@@ -54,6 +55,26 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       vm.seid = PublicResource.seid(vm.user);
     }
   }
+
+  PublicResource.user(vm.seid).then(function(data){
+      vm.Role = data.result;
+      console.log(vm.Role)
+  })
+
+  PublicResource.RoleUser(vm.seid,vm.Role.id).then(function(data){
+      vm.UserOper = data.result;
+      console.log(vm.UserOper)
+      for(var i in vm.UserOper){
+          if(vm.UserOper[i].name=='财务管理员'){
+            vm.oper = 1;
+          }else if(vm.UserOper[i].name=='运营管理员'){
+             vm.oper = 2;
+          }else if(vm.UserOper[i].name=='后台管理员'){
+            vm.oper = 3;
+          }
+      }
+  })
+
   //财务审核成功
   function FinanOk() {
     DrawResource.FinanOk(vm.seid, vm.updateinfo).then(function(data) {
@@ -90,7 +111,6 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   function count() {
     DrawResource.count(vm.seid,vm.updateinfo,0,100).then(function(data) {
       vm.count = data.data.result;
-      console.log(vm.count);
     })
   }
 
@@ -323,11 +343,9 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     var h = date.getHours() + ':'; //时
     var m = date.getMinutes() + ':'; //分
     var s = date.getSeconds();
-    console.log(h.length);
     if (D.length < 3) {
       D = "0" + D;
     }
-    console.log(D.length + ',' + D);
     if (m.length < 3) {
       m = "0" + m;
     }

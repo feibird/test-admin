@@ -78,6 +78,21 @@
 								 * @param {Object} status
 								 */
 								
+								function sessionId(user) {
+									$.ajax({
+										type: "post",
+										url: "/api-admin/session/create",
+										dataType: "json",
+										async: false,
+										success: function(data) {
+											seid = data.result;
+											$.session.set("admin",user);
+											$.session.set(user, data.result);
+										}
+									});
+								}
+
+								sessionId($("#username").val())
 								$.ajax({
 									url: "/api-admin/session/login-with-password",
 									method: 'POST',
@@ -170,20 +185,8 @@
 		$(function(){
 			$(window).keydown(function(event){
 				if(event.keyCode==13){
-					sessionId($("#username").val())
-					function sessionId(user) {
-						$.ajax({
-							type: "post",
-							url: "/api-admin/session/create",
-							dataType: "json",
-							async: false,
-							success: function(data) {
-								seid = data.result;
-								$.session.set("admin",user);
-								$.session.set(user, data.result);
-							}
-						});
-					}
+					
+					
 				}
 			})
 		})

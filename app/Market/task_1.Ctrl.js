@@ -1,6 +1,6 @@
-angular.module('index_area').controller('taskCtrl',taskCtrl);
-taskCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','MarketResource','StoresResource','GoodResource'];
-function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,MarketResource,StoresResource,GoodResource){
+angular.module('index_area').controller('task_1Ctrl',task_1Ctrl);
+task_1Ctrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','MarketResource','StoresResource','GoodResource'];
+function task_1Ctrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,MarketResource,StoresResource,GoodResource){
     document.title ="新建运营活动";
     $rootScope.name="运营管理"
     $rootScope.childrenName="新建运营活动"
@@ -15,10 +15,6 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     login();
 
     vm.AddTask = function(){
-        for(var i=0;i<$('.date').length;i++){
-
-            vm.task[$('.date').eq(i).attr('name')] = $('.date').val();
-        }
         vm.task.storeIds=""
         if(vm.task.storeType=="SELECTED_STORE"){
             vm.task.storeIds = ArryString(vm.FilterStores,true)
@@ -27,9 +23,6 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
             vm.task.productIds = ArryString(vm.specs,false)
         }
         console.log(vm.task);
-         MarketResource.add(vm.seid,vm.task).then(function(data){
-            console.log(data)
-        })
     }
 
     //
