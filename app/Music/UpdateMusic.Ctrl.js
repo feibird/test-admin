@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 angular.module('index_area').controller('UpdateMusicCtrl',UpdateMusicCtrl);
 UpdateMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
 /***调用接口***/
@@ -27,4 +25,3 @@ function UpdateMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresRes
     }
 
 }
->>>>>>> voice

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 angular.module('index_area').config(config).controller('MusicListCtrl',MusicListCtrl);
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
@@ -71,4 +69,3 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
     }
 
 }
->>>>>>> voice

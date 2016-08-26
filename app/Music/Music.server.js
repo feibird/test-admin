@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 angular.module('index_area').factory('MusicResource', MusicResource);
 MusicResource.$inject = ['$http','device','version'];
 function MusicResource($http,device,version) {
@@ -87,4 +85,3 @@ function MusicResource($http,device,version) {
       }
     
 }
->>>>>>> voice
