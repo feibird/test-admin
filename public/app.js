@@ -3310,6 +3310,269 @@ function task_1Ctrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTable
 })();
 (function(){
 "use strict"
+
+})();
+(function(){
+"use strict"
+
+})();
+(function(){
+"use strict"
+
+})();
+(function(){
+"use strict"
+
+})();
+(function(){
+"use strict"
+/**
+ * 提供功能API封装
+ */
+angular.module('index_area').factory('DrawResource', DrawResource);
+DrawResource.$inject = ['$http','device','version'];
+function DrawResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        update:update,
+        complete:complete
+    };
+    
+    
+	/**
+	 * list
+	 * 获取门店列表
+	 */
+    function list(seid,obj,skip,limit){
+        console.log(obj)
+        return $http.get("/api-admin/draw/list",
+                {params:{"device":device,
+                        "version":version,
+                        "sessionId":seid,
+                        "skip":skip,
+                        "limit":limit,
+                        'storeId':obj.id,
+                        'status':obj.status
+                    }}).then(function(data){
+            return data
+        })
+    }
+    
+    /**
+     * 修改信息
+     * @param {Object} id
+     * @param {Object} seid
+     * @param {Object} name
+     */
+    function update(seid,status,id){
+        return $http({
+            url:"/api-admin/draw/"+id+"/update",
+            method: 'post',
+            params:{
+                  "status":status,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+    
+    /**
+     * 获取某个分类
+     */
+    function get(seid,id){
+    	return $.ajax({
+    		type:"get",
+    		url:"/api-admin/draw/"+id+"/get",
+    		dataType:"json",
+    		data:{"device":device,"version":version,"sessionId":seid},
+    		async:false,    		
+    		success:function(response){
+    			return response.data;
+    		}
+    	});
+    }
+
+    function complete(seid,id,status){
+        return $.ajax({
+    		type:"post",
+    		url:"/api-admin/draw/"+id+"/complete",
+    		dataType:"json",
+    		data:{"device":device,"version":version,"sessionId":seid,status:status},
+    		async:false,    		
+    		success:function(response){
+                console.log(response)
+    			return response.data;
+                
+    		}
+    	});
+    }
+}
+})();
+(function(){
+"use strict"
+/**
+ * 提供功能API封装
+ */
+angular.module('index_area').factory('OrderResource', OrderResource);
+OrderResource.$inject = ['$http','device','version'];
+function OrderResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        refund:refund,
+        Statuslist:Statuslist
+    };
+
+
+    /**
+     * list
+     * 获取订单列表
+     */
+    function list(seid,obj,skip,limit){
+        return $http.get("/api-admin/trade/list",
+            {params:{"device":device,
+                "version":version,
+                "sessionId":seid,
+                "skip":skip,
+                "limit":limit,
+                "takeNo":obj.id,
+                "status":obj.status
+            }}).then(function(data){
+            return data
+        })
+    }
+
+    /**
+     * 获取某个分类
+     */
+    function get(seid,id){
+        return $.ajax({
+            type:"get",
+            url:"/api-admin/trade/"+id+"/get",
+            dataType:"json",
+            data:{"device":device,"version":version,"sessionId":seid},
+            async:false,
+            success:function(response){
+                console.log(response)
+                return response.data;
+            }
+        });
+    }
+
+    //退款申请
+
+    function refund(seid,id){
+        return $http({
+            url:"/api-admin/trade/update-to-refund-completed",
+            method: 'post',
+            params:{
+                  "tradeId":id,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    function Statuslist(seid,status,skip,limit){
+        return $http.get("/api-admin/trade/list",
+            {params:{"device":device,
+                "version":version,
+                "sessionId":seid,
+                "skip":skip,
+                "limit":limit,
+                "status":status
+            }}).then(function(data){
+            return data
+        })
+    }    
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
+OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
+/***调用接口***/
+function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
+    document.title ="订单管理";
+    $rootScope.name="订单管理";
+	$rootScope.childrenName="订单管理列表";
+    var vm = this;
+    vm.stores;              //门店集合
+    vm.list;
+    vm.get = new Object();
+    vm.filerPay=[
+        {title:'微信公众号',id:'WECHAT_WEB'},  
+        {title:'微信支付',id:'WECHAT_APP'},  
+        {title:'支付宝网页',id:'ZHIFUBAO_WEB'},  
+        {title:'支付宝应用',id:'ZHIFUBAO_APP'},  
+        {title:'线下支付',id:null}
+    ]
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.St_order = function(){
+        list();
+    }
+
+    list();
+
+    function list(){
+        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
+            vm.list = data.data.result.data;
+            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
+            vm.pagecount =data.data.result.total;            
+            console.log(data);
+            for(var i in vm.list){
+                vm.list[i].createDate=change_time(vm.list[i].createDate);
+               if(vm.list[i].endDate!=null){
+                    vm.list[i].endDate = change_time(vm.list[i].endDate)
+               }
+            }
+            console.log(vm.list);
+        })
+    }
+
+    function change_time(nS){
+        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
+    }
+
+    function update(status,id){
+        OrderResource.update(vm.seid,status,id).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.alert('修改成功',{icon:1})
+            }else{
+                layer.alert(data.data.message,{icon:2})
+            }
+            list();
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
 /**
  * 分类功能API封装
  */
@@ -3583,626 +3846,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	}
 	
 	
-}
-})();
-(function(){
-"use strict"
-/**
- * 提供功能API封装
- */
-angular.module('index_area').factory('DrawResource', DrawResource);
-DrawResource.$inject = ['$http','device','version'];
-function DrawResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        update:update,
-        complete:complete
-    };
-    
-    
-	/**
-	 * list
-	 * 获取门店列表
-	 */
-    function list(seid,obj,skip,limit){
-        console.log(obj)
-        return $http.get("/api-admin/draw/list",
-                {params:{"device":device,
-                        "version":version,
-                        "sessionId":seid,
-                        "skip":skip,
-                        "limit":limit,
-                        'storeId':obj.id,
-                        'status':obj.status
-                    }}).then(function(data){
-            return data
-        })
-    }
-    
-    /**
-     * 修改信息
-     * @param {Object} id
-     * @param {Object} seid
-     * @param {Object} name
-     */
-    function update(seid,status,id){
-        return $http({
-            url:"/api-admin/draw/"+id+"/update",
-            method: 'post',
-            params:{
-                  "status":status,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
-        })
-        .then(function (data) {
-             return data;
-        })
-    }
-    
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){
-    	return $.ajax({
-    		type:"get",
-    		url:"/api-admin/draw/"+id+"/get",
-    		dataType:"json",
-    		data:{"device":device,"version":version,"sessionId":seid},
-    		async:false,    		
-    		success:function(response){
-    			return response.data;
-    		}
-    	});
-    }
-
-    function complete(seid,id,status){
-        return $.ajax({
-    		type:"post",
-    		url:"/api-admin/draw/"+id+"/complete",
-    		dataType:"json",
-    		data:{"device":device,"version":version,"sessionId":seid,status:status},
-    		async:false,    		
-    		success:function(response){
-                console.log(response)
-    			return response.data;
-                
-    		}
-    	});
-    }
-}
-})();
-(function(){
-"use strict"
-/**
- * 提供功能API封装
- */
-angular.module('index_area').factory('OrderResource', OrderResource);
-OrderResource.$inject = ['$http','device','version'];
-function OrderResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        refund:refund,
-        Statuslist:Statuslist
-    };
-
-
-    /**
-     * list
-     * 获取订单列表
-     */
-    function list(seid,obj,skip,limit){
-        return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "takeNo":obj.id,
-                "status":obj.status
-            }}).then(function(data){
-            return data
-        })
-    }
-
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){
-        return $.ajax({
-            type:"get",
-            url:"/api-admin/trade/"+id+"/get",
-            dataType:"json",
-            data:{"device":device,"version":version,"sessionId":seid},
-            async:false,
-            success:function(response){
-                console.log(response)
-                return response.data;
-            }
-        });
-    }
-
-    //退款申请
-
-    function refund(seid,id){
-        return $http({
-            url:"/api-admin/trade/update-to-refund-completed",
-            method: 'post',
-            params:{
-                  "tradeId":id,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
-        })
-        .then(function (data) {
-             return data;
-        })
-    }
-
-    function Statuslist(seid,status,skip,limit){
-        return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "status":status
-            }}).then(function(data){
-            return data
-        })
-    }    
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
-OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
-/***调用接口***/
-function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
-    document.title ="订单管理";
-    $rootScope.name="订单管理";
-	$rootScope.childrenName="订单管理列表";
-    var vm = this;
-    vm.stores;              //门店集合
-    vm.list;
-    vm.get = new Object();
-    vm.filerPay=[
-        {title:'微信公众号',id:'WECHAT_WEB'},  
-        {title:'微信支付',id:'WECHAT_APP'},  
-        {title:'支付宝网页',id:'ZHIFUBAO_WEB'},  
-        {title:'支付宝应用',id:'ZHIFUBAO_APP'},  
-        {title:'线下支付',id:null}
-    ]
-    //获取sessionId
-     login();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-    vm.St_order = function(){
-        list();
-    }
-
-    list();
-
-    function list(){
-        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
-            vm.list = data.data.result.data;
-            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
-            vm.pagecount =data.data.result.total;            
-            console.log(data);
-            for(var i in vm.list){
-                vm.list[i].createDate=change_time(vm.list[i].createDate);
-               if(vm.list[i].endDate!=null){
-                    vm.list[i].endDate = change_time(vm.list[i].endDate)
-               }
-            }
-            console.log(vm.list);
-        })
-    }
-
-    function change_time(nS){
-        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
-    }
-
-    function update(status,id){
-        OrderResource.update(vm.seid,status,id).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.alert('修改成功',{icon:1})
-            }else{
-                layer.alert(data.data.message,{icon:2})
-            }
-            list();
-        })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('SupplierLogolistCtrl',SupplierLogolistCtrl);
-SupplierLogolistCtrl.$inject = ['$scope','$state','$rootScope','NgTableParams','PublicResource','$stateParams','SupplierLogoResource','SortResource','FileUploader'];
-/***调用接口***/
-function SupplierLogolistCtrl($scope,$state,$rootScope,NgTableParams,PublicResource,$stateParams,SupplierLogoResource,SortResource,FileUploader) {
-    document.title ="供应商品牌";
-    $rootScope.name="供应商品牌";
-    $rootScope.childrenName="供应商品牌列表";
-    var vm = this;
-    vm.seid;
-    vm.skip=0;             //起始数据下标
-    vm.limit=12;            //最大数据下标
-    vm.list;
-    vm.getlist = new Object();
-    vm.sortlist = new Object();             //分类集合
-    vm.infolist = new Object();            //数据集合；  
-    
-    login();
-
-
-    /**add
-	 * [logo description]
-	 * @type {[type]}
-	 */
-	var logo = vm.logo = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	logo.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.logo.queue) {
-				vm.logo.queue[i].isSuccess=false;
-				vm.logo.queue[i].isError=true;
-                console.log(vm.logo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.infolist.logo=status.result;
-             vm.logo.queue[0].remove();
-        }
-	}
-	logo.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-     /**update
-	 * [logo description]
-	 * @type {[type]}
-	 */
-	var logos = vm.logos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	logos.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.logo.queue) {
-				vm.logos.queue[i].isSuccess=false;
-				vm.logos.queue[i].isError=true;
-                console.log(vm.logo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.getlist.logo=status.result;
-             vm.logos.queue[0].remove();
-        }
-	}
-	logos.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-    
-    /**
-     * [opermask 开启遮罩层]
-     * @param  {[type]} index [true as false 判断是修改还是新增]
-     * @param  {[type]} id    [description]
-     * @return {[type]}       [description]
-     */
-    vm.opermask = function(status,id){
-        var title;
-        var ClassName;    
-        switch(status){
-            case "add":
-                title = "新增商品信息";
-                ClassName = ".add_div"
-            break;
-            case "update":
-                title = "修改商品信息";
-                ClassName = ".update_div"
-                get(id);
-            break;
-            case "get":
-                title = "商品信息";
-                ClassName = ".get_div"
-                get(id);
-            break;
-
-            
-        }
-        layer.open({
-            type: 1,
-            title:title,
-            area: ['440px',"500px"], //宽高
-            content:$(ClassName)
-        }); 
-    }
-    
-    vm.getBtn = function(id){
-    	get(id); 
-    	layer.open({
-          type: 1,
-          title:"商品信息",
-          area: ['440px',"500px"], //宽高
-          content:$(".getgood")
-        }); 
-    }
-
-    /**
-     * [upinfo 模态框按钮]
-     * @return {[type]} [description]
-     */
-    vm.updateBtn = function(){
-        update();
-    }
-
-    vm.addBtn = function(){
-        add();
-    }
-
-    vm.delopen = function(id){
-        console.log(id)
-        layer.confirm('您确定要删除数据？', {
-              btn: ['确定','取消'] //按钮
-        }, function(){
-            remove(id);
-        });
-    }
-      
-
-     //查询分类列表
-    list(vm.seid,vm.skip,vm.limit);
-
-    
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-    
-
-
-
-   
-    /**
-     * [sortlist 品牌分类集合]
-     * @return {[type]} [description]
-     */
-    function sortlist(){
-        SortResource.list(vm.seid).then(function(data){
-            vm.sortlist = data.data.result.root
-        })
-    }
-
-     /**
-     * [infoget 查询单个品牌数据]
-     * @param  {[type]} id [品牌ID]
-     * @return {[type]}    [description]
-     */
-    function get(id){
-        SupplierLogoResource.get(vm.seid,id).then(function(data){
-            vm.getlist = data.result;
-            console.log(vm.getlist)
-        })
-    }
-
-
-    /**
-     * [addinfo 新增供应商品牌]
-     * @return {[type]} [description]
-     */
-    function add(){        
-        SupplierLogoResource.add(vm.seid,vm.infolist).then(function(data){
-             if(data.data.status=="OK"){
-                layer.msg("保存成功~",{icon:1},function(){
-                    layer.closeAll();
-                     //查询分类列表
-                    list(vm.seid,vm.skip,vm.limit);
-                });                            
-            }else{
-                layer.msg(data.data.message,{icon: 0});
-            }
-        })
-    }
-
-    function remove(id){
-       SupplierLogoResource.remove(vm.seid,id).then(function(data){
-             if(data.status=="OK"){
-                layer.msg("删除成功~",{icon:1},function(){
-                    layer.closeAll();
-                     //查询分类列表
-                    list(vm.seid,vm.skip,vm.limit);
-                });                            
-            }else{
-                layer.msg(data.data.message, {icon: 0});
-            }
-        }) 
-    }
-
-    /**
-     * 供应商品牌集合
-     * @param {Object} seid
-     */
-    function list(){
-         SupplierLogoResource.list(vm.seid,vm.skip,vm.limit).then(function(data){            
-             vm.list=data.data.result.data;
-            vm.tableParams = new NgTableParams({},{dataset:vm.list});                      
-            vm.pagecount = data.data.result.total;
-            console.log(vm.list)
-        })
-    }
-
-    /**
-     * [updateinfo 修改数据]
-     * @return {[type]} [description]
-     */
-    function update(){
-        SupplierLogoResource.update(vm.seid,vm.getlist).then(function(data){
-            if(data.data.status=="OK"){
-                list(vm.seid,vm.skip,vm.limit);
-                layer.msg("修改成功~",{icon:1},function(){
-                     layer.closeAll();                    
-                });                
-            }else{
-                layer.msg(data.data.message,{icon:0});
-            }
-        })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').factory('SupplierLogoResource',SupplierLogoResource);
-SupplierLogoResource.$inject = ['$http','device','version'];
-function SupplierLogoResource($http,device,version) {
-    return {
-		list:list,
-		get:get,
-		add:add,
-		update:update,
-		remove:remove
-    };
-    
-	
-	/**
-	 * 基础商品列表	 
-	 */
-	function list(seid,skip,limit){		
-		return $http.get("/api-admin/provider/brand/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-			return data
-		})
-	}
-
-	/**
-	 * [get 获取单个数据]
-	 * @param  {[type]} seid [sessionID]
-	 * @param  {[type]} id   [数据ID]
-	 * @return {[type]}      [description]
-	 */
-	function get(seid,id){		
-		return $.ajax({
-				type:"get",
-				url:"/api-admin/provider/brand/"+id+"/get",
-				async:false,
-				data:{"device":device,"version":version,"sessionId":seid,"id":id},
-				dataType:"json",
-				success:function(response){
-					return response.data;
-				}
-		});
-	}
-	
-	/**
-	 * 添加基础商品
-	 */
-	function add(seid,obj){
-		return $http({
-            url:"/api-admin/provider/brand/add",
-            method:'post',
-            params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"logo":obj.logo,
-				"sort":obj.sort,
-				"serialPrefix":obj.serialPrefix
-			}
-        })
-        .then(function (data) {
-             return data
-        })  
-	}
-	
-	/**
-	 * 修改商品
-	 */
-	function update(seid,obj){
-		console.log(obj)
-		return $http({
-            url:"/api-admin/provider/brand/"+obj.id+"/update",
-            method: 'post',
-            params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"logo":obj.logo,
-				"sort":obj.sort,
-				"serialPrefix":obj.serialPrefix
-			}
-        })
-        .then(function (data) {
-             return data
-        })  
-	}
-	
-	/**
-	 * 删除商品
-	 */
-	function remove(seid,id){
-		return $.ajax({
-			type:"post",
-			url:"/api-admin/provider/brand/"+id+"/remove",
-			async:false,
-			data:{"device":device,"version":version,"sessionId":seid},
-			dataType:"json",
-			success:function(response){
-				return response.data;
-			}
-		});
-	}
 }
 })();
 (function(){
@@ -4831,6 +4474,379 @@ function VirtualUpdateCtrl($scope,$rootScope,$state,SortResource,PublicResource,
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('SupplierLogolistCtrl',SupplierLogolistCtrl);
+SupplierLogolistCtrl.$inject = ['$scope','$state','$rootScope','NgTableParams','PublicResource','$stateParams','SupplierLogoResource','SortResource','FileUploader'];
+/***调用接口***/
+function SupplierLogolistCtrl($scope,$state,$rootScope,NgTableParams,PublicResource,$stateParams,SupplierLogoResource,SortResource,FileUploader) {
+    document.title ="供应商品牌";
+    $rootScope.name="供应商品牌";
+    $rootScope.childrenName="供应商品牌列表";
+    var vm = this;
+    vm.seid;
+    vm.skip=0;             //起始数据下标
+    vm.limit=12;            //最大数据下标
+    vm.list;
+    vm.getlist = new Object();
+    vm.sortlist = new Object();             //分类集合
+    vm.infolist = new Object();            //数据集合；  
+    
+    login();
+
+
+    /**add
+	 * [logo description]
+	 * @type {[type]}
+	 */
+	var logo = vm.logo = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
+	})
+	logo.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.logo.queue) {
+				vm.logo.queue[i].isSuccess=false;
+				vm.logo.queue[i].isError=true;
+                console.log(vm.logo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.infolist.logo=status.result;
+             vm.logo.queue[0].remove();
+        }
+	}
+	logo.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+     /**update
+	 * [logo description]
+	 * @type {[type]}
+	 */
+	var logos = vm.logos = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
+	})
+	logos.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.logo.queue) {
+				vm.logos.queue[i].isSuccess=false;
+				vm.logos.queue[i].isError=true;
+                console.log(vm.logo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.getlist.logo=status.result;
+             vm.logos.queue[0].remove();
+        }
+	}
+	logos.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+    
+    /**
+     * [opermask 开启遮罩层]
+     * @param  {[type]} index [true as false 判断是修改还是新增]
+     * @param  {[type]} id    [description]
+     * @return {[type]}       [description]
+     */
+    vm.opermask = function(status,id){
+        var title;
+        var ClassName;    
+        switch(status){
+            case "add":
+                title = "新增商品信息";
+                ClassName = ".add_div"
+            break;
+            case "update":
+                title = "修改商品信息";
+                ClassName = ".update_div"
+                get(id);
+            break;
+            case "get":
+                title = "商品信息";
+                ClassName = ".get_div"
+                get(id);
+            break;
+
+            
+        }
+        layer.open({
+            type: 1,
+            title:title,
+            area: ['440px',"500px"], //宽高
+            content:$(ClassName)
+        }); 
+    }
+    
+    vm.getBtn = function(id){
+    	get(id); 
+    	layer.open({
+          type: 1,
+          title:"商品信息",
+          area: ['440px',"500px"], //宽高
+          content:$(".getgood")
+        }); 
+    }
+
+    /**
+     * [upinfo 模态框按钮]
+     * @return {[type]} [description]
+     */
+    vm.updateBtn = function(){
+        update();
+    }
+
+    vm.addBtn = function(){
+        add();
+    }
+
+    vm.delopen = function(id){
+        console.log(id)
+        layer.confirm('您确定要删除数据？', {
+              btn: ['确定','取消'] //按钮
+        }, function(){
+            remove(id);
+        });
+    }
+      
+
+     //查询分类列表
+    list(vm.seid,vm.skip,vm.limit);
+
+    
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+    
+
+
+
+   
+    /**
+     * [sortlist 品牌分类集合]
+     * @return {[type]} [description]
+     */
+    function sortlist(){
+        SortResource.list(vm.seid).then(function(data){
+            vm.sortlist = data.data.result.root
+        })
+    }
+
+     /**
+     * [infoget 查询单个品牌数据]
+     * @param  {[type]} id [品牌ID]
+     * @return {[type]}    [description]
+     */
+    function get(id){
+        SupplierLogoResource.get(vm.seid,id).then(function(data){
+            vm.getlist = data.result;
+            console.log(vm.getlist)
+        })
+    }
+
+
+    /**
+     * [addinfo 新增供应商品牌]
+     * @return {[type]} [description]
+     */
+    function add(){        
+        SupplierLogoResource.add(vm.seid,vm.infolist).then(function(data){
+             if(data.data.status=="OK"){
+                layer.msg("保存成功~",{icon:1},function(){
+                    layer.closeAll();
+                     //查询分类列表
+                    list(vm.seid,vm.skip,vm.limit);
+                });                            
+            }else{
+                layer.msg(data.data.message,{icon: 0});
+            }
+        })
+    }
+
+    function remove(id){
+       SupplierLogoResource.remove(vm.seid,id).then(function(data){
+             if(data.status=="OK"){
+                layer.msg("删除成功~",{icon:1},function(){
+                    layer.closeAll();
+                     //查询分类列表
+                    list(vm.seid,vm.skip,vm.limit);
+                });                            
+            }else{
+                layer.msg(data.data.message, {icon: 0});
+            }
+        }) 
+    }
+
+    /**
+     * 供应商品牌集合
+     * @param {Object} seid
+     */
+    function list(){
+         SupplierLogoResource.list(vm.seid,vm.skip,vm.limit).then(function(data){            
+             vm.list=data.data.result.data;
+            vm.tableParams = new NgTableParams({},{dataset:vm.list});                      
+            vm.pagecount = data.data.result.total;
+            console.log(vm.list)
+        })
+    }
+
+    /**
+     * [updateinfo 修改数据]
+     * @return {[type]} [description]
+     */
+    function update(){
+        SupplierLogoResource.update(vm.seid,vm.getlist).then(function(data){
+            if(data.data.status=="OK"){
+                list(vm.seid,vm.skip,vm.limit);
+                layer.msg("修改成功~",{icon:1},function(){
+                     layer.closeAll();                    
+                });                
+            }else{
+                layer.msg(data.data.message,{icon:0});
+            }
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').factory('SupplierLogoResource',SupplierLogoResource);
+SupplierLogoResource.$inject = ['$http','device','version'];
+function SupplierLogoResource($http,device,version) {
+    return {
+		list:list,
+		get:get,
+		add:add,
+		update:update,
+		remove:remove
+    };
+    
+	
+	/**
+	 * 基础商品列表	 
+	 */
+	function list(seid,skip,limit){		
+		return $http.get("/api-admin/provider/brand/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+			return data
+		})
+	}
+
+	/**
+	 * [get 获取单个数据]
+	 * @param  {[type]} seid [sessionID]
+	 * @param  {[type]} id   [数据ID]
+	 * @return {[type]}      [description]
+	 */
+	function get(seid,id){		
+		return $.ajax({
+				type:"get",
+				url:"/api-admin/provider/brand/"+id+"/get",
+				async:false,
+				data:{"device":device,"version":version,"sessionId":seid,"id":id},
+				dataType:"json",
+				success:function(response){
+					return response.data;
+				}
+		});
+	}
+	
+	/**
+	 * 添加基础商品
+	 */
+	function add(seid,obj){
+		return $http({
+            url:"/api-admin/provider/brand/add",
+            method:'post',
+            params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"logo":obj.logo,
+				"sort":obj.sort,
+				"serialPrefix":obj.serialPrefix
+			}
+        })
+        .then(function (data) {
+             return data
+        })  
+	}
+	
+	/**
+	 * 修改商品
+	 */
+	function update(seid,obj){
+		console.log(obj)
+		return $http({
+            url:"/api-admin/provider/brand/"+obj.id+"/update",
+            method: 'post',
+            params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"logo":obj.logo,
+				"sort":obj.sort,
+				"serialPrefix":obj.serialPrefix
+			}
+        })
+        .then(function (data) {
+             return data
+        })  
+	}
+	
+	/**
+	 * 删除商品
+	 */
+	function remove(seid,id){
+		return $.ajax({
+			type:"post",
+			url:"/api-admin/provider/brand/"+id+"/remove",
+			async:false,
+			data:{"device":device,"version":version,"sessionId":seid},
+			dataType:"json",
+			success:function(response){
+				return response.data;
+			}
+		});
+	}
+}
+})();
+(function(){
+"use strict"
 angular.module('index_area').factory('OperationResource', OperationResource);
 OperationResource.$inject = ['$http','device','version'];
 function OperationResource($http,device,version) {
@@ -5252,6 +5268,8 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
     var vm = this;
+    vm.skip = 0;
+    vm.limit = 50;
     vm.seid;
 
     vm.get = function(userId){
@@ -5295,7 +5313,7 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function list(){
-        UserResource.list(vm.seid,0,0).then(function(data){
+        UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             if(data.data.status=="OK"){
                 vm.list = data.data.result;
                 vm.TableList = new NgTableParams({},{dataset:vm.list});

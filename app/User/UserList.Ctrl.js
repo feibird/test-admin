@@ -5,6 +5,8 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
     var vm = this;
+    vm.skip = 0;
+    vm.limit = 50;
     vm.seid;
 
     vm.get = function(userId){
@@ -48,7 +50,7 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function list(){
-        UserResource.list(vm.seid,0,0).then(function(data){
+        UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             if(data.data.status=="OK"){
                 vm.list = data.data.result;
                 vm.TableList = new NgTableParams({},{dataset:vm.list});
