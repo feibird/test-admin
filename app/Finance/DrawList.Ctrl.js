@@ -73,6 +73,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
             vm.oper = 3;
           }
       }
+      console.log(vm.oper)
   })
 
   //财务审核成功
