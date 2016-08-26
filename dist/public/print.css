@@ -1,0 +1,30 @@
+*{padding: 0;margin: 0;border: 0;}
+table{border-collapse:collapse;}
+.count-detail i{font-style: normal;vertical-align: middle;}
+.count-detail .detail-title{height: 50px;line-height: 50px;text-align: center;position: relative;font-size: 16px;}
+.count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
+.count-detail .detail-lyout table{width: 100%;margin-bottom: 20px;border:1px solid black;}
+.count-detail .detail-lyout table tr{min-height:40px;page-break-after:always;}
+.count-detail .detail-lyout table tr td,th{min-height:40px;text-align: center;border:1px solid black;font-size: 12px;}
+.w100{width:100px;display: inline-block;word-wrap: break-word;word-break: normal;padding: 5px 0;}
+.w50{width:160px!important;word-wrap: break-word;word-break: normal;}
+.w80{display: inline-block;min-width:40px!important;word-wrap: break-word;word-break: normal;}
+.w10{min-width:30px!important;word-wrap: break-word;word-break: normal;}
+.mr10{vertical-align: initial;margin-right: 10px;}
+
+.count p{margin: 0;height: 20px;line-height: 20px;color: black;margin: 5px 0;}
+.count i{font-style: normal;vertical-align: middle;}
+.count .count-title{height: 50px;line-height: 50px;text-align: center;font-size: 16px;color: #333;margin: 0;}
+.count .count-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
+.count .count-lyout table tr{height: 40px;border:1px solid black;}
+.count .count-lyout table tr td{height: 40px;border:1px solid black;padding-left: 10px;}
+
+.credential{padding:0 10px;display: none;}
+.credential i{font-style: normal;vertical-align: middle;}
+.credential .credential-title{height: 50px;line-height: 50px;text-align: center;font-size: 16px;color: #333;margin: 0;position: relative;}
+.credential .credential-content table {width: 100%;border:1px solid black;}
+.credential .credential-content table tr{height: 40px;border:1px solid black;}
+.credential .credential-content table tr td{height: 40px;border:1px solid black;padding-left: 10px;}
+.count,.count-detail,.credential{position: relative;}
+.count,.count-detail,.credential .btn{position: absolute;top:10px;right: 0;}
+.count,.count-detail,.credential  table{font-size: 12px;}

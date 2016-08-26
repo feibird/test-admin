@@ -1,0 +1,56 @@
+<div class="panel panel-default panel-border">
+	<div class="panel-heading">新建语音推送</div>
+	<div class="panel-body">
+		<div class="form-lyout">
+			<div class="form-title">语音名称</div>
+			<div class="form-layout">
+				<input type="number" class='form-control' ng-model='taskCtrl.task.priority' placeholder="请输入优先级范围(1~120)" >
+			</div>
+		</div>
+		<div class="form-lyout">
+			<div class="form-title">是否有效</div>
+			<div class="form-layout">
+				<label class="radio-inline">
+					<input type="radio" name="enabled" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 否
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="enabled" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 是
+				</label>
+			</div>
+		</div>
+		<div class="form-lyout">
+			<div class="form-title">语音类型</div>
+			<div class="form-layout">
+				<label class="radio-inline">
+					<input type="radio" name="enabled" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 系统语音
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="enabled" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 营销语音
+				</label>
+			</div>
+		</div>
+		<div class="form-lyout">
+			<div class="form-title">语音内容</div>
+			<div class="form-layout">
+				<textarea name="" class='form-control' id="" cols="30" rows="10"></textarea>
+			</div>
+		</div>
+		<div class="form-lyout">
+			<div class="form-title">参与区域</div>
+			<div class="form-layout">
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="exclusives" value="true"  ng-model='taskCtrl.task.exclusive' checked>
+				    是
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="exclusives" value="true"  ng-model='taskCtrl.task.exclusive' checked>
+				    是
+				  </label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

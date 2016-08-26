@@ -68,14 +68,22 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     function get(id){
          RoleResource.get(vm.seid,id).then(function(data){
             vm.info = data.data.result;
-            for(var i in vm.info){
-                if(typeof(vm.Rolelist[i])!='undefined'){
-                    if(vm.info[i].id == vm.Rolelist[i].id){
-                        vm.Rolelist[i].status=true;
-                    }
+            console.log(vm.Rolelist)
+            // for(var i in vm.info){
+            //     if(typeof(vm.Rolelist[i])!='undefined'){
+            //         if(vm.info[i].id == vm.Rolelist[i].id){
+            //             vm.Rolelist[i].status=true;
+            //         }
+            //     }
+            // }
+            for(var i in vm.Rolelist){
+                for(var j in vm.info){
+                    if(vm.Rolelist[i].id == vm.info[j].id){
+                         vm.Rolelist[i].status=true;
+                     }
                 }
             }
-            console.log(vm.info)
+            
         })
     }
 

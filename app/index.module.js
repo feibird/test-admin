@@ -71,14 +71,21 @@ angular
                 controller: 'UserListCtrl as UserListCtrl',
                 params: {'index':5}
         })
-        .state("/user/rolelist", {                                                               //用户管理
+        .state("/user/rolelist", {                                                               //角色管理
                 url: "/user/rolelist",
                 templateUrl: "User/Rolelist.html",
                 controller: 'RoleListCtrl as RoleListCtrl',
                 params: {'index':5}
         })
+        .state("/music/list", {                                                               //角色管理
+                url: "/music/musiclist",
+                templateUrl: "Music/list.html",
+                controller: 'MusicListCtrl as MusicListCtrl',
+                params: {'index':5}
+        })
           //去掉#号  
         /*$locationProvider.html5Mode(true);*/
+        
     })
     .run(run);
 run.$inject = ['$rootScope', '$state', '$location','localStorageService','PublicResource']
