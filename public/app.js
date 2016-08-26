@@ -1445,6 +1445,219 @@ function RecordedResource($http, device, version) {
 })();
 (function(){
 "use strict"
+/**
+ * 标签管理功能API封装
+ */
+angular.module('index_area').factory('LabelResource', LabelResource);
+LabelResource.$inject = ['$http','device','version'];
+function LabelResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        update:update,
+        remove:remove,
+        add:add
+    };
+    
+    /**
+	 * list
+	 * 获取列表
+	 */
+    function list(seid,skip,limit,brandId){    	
+       return $http.get("/api-admin/label/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"brandId":brandId}}).then(function(data){
+            return data
+        })
+    }
+
+    function get (seid,id) {
+        return $http.get("/api-admin/label/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
+            return data
+        })
+    }
+
+    function update (seid,info) {
+        return $http({
+            url:"/api-admin/label/"+info.id+"/update",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,"name":info.name}
+        })
+        .then(function (data) {
+             return data
+        })
+    }
+
+    function remove (seid,id) {
+        return $http({
+            url:"/api-admin/label/"+id+"/remove",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid}
+        })
+        .then(function (data) {
+             return data
+        })        
+    }
+
+    function add (seid,info) {   
+        console.log(info)     
+        return $http({
+            url:"/api-admin/label/add",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,"name":info.name,"brandId":info.brand.id}
+        })
+        .then(function (data) {
+             return data
+        })       
+    }
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('LabellistCtrl',LabellistCtrl);
+LabellistCtrl.$inject = ['$scope','$state','$rootScope','PublicResource','LabelResource','$stateParams','BrandStoresResource','NgTableParams'];
+/***调用接口***/
+function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$stateParams,BrandStoresResource,NgTableParams) {
+    document.title ="标签管理";
+	$rootScope.name="标签管理";
+	$rootScope.childrenName="标签管理列表";
+    var vm = this;
+	vm.skip = 0
+	vm.limit = 12;
+	vm.seid
+    vm.pageint=1;															//当前分页导航
+	vm.list;
+    
+	//获取sessionId
+	login()
+	function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.msg("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+    
+     //当前用户状态
+   /* PublicResource.verification(vm.seid).then(function(data){
+    	console.log(data)
+    })*/
+    
+	vm.updateBtn = function(data){
+		console.log(data)
+		if(data.status){
+			data.status=false;
+			if(update(data)){
+				data.status=false;
+			}
+		}else{
+			
+			data.status=true;
+		}
+	}
+	
+	vm.addBtn = function(list){
+		console.log(list)
+		add(list);
+	}
+
+	vm.delBtn = function(id){
+		layer.confirm('您确定要删除标签？', {
+			  btn: ['确定','取消'] //按钮
+		}, 
+		function(){
+			del(id)
+		})
+	}
+
+    //查询标签列表
+   list(vm.seid);
+	logo()
+ 
+	/**
+	 * 标签集合
+	 * @param {Object} seid
+	 */
+	function list(){
+		 LabelResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+	    	vm.list=data.data.result.data;
+			for(var i in vm.list){
+				vm.list[i].status=false;
+			}	  
+	    	console.log(vm.list);
+	    	vm.tableParams = new NgTableParams({},{dataset:vm.list});  	
+	    })
+	}
+
+	/*
+	 *获取连锁品牌
+	 */
+	function logo () {
+		 BrandStoresResource.list(vm.seid,0,0).then(function (data) {
+		 	vm.logolist = data.data.result.data;
+		 	 console.log(vm.logolist)
+		 }) 
+	}
+
+	/**
+	 * 获取单个数据
+	 * @param {Object} seid
+	 */
+	function get(id){		
+		LabelResource.get(vm.seid,id).then(function(data){			
+			vm.info = data.data.result;
+			console.log(vm.info)
+		})
+	}
+	function add (info) {
+		console.log(info)
+		 LabelResource.add(vm.seid,info).then(function(data){			
+			if(data.data.status="OK"){
+				layer.msg("添加成功~",{icon:1},function (index) {
+					 list(vm.seid);
+					 layer.closeAll();
+				})
+			}else {
+				layer.msg(data.data.message,{icon:2})
+			}
+			console.log(vm.info)
+		})  
+	}
+
+	function update (info) {
+		  LabelResource.update(vm.seid,info).then(function(data){			
+			if (data.data.status=="OK") {
+				layer.msg('编辑成功~',{icon:1},function (index) {
+					  list(vm.seid);
+					  layer.closeAll();
+				})
+				return true;
+			}else {
+				layer.msg(data.data.message,{icon:2})
+				return false;
+			}
+		})  
+	}
+
+	function del(id) {
+		  LabelResource.remove(vm.seid,id).then(function(data){			
+			if (data.data.status=="OK") {
+				layer.msg('删除成功~',{icon:1},function (index) {
+					  list(vm.seid);
+					  layer.closeAll();
+				})
+			}else {
+				layer.msg(data.data.message,{icon:2})
+			}
+		})  
+	}
+}
+
+})();
+(function(){
+"use strict"
 angular.module('index_area').controller('AddGoodCtrl',AddGoodCtrl);
 AddGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','GoodResource',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource",'FileUploader'];
 /***调用接口***/
@@ -2458,219 +2671,6 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
 })();
 (function(){
 "use strict"
-/**
- * 标签管理功能API封装
- */
-angular.module('index_area').factory('LabelResource', LabelResource);
-LabelResource.$inject = ['$http','device','version'];
-function LabelResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        update:update,
-        remove:remove,
-        add:add
-    };
-    
-    /**
-	 * list
-	 * 获取列表
-	 */
-    function list(seid,skip,limit,brandId){    	
-       return $http.get("/api-admin/label/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"brandId":brandId}}).then(function(data){
-            return data
-        })
-    }
-
-    function get (seid,id) {
-        return $http.get("/api-admin/label/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
-            return data
-        })
-    }
-
-    function update (seid,info) {
-        return $http({
-            url:"/api-admin/label/"+info.id+"/update",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name}
-        })
-        .then(function (data) {
-             return data
-        })
-    }
-
-    function remove (seid,id) {
-        return $http({
-            url:"/api-admin/label/"+id+"/remove",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid}
-        })
-        .then(function (data) {
-             return data
-        })        
-    }
-
-    function add (seid,info) {   
-        console.log(info)     
-        return $http({
-            url:"/api-admin/label/add",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name,"brandId":info.brand.id}
-        })
-        .then(function (data) {
-             return data
-        })       
-    }
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('LabellistCtrl',LabellistCtrl);
-LabellistCtrl.$inject = ['$scope','$state','$rootScope','PublicResource','LabelResource','$stateParams','BrandStoresResource','NgTableParams'];
-/***调用接口***/
-function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$stateParams,BrandStoresResource,NgTableParams) {
-    document.title ="标签管理";
-	$rootScope.name="标签管理";
-	$rootScope.childrenName="标签管理列表";
-    var vm = this;
-	vm.skip = 0
-	vm.limit = 12;
-	vm.seid
-    vm.pageint=1;															//当前分页导航
-	vm.list;
-    
-	//获取sessionId
-	login()
-	function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.msg("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-    
-     //当前用户状态
-   /* PublicResource.verification(vm.seid).then(function(data){
-    	console.log(data)
-    })*/
-    
-	vm.updateBtn = function(data){
-		console.log(data)
-		if(data.status){
-			data.status=false;
-			if(update(data)){
-				data.status=false;
-			}
-		}else{
-			
-			data.status=true;
-		}
-	}
-	
-	vm.addBtn = function(list){
-		console.log(list)
-		add(list);
-	}
-
-	vm.delBtn = function(id){
-		layer.confirm('您确定要删除标签？', {
-			  btn: ['确定','取消'] //按钮
-		}, 
-		function(){
-			del(id)
-		})
-	}
-
-    //查询标签列表
-   list(vm.seid);
-	logo()
- 
-	/**
-	 * 标签集合
-	 * @param {Object} seid
-	 */
-	function list(){
-		 LabelResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
-	    	vm.list=data.data.result.data;
-			for(var i in vm.list){
-				vm.list[i].status=false;
-			}	  
-	    	console.log(vm.list);
-	    	vm.tableParams = new NgTableParams({},{dataset:vm.list});  	
-	    })
-	}
-
-	/*
-	 *获取连锁品牌
-	 */
-	function logo () {
-		 BrandStoresResource.list(vm.seid,0,0).then(function (data) {
-		 	vm.logolist = data.data.result.data;
-		 	 console.log(vm.logolist)
-		 }) 
-	}
-
-	/**
-	 * 获取单个数据
-	 * @param {Object} seid
-	 */
-	function get(id){		
-		LabelResource.get(vm.seid,id).then(function(data){			
-			vm.info = data.data.result;
-			console.log(vm.info)
-		})
-	}
-	function add (info) {
-		console.log(info)
-		 LabelResource.add(vm.seid,info).then(function(data){			
-			if(data.data.status="OK"){
-				layer.msg("添加成功~",{icon:1},function (index) {
-					 list(vm.seid);
-					 layer.closeAll();
-				})
-			}else {
-				layer.msg(data.data.message,{icon:2})
-			}
-			console.log(vm.info)
-		})  
-	}
-
-	function update (info) {
-		  LabelResource.update(vm.seid,info).then(function(data){			
-			if (data.data.status=="OK") {
-				layer.msg('编辑成功~',{icon:1},function (index) {
-					  list(vm.seid);
-					  layer.closeAll();
-				})
-				return true;
-			}else {
-				layer.msg(data.data.message,{icon:2})
-				return false;
-			}
-		})  
-	}
-
-	function del(id) {
-		  LabelResource.remove(vm.seid,id).then(function(data){			
-			if (data.data.status=="OK") {
-				layer.msg('删除成功~',{icon:1},function (index) {
-					  list(vm.seid);
-					  layer.closeAll();
-				})
-			}else {
-				layer.msg(data.data.message,{icon:2})
-			}
-		})  
-	}
-}
-
-})();
-(function(){
-"use strict"
 angular.module('index_area').config(config).controller('MarketListCtrl',MarketListCtrl);
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
@@ -3082,6 +3082,245 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('AddMusicCtrl',AddMusicCtrl);
+AddMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
+/***调用接口***/
+function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
+    document.title ="语音推送管理";
+    $rootScope.name="语音推送管理";
+    $rootScope.childrenName="语音推送管理列表";
+    var vm = this;
+    vm.seid
+    vm.list;						//对象集合
+    vm.music = new Object();
+    vm.stores;
+    //获取sessionId
+    login()
+    function login(){
+        vm.user=PublicResource.seid("admin");
+        if(typeof(vm.user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+    Stores();
+    function Stores(){
+        StoresResource.list(vm.seid,0,0).then(function(data){
+            vm.stores = data.data.result.data;
+            for(var i in vm.stores){
+                vm.stores[i].status = true;
+            }
+            $rootScope.stores = vm.stores;
+            console.log(vm.stores)
+             
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').factory('MusicResource', MusicResource);
+MusicResource.$inject = ['$http','device','version'];
+function MusicResource($http,device,version) {
+    return {
+		list:list,
+        add:add,
+        update:update,
+        remove:remove,
+        get:get
+    };
+
+      function list(seid,skip,limit){
+          return $http.get("/api-admin/voice/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+        return data
+      })
+      }
+
+      function get(seid,id,skip,limit){
+          return $http.get("/api-admin/voice/get",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"voiceId":id}}).then(function(data){
+        return data
+      })
+      }
+
+      function add(seid,obj){
+           return $http({
+            url:"/api-admin/voice/add",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "name":obj.name,
+                "effective":obj.effective,
+                "type":obj.type,
+                "content":obj.content,
+                "allStore":obj.allStore,
+                "storeIds":obj.storeIds,
+                "dates":obj.dates,
+                "times":obj.times,
+                "formulaParameter":obj.formulaParameter
+              }
+        })
+        .then(function (data) {
+            return data
+        })
+      }
+
+      function update(seid,obj){
+           return $http({
+            url:"/api-admin/voice/add",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "name":obj.name,
+                "effective":obj.effective,
+                "type":obj.type,
+                "content":obj.content,
+                "allStore":obj.allStore,
+                "storeIds":obj.storeIds,
+                "dates":obj.dates,
+                "times":obj.times
+              }
+        })
+        .then(function (data) {
+            return data
+        })
+      }
+
+       function remove(seid,ids){
+           return $http({
+            url:"/api-admin/voice/remove",
+            method: 'post',
+            params:{
+                "device":device,
+                "version":version,
+                "sessionId":seid,
+                "ids":ids
+              }
+        })
+        .then(function (data) {
+            return data
+        })
+      }
+    
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').config(config).controller('MusicListCtrl',MusicListCtrl);
+config.$inject = ['$stateProvider'];
+function config($stateProvider){
+    $stateProvider
+    .state("add", {
+        url: "/music/addmusic",
+        templateUrl: "Music/AddMusic.html",
+        controller: 'AddMusicCtrl as AddMusicCtrl'
+    })
+}
+MusicListCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','MusicResource'];
+/***调用接口***/
+function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams,MusicResource) {
+    document.title ="语音推送管理";
+    $rootScope.name="语音推送管理";
+    $rootScope.childrenName="语音推送管理列表";
+    var vm = this;
+    vm.seid
+    vm.list;						//对象集合
+    vm.getinfo;
+
+    //获取sessionId
+    login()
+    list();
+    function login(){
+        vm.user=PublicResource.seid("admin");
+        if(typeof(vm.user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+
+    function list(){
+        MusicResource.list(vm.seid,0,0).then(function(data){            
+            vm.list = data.data.result.data;
+            for(var i in vm.list){
+                for(var j in vm.list[i].voiceDates){
+                    vm.list[i].voiceDates[j].endDate = chang_time(new Date(vm.list[i].voiceDates[j].endDate));
+                    vm.list[i].voiceDates[j].startDate = chang_time(new Date(vm.list[i].voiceDates[j].startDate));
+                }
+            }
+            console.log(vm.list)
+            vm.List = new NgTableParams({},{dataset:vm.list});
+        })
+    }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+        D = "0" + D;
+        }
+        if (m.length < 3) {
+        m = "0" + m;
+        }
+
+        if (s < 9) {
+        s = "0" + s;
+        }
+        return Y + M + D;
+    }
+
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('UpdateMusicCtrl',UpdateMusicCtrl);
+UpdateMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
+/***调用接口***/
+function UpdateMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
+    document.title ="语音推送管理";
+    $rootScope.name="语音推送管理";
+    $rootScope.childrenName="语音推送管理列表";
+    var vm = this;
+    vm.seid
+    vm.list;						//对象集合
+    vm.getinfo;
+
+    //获取sessionId
+    login()
+    function login(){
+        vm.user=PublicResource.seid("admin");
+        if(typeof(vm.user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+
+}
+
+})();
+(function(){
+"use strict"
 /**
  * 提供功能API封装
  */
@@ -3322,244 +3561,6 @@ function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Stor
             }
             list();
         })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('AddMusicCtrl',AddMusicCtrl);
-AddMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
-/***调用接口***/
-function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
-    var vm = this;
-    vm.seid
-    vm.list;						//对象集合
-    vm.music = new Object();
-    vm.stores;
-    //获取sessionId
-    login()
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        }else{
-            vm.seid = PublicResource.seid(vm.user);
-        }
-    }
-    Stores();
-    function Stores(){
-        StoresResource.list(vm.seid,0,0).then(function(data){
-            vm.stores = data.data.result.data;
-            for(var i in vm.stores){
-                vm.stores[i].status = true;
-            }
-            console.log(vm.stores)
-             
-        })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').factory('MusicResource', MusicResource);
-MusicResource.$inject = ['$http','device','version'];
-function MusicResource($http,device,version) {
-    return {
-		list:list,
-        add:add,
-        update:update,
-        remove:remove,
-        get:get
-    };
-
-      function list(seid,skip,limit){
-          return $http.get("/api-admin/voice/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-        return data
-      })
-      }
-
-      function get(seid,id,skip,limit){
-          return $http.get("/api-admin/voice/get",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"voiceId":id}}).then(function(data){
-        return data
-      })
-      }
-
-      function add(seid,obj){
-           return $http({
-            url:"/api-admin/voice/add",
-            method: 'post',
-            params:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                "effective":obj.effective,
-                "type":obj.type,
-                "content":obj.content,
-                "allStore":obj.allStore,
-                "storeIds":obj.storeIds,
-                "dates":obj.dates,
-                "times":obj.times,
-                "formulaParameter":obj.formulaParameter
-              }
-        })
-        .then(function (data) {
-            return data
-        })
-      }
-
-      function update(seid,obj){
-           return $http({
-            url:"/api-admin/voice/add",
-            method: 'post',
-            params:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                "effective":obj.effective,
-                "type":obj.type,
-                "content":obj.content,
-                "allStore":obj.allStore,
-                "storeIds":obj.storeIds,
-                "dates":obj.dates,
-                "times":obj.times
-              }
-        })
-        .then(function (data) {
-            return data
-        })
-      }
-
-       function remove(seid,ids){
-           return $http({
-            url:"/api-admin/voice/remove",
-            method: 'post',
-            params:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "ids":ids
-              }
-        })
-        .then(function (data) {
-            return data
-        })
-      }
-    
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').config(config).controller('MusicListCtrl',MusicListCtrl);
-config.$inject = ['$stateProvider'];
-function config($stateProvider){
-    $stateProvider
-    .state("add", {
-        url: "/music/addmusic",
-        templateUrl: "Music/AddMusic.html",
-        controller: 'AddMusicCtrl as AddMusicCtrl'
-    })
-}
-MusicListCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','MusicResource'];
-/***调用接口***/
-function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams,MusicResource) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
-    var vm = this;
-    vm.seid
-    vm.list;						//对象集合
-    vm.getinfo;
-
-    //获取sessionId
-    login()
-    list();
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        }else{
-            vm.seid = PublicResource.seid(vm.user);
-        }
-    }
-
-    function list(){
-        MusicResource.list(vm.seid,0,0).then(function(data){            
-            vm.list = data.data.result.data;
-            for(var i in vm.list){
-                for(var j in vm.list[i].voiceDates){
-                    vm.list[i].voiceDates[j].endDate = chang_time(new Date(vm.list[i].voiceDates[j].endDate));
-                    vm.list[i].voiceDates[j].startDate = chang_time(new Date(vm.list[i].voiceDates[j].startDate));
-                }
-            }
-            console.log(vm.list)
-            vm.List = new NgTableParams({},{dataset:vm.list});
-        })
-    }
-
-    function chang_time(date) {
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        var D = date.getDate() + ' '; //天
-        var h = date.getHours() + ':'; //时
-        var m = date.getMinutes() + ':'; //分
-        var s = date.getSeconds();
-        if (D.length < 3) {
-        D = "0" + D;
-        }
-        if (m.length < 3) {
-        m = "0" + m;
-        }
-
-        if (s < 9) {
-        s = "0" + s;
-        }
-        return Y + M + D;
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('UpdateMusicCtrl',UpdateMusicCtrl);
-UpdateMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
-/***调用接口***/
-function UpdateMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
-    var vm = this;
-    vm.seid
-    vm.list;						//对象集合
-    vm.getinfo;
-
-    //获取sessionId
-    login()
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        }else{
-            vm.seid = PublicResource.seid(vm.user);
-        }
     }
 
 }
@@ -4841,18 +4842,54 @@ function SupplierLogoResource($http,device,version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').directive('stores', function () {
-    return {
+angular.module('index_area').directive('stores', function (NgTableParams) {
+	return {
 		restrict: 'E',
 		replace: true,
 		scope: {
-			list:"="
+			list: "="
 		},
 		templateUrl: 'Template/StoresSelect.html',
 		link: function (scope, elem, attr) {
-			console.log(scope.list)
+			for(var i in scope.list){
+				scope.list[i].select=true;
+				scope.list[i].status=false;
+			}
+			scope.select = new Array();
+			scope.tableParams = new NgTableParams({}, { dataset: scope.list });
+
+			//添加门店
+			scope.Add = function(item){
+					item.select=false;
+					item.status=true;
+					scope.select.push(item);
+					scope.tableStores = new NgTableParams({},{dataset:scope.select})
+			}
+
+			scope.All = function(is,item){
+				console.log(is)
+					switch(item){
+							case "AddStore":
+								for(var i in scope.list){
+										if(is){
+												scope.list[i].status=false;
+										}else{
+												scope.list[i].status=true;
+										}
+								}
+							break;
+							case "DelStore":
+
+							break;
+					}
+			}
+
+			scope.del = function(id){
+
+			}
+
 		}
-    }
+	}
 })
 
 })();
@@ -5273,8 +5310,8 @@ function RoleResource($http,device,version) {
 (function(){
 "use strict"
 angular.module('index_area').controller('UserListCtrl',UserListCtrl);
-UserListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','UserResource','RoleResource','OperationResource'];
-function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,UserResource,RoleResource,OperationResource){
+UserListCtrl.$inject = ['$rootScope','PublicResource','NgTableParams','RoleResource','$http'];
+function UserListCtrl($rootScope,PublicResource,NgTableParams,RoleResource,$http){
     document.title ="角色管理";
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
@@ -5324,7 +5361,7 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function list(){
-        UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+       /* UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             if(data.data.status=="OK"){
                 vm.list = data.data.result;
                 vm.TableList = new NgTableParams({},{dataset:vm.list});
@@ -5332,7 +5369,23 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
             }else{
                 layer.msg(data.data.message,{icon:2})
             }
-        })
+        })*/
+        vm.tableParams = new NgTableParams({
+            page: 1, // show first page
+            count: 10, // count per page
+            per_page:10
+        }, {
+            filterDelay: 300,
+            getData: function(info) {
+                return $http.get("/api-admin/user/list",{params:{"device":'2.0.0',"version":'PC',"sessionId":vm.seid,"skip":vm.skip,"limit":0}}).then(function(data){
+                    console.log(data.data.result);
+                    vm.skip +=vm.limit;
+                    info.per_page=10;
+                    info.total(1000);
+                    return data.data.result
+                })
+            }
+        });
 
         RoleResource.list(vm.seid,0,0).then(function(data){
             vm.Rolelist = data.data.result;
@@ -5344,14 +5397,6 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     function get(id){
          RoleResource.get(vm.seid,id).then(function(data){
             vm.info = data.data.result;
-            console.log(vm.Rolelist)
-            // for(var i in vm.info){
-            //     if(typeof(vm.Rolelist[i])!='undefined'){
-            //         if(vm.info[i].id == vm.Rolelist[i].id){
-            //             vm.Rolelist[i].status=true;
-            //         }
-            //     }
-            // }
             for(var i in vm.Rolelist){
                 for(var j in vm.info){
                     if(vm.Rolelist[i].id == vm.info[j].id){

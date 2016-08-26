@@ -30,6 +30,7 @@ function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResour
             for(var i in vm.stores){
                 vm.stores[i].status = true;
             }
+            $rootScope.stores = vm.stores;
             console.log(vm.stores)
              
         })
