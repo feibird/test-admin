@@ -14,3 +14,4 @@
 .textId-hover{display: inline-block;white-space:nowrap;vertical-align: middle;}
 .textId{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 100px;display: inline-block;vertical-align: middle;}
 .dropdown-menu.no-spacing{margin-top: 0;}
+.time-right{border: 1px solid #e4e4e4;background: #eee;margin-right: 10px!important;border-left: 0;}

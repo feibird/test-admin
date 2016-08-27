@@ -9,6 +9,8 @@ function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResour
     vm.seid
     vm.list;						//对象集合
     vm.music = new Object();
+    vm.music.dates = new Array();
+    vm.music.times = new Array();
     vm.stores;
     //获取sessionId
     login()
@@ -35,5 +37,41 @@ function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResour
              
         })
     }
+    vm.add = function(){
+        console.log(vm.music)
+    }
 
+    vm.addDates = function(){
+        var addlist={
+            startDate:"1",
+            endDate:"12"
+        }
+        vm.music.dates.push(addlist)
+        console.log(vm.music.dates)
+    }
+    vm.addTimes = function(){
+        var addlist={
+            startTime:"1",
+            endTime:"12"
+        }
+        vm.music.times.push(addlist)
+        console.log(vm.music.dates)
+    }
+
+    $(function(){
+        $("#addBtn").click(function(){
+            // var list = $('.date');
+            // for(var i=0;i<list.length;i++){
+            //     if(list.eq(i).attr('names')=='dates'){
+            //         var objName=list.eq(i).attr('name');
+            //         console.log(objName)
+            //         for(var j in vm.music.dates){
+            //             vm.music.dates[j][objName]=list.eq(i).val();
+            //         }
+            //     }
+            // }
+            // console.log(vm.music)
+            console.log($('.date').val())
+        })
+	})
 }
