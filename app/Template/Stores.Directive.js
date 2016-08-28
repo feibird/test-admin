@@ -89,9 +89,7 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 				scope.tableStores = new NgTableParams({},{dataset:scope.selectList})
 			}
 
-			$(function(){
-				
-			})
+			
 
 		}
 	}
