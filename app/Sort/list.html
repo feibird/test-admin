@@ -38,7 +38,7 @@
 							<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(item.data.id)">删除</a>
 						</div>
 					</div>
-					<div class="childrenlist" ng-show="isChildren">
+					<div class="childrenlist" ng-show="isChildren"  uib-collapse="SortlistCtrl.open"  >
 						<div class="table-name childrenpy">
 							<i style="margin-left:2px;">&nbsp;</i>
 							<input type="text" ng-model="SortlistCtrl.addinfo.name" class="form-control input-inline-block">
@@ -49,7 +49,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="childrenlist" ng-repeat="list in item.children" ng-hide="item.status==0">
+					<div class="childrenlist" ng-repeat="list in item.children">
 						<div class="table-name childrenpy">
 							<i style="margin-left:2px;">&nbsp;</i>
 							<input type="text" ng-model="list.data.name" class="form-control input-inline-block input-disabled" ng-class="{true:'input-border'}[list.isedit]" ng-disabled="!list.isedit" >
@@ -57,7 +57,7 @@
 						<div class="table-btn">							
 							<div class="btn-main">
 								<a href="javascript:;" ng-click="SortlistCtrl.edit(list)" class="btn btn-blue">{{list.btnName}}</a>
-								<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(list.data.id)">删除</a>
+								<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(list.data.id)">{{SortlistCtrl.open}}删除</a>
 							</div>
 						</div>
 					</div>

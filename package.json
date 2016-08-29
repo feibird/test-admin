@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-animate": "^1.5.2",
     "angular-file-upload": "^2.3.4",
     "browser-sync": "^2.13.0",
     "gulp": "^3.9.1",

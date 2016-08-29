@@ -93,7 +93,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     }
 
     function list(){
-        StoresResource.list(vm.seid,0,12).then(function(data){
+        StoresResource.list(vm.seid,0,0).then(function(data){
             console.log(data.data.result);
             vm.list = data.data.result;
             console.log(vm.list.data)

@@ -19,6 +19,7 @@ th{vertical-align: middle!important;height: 51px;}
 .input-inline-block{display: inline-block;width: auto;}
 .input-disabled{border:0;box-shadow:none;background-color: transparent!important;cursor: default!important;}
 .panel-heading .col-xs-6{  padding: 0;  margin: 0;}
+.mt5{margin: 5px 0;padding: 0 15px;}
 .mt10{  margin: 10px 0;  padding: 0;}
 .d_table {  display: table;  margin-top: -7px;
     width: 100%;}
@@ -70,7 +71,8 @@ th{vertical-align: middle!important;height: 51px;}
 .user-info-navbar{margin: -30px -30px 0px;}
 .breadcrumb.bc-2{height: 120px;border-top: 2px solid #dfdfdf;border-bottom: 2px solid #dfdfdf;margin: 0 -45px;padding: 0 25px;background:#f7f7f7;}
 .breadcrumb.bc-2 li{height: 120px;line-height: 120px;}
-.m0{margin: 0;}
+.m0{margin: 0!important;}
+.w100{width: 100px;}
 .p0{padding: 0;}
 .btn{margin: 0;}
 .table-responsive tr th{    border: 1px solid #eee;}
@@ -91,5 +93,5 @@ th{vertical-align: middle!important;height: 51px;}
 .Filter-title{height: 40px;line-height: 40px;background: black;color: white;padding-left: 10px;}
 .Filter-title .btn{margin-top: 4px;margin-right: 4px;}
 .RoleDiv,.addRole,.operList{padding:10px;}
-
+.vt{vertical-align: top;}
 /****end****/
