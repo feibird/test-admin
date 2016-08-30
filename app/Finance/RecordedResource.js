@@ -7,13 +7,14 @@ RecordedResource.$inject = ['$http', 'device', 'version'];
 function RecordedResource($http, device, version) {
   return {
     list: list,
-    get: get
+    get: get,
+    total:total
   };
 
 
   /**
    * list
-   * 获取门店列表
+   * 获取入账列表
    */
   function list(seid, obj, skip, limit) {
     return $http.get("/api-admin/journal/list", {
@@ -23,11 +24,26 @@ function RecordedResource($http, device, version) {
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        "storeId":"641286e9-2d5b-40b5-8938-c673ae5f02e5"
+        "storeId":obj.storeId,
+        "sources":obj.sources,
+        "maxTotalAmount":obj.maxTotalAmount,
+        "minTotalAmount":obj.minTotalAmount
       }
     }).then(function (data) {
       return data
     })
+  }
+
+  function total(seid){
+      return $http.get('/api-admin/journal/count',{
+        params:{
+          "device": device,
+        "version": version,
+        "sessionId": seid
+        }
+      }).then(function(data){
+          return data
+      })
   }
 
 

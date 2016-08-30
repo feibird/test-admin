@@ -21,7 +21,7 @@
                     <tr ng-repeat="item in MusicListCtrl.list">
                         <td>{{item.name}}</td>
                         <td>{{item.type}}</td>
-                        <td>{{item.content}}</td>
+                        <td><span class="textId">{{item.content}}</span></td>
                         <td>{{item.allStore}}</td>
                         <td>
                             <p ng-repeat="list in item.voiceTimes">{{list.startTime}}至&nbsp;{{list.endTime}}</p>

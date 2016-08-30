@@ -6,6 +6,11 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   $rootScope.name = "入账管理";
   $rootScope.childrenName = "入账管理列表";
   var vm = this;
+  vm.filer = new Object();
+  vm.filer.storeId = "";
+  vm.filer.sources = "";
+  vm.filer.minTotalAmount = "";
+  vm.filer.maxTotalAmount = "";
   vm.pagecount;                                                           //分页总数
   vm.pageint = 1;
 
@@ -18,8 +23,20 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   }
   login();
 
+  //筛选查询
+  vm.filerList = function(){
+    console.log(vm.filer)
+      list();
+  }
 
+  vm.clearFiler = function(){
+    vm.filer.storeId = "";
+    vm.filer.sources = "";
+    vm.filer.minTotalAmount = "";
+    vm.filer.maxTotalAmount = "";
+  }
 
+  //查看
   vm.open = function(item){
     vm.info = item;
     layer.open({
@@ -46,8 +63,9 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
 
   list();
   stores();
+  //入账列表
   function list() {
-    RecordedResource.list(vm.seid, null, 0, 10).then(function (data) {
+    RecordedResource.list(vm.seid,vm.filer, 0, 10).then(function (data) {
       console.log(data.data)
       vm.list = data.data.result;
       for (var i in vm.list) {
@@ -57,6 +75,14 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     })
   }
 
+  total()
+  function total(){
+    RecordedResource.total(vm.seid).then(function(data){
+        vm.pagecount = data.data.result;
+    })
+  }
+
+  //获取所有门店
   function stores() {
     StoresResource.list(vm.seid, 0, 0).then(function (data) {
       vm.store = data.data.result.data;
@@ -64,6 +90,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     })
   }
 
+  //解析时间戳
   function chang_time(date) {
     var Y = date.getFullYear() + '-';
     var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';

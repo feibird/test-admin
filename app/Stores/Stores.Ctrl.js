@@ -34,7 +34,8 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     vm.seid
     vm.list;						//对象集合
     vm.getinfo;
-
+    vm.skip=0;
+    vm.limit=10;
     //获取sessionId
     login()
     function login(){
@@ -92,12 +93,24 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
         })
     }
 
+     
     function list(){
-        StoresResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
-            vm.list = data.data.result;
-            console.log(vm.list.data)
-            vm.tableParams = new NgTableParams({},{dataset:vm.list.data});
+        // StoresResource.list(vm.seid,0,0).then(function(data){
+        //     console.log(data.data.result);
+        //     vm.list = data.data.result;
+        //     console.log(vm.list.data)
+        // })
+        
+        vm.tableParams = new NgTableParams({},{
+            getData:function(params){
+                vm.skip=10*(params.page()-1);
+                return StoresResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+                    console.log(data.data.result);
+                    params.total(data.data.result.total)
+                    console.log(params.page())
+                    return data.data.result.data;
+                })
+            }
         })
     }
 

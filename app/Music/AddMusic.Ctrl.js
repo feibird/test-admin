@@ -133,6 +133,13 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     function addData(){
         MusicResource.add(vm.seid,vm.music).then(function(data){
             console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg('保存成功~',{incon:1},function(){
+                    $state.go('/music/list')
+                });                
+            }else{
+                layer.msg(data.data.message,{icom:2})
+            }
         })
     }
 

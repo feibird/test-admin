@@ -181,7 +181,7 @@
 						</div>
 						<div class="radio">
 						  <label>
-						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT">
+						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT1">
 						    限制次数
 						  </label>
 							<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio" ng-model='taskCtrl.task.timesLimit'>次
@@ -272,12 +272,12 @@
 					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单无关
 					</label>
 						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单满
-						<input type="text" class="input_radio">元
+					  <input type="radio" name="enabled" value="true" ng-change="enbled=true;endbled1=false;" ng-model='taskCtrl.task.enabled' > 订单满
+						<input type="text" class="input_radio" ng-disabled="!enbled" >元
 					</label>
 						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单满
-						<input type="text" class="input_radio">个商品
+					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' ng-change="enbled1=true;endbled=false;"  > 订单满
+						<input type="text" class="input_radio" ng-disabled="!endbled1" >个商品
 					</label>
 		</div>
 	</div>
@@ -286,17 +286,17 @@
 		<div class="panel-body">
 				<div class="radio">
 					<label>
-						<input type="radio" name="enabled" value="CUT" ng-model='taskCtrl.task.type' > 订单减免<input type="text" ng-model='taskCtrl.task.amountLimit' class="input_radio">元
+						<input type="radio" name="enabled" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='taskCtrl.task.type' > 订单减免<input type="text" ng-disabled="!hide" ng-model='taskCtrl.task.amountLimit' class="input_radio">元
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="enabled" value="RANDOM_CUT" ng-model='taskCtrl.task.type' > 随机减<input type="text" class="input_radio">元
+						<input type="radio" name="enabled" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='taskCtrl.task.type' > 随机减免<input type="text" ng-disabled="!hide2" class="input_radio">元
 					</label>
 				</div>
 				<div class="radio">		
 					<label>
-						<input type="radio" name="enabled" value="DISCOUNT" ng-model='taskCtrl.task.type' > 订单折扣<input type="text" class="input_radio">%
+						<input type="radio" name="enabled" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' > 订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">%
 					</label>
 				</div>
 				<div class="radio">		

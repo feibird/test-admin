@@ -143,8 +143,11 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         MusicResource.update(vm.seid,vm.music).then(function (data) {
            if(data.data.status=="OK"){
                console.log(data)
+               layer.msg('保存成功~',{icon:1},function(){
+                   $state.go('/music/list')
+               })
            }else{
-               layer.msg(data.data.message)
+               layer.msg(data.data.message,{icon:2})
            }
         })
     }

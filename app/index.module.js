@@ -77,7 +77,7 @@ angular
                 controller: 'RoleListCtrl as RoleListCtrl',
                 params: {'index':5}
         })
-        .state("/music/list", {                                                               //角色管理
+        .state("/music/list", {                                                               //语音管理
                 url: "/music/musiclist",
                 templateUrl: "Music/list.html",
                 controller: 'MusicListCtrl as MusicListCtrl',
