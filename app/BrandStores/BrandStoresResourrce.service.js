@@ -35,7 +35,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -57,7 +58,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data
@@ -84,7 +86,8 @@ function BrandStoresResource($http,device,version) {
          return $http({
             url:"/api-admin/brand/"+obj.id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
         })
         .then(function (data) {
              return data

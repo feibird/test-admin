@@ -1,9 +1,9 @@
 /**
  * 提供功能API封装
  */
-angular.module('index_area').factory('DrawResource', DrawResource);
-DrawResource.$inject = ['$http','device','version'];
-function DrawResource($http,device,version) {
+angular.module('index_area').factory('DrawResource1', DrawResource1);
+DrawResource1.$inject = ['$http','device','version'];
+function DrawResource1($http,device,version) {
     return {
         list:list,
         get:get,
@@ -41,7 +41,8 @@ function DrawResource($http,device,version) {
         return $http({
             url:"/api-admin/draw/"+id+"/update",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                   "status":status,
                   "device":device,
                   "version":version,
@@ -72,6 +73,7 @@ function DrawResource($http,device,version) {
     function complete(seid,id,status){
         return $.ajax({
     		type:"post",
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
     		url:"/api-admin/draw/"+id+"/complete",
     		dataType:"json",
     		data:{"device":device,"version":version,"sessionId":seid,status:status},

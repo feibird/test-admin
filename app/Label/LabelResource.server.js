@@ -32,7 +32,8 @@ function LabelResource($http,device,version) {
         return $http({
             url:"/api-admin/label/"+info.id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":info.name}
         })
         .then(function (data) {
              return data
@@ -43,7 +44,8 @@ function LabelResource($http,device,version) {
         return $http({
             url:"/api-admin/label/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid}
         })
         .then(function (data) {
              return data

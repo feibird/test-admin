@@ -119,7 +119,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     }
 
     function get(id) {
-        MusicResource.get(vm.seid, id).then(function (data) {
+        MusicResource.get(vm.seid,id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
             vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })

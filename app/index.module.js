@@ -2,8 +2,21 @@ angular
     .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
     .constant("version","2.0.0")		//定义全局变量:版本号
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
         $urlRouterProvider.otherwise("/stores/list");
+        
+        $httpProvider.defaults.transformRequest = function(obj){
+     var str = [];
+     for(var p in obj){
+       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+     }
+     return str.join("&");
+   }
+
+   $httpProvider.defaults.headers.post = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+   }
+        
         $stateProvider
         .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",

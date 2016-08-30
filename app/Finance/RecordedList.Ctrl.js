@@ -11,6 +11,8 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.sources = "";
   vm.filer.minTotalAmount = "";
   vm.filer.maxTotalAmount = "";
+  vm.filer.takeNo = "";
+  vm.filer.tradeId = "";
   vm.pagecount;                                                           //分页总数
   vm.pageint = 1;
 
@@ -26,6 +28,13 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   //筛选查询
   vm.filerList = function(){
     console.log(vm.filer)
+   if(typeof(vm.filer.createStartDate)!="undefined"||vm.filer.createStartDate==""){
+     console.log(vm.filer.createStartDate)
+     vm.filer.createStartDate = vm.filer.createStartDate.getTime();
+   }
+   if(typeof(vm.filer.createEndDate)!="undefined"||vm.filer.createEndDate==""){
+     vm.filer.createEndDate = vm.filer.createEndDate.getTime();
+   }
       list();
   }
 
@@ -34,6 +43,10 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     vm.filer.sources = "";
     vm.filer.minTotalAmount = "";
     vm.filer.maxTotalAmount = "";
+    vm.filer.takeNo = "";
+    vm.filer.tradeId = "";
+    vm.filer.createStartDate="";
+     vm.filer.createEndDate="";
   }
 
   //查看
@@ -88,27 +101,5 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
       vm.store = data.data.result.data;
       console.log(vm.store)
     })
-  }
-
-  //解析时间戳
-  function chang_time(date) {
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = date.getDate() + ' '; //天
-    var h = date.getHours() + ':'; //时
-    var m = date.getMinutes() + ':'; //分
-    var s = date.getSeconds();
-    if (D.length < 3) {
-      D = "0" + D;
-    }
-    if (m.length < 3) {
-      m = "0" + m;
-    }
-
-    if (s < 9) {
-      s = "0" + s;
-    }
-    return Y + M + D + h + m + s;
-
   }
 }

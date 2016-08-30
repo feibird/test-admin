@@ -14,7 +14,8 @@ function FormatResource($http,device,version) {
 	 return $http({
         url:"/api-admin/base/product/spec/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -36,7 +37,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -69,7 +71,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+id+"/remove",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,

@@ -16,7 +16,8 @@ function MarketResource($http,device,version) {
            return $http({
             url:"/api-admin/promotion/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,

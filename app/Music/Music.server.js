@@ -25,7 +25,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -49,11 +50,13 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/update",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
                 "name":obj.name,
+                'id':obj.id,
                 "effective":obj.effective,
                 "type":obj.type,
                 "content":obj.content,
@@ -72,7 +75,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/remove",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,

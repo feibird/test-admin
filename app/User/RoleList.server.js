@@ -29,7 +29,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -41,7 +42,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -53,7 +55,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
         })
         .then(function (data) {
              return data
@@ -64,7 +67,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
         })
         .then(function (data) {
              return data
@@ -75,7 +79,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'roleId':id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'roleId':id}
         })
         .then(function (data) {
              return data

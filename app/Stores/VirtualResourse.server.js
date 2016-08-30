@@ -48,7 +48,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/add",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -87,7 +88,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -114,7 +116,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
         })
         .then(function (data) {
              return data

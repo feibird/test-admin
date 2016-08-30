@@ -10,6 +10,7 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.specs = new Array();
 
     vm.task = new Object();
+    vm.task.formulaParameter = new Object();
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
@@ -26,9 +27,21 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
         if(vm.task.productType=='SELECTED_PRODUCT'){
             vm.task.productIds = ArryString(vm.specs,false)
         }
+        if(typeof(vm.task.startTime)!="undefined"&&vm.task.startTime!=""&&typeof(vm.task.startTime)!='number'){
+            console.log(typeof(vm.task.startTime))
+            vm.task.startTime = vm.task.startTime.getTime();
+        }
+        if(typeof(vm.task.endTime)!="undefined"&&vm.task.endTime!=""&&typeof(vm.task.endTime)!='number'){
+            console.log(vm.task.endTime)
+            vm.task.endTime = vm.task.endTime.getTime();
+        }
         console.log(vm.task);
          MarketResource.add(vm.seid,vm.task).then(function(data){
-            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg("保存成功",{icon:1})
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
     }
 

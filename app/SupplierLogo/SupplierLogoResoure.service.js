@@ -45,7 +45,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/add",
             method:'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -68,7 +69,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,

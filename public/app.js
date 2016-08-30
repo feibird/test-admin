@@ -4,8 +4,21 @@ angular
     .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
     .constant("version","2.0.0")		//定义全局变量:版本号
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
         $urlRouterProvider.otherwise("/stores/list");
+        
+        $httpProvider.defaults.transformRequest = function(obj){
+     var str = [];
+     for(var p in obj){
+       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+     }
+     return str.join("&");
+   }
+
+   $httpProvider.defaults.headers.post = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+   }
+        
         $stateProvider
         .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",
@@ -169,7 +182,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -191,7 +205,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data
@@ -218,7 +233,8 @@ function BrandStoresResource($http,device,version) {
          return $http({
             url:"/api-admin/brand/"+obj.id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
         })
         .then(function (data) {
              return data
@@ -992,7 +1008,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/" + id + "/update",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "status": status,
           "device": device,
           "version": version,
@@ -1025,7 +1042,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/complete",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "ids": ids,
           "device": device,
           "version": version,
@@ -1044,7 +1062,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1063,7 +1082,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1082,7 +1102,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1101,7 +1122,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1178,6 +1200,8 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.sources = "";
   vm.filer.minTotalAmount = "";
   vm.filer.maxTotalAmount = "";
+  vm.filer.takeNo = "";
+  vm.filer.tradeId = "";
   vm.pagecount;                                                           //分页总数
   vm.pageint = 1;
 
@@ -1193,6 +1217,13 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   //筛选查询
   vm.filerList = function(){
     console.log(vm.filer)
+   if(typeof(vm.filer.createStartDate)!="undefined"||vm.filer.createStartDate==""){
+     console.log(vm.filer.createStartDate)
+     vm.filer.createStartDate = vm.filer.createStartDate.getTime();
+   }
+   if(typeof(vm.filer.createEndDate)!="undefined"||vm.filer.createEndDate==""){
+     vm.filer.createEndDate = vm.filer.createEndDate.getTime();
+   }
       list();
   }
 
@@ -1201,6 +1232,10 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     vm.filer.sources = "";
     vm.filer.minTotalAmount = "";
     vm.filer.maxTotalAmount = "";
+    vm.filer.takeNo = "";
+    vm.filer.tradeId = "";
+    vm.filer.createStartDate="";
+     vm.filer.createEndDate="";
   }
 
   //查看
@@ -1256,28 +1291,6 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
       console.log(vm.store)
     })
   }
-
-  //解析时间戳
-  function chang_time(date) {
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = date.getDate() + ' '; //天
-    var h = date.getHours() + ':'; //时
-    var m = date.getMinutes() + ':'; //分
-    var s = date.getSeconds();
-    if (D.length < 3) {
-      D = "0" + D;
-    }
-    if (m.length < 3) {
-      m = "0" + m;
-    }
-
-    if (s < 9) {
-      s = "0" + s;
-    }
-    return Y + M + D + h + m + s;
-
-  }
 }
 
 })();
@@ -1312,7 +1325,11 @@ function RecordedResource($http, device, version) {
         "storeId":obj.storeId,
         "sources":obj.sources,
         "maxTotalAmount":obj.maxTotalAmount,
-        "minTotalAmount":obj.minTotalAmount
+        "minTotalAmount":obj.minTotalAmount,
+        "takeNo":obj.takeNo,
+        "tradeId":obj.tradeId,
+        "createStartDate":obj.createStartDate,
+        "createEndDate":obj.createEndDate
       }
     }).then(function (data) {
       return data
@@ -1729,7 +1746,8 @@ function FormatResource($http,device,version) {
 	 return $http({
         url:"/api-admin/base/product/spec/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -1751,7 +1769,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -1784,7 +1803,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+id+"/remove",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -2028,7 +2048,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -2076,7 +2097,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+obj.id+"/update",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -2111,7 +2133,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+id+"/remove",
         method: 'post',
-        params:{"device":device,"version":version,"sessionId":seid}
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{"device":device,"version":version,"sessionId":seid}
     })
     .then(function (data) {
          return data
@@ -2399,7 +2422,8 @@ function LabelResource($http,device,version) {
         return $http({
             url:"/api-admin/label/"+info.id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":info.name}
         })
         .then(function (data) {
              return data
@@ -2410,7 +2434,8 @@ function LabelResource($http,device,version) {
         return $http({
             url:"/api-admin/label/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid}
         })
         .then(function (data) {
              return data
@@ -2674,7 +2699,8 @@ function MarketResource($http,device,version) {
            return $http({
             url:"/api-admin/promotion/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -2754,6 +2780,7 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.specs = new Array();
 
     vm.task = new Object();
+    vm.task.formulaParameter = new Object();
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
@@ -2770,9 +2797,21 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
         if(vm.task.productType=='SELECTED_PRODUCT'){
             vm.task.productIds = ArryString(vm.specs,false)
         }
+        if(typeof(vm.task.startTime)!="undefined"&&vm.task.startTime!=""&&typeof(vm.task.startTime)!='number'){
+            console.log(typeof(vm.task.startTime))
+            vm.task.startTime = vm.task.startTime.getTime();
+        }
+        if(typeof(vm.task.endTime)!="undefined"&&vm.task.endTime!=""&&typeof(vm.task.endTime)!='number'){
+            console.log(vm.task.endTime)
+            vm.task.endTime = vm.task.endTime.getTime();
+        }
         console.log(vm.task);
          MarketResource.add(vm.seid,vm.task).then(function(data){
-            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg("保存成功",{icon:1})
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
     }
 
@@ -3166,7 +3205,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -3190,11 +3230,13 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/update",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
                 "name":obj.name,
+                'id':obj.id,
                 "effective":obj.effective,
                 "type":obj.type,
                 "content":obj.content,
@@ -3213,7 +3255,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/remove",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -3448,7 +3491,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     }
 
     function get(id) {
-        MusicResource.get(vm.seid, id).then(function (data) {
+        MusicResource.get(vm.seid,id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
             vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
@@ -3534,9 +3577,9 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
 /**
  * 提供功能API封装
  */
-angular.module('index_area').factory('DrawResource', DrawResource);
-DrawResource.$inject = ['$http','device','version'];
-function DrawResource($http,device,version) {
+angular.module('index_area').factory('DrawResource1', DrawResource1);
+DrawResource1.$inject = ['$http','device','version'];
+function DrawResource1($http,device,version) {
     return {
         list:list,
         get:get,
@@ -3574,7 +3617,8 @@ function DrawResource($http,device,version) {
         return $http({
             url:"/api-admin/draw/"+id+"/update",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                   "status":status,
                   "device":device,
                   "version":version,
@@ -3605,6 +3649,7 @@ function DrawResource($http,device,version) {
     function complete(seid,id,status){
         return $.ajax({
     		type:"post",
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
     		url:"/api-admin/draw/"+id+"/complete",
     		dataType:"json",
     		data:{"device":device,"version":version,"sessionId":seid,status:status},
@@ -3675,7 +3720,8 @@ function OrderResource($http,device,version) {
         return $http({
             url:"/api-admin/trade/update-to-refund-completed",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                   "tradeId":id,
                   "device":device,
                   "version":version,
@@ -3809,7 +3855,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/add",
             method: 'post',
-            params:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
         })
         .then(function (data) {
              return data
@@ -3826,7 +3873,8 @@ function SortResource($http,device,version) {
          return $http({
             url:"/api-admin/category/"+id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -3839,8 +3887,9 @@ function SortResource($http,device,version) {
     function remove(seid,id){
          return $http({
             url:"/api-admin/category/"+id+"/remove",
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -3854,7 +3903,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/"+id+"/get",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data
@@ -4534,7 +4584,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/add",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4573,7 +4624,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4600,7 +4652,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
         })
         .then(function (data) {
              return data
@@ -5009,7 +5062,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/add",
             method:'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -5032,7 +5086,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -5524,7 +5579,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -5536,7 +5592,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -5548,7 +5605,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
         })
         .then(function (data) {
              return data
@@ -5559,7 +5617,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
         })
         .then(function (data) {
              return data
@@ -5570,7 +5629,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'roleId':id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'roleId':id}
         })
         .then(function (data) {
              return data

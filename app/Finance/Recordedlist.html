@@ -5,11 +5,11 @@
 			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
 				<div class="input-group col-xs-2 ser_input">
 					<div class="input-group-addon">流水号</div>
-					<input type="text" class="form-control" ng-modle='RecordedlistCtrl.filer.tradeId' >
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.tradeId' >
 				</div>
 				<div class="input-group col-xs-2 ser_input">
 					<div class="input-group-addon">取餐号</div>
-					<input type="text" class="form-control" ng-modle='RecordedlistCtrl.filer.takeNo' >
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.takeNo' >
 				</div>
 				<div class="input-group col-xs-2 ser_input">
 					<div class="input-group-addon">门店</div>
@@ -29,13 +29,13 @@
 			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
 				<div class="input-group col-xs-4 ser_input">
 					<div class="input-group-addon">付款时间</div>
-					<input type="text" class="form-control" uib-datepicker-popup ng-model="list.endDate" is-open="open1" datepicker-options="dateOptions"
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createStartDate" is-open="open1" datepicker-options="dateOptions"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 					<span class="input-group-btn  vt">
 						<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
 					</span>
 					<div class="input-group-addon">到</div>
-					<input type="text" class="form-control" uib-datepicker-popup ng-model="list.endDate" is-open="open" datepicker-options="dateOptions"
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createEndDate" is-open="open" datepicker-options="dateOptions"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 					<span class="input-group-btn vt">
 						<button type="button" class="btn btn-default time-right m0" ng-click="open=true"><i class="glyphicon glyphicon-calendar"></i></button>

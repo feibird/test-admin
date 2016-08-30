@@ -53,7 +53,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/" + id + "/update",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "status": status,
           "device": device,
           "version": version,
@@ -86,7 +87,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/complete",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "ids": ids,
           "device": device,
           "version": version,
@@ -105,7 +107,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -124,7 +127,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -143,7 +147,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -162,7 +167,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,

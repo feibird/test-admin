@@ -27,7 +27,11 @@ function RecordedResource($http, device, version) {
         "storeId":obj.storeId,
         "sources":obj.sources,
         "maxTotalAmount":obj.maxTotalAmount,
-        "minTotalAmount":obj.minTotalAmount
+        "minTotalAmount":obj.minTotalAmount,
+        "takeNo":obj.takeNo,
+        "tradeId":obj.tradeId,
+        "createStartDate":obj.createStartDate,
+        "createEndDate":obj.createEndDate
       }
     }).then(function (data) {
       return data
