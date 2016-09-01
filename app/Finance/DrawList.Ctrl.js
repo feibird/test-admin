@@ -34,14 +34,14 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.updateinfo.storeId = "";
   vm.updateinfo.applyStartDate = "";
   vm.updateinfo.applyEndDate = "";
-  vm.updateinfo.completetStartDate = "";
+  vm.updateinfo.completeStartDate = "";
   vm.updateinfo.completeEndDate = "";
   vm.updateinfo.status = "";
   vm.updateinfo.ids = new Array();
   vm.filer = new Object();
   //获取sessionId
   login();
-
+1
   function login() {
     vm.user = PublicResource.seid("admin");
     if (typeof(vm.user) == "undefined") {
@@ -165,8 +165,27 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   };
 
   vm.Get = function() {
+    vm.updateinfo.completeEndDate=GTM(true,vm.updateinfo.completeEndDate)
+    vm.updateinfo.completeStartDate=GTM(false,vm.updateinfo.completeStartDate)
+    vm.updateinfo.applyStartDate=GTM(false,vm.updateinfo.applyStartDate)
+    vm.updateinfo.applyEndDate=GTM(true,vm.updateinfo.applyEndDate)
     list();
   };
+
+  function GTM(is,data){
+    console.log(data)
+    if(typeof(data)=='undefined'||data==""||data==null){
+        return null
+    }else{
+        data = chang_time(data);
+        if(is){
+            data = data+"23:59:59";
+        }
+        return data = new Date(data).getTime();
+    }
+    
+  }
+
 
   vm.exel = function(){
       exel()
@@ -354,7 +373,11 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     if (s < 9) {
       s = "0" + s;
     }
-    return Y + M + D + h + m + s;
+
+    if (h.length<3) {
+      h = "0" + h;
+    }
+    return Y + M + D;
   }
 
   //修改时间格式(时间戳转换)
@@ -364,8 +387,8 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     }
     console.log(data)
     var date = data.split('-');
-    console.log(date);
     var time = new Date(date[0], date[1] - 1, date[2]).getTime();
+    console.log(time)
     return time;
   }
 
@@ -384,19 +407,6 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       list();
     });
   }
-
-  $(".cr_date").click(function() {
-    console.log($('.date').length)
-    for (var i in $('.date')) {
-      // vm.updateinfo[$('.date').eq(i).name]=$(".date").eq(i).val();
-      if (typeof($('.date').eq(i).val()) == 'undefined' || $('.date').eq(i).val() == "") {
-        return false;
-      } else {
-        vm.updateinfo[$('.date').eq(i).attr('name')] = $('.date').eq(i).val()
-      }
-    }
-    console.log(vm.updateinfo)
-  })
 
   $(function(){
       $(".printBtn").click(function(){

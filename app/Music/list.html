@@ -1,29 +1,39 @@
 <div class="list">
     <div class="list-header col-xs-12">
         <div class="col-xs-6">
-            <a href="javascript:;" class="btn btn-primary" ui-sref="add">新增</a>
+            <a href="javascript:;" class="btn btn-primary" ui-sref="mucadd">新增</a>
         </div>
     </div>
     <div class="list-lyout col-xs-12">
         <div class="list-table">
             <div class="panel-body">
-                <table ng-table="MusicListCtrl.List" class="table table-bordered table-striped table-condensed text-center">
-                    <tr ng-repeat="item in $data">
-                        <td data-title="'语音名称'" filter="{name: 'text'}" sortable="'name'" >{{item.name}}</td>
-                        <td data-title="'语音类型'" filter="{sort: 'number'}" sortable="'sort'" >{{item.type}}</td>
-                        <td data-title="'语音内容'" filter="{legalPerson: 'text'}" sortable="'legalPerson'" >{{item.content}}</td>
-                        <td data-title="'参与门店'" filter="{location: 'text'}" sortable="'location'" >{{item.location}}</td>
-                        <td data-title="'播放时间段'" filter="{'brand.name': 'text'}" sortable="'name'" >
+                <table class="table table-bordered table-striped table-condensed text-center">
+                    <tr>
+                        <th>语音名称</th>
+                        <th>语音类型</th>
+                        <th>语音内容</th>
+                        <th>参与门店</th>
+                        <th>播放时间段</th>
+                        <th>播放日期</th>
+                        <th>是否有效</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr ng-repeat="item in MusicListCtrl.list">
+                        <td>{{item.name}}</td>
+                        <td>{{item.type}}</td>
+                        <td><span class="textId">{{item.content}}</span></td>
+                        <td>{{item.allStore}}</td>
+                        <td>
                             <p ng-repeat="list in item.voiceTimes">{{list.startTime}}至&nbsp;{{list.endTime}}</p>
                         </td>
-                        <td data-title="'播放日期'" filter="{'brand.name': 'text'}" sortable="'name'" >
-                            <p ng-repeat="list in item.voiceDates" >{{list.endDate}}至&nbsp;{{list.startDate}}</p>
+                        <td>
+                            <p ng-repeat="list in item.voiceDates" >{{list.startDate}}至&nbsp;{{list.endDate}}</p>
                         </td>
-                        <td data-title="'是否有效'" filter="{'brand.name': 'text'}" sortable="'name'" >
+                        <td>
                             <p ng-show="item.effective==true">是</p>
                             <p ng-show="item.effective==false">否</p>
                         </td>
-                        <td data-title="'操作'">
+                        <td>
                             <div class="btn-group" uib-dropdown>
                                 <button id="split-button" type="button" class="btn btn-danger">操作</button>
                                 <button type="button" class="btn btn-danger" uib-dropdown-toggle>
@@ -33,13 +43,15 @@
                                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button" >
                                     <li role="menuitem"><a href="javascript:;" ui-sref="Virtual({id:item.id})" >置为无效</a></li>
                                     <li role="menuitem"><a href="javascript:;" ui-sref="VirtualGood" >查看</a></li>
-                                    <li role="menuitem"><a href="javascript:;" ui-sref="update" >修改</a></li>
+                                    <li role="menuitem"><a href="javascript:;" ui-sref="mucupdate({id:item.id})" >修改</a></li>
                                     <li role="menuitem"><a href="javascript:;" ng-click="MusicListCtrl.delBtn(item.id)" >删除</a></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
                 </table>
+                <uib-pagination items-per-page="12" max-size="5" boundary-links="true" total-items="RecordedlistCtrl.pagecount" ng-model="RecordedlistCtrl.pageint"
+					class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页" ng-change="RecordedlistCtrl.pageChanged()"></uib-pagination>
             </div>
         </div>
     </div>

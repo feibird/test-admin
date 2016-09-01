@@ -1,6 +1,6 @@
 angular.module('index_area').controller('UserListCtrl',UserListCtrl);
-UserListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','UserResource','RoleResource','OperationResource'];
-function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,UserResource,RoleResource,OperationResource){
+UserListCtrl.$inject = ['$rootScope','PublicResource','NgTableParams','RoleResource','$http'];
+function UserListCtrl($rootScope,PublicResource,NgTableParams,RoleResource,$http){
     document.title ="角色管理";
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
@@ -50,7 +50,7 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function list(){
-        UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+       /* UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             if(data.data.status=="OK"){
                 vm.list = data.data.result;
                 vm.TableList = new NgTableParams({},{dataset:vm.list});
@@ -58,7 +58,23 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
             }else{
                 layer.msg(data.data.message,{icon:2})
             }
-        })
+        })*/
+        vm.tableParams = new NgTableParams({
+            page: 1, // show first page
+            count: 10, // count per page
+            per_page:10
+        }, {
+            filterDelay: 300,
+            getData: function(info) {
+                return $http.get("/api-admin/user/list",{params:{"device":'2.0.0',"version":'PC',"sessionId":vm.seid,"skip":vm.skip,"limit":0}}).then(function(data){
+                    console.log(data.data.result);
+                    vm.skip +=vm.limit;
+                    info.per_page=10;
+                    info.total(1000);
+                    return data.data.result
+                })
+            }
+        });
 
         RoleResource.list(vm.seid,0,0).then(function(data){
             vm.Rolelist = data.data.result;
@@ -70,14 +86,6 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     function get(id){
          RoleResource.get(vm.seid,id).then(function(data){
             vm.info = data.data.result;
-            console.log(vm.Rolelist)
-            // for(var i in vm.info){
-            //     if(typeof(vm.Rolelist[i])!='undefined'){
-            //         if(vm.info[i].id == vm.Rolelist[i].id){
-            //             vm.Rolelist[i].status=true;
-            //         }
-            //     }
-            // }
             for(var i in vm.Rolelist){
                 for(var j in vm.info){
                     if(vm.Rolelist[i].id == vm.info[j].id){

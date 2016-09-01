@@ -4,8 +4,21 @@ angular
     .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
     .constant("version","2.0.0")		//定义全局变量:版本号
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
         $urlRouterProvider.otherwise("/stores/list");
+        
+        $httpProvider.defaults.transformRequest = function(obj){
+     var str = [];
+     for(var p in obj){
+       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+     }
+     return str.join("&");
+   }
+
+   $httpProvider.defaults.headers.post = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+   }
+        
         $stateProvider
         .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",
@@ -43,12 +56,6 @@ angular
                 controller: 'OrderlistCtrl as OrderlistCtrl',
             params: {'index':5}
         })
-        // .state("/order/Drawlist", {                                                              //结账管理
-        //         url: "/order/Drawlist",
-        //         templateUrl: "Order/Drawlist.html",
-        //         controller: 'DrawlistCtrl as DrawlistCtrl',
-        //     params: {'index':5}
-        // })
         .state("/good/list", {                                                                   //商品管理
                 url: "/good/list",
                 templateUrl: "Good/list.html",
@@ -79,7 +86,7 @@ angular
                 controller: 'RoleListCtrl as RoleListCtrl',
                 params: {'index':5}
         })
-        .state("/music/list", {                                                               //角色管理
+        .state("/music/list", {                                                               //语音管理
                 url: "/music/musiclist",
                 templateUrl: "Music/list.html",
                 controller: 'MusicListCtrl as MusicListCtrl',
@@ -169,7 +176,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -191,7 +199,8 @@ function BrandStoresResource($http,device,version) {
         return $http({
             url:"/api-admin/brand/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data
@@ -218,7 +227,8 @@ function BrandStoresResource($http,device,version) {
          return $http({
             url:"/api-admin/brand/"+obj.id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
         })
         .then(function (data) {
              return data
@@ -559,14 +569,14 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.updateinfo.storeId = "";
   vm.updateinfo.applyStartDate = "";
   vm.updateinfo.applyEndDate = "";
-  vm.updateinfo.completetStartDate = "";
+  vm.updateinfo.completeStartDate = "";
   vm.updateinfo.completeEndDate = "";
   vm.updateinfo.status = "";
   vm.updateinfo.ids = new Array();
   vm.filer = new Object();
   //获取sessionId
   login();
-
+1
   function login() {
     vm.user = PublicResource.seid("admin");
     if (typeof(vm.user) == "undefined") {
@@ -690,8 +700,27 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   };
 
   vm.Get = function() {
+    vm.updateinfo.completeEndDate=GTM(true,vm.updateinfo.completeEndDate)
+    vm.updateinfo.completeStartDate=GTM(false,vm.updateinfo.completeStartDate)
+    vm.updateinfo.applyStartDate=GTM(false,vm.updateinfo.applyStartDate)
+    vm.updateinfo.applyEndDate=GTM(true,vm.updateinfo.applyEndDate)
     list();
   };
+
+  function GTM(is,data){
+    console.log(data)
+    if(typeof(data)=='undefined'||data==""||data==null){
+        return null
+    }else{
+        data = chang_time(data);
+        if(is){
+            data = data+"23:59:59";
+        }
+        return data = new Date(data).getTime();
+    }
+    
+  }
+
 
   vm.exel = function(){
       exel()
@@ -879,7 +908,11 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     if (s < 9) {
       s = "0" + s;
     }
-    return Y + M + D + h + m + s;
+
+    if (h.length<3) {
+      h = "0" + h;
+    }
+    return Y + M + D;
   }
 
   //修改时间格式(时间戳转换)
@@ -889,8 +922,8 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     }
     console.log(data)
     var date = data.split('-');
-    console.log(date);
     var time = new Date(date[0], date[1] - 1, date[2]).getTime();
+    console.log(time)
     return time;
   }
 
@@ -909,19 +942,6 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       list();
     });
   }
-
-  $(".cr_date").click(function() {
-    console.log($('.date').length)
-    for (var i in $('.date')) {
-      // vm.updateinfo[$('.date').eq(i).name]=$(".date").eq(i).val();
-      if (typeof($('.date').eq(i).val()) == 'undefined' || $('.date').eq(i).val() == "") {
-        return false;
-      } else {
-        vm.updateinfo[$('.date').eq(i).attr('name')] = $('.date').eq(i).val()
-      }
-    }
-    console.log(vm.updateinfo)
-  })
 
   $(function(){
       $(".printBtn").click(function(){
@@ -971,10 +991,10 @@ function DrawResource($http, device, version) {
         "limit": limit,
         'storeId': obj.storeId,
         'status': obj.status,
-        "applyStartDate": dateTime(obj.applyStartDate) ? dateTime(obj.applyStartDate) : null,
-        "applyEndDate": dateTime(obj.applyEndDate) ? dateTime(obj.applyEndDate) : null,
-        "completetStartDate": dateTime(obj.completetStartDate) ? dateTime(obj.completetStartDate) : null,
-        "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
+        "applyStartDate":obj.applyStartDate,
+        "applyEndDate": obj.applyEndDate,
+        "completeStartDate":obj.completeStartDate,
+        "completeEndDate":obj.completeEndDate,
         "serialNumber": obj.serialNumber
       }
     }).then(function(data) {
@@ -992,7 +1012,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/" + id + "/update",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "status": status,
           "device": device,
           "version": version,
@@ -1025,7 +1046,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/complete",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "ids": ids,
           "device": device,
           "version": version,
@@ -1044,7 +1066,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1063,7 +1086,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-operate",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1082,7 +1106,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/reject-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1101,7 +1126,8 @@ function DrawResource($http, device, version) {
     return $http({
         url: "/api-admin/draw/approve-finance",
         method: 'post',
-        params: {
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data: {
           "device": device,
           "version": version,
           "sessionId": seid,
@@ -1165,23 +1191,74 @@ function DrawResource($http, device, version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('RecordedlistCtrl',RecordedlistCtrl);
-RecordedlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','RecordedResource','NgTableParams'];
+angular.module('index_area').controller('RecordedlistCtrl', RecordedlistCtrl);
+RecordedlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'RecordedResource', 'NgTableParams'];
 /***调用接口***/
-function RecordedlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,RecordedResource,NgTableParams) {
-    document.title ="入账管理";
-    $rootScope.name="入账管理";
-	$rootScope.childrenName="入账管理列表";
-    var vm = this;
-    
-    login();
+function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, RecordedResource, NgTableParams) {
+  document.title = "入账管理";
+  $rootScope.name = "入账管理";
+  $rootScope.childrenName = "入账管理列表";
+  var vm = this;
+  vm.filer = new Object();
+  vm.filer.storeId = "";
+  vm.filer.sources = "";
+  vm.filer.minTotalAmount = "";
+  vm.filer.maxTotalAmount = "";
+  vm.filer.takeNo = "";
+  vm.filer.tradeId = "";
+  vm.pagecount;                                                           //分页总数
+  vm.pageint = 1;
+
+  //分页点击事件
+  vm.pageChanged = function () {
+    vm.skip = (vm.pageint - 1) * 12;
+    info_list(vm.seid);
+    $location.search('page', vm.pageint)
+    console.log(vm.pageint)
+  }
+  login();
+
+  //筛选查询
+  vm.filerList = function(){
+    console.log(vm.filer)
+   if(typeof(vm.filer.createStartDate)!="undefined"||vm.filer.createStartDate==""){
+     console.log(vm.filer.createStartDate)
+     vm.filer.createStartDate = vm.filer.createStartDate.getTime();
+   }
+   if(typeof(vm.filer.createEndDate)!="undefined"||vm.filer.createEndDate==""){
+     vm.filer.createEndDate = vm.filer.createEndDate.getTime();
+   }
+      list();
+  }
+
+  vm.clearFiler = function(){
+    vm.filer.storeId = "";
+    vm.filer.sources = "";
+    vm.filer.minTotalAmount = "";
+    vm.filer.maxTotalAmount = "";
+    vm.filer.takeNo = "";
+    vm.filer.tradeId = "";
+    vm.filer.createStartDate="";
+     vm.filer.createEndDate="";
+  }
+
+  //查看
+  vm.open = function(item){
+    vm.info = item;
+    layer.open({
+		  type: 1,		  
+		  title:"订单信息",
+		  area: ['440px', 'auto'], //宽高
+		  content:$(".open")
+		});
+  }
 
   function login() {
     vm.user = PublicResource.seid("admin");
-    if (typeof(vm.user) == "undefined") {
+    if (typeof (vm.user) == "undefined") {
       layer.alert("尚未登录！", {
         icon: 2
-      }, function(index) {
+      }, function (index) {
         layer.close(index);
         PublicResource.Urllogin();
       });
@@ -1190,28 +1267,34 @@ function RecordedlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,S
     }
   }
 
-  function chang_time(date) {
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = date.getDate() + ' '; //天
-    var h = date.getHours() + ':'; //时
-    var m = date.getMinutes() + ':'; //分
-    var s = date.getSeconds();
-    console.log(h.length);
-    if (D.length < 3) {
-      D = "0" + D;
-    }
-    console.log(D.length + ',' + D);
-    if (m.length < 3) {
-      m = "0" + m;
-    }
+  list();
+  stores();
+  //入账列表
+  function list() {
+    RecordedResource.list(vm.seid,vm.filer, 0, 10).then(function (data) {
+      console.log(data.data)
+      vm.list = data.data.result;
+      for (var i in vm.list) {
+        vm.list[i].payment.createDate = chang_time(new Date(vm.list[i].payment.createDate));
+      }
+      console.log(vm.list)
+    })
+  }
 
-    if (s < 9) {
-      s = "0" + s;
-    }
-    return Y + M + D + h + m + s;
+  total()
+  function total(){
+    RecordedResource.total(vm.seid).then(function(data){
+        vm.pagecount = data.data.result;
+    })
+  }
 
-}
+  //获取所有门店
+  function stores() {
+    StoresResource.list(vm.seid, 0, 0).then(function (data) {
+      vm.store = data.data.result.data;
+      console.log(vm.store)
+    })
+  }
 }
 
 })();
@@ -1227,221 +1310,281 @@ function RecordedResource($http, device, version) {
   return {
     list: list,
     get: get,
-    update: update,
-    complete: complete,
-    operaOk: operaOk,
-    operaNo: operaNo,
-    FinanNo: FinanNo,
-    FinanOk: FinanOk,
-    count:count
+    total:total
   };
 
 
   /**
    * list
-   * 获取门店列表
+   * 获取入账列表
    */
   function list(seid, obj, skip, limit) {
-    return $http.get("/api-admin/draw/list", {
+    return $http.get("/api-admin/journal/list", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        'storeId': obj.storeId,
-        'status': obj.status,
-        "applyStartDate": dateTime(obj.applyStartDate) ? dateTime(obj.applyStartDate) : null,
-        "applyEndDate": dateTime(obj.applyEndDate) ? dateTime(obj.applyEndDate) : null,
-        "completetStartDate": dateTime(obj.completetStartDate) ? dateTime(obj.completetStartDate) : null,
-        "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
-        "serialNumber": obj.serialNumber
+        "storeId":obj.storeId,
+        "sources":obj.sources,
+        "maxTotalAmount":obj.maxTotalAmount,
+        "minTotalAmount":obj.minTotalAmount,
+        "takeNo":obj.takeNo,
+        "tradeId":obj.tradeId,
+        "createStartDate":obj.createStartDate,
+        "createEndDate":obj.createEndDate
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
 
-  /**
-   * 修改信息
-   * @param {Object} id
-   * @param {Object} seid
-   * @param {Object} name
-   */
-  function update(seid, status, id) {
-    return $http({
-        url: "/api-admin/draw/" + id + "/update",
-        method: 'post',
-        params: {
-          "status": status,
+  function total(seid){
+      return $http.get('/api-admin/journal/count',{
+        params:{
           "device": device,
-          "version": version,
-          "sessionId": seid
+        "version": version,
+        "sessionId": seid
         }
-      })
-      .then(function(data) {
-        return data;
+      }).then(function(data){
+          return data
       })
   }
+
 
   /**
    * 获取某个订单
    */
-  function get(seid,id) {
+  function get(seid, id) {
     return $http.get("/api-admin/draw/" + id + "/get", {
       params: {
         "device": device,
         "version": version,
-        "sessionId":seid
+        "sessionId": seid
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
-  }
-
-  //确认打款
-  function complete(seid, obj) {
-    var ids = arry(obj.ids);
-    return $http({
-        url: "/api-admin/draw/complete",
-        method: 'post',
-        params: {
-          "ids": ids,
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
-        return data;
-      })
-  }
-
-  //运营审核通过
-  function operaOk(seid, obj) {
-    var ids = arry(obj.ids);
-    return $http({
-        url: "/api-admin/draw/approve-operate",
-        method: 'post',
-        params: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
-        return data;
-      })
-  }
-
-  //运营审核通过
-  function operaNo(seid, obj) {
-    var ids = arry(obj.ids);
-    return $http({
-        url: "/api-admin/draw/reject-operate",
-        method: 'post',
-        params: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
-        return data;
-      })
-  }
-
-  //财务审核不通过
-  function FinanNo(seid, obj) {
-    var ids = arry(obj.ids);
-    return $http({
-        url: "/api-admin/draw/reject-finance",
-        method: 'post',
-        params: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
-        return data;
-      })
-  }
-
-  //财务审核通过
-  function FinanOk(seid, obj) {
-    var ids = arry(obj.ids);
-    return $http({
-        url: "/api-admin/draw/approve-finance",
-        method: 'post',
-        params: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
-        return data;
-      })
-  }
-
-  function count(seid, obj, skip, limit) {
-    console.log(obj);
-    return $http.get("/api-admin/draw/sum", {
-      params: {
-        "device": device,
-        "version": version,
-        "sessionId": seid,
-        "skip": skip,
-        "limit": limit,
-        'storeId': obj.storeId,
-        'status': obj.status,
-        "applyStartDate": dateTime(obj.applyStartDate) ? dateTime(obj.applyStartDate) : null,
-        "applyEndDate": dateTime(obj.applyEndDate) ? dateTime(obj.applyEndDate) : null,
-        "completetStartDate": dateTime(obj.completetStartDate) ? dateTime(obj.completetStartDate) : null,
-        "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
-        "serialNumber": obj.serialNumber
-      }
-    }).then(function(data) {
-      return data
-    })
-  }
-
-  //将数组组成字符串
-  function arry(obj) {
-    var ids = "";
-    for (var i in obj) {
-      ids += obj[i] + ","
-    }
-    console.log(ids);
-    ids = ids.substring(0, ids.length - 1);
-
-    return ids;
-  }
-
-  //修改时间格式(时间戳转换)
-  function dateTime(data) {
-    if (data == null || data.length < 1) {
-      return false;
-    }
-    console.log(data)
-    var date = data.split('-');
-    console.log(date);
-    var time = new Date(date[0], date[1] - 1, date[2]).getTime();
-    return time;
   }
 
 
 }
+})();
+(function(){
+"use strict"
+/**
+ * 标签管理功能API封装
+ */
+angular.module('index_area').factory('LabelResource', LabelResource);
+LabelResource.$inject = ['$http','device','version'];
+function LabelResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        update:update,
+        remove:remove,
+        add:add
+    };
+    
+    /**
+	 * list
+	 * 获取列表
+	 */
+    function list(seid,skip,limit,brandId){    	
+       return $http.get("/api-admin/label/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"brandId":brandId}}).then(function(data){
+            return data
+        })
+    }
+
+    function get (seid,id) {
+        return $http.get("/api-admin/label/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
+            return data
+        })
+    }
+
+    function update (seid,info) {
+        return $http({
+            url:"/api-admin/label/"+info.id+"/update",
+            method: 'post',
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"name":info.name}
+        })
+        .then(function (data) {
+             return data
+        })
+    }
+
+    function remove (seid,id) {
+        return $http({
+            url:"/api-admin/label/"+id+"/remove",
+            method: 'post',
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid}
+        })
+        .then(function (data) {
+             return data
+        })        
+    }
+
+    function add (seid,info) {   
+        console.log(info)     
+        return $http({
+            url:"/api-admin/label/add",
+            method: 'post',
+            params:{"device":device,"version":version,"sessionId":seid,"name":info.name,"brandId":info.brand.id}
+        })
+        .then(function (data) {
+             return data
+        })       
+    }
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('LabellistCtrl',LabellistCtrl);
+LabellistCtrl.$inject = ['$scope','$state','$rootScope','PublicResource','LabelResource','$stateParams','BrandStoresResource','NgTableParams'];
+/***调用接口***/
+function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$stateParams,BrandStoresResource,NgTableParams) {
+    document.title ="标签管理";
+	$rootScope.name="标签管理";
+	$rootScope.childrenName="标签管理列表";
+    var vm = this;
+	vm.skip = 0
+	vm.limit = 12;
+	vm.seid
+    vm.pageint=1;															//当前分页导航
+	vm.list;
+    
+	//获取sessionId
+	login()
+	function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.msg("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+    
+     //当前用户状态
+   /* PublicResource.verification(vm.seid).then(function(data){
+    	console.log(data)
+    })*/
+    
+	vm.updateBtn = function(data){
+		console.log(data)
+		if(data.status){
+			data.status=false;
+			if(update(data)){
+				data.status=false;
+			}
+		}else{
+			
+			data.status=true;
+		}
+	}
+	
+	vm.addBtn = function(list){
+		console.log(list)
+		add(list);
+	}
+
+	vm.delBtn = function(id){
+		layer.confirm('您确定要删除标签？', {
+			  btn: ['确定','取消'] //按钮
+		}, 
+		function(){
+			del(id)
+		})
+	}
+
+    //查询标签列表
+   list(vm.seid);
+	logo()
+ 
+	/**
+	 * 标签集合
+	 * @param {Object} seid
+	 */
+	function list(){
+		 LabelResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+	    	vm.list=data.data.result.data;
+			for(var i in vm.list){
+				vm.list[i].status=false;
+			}	  
+	    	console.log(vm.list);
+	    	vm.tableParams = new NgTableParams({},{dataset:vm.list});  	
+	    })
+	}
+
+	/*
+	 *获取连锁品牌
+	 */
+	function logo () {
+		 BrandStoresResource.list(vm.seid,0,0).then(function (data) {
+		 	vm.logolist = data.data.result.data;
+		 	 console.log(vm.logolist)
+		 }) 
+	}
+
+	/**
+	 * 获取单个数据
+	 * @param {Object} seid
+	 */
+	function get(id){		
+		LabelResource.get(vm.seid,id).then(function(data){			
+			vm.info = data.data.result;
+			console.log(vm.info)
+		})
+	}
+	function add (info) {
+		console.log(info)
+		 LabelResource.add(vm.seid,info).then(function(data){			
+			if(data.data.status="OK"){
+				layer.msg("添加成功~",{icon:1},function (index) {
+					 list(vm.seid);
+					 layer.closeAll();
+				})
+			}else {
+				layer.msg(data.data.message,{icon:2})
+			}
+			console.log(vm.info)
+		})  
+	}
+
+	function update (info) {
+		  LabelResource.update(vm.seid,info).then(function(data){			
+			if (data.data.status=="OK") {
+				layer.msg('编辑成功~',{icon:1},function (index) {
+					  list(vm.seid);
+					  layer.closeAll();
+				})
+				return true;
+			}else {
+				layer.msg(data.data.message,{icon:2})
+				return false;
+			}
+		})  
+	}
+
+	function del(id) {
+		  LabelResource.remove(vm.seid,id).then(function(data){			
+			if (data.data.status=="OK") {
+				layer.msg('删除成功~',{icon:1},function (index) {
+					  list(vm.seid);
+					  layer.closeAll();
+				})
+			}else {
+				layer.msg(data.data.message,{icon:2})
+			}
+		})  
+	}
+}
+
 })();
 (function(){
 "use strict"
@@ -1822,7 +1965,8 @@ function FormatResource($http,device,version) {
 	 return $http({
         url:"/api-admin/base/product/spec/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -1844,7 +1988,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -1877,7 +2022,8 @@ function FormatResource($http,device,version) {
 		 return $http({
             url:"/api-admin/base/product/spec/"+id+"/remove",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -1963,98 +2109,98 @@ function GooddetialCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
 /**
  * 基础商品列表控制器
  */
-angular.module('index_area').config(config).controller('GoodlistCtrl',GoodlistCtrl);
+angular.module('index_area').config(config).controller('GoodlistCtrl', GoodlistCtrl);
 /***二级路由***/
 config.$inject = ['$stateProvider'];
-function config($stateProvider){
+function config($stateProvider) {
     $stateProvider
-    .state("addgood", {
-    url: "/good/add",
-    templateUrl: "Good/AddGood.html",
-    controller: 'AddGoodCtrl as AddGoodCtrl'
-    })
-    .state("update",{
-    url: "/good/update/{id:string}",
-    templateUrl: "Good/UpdateGood.html",
-    controller: 'UpdateGoodCtrl as UpdateGoodCtrl'
-    }).state("format", {
-    url: "/good/format/{id:string}",
-    templateUrl: "Good/Format.html",
-    controller: 'FormatCtrl as FormatCtrl'
-    }).state("gooddetail", {
-    url: "/good/gooddetail/{id:string}&{is:string}",
-    templateUrl: "Good/goodDetail.html",
-    controller: 'GooddetialCtrl as GooddetialCtrl'
-    }).state("storegooddetail", {
-    url: "/good/storegooddetail/{id:string}",
-    templateUrl: "Good/storegooddetail.html",
-    controller: 'StoreGooddetailCtrl as StoreGooddetailCtrl'
-    })
+        .state("addgood", {
+            url: "/good/add",
+            templateUrl: "Good/AddGood.html",
+            controller: 'AddGoodCtrl as AddGoodCtrl'
+        })
+        .state("update", {
+            url: "/good/update/{id:string}",
+            templateUrl: "Good/UpdateGood.html",
+            controller: 'UpdateGoodCtrl as UpdateGoodCtrl'
+        }).state("format", {
+            url: "/good/format/{id:string}",
+            templateUrl: "Good/Format.html",
+            controller: 'FormatCtrl as FormatCtrl'
+        }).state("gooddetail", {
+            url: "/good/gooddetail/{id:string}&{is:string}",
+            templateUrl: "Good/goodDetail.html",
+            controller: 'GooddetialCtrl as GooddetialCtrl'
+        }).state("storegooddetail", {
+            url: "/good/storegooddetail/{id:string}",
+            templateUrl: "Good/storegooddetail.html",
+            controller: 'StoreGooddetailCtrl as StoreGooddetailCtrl'
+        })
 }
-GoodlistCtrl.$inject = ['$scope','$rootScope','$state','GoodResource','PublicResource',"$stateParams",'NgTableParams'];
-function GoodlistCtrl($scope,$rootScope,$state,GoodResource,PublicResource,$stateParams,NgTableParams) {
-    document.title ="基础商品列表";
-    $rootScope.name="基础商品"
-    $rootScope.childrenName="基础商品列表"
+GoodlistCtrl.$inject = ['$scope', '$rootScope', '$state', 'GoodResource', 'PublicResource', "$stateParams", 'NgTableParams'];
+function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, $stateParams, NgTableParams) {
+    document.title = "基础商品列表";
+    $rootScope.name = "基础商品"
+    $rootScope.childrenName = "基础商品列表"
     var vm = this;
     vm.seid;
     vm.pagecount;                                                           //分页总数
-    vm.pageint=1;                                                           //当前分页导航
-    vm.skip=0                                                               //从第几个开始
-    vm.limit=12;                                                            //从第几个结束
+    vm.pageint = 1;                                                           //当前分页导航
+    vm.skip = 0                                                               //从第几个开始
+    vm.limit = 12;                                                            //从第几个结束
     vm.list;
-   
-   
-    
-    
-   
-    //获取sessionId
-     login();
-     list(vm.seid);
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
 
-    vm.delBtn = function(id){
-        layer.confirm('是否删除商品？',{
-            btn:["确定",'取消']
-        },function(){
+
+
+
+
+    //获取sessionId
+    login();
+    list(vm.seid);
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        } else {
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+
+    vm.delBtn = function (id) {
+        layer.confirm('是否删除商品？', {
+            btn: ["确定", '取消']
+        }, function () {
             remove(id);
         })
     }
-    
+
     /**
      * 基础商品集合
      * @param {Object} seid
      */
-    function list(seid){
-         GoodResource.list(seid,null,0,20).then(function(data){
-            vm.list=data.data.result;
-             console.log(data)
-             vm.tableParams = new NgTableParams({},{dataset:vm.list.data});  	
+    function list(seid) {
+        GoodResource.list(seid, null, 0,10).then(function (data) {
+            vm.list = data.data.result;
+            console.log(data)
+            vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });
             console.log(data.data.result)
         })
     }
 
-    function remove(id){
-    	GoodResource.del(vm.seid,id).then(function(data){
-    		console.log(data)
-    		 if (data.data.status=="OK") {					
-				layer.alert('删除成功~', {icon: 1});
-				list(vm.seid);
-				layer.closeAll();
-			} else{
-				layer.msg('删除异常，请联系管理员~', {icon: 0});
-			}
-    	})
+    function remove(id) {
+        GoodResource.del(vm.seid, id).then(function (data) {
+            console.log(data)
+            if (data.data.status == "OK") {
+                layer.alert('删除成功~', { icon: 1 });
+                list(vm.seid);
+                layer.closeAll();
+            } else {
+                layer.msg('删除异常，请联系管理员~', { icon: 0 });
+            }
+        })
     }
 }
 
@@ -2121,7 +2267,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -2169,7 +2316,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+obj.id+"/update",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -2204,7 +2352,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+id+"/remove",
         method: 'post',
-        params:{"device":device,"version":version,"sessionId":seid}
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{"device":device,"version":version,"sessionId":seid}
     })
     .then(function (data) {
          return data
@@ -2458,344 +2607,201 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
 })();
 (function(){
 "use strict"
-/**
- * 标签管理功能API封装
- */
-angular.module('index_area').factory('LabelResource', LabelResource);
-LabelResource.$inject = ['$http','device','version'];
-function LabelResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        update:update,
-        remove:remove,
-        add:add
-    };
-    
-    /**
-	 * list
-	 * 获取列表
-	 */
-    function list(seid,skip,limit,brandId){    	
-       return $http.get("/api-admin/label/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"brandId":brandId}}).then(function(data){
-            return data
-        })
-    }
-
-    function get (seid,id) {
-        return $http.get("/api-admin/label/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
-            return data
-        })
-    }
-
-    function update (seid,info) {
-        return $http({
-            url:"/api-admin/label/"+info.id+"/update",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name}
-        })
-        .then(function (data) {
-             return data
-        })
-    }
-
-    function remove (seid,id) {
-        return $http({
-            url:"/api-admin/label/"+id+"/remove",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid}
-        })
-        .then(function (data) {
-             return data
-        })        
-    }
-
-    function add (seid,info) {   
-        console.log(info)     
-        return $http({
-            url:"/api-admin/label/add",
-            method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name,"brandId":info.brand.id}
-        })
-        .then(function (data) {
-             return data
-        })       
-    }
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('LabellistCtrl',LabellistCtrl);
-LabellistCtrl.$inject = ['$scope','$state','$rootScope','PublicResource','LabelResource','$stateParams','BrandStoresResource','NgTableParams'];
-/***调用接口***/
-function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$stateParams,BrandStoresResource,NgTableParams) {
-    document.title ="标签管理";
-	$rootScope.name="标签管理";
-	$rootScope.childrenName="标签管理列表";
-    var vm = this;
-	vm.skip = 0
-	vm.limit = 12;
-	vm.seid
-    vm.pageint=1;															//当前分页导航
-	vm.list;
-    
-	//获取sessionId
-	login()
-	function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.msg("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-    
-     //当前用户状态
-   /* PublicResource.verification(vm.seid).then(function(data){
-    	console.log(data)
-    })*/
-    
-	vm.updateBtn = function(data){
-		console.log(data)
-		if(data.status){
-			data.status=false;
-			if(update(data)){
-				data.status=false;
-			}
-		}else{
-			
-			data.status=true;
-		}
-	}
-	
-	vm.addBtn = function(list){
-		console.log(list)
-		add(list);
-	}
-
-	vm.delBtn = function(id){
-		layer.confirm('您确定要删除标签？', {
-			  btn: ['确定','取消'] //按钮
-		}, 
-		function(){
-			del(id)
-		})
-	}
-
-    //查询标签列表
-   list(vm.seid);
-	logo()
- 
-	/**
-	 * 标签集合
-	 * @param {Object} seid
-	 */
-	function list(){
-		 LabelResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
-	    	vm.list=data.data.result.data;
-			for(var i in vm.list){
-				vm.list[i].status=false;
-			}	  
-	    	console.log(vm.list);
-	    	vm.tableParams = new NgTableParams({},{dataset:vm.list});  	
-	    })
-	}
-
-	/*
-	 *获取连锁品牌
-	 */
-	function logo () {
-		 BrandStoresResource.list(vm.seid,0,0).then(function (data) {
-		 	vm.logolist = data.data.result.data;
-		 	 console.log(vm.logolist)
-		 }) 
-	}
-
-	/**
-	 * 获取单个数据
-	 * @param {Object} seid
-	 */
-	function get(id){		
-		LabelResource.get(vm.seid,id).then(function(data){			
-			vm.info = data.data.result;
-			console.log(vm.info)
-		})
-	}
-	function add (info) {
-		console.log(info)
-		 LabelResource.add(vm.seid,info).then(function(data){			
-			if(data.data.status="OK"){
-				layer.msg("添加成功~",{icon:1},function (index) {
-					 list(vm.seid);
-					 layer.closeAll();
-				})
-			}else {
-				layer.msg(data.data.message,{icon:2})
-			}
-			console.log(vm.info)
-		})  
-	}
-
-	function update (info) {
-		  LabelResource.update(vm.seid,info).then(function(data){			
-			if (data.data.status=="OK") {
-				layer.msg('编辑成功~',{icon:1},function (index) {
-					  list(vm.seid);
-					  layer.closeAll();
-				})
-				return true;
-			}else {
-				layer.msg(data.data.message,{icon:2})
-				return false;
-			}
-		})  
-	}
-
-	function del(id) {
-		  LabelResource.remove(vm.seid,id).then(function(data){			
-			if (data.data.status=="OK") {
-				layer.msg('删除成功~',{icon:1},function (index) {
-					  list(vm.seid);
-					  layer.closeAll();
-				})
-			}else {
-				layer.msg(data.data.message,{icon:2})
-			}
-		})  
-	}
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').config(config).controller('MarketListCtrl',MarketListCtrl);
+angular.module('index_area').config(config).controller('MarketListCtrl', MarketListCtrl);
 config.$inject = ['$stateProvider'];
-function config($stateProvider){
+function config($stateProvider) {
     $stateProvider
         .state("task", {
-                url: "/market/task",
-                templateUrl: "Market/task.html",
-                controller: 'taskCtrl as taskCtrl'
+            url: "/market/task",
+            templateUrl: "Market/task.html",
+            controller: 'taskCtrl as taskCtrl'
+        })
+        .state("updatetask", {
+            url: "/market/updatetask/{id:string}",
+            templateUrl: "Market/UpdateTask.html",
+            controller: 'UpdateTaskCtrl as UpdateTaskCtrl'
         })
 }
-MarketListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','MarketResource'];
-function MarketListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,MarketResource){
-    document.title ="运营活动列表";
-    $rootScope.name="运营管理"
-    $rootScope.childrenName="运营活动列表"
+MarketListCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource'];
+function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource) {
+    document.title = "运营活动列表";
+    $rootScope.name = "运营管理"
+    $rootScope.childrenName = "运营活动列表"
     var vm = this;
-    vm.idClass=false;
+    vm.idClass = false;
     vm.seid;
     login();
     list();
     function login() {
         vm.user = PublicResource.seid("admin");
-        if (typeof(vm.user) == "undefined") {
-        layer.alert("尚未登录！", {
-            icon: 2
-        }, function(index) {
-            layer.close(index);
-            PublicResource.Urllogin();
-        });
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", {
+                icon: 2
+            }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            });
         } else {
-        vm.seid = PublicResource.seid(vm.user);
+            vm.seid = PublicResource.seid(vm.user);
         }
     }
-    function list(){
-        MarketResource.list(vm.seid,0,0).then(function(data){
+    function list() {
+        MarketResource.list(vm.seid, 0, 0).then(function (data) {
             console.log(data.data.result)
             vm.list = data.data.result;
-            for(var i in vm.list){                
+            for (var i in vm.list) {
                 vm.list[i].startTime = chang_time(new Date(vm.list[i].startTime));
                 if (vm.list[i].endTime != null) {
                     vm.list[i].endTime = chang_time(new Date(vm.list[i].endTime));
-                    }
+                }
             }
-            vm.markList = new NgTableParams({},{dataset:vm.list});   
+            vm.markList = new NgTableParams({}, { dataset: vm.list });
         })
     }
 
-    vm.TypeBtn = function(data){
+    vm.TypeBtn = function (data) {
         vm.task.productType = data;
-       
+
     }
 
     function chang_time(date) {
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = date.getDate() + ' '; //天
-    var h = date.getHours() + ':'; //时
-    var m = date.getMinutes() + ':'; //分
-    var s = date.getSeconds();
-    console.log(h.length);
-    if (D.length < 3) {
-        D = "0" + D;
-    }
-    console.log(D.length + ',' + D);
-    if (m.length < 3) {
-        m = "0" + m;
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        console.log(h.length);
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        console.log(D.length + ',' + D);
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+        return Y + M + D;
     }
 
-    if (s < 9) {
-        s = "0" + s;
-    }
-    return Y + M + D;
-}
-    
 }
 })();
 (function(){
 "use strict"
 angular.module('index_area').factory('MarketResource', MarketResource);
-MarketResource.$inject = ['$http','device','version'];
-function MarketResource($http,device,version) {
-    return {
-		  list:list,
-      add:add
-    };
+MarketResource.$inject = ['$http', 'device', 'version'];
+function MarketResource($http, device, version) {
+  return {
+		  list: list,
+    add: add,
+    get: get,
+    update: update,
+    remove: remove
+  };
 
-      function list(seid,skip,limit){
-          return $http.get("/api-admin/promotion/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+  function list(seid, skip, limit) {
+    return $http.get("/api-admin/promotion/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
+      return data
+    })
+  }
+
+  function get(seid, id) {
+    return $http.get("/api-admin/promotion/get", { params: { "device": device, "version": version, "sessionId": seid, 'id': id } }).then(function (data) {
+      return data
+    })
+  }
+
+  function update(seid, obj) {
+    return $http({
+      url: "/api-admin/promotion/update",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "id":obj.id,
+        "name": obj.name,                               //活动名称
+        "description": obj.description,                 //活动描述
+        "startTime": obj.startTime,                     //开始时间
+        "endTime": obj.endTime,                         //结束时间
+        "storeType": obj.storeType,                     //门店类型
+        "storeIds": obj.storeIds,                       //门店id
+        "userType": obj.userType,                       //用户类型
+        "timesLimitCycle": obj.timesLimitCycle,          //周期天数
+        "productType": obj.productType,
+        "productIds": obj.productIds,
+        "timesLimitType": obj.timesLimitType,
+        "timesLimit": obj.timesLimit,
+        "amountLimit": obj.amountLimit,
+        "extensibleCriteria": "",
+        "enabled": obj.enabled,
+        "exclusive": obj.exclusive,
+        "priority": obj.priority,
+        "type": obj.type,
+        "formulaParameter": JSON.stringify(obj.formulaParameterMap)
+      }
+    })
+      .then(function (data) {
         return data
       })
-      }
+  }
 
-      function add(seid,obj){
-           return $http({
-            url:"/api-admin/promotion/add",
-            method: 'post',
-            params:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                "description":obj.description,
-                "startTime":obj.startTime,
-                "endTime":obj.endTime,
-                "storeType":obj.storeType,
-                "storeIds":obj.storeIds,
-                "userType":obj.userType,
-                "productType":obj.productType,
-                "productIds":obj.productIds,
-                "timesLimitType":obj.timesLimitType,
-                "timesLimit":obj.timesLimit,
-                "amountLimit":obj.amountLimit,
-                "extensibleCriteria":"",
-                "enabled":obj.enabled,
-                "exclusive":obj.exclusive,
-                "priority":obj.priority,
-                "type":obj.type,
-                "formulaParameter":obj.formulaParameter
-              }
-        })
-        .then(function (data) {
-            return data
-        })
+  function add(seid, obj) {
+    return $http({
+      url: "/api-admin/promotion/add",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "name": obj.name,
+        "description": obj.description,
+        "startTime": obj.startTime,
+        "endTime": obj.endTime,
+        "storeType": obj.storeType,
+        "storeIds": obj.storeIds,
+        "userType": obj.userType,
+        "timesLimitCycle": obj.timesLimitCycle,
+        "productType": obj.productType,
+        "productIds": obj.productIds,
+        "timesLimitType": obj.timesLimitType,
+        "timesLimit": obj.timesLimit,
+        "amountLimit": obj.amountLimit,
+        "extensibleCriteria": "",
+        "enabled": obj.enabled,
+        "exclusive": obj.exclusive,
+        "priority": obj.priority,
+        "type": obj.type,
+        "formulaParameter": JSON.stringify(obj.formulaParameter)
       }
-    
+    })
+      .then(function (data) {
+        return data
+      })
+  }
+
+
+  function remove(seid, id) {
+    return $http({
+      url: "/api-admin/promotion/remove",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "id": id
+      }
+    })
+      .then(function (data) {
+        return data
+      })
+  }
+
 }
 })();
 (function(){
@@ -2835,6 +2841,291 @@ function PromotionsCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgT
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('UpdateTaskCtrl', UpdateTaskCtrl);
+UpdateTaskCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource', 'StoresResource', 'GoodResource'];
+function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource, StoresResource, GoodResource) {
+    document.title = "编辑运营活动";
+    $rootScope.name = "运营管理"
+    $rootScope.childrenName = "编辑运营活动"
+    var vm = this;
+    vm.id = $stateParams.id;
+    vm.seid;
+    vm.stores = new Object();
+    vm.specs = new Array();
+    vm.data = new Object();
+    vm.data.formulaParameter = new Object();
+    vm.data.productIds = "";
+    vm.data.timesLimit = "";
+    vm.data.amountLimit = ""
+    vm.FilterStores = new Array();      //已选择门店
+    vm.GoodSpecs = new Array();
+    login();
+    get(vm.id)
+    vm.UpTask = function () {
+        for (var i = 0; i < $('.date').length; i++) {
+
+            vm.task[$('.date').eq(i).attr('name')] = $('.date').val();
+        }
+        vm.data.storeIds = ""
+        if (vm.data.storeType == "SELECTED_STORE") {
+            vm.data.storeIds = ArryString(vm.FilterStores, true)
+        }
+        if (vm.data.productType == 'SELECTED_PRODUCT') {
+            vm.data.productIds = ArryString(vm.specs, false)
+        }
+        if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
+            console.log(typeof (vm.data.startTime))
+            vm.data.startTime = vm.data.startTime.getTime();
+        }
+        if (typeof (vm.data.endTime) != "undefined" && vm.data.endTime != "" && typeof (vm.data.endTime) != 'number') {
+            console.log(vm.data.endTime)
+            vm.data.endTime = vm.data.endTime.getTime();
+        }
+        console.log(vm.data);
+        MarketResource.update(vm.seid, vm.data).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg("保存成功", { icon: 1 })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
+            }
+        })
+    }
+
+    //添加门店
+    vm.AddStores = function (list) {
+        if (list.status) {
+            vm.FilterStores.push(list)
+            list.status = false;
+            console.log(vm.FilterStores);
+        }
+    }
+
+    //添加规格
+    vm.AddSpecs = function (item) {
+        if (item.status) {
+            vm.specs.push(item)
+            item.status = false;
+        }
+        vm.specList = new NgTableParams({}, { dataset: vm.specs });
+    }
+
+    //删除已选择门店
+    vm.delStores = function (name) {
+        if (name) {
+            for(var i in vm.FilterStores){
+                if(vm.FilterStores[i].name == name){
+                    console.log(vm.FilterStores[i])
+                    vm.FilterStores.splice(i,1);
+                }
+            }
+        } else {
+            for (var i in vm.FilterStores) {
+                if (vm.FilterStores[i].check) {
+                    console.log(vm.storesList[i])
+                    vm.storesList[i].status = true;
+                    vm.storesList[i].active = false;
+                    vm.FilterStores.splice(i, 1);
+                    
+                }
+            }
+        }
+
+    }
+
+    //删除已选择规格
+    vm.delSpecs = function (i, id) {
+        if (i) {
+            for (var x in vm.GoodSpecs) {
+                if (vm.GoodSpecs[x].spec.id == id) {
+                    console.log(vm.specs[i])
+                    console.log(vm.GoodSpecs[x])
+                    vm.GoodSpecs[x].status = true;
+                    vm.specs.splice(i, 1);
+                    vm.specList = new NgTableParams({}, { dataset: vm.specs });
+                }
+            }
+        } else {
+            for (var i in vm.specs) {
+                if (vm.specs[i].check) {
+                    console.log(vm.specs[i])
+                    for (var x in vm.GoodSpecs) {
+                        if (vm.GoodSpecs[x].spec.id == vm.specs[i].spec.id) {
+                            vm.GoodSpecs[x].status = true;
+                        }
+                    }
+                    vm.specs.splice(i, 1);
+                }
+            }
+            vm.specList = new NgTableParams({}, { dataset: vm.specs });
+        }
+    }
+
+    //全选事件
+    vm.All = function (is) {
+        switch (is) {
+            case 'AddStore':
+                for (var i in vm.storesList) {
+                    if (vm.storesList[i].active) {
+                        vm.storesList[i].active = false;
+                    } else {
+                        vm.storesList[i].active = true;
+                    }
+                }
+                break;
+            case 'DelStore':
+                for (var i in vm.FilterStores) {
+                    if (vm.FilterStores[i].check) {
+                        vm.FilterStores[i].check = false;
+                    } else {
+                        vm.FilterStores[i].check = true;
+                    }
+                }
+                break;
+            case 'AddSpecs':
+                for (var i in vm.GoodSpecs) {
+                    if (vm.GoodSpecs[i].active) {
+                        vm.GoodSpecs[i].active = false;
+                    } else {
+                        vm.GoodSpecs[i].active = true;
+                    }
+                }
+                break;
+            case 'DelSpecs':
+                for (var i in vm.specs) {
+                    if (vm.specs[i].check) {
+                        vm.specs[i].check = false;
+                    } else {
+                        vm.specs[i].check = true;
+                    }
+                }
+                break;
+        }
+    }
+
+    //删除所有
+    vm.delAll = function () {
+        for (var i in vm.FilterStores) {
+            vm.FilterStores[i].check = true;
+        }
+    }
+
+    //添加门店
+    vm.TopStore = function () {
+        for (var i in vm.storesList) {
+            if (vm.storesList[i].active) {
+                vm.FilterStores.push(vm.storesList[i])
+                vm.storesList[i].status = false;
+                vm.storesList[i].active = false;
+            }
+        }
+    }
+
+    //添加所有规格
+    vm.SpecsAll = function () {
+        for (var i in vm.GoodSpecs) {
+            if (vm.GoodSpecs[i].active) {
+                vm.specs.push(vm.GoodSpecs[i])
+                vm.GoodSpecs[i].status = false;
+                vm.GoodSpecs[i].active = false;
+            }
+        }
+        vm.specList = new NgTableParams({}, { dataset: vm.specs });
+    }
+
+
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", {
+                icon: 2
+            }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            });
+        } else {
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+    stores();
+    //门店列表
+    function stores() {
+        StoresResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.storesList = data.data.result.data
+            for (var i in vm.storesList) {
+                vm.storesList[i].status = true;
+            }
+            vm.StroesList = new NgTableParams({}, { dataset: vm.storesList });
+        })
+    }
+    good()
+    //商品列表
+    function good() {
+        GoodResource.list(vm.seid, null, 0, 0).then(function (data) {
+            vm.good = data.data.result.data;
+            // console.log(vm.good)
+            ArryAnalysis(vm.good)
+            // vm.GoodList = new NgTableParams({},{dataset:vm.good});
+        })
+    }
+
+    //商品列表加工
+    function ArryAnalysis(obj) {
+        var good = new Object();
+        good.categories = new Object();
+        for (var i in obj) {
+            for (var j in obj[i].specs) {
+                good.name = obj[i].name;
+                good.categories.children = obj[i].categories.children[0].data;
+                good.categories.data = obj[i].categories.data;
+                good.providerBrand = obj[i].providerBrand;
+                good.spec = obj[i].specs[j]
+                good.status = true;
+                vm.GoodSpecs.push(good);
+                good = new Object();
+                good.categories = new Object();
+            }
+        }
+        vm.GoodList = new NgTableParams({}, { dataset: vm.GoodSpecs });
+    }
+
+    //将已选择的门店或者商品规格提取id为字符串链接
+    function ArryString(obj, status) {
+        console.log(obj);
+        var StoreArry = "";
+        if (status) {
+            for (var i in obj) {
+                StoreArry += obj[i].id + ","
+            }
+        } else {
+            for (var i in obj) {
+                StoreArry += obj[i].spec.id + ","
+            }
+        }
+        StoreArry = StoreArry.substring(0, StoreArry.length - 1)
+        return StoreArry
+    }
+
+    //获取运营数据
+    function get(id) {
+        MarketResource.get(vm.seid, id).then(function (data) {
+            vm.data = data.data.result;
+            for (var i in vm.data.promotionStoreList) {
+                vm.FilterStores.push(vm.data.promotionStoreList[i])
+                vm.data.promotionStoreList[i].status = false;
+            }
+            for (var i in vm.data.promotionProductList) {
+                vm.specs.push(vm.data.promotionProductList[i])
+                vm.data.promotionProductList[i].status = false;
+            }
+            vm.specList = new NgTableParams({}, { dataset: vm.specs });
+            console.log(vm.data)
+        })
+    }
+
+}
+})();
+(function(){
+"use strict"
 angular.module('index_area').controller('taskCtrl',taskCtrl);
 taskCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','MarketResource','StoresResource','GoodResource'];
 function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,MarketResource,StoresResource,GoodResource){
@@ -2847,6 +3138,10 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.specs = new Array();
 
     vm.task = new Object();
+    vm.task.formulaParameter = new Object();
+    vm.task.productIds="";
+    vm.task.timesLimit="";
+    vm.task.amountLimit=""
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
@@ -2860,12 +3155,29 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
         if(vm.task.storeType=="SELECTED_STORE"){
             vm.task.storeIds = ArryString(vm.FilterStores,true)
         }
+        if(vm.task.exclusive){
+            for(var i in vm.tasklist){
+                
+            }
+        }
         if(vm.task.productType=='SELECTED_PRODUCT'){
             vm.task.productIds = ArryString(vm.specs,false)
         }
+        if(typeof(vm.task.startTime)!="undefined"&&vm.task.startTime!=""&&typeof(vm.task.startTime)!='number'){
+            console.log(typeof(vm.task.startTime))
+            vm.task.startTime = vm.task.startTime.getTime();
+        }
+        if(typeof(vm.task.endTime)!="undefined"&&vm.task.endTime!=""&&typeof(vm.task.endTime)!='number'){
+            console.log(vm.task.endTime)
+            vm.task.endTime = vm.task.endTime.getTime();
+        }
         console.log(vm.task);
          MarketResource.add(vm.seid,vm.task).then(function(data){
-            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg("保存成功",{icon:1})
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
     }
 
@@ -3029,6 +3341,14 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
             vm.StroesList = new NgTableParams({},{dataset:vm.storesList});   
         })
     }
+    tasklist();
+    function tasklist(){
+        MarketResource.list(vm.seid,0,0).then(function(data){
+            vm.tasklist = data.data.result;
+            console.log(vm.tasklist)
+        })
+    }
+
     good()
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){
@@ -3082,40 +3402,148 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('AddMusicCtrl',AddMusicCtrl);
-AddMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
+angular.module('index_area').controller('AddMusicCtrl', AddMusicCtrl);
+AddMusicCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams','MusicResource'];
 /***调用接口***/
-function AddMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
+function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresResource, NgTableParams,MusicResource) {
+    document.title = "语音推送管理";
+    $rootScope.name = "语音推送管理";
+    $rootScope.childrenName = "语音推送管理列表";
     var vm = this;
     vm.seid
     vm.list;						//对象集合
     vm.music = new Object();
+    vm.music.dates = new Array();
+    vm.music.store = new Array();
+    vm.music.times = new Array();
     vm.stores;
     //获取sessionId
     login()
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
                 layer.close(index);
                 PublicResource.Urllogin();
             })
-        }else{
+        } else {
             vm.seid = PublicResource.seid(vm.user);
         }
     }
-    Stores();
-    function Stores(){
-        StoresResource.list(vm.seid,0,0).then(function(data){
-            vm.stores = data.data.result.data;
-            for(var i in vm.stores){
-                vm.stores[i].status = true;
+
+
+    //选择部分门店
+    vm.Addstore = function (item) {
+        if (item) {
+            item.select = false;
+            item.status = true;
+            item.active = false;
+            vm.music.store.push(item);
+        } else {
+            for (var i in vm.stores) {
+                console.log(vm.stores[i])
+                if (vm.stores[i].select == true) {
+                    vm.stores[i].select = false;
+                    vm.stores[i].status = true;
+                    vm.stores[i].active = false;
+                    vm.selectList.push(vm.stores[i])
+                }
             }
-            console.log(vm.stores)
-             
+        }
+        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
+    }
+
+
+    //删除所选门店
+    vm.Delstore = function (index) {
+        if (!index) {
+            for (var i in vm.selectList) {
+                if (vm.selectList[i].active) {
+                    for (var j in vm.stores) {
+                        if (vm.stores[j].id == vm.selectList[i].id) {
+                            vm.stores[j].status = false;
+                            vm.stores[j].select = true;
+                        }
+                    }
+                    vm.selectList.splice(i, 1);
+                }
+            }
+
+        } else {
+            for (var i in vm.stores) {
+                if (vm.stores[i].id == vm.music.store[index].id) {
+                    vm.stores[i].status = false;
+                    vm.stores[i].select = true;
+                }
+            }
+            vm.music.store.splice(index, 1)
+        }
+
+        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
+    }
+
+
+    Stores();
+    function Stores() {
+        StoresResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.stores = data.data.result.data;
+            for (var i in vm.stores) {
+                vm.stores[i].select = true;
+                vm.stores[i].status = false;
+            }
+            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
+        })
+    }
+    vm.add = function () {
+        startAdd();
+        addData();
+        console.log(vm.music)
+    }
+
+    vm.addDates = function () {
+        var addlist = {
+            startDate: "",
+            endDate: ""
+        }
+        vm.music.dates.push(addlist)
+        console.log(vm.music.dates)
+    }
+    vm.addTimes = function () {
+        var addlist = {
+            startTime: "11:20",
+            endTime: "12:20"
+        }
+        vm.music.times.push(addlist)
+        console.log(vm.music.dates)
+    }
+
+    function startAdd(){
+        vm.music.storeId="";
+        for(var i in vm.music.dates){
+            if(typeof(vm.music.dates[i].startDate)!="number"){
+                vm.music.dates[i].startDate=vm.music.dates[i].startDate.getTime();
+            }
+            if(typeof(vm.music.dates[i].endDate)!="number"){
+                vm.music.dates[i].endDate=vm.music.dates[i].endDate.getTime();
+            }
+        }
+
+        for(var i in vm.music.store){
+            vm.music.storeId+=vm.music.store[i].id+","
+        }
+        vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+    }
+
+    function addData(){
+        MusicResource.add(vm.seid,vm.music).then(function(data){
+            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg('保存成功~',{incon:1},function(){
+                    $state.go('/music/list')
+                });                
+            }else{
+                layer.msg(data.data.message,{icom:2})
+            }
         })
     }
 
@@ -3151,7 +3579,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/add",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -3160,9 +3589,9 @@ function MusicResource($http,device,version) {
                 "type":obj.type,
                 "content":obj.content,
                 "allStore":obj.allStore,
-                "storeIds":obj.storeIds,
-                "dates":obj.dates,
-                "times":obj.times,
+                "storeIds":obj.storeId,
+                "dates":JSON.stringify(obj.dates),
+                "times":JSON.stringify(obj.times),
                 "formulaParameter":obj.formulaParameter
               }
         })
@@ -3173,20 +3602,22 @@ function MusicResource($http,device,version) {
 
       function update(seid,obj){
            return $http({
-            url:"/api-admin/voice/add",
+            url:"/api-admin/voice/update",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
                 "name":obj.name,
+                'id':obj.id,
                 "effective":obj.effective,
                 "type":obj.type,
                 "content":obj.content,
                 "allStore":obj.allStore,
-                "storeIds":obj.storeIds,
-                "dates":obj.dates,
-                "times":obj.times
+                "storeIds":obj.storeId,
+                "dates":JSON.stringify(obj.voiceDates),
+                "times":JSON.stringify(obj.voiceTimes)
               }
         })
         .then(function (data) {
@@ -3198,7 +3629,8 @@ function MusicResource($http,device,version) {
            return $http({
             url:"/api-admin/voice/remove",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                 "device":device,
                 "version":version,
                 "sessionId":seid,
@@ -3218,10 +3650,15 @@ angular.module('index_area').config(config).controller('MusicListCtrl',MusicList
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
     $stateProvider
-    .state("add", {
+    .state("mucadd", {
         url: "/music/addmusic",
         templateUrl: "Music/AddMusic.html",
         controller: 'AddMusicCtrl as AddMusicCtrl'
+    })
+    .state("mucupdate", {
+        url: "/music/updatemusic/{id:string}",
+        templateUrl: "Music/UpdateMusic.html",
+        controller: 'UpdateMusicCtrl as UpdateMusicCtrl'
     })
 }
 MusicListCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','MusicResource'];
@@ -3250,6 +3687,14 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         }
     }
 
+    vm.delBtn = function(id){
+        layer.confirm('您确定要删除语音？', {
+				btn: ['确定','取消'] //按钮
+		}, function(){
+			    del(id);
+		});
+    }
+
     function list(){
         MusicResource.list(vm.seid,0,0).then(function(data){            
             vm.list = data.data.result.data;
@@ -3260,7 +3705,6 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
                 }
             }
             console.log(vm.list)
-            vm.List = new NgTableParams({},{dataset:vm.list});
         })
     }
 
@@ -3284,128 +3728,223 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         return Y + M + D;
     }
 
+    function del(id){
+        MusicResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status =="OK"){
+                layer.msg('删除成功',{icon:1});
+                list();
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
 }
 
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('UpdateMusicCtrl',UpdateMusicCtrl);
-UpdateMusicCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
+angular.module('index_area').controller('UpdateMusicCtrl', UpdateMusicCtrl);
+UpdateMusicCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams', 'MusicResource'];
 /***调用接口***/
-function UpdateMusicCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
+function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresResource, NgTableParams, MusicResource) {
+    document.title = "语音推送管理";
+    $rootScope.name = "语音推送管理";
+    $rootScope.childrenName = "修改语音推送";
     var vm = this;
     vm.seid
-    vm.list;						//对象集合
+    vm.stores;						//对象集合
     vm.getinfo;
-
+    vm.selectList = new Array();
+    vm.id = $stateParams.id;
+    console.log(vm.id)
     //获取sessionId
     login()
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
+    stores();
+    get(vm.id)
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
                 layer.close(index);
                 PublicResource.Urllogin();
             })
-        }else{
+        } else {
             vm.seid = PublicResource.seid(vm.user);
         }
     }
 
-}
-
-})();
-(function(){
-"use strict"
-/**
- * 提供功能API封装
- */
-angular.module('index_area').factory('DrawResource', DrawResource);
-DrawResource.$inject = ['$http','device','version'];
-function DrawResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        update:update,
-        complete:complete
-    };
-    
-    
-	/**
-	 * list
-	 * 获取门店列表
-	 */
-    function list(seid,obj,skip,limit){
-        console.log(obj)
-        return $http.get("/api-admin/draw/list",
-                {params:{"device":device,
-                        "version":version,
-                        "sessionId":seid,
-                        "skip":skip,
-                        "limit":limit,
-                        'storeId':obj.id,
-                        'status':obj.status
-                    }}).then(function(data){
-            return data
-        })
-    }
-    
-    /**
-     * 修改信息
-     * @param {Object} id
-     * @param {Object} seid
-     * @param {Object} name
-     */
-    function update(seid,status,id){
-        return $http({
-            url:"/api-admin/draw/"+id+"/update",
-            method: 'post',
-            params:{
-                  "status":status,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
-        })
-        .then(function (data) {
-             return data;
-        })
-    }
-    
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){
-    	return $.ajax({
-    		type:"get",
-    		url:"/api-admin/draw/"+id+"/get",
-    		dataType:"json",
-    		data:{"device":device,"version":version,"sessionId":seid},
-    		async:false,    		
-    		success:function(response){
-    			return response.data;
-    		}
-    	});
+    //选择部分门店
+    vm.Addstore = function (item) {
+        if (item) {
+            item.select = false;
+            item.status = true;
+            item.active = false;
+            vm.music.store.push(item);
+        } else {
+            for (var i in vm.stores) {
+                console.log(vm.stores[i])
+                if (vm.stores[i].select == true) {
+                    vm.stores[i].select = false;
+                    vm.stores[i].status = true;
+                    vm.stores[i].active = false;
+                    vm.selectList.push(vm.stores[i])
+                }
+            }
+        }
+        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
     }
 
-    function complete(seid,id,status){
-        return $.ajax({
-    		type:"post",
-    		url:"/api-admin/draw/"+id+"/complete",
-    		dataType:"json",
-    		data:{"device":device,"version":version,"sessionId":seid,status:status},
-    		async:false,    		
-    		success:function(response){
-                console.log(response)
-    			return response.data;
-                
-    		}
-    	});
+
+    //删除所选门店
+    vm.Delstore = function (index) {
+        if (!index) {
+            for (var i in vm.selectList) {
+                if (vm.selectList[i].active) {
+                    for (var j in vm.stores) {
+                        if (vm.stores[j].id == vm.selectList[i].id) {
+                            vm.stores[j].status = false;
+                            vm.stores[j].select = true;
+                        }
+                    }
+                    vm.selectList.splice(i, 1);
+                }
+            }
+
+        } else {
+            for (var i in vm.stores) {
+                if (vm.stores[i].id == vm.music.store[index].id) {
+                    vm.stores[i].status = false;
+                    vm.stores[i].select = true;
+                }
+            }
+            vm.music.store.splice(index, 1)
+        }
+
+        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
+    }
+
+
+    //提交修改资料
+    vm.updata = function () {
+        endUpdate();
+        console.log(vm.music);
+        update()
+    }
+
+    function endUpdate(){
+        vm.music.storeId="";
+        for(var i in vm.music.voiceDates){
+            if(typeof(vm.music.voiceDates[i].startDate)!="number"){
+                vm.music.voiceDates[i].startDate=vm.music.voiceDates[i].startDate.getTime();
+            }
+            if(typeof(vm.music.voiceDates[i].endDate)!="number"){
+                vm.music.voiceDates[i].endDate=vm.music.voiceDates[i].endDate.getTime();
+            }
+        }
+
+        for(var i in vm.music.store){
+            vm.music.storeId+=vm.music.store[i].id+","
+        }
+        vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+    }
+
+    vm.addDates = function () {
+        var addlist = {
+            startDate: "",
+            endDate: ""
+        }
+        vm.music.voiceDates.push(addlist)
+    }
+    vm.addTimes = function () {
+        var addlist = {
+            startTime: "11:20",
+            endTime: "12:20"
+        }
+        vm.music.voiceTimes.push(addlist)
+    }
+
+    function get(id) {
+        MusicResource.get(vm.seid,id).then(function (data) {
+            vm.music = data.data.result;
+            console.log(vm.music)
+            vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
+        })
+    }
+
+    function stores() {
+        StoresResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.stores = data.data.result.data;
+            for (var i in vm.stores) {
+                vm.stores[i].select = true;
+                vm.stores[i].status = false;
+            }
+            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
+            console.log(vm.stores);
+            Ifstore(vm.stores, vm.music.store)
+        })
+    }
+
+    function update() {
+        MusicResource.update(vm.seid,vm.music).then(function (data) {
+           if(data.data.status=="OK"){
+               console.log(data)
+               layer.msg('保存成功~',{icon:1},function(){
+                   $state.go('/music/list')
+               })
+           }else{
+               layer.msg(data.data.message,{icon:2})
+           }
+        })
+    }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        console.log(h.length);
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        console.log(D.length + ',' + D);
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+        return Y + M + D;
+    }
+
+    function Ifstore(a, b) {
+        console.log(vm.stores);
+        for (var i in a) {
+            for (var j in b) {
+                if (a[i].id == b[j].id) {
+                    vm.stores[i].status = true;
+                    vm.stores[i].active = false;
+                    vm.stores[i].select = false;
+                }
+            }
+        }
+    }
+
+    function dateTime(data) {
+        if (data == null || data.length < 1) {
+            return false;
+        }
+        console.log(data)
+        var date = data.split('-');
+        console.log(date);
+        var time = new Date(date[0], date[1] - 1, date[2]).getTime();
+        return time;
     }
 }
+
 })();
 (function(){
 "use strict"
@@ -3464,7 +4003,8 @@ function OrderResource($http,device,version) {
         return $http({
             url:"/api-admin/trade/update-to-refund-completed",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                   "tradeId":id,
                   "device":device,
                   "version":version,
@@ -3598,7 +4138,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/add",
             method: 'post',
-            params:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
         })
         .then(function (data) {
              return data
@@ -3615,7 +4156,8 @@ function SortResource($http,device,version) {
          return $http({
             url:"/api-admin/category/"+id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -3628,8 +4170,9 @@ function SortResource($http,device,version) {
     function remove(seid,id){
          return $http({
             url:"/api-admin/category/"+id+"/remove",
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -3643,7 +4186,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/"+id+"/get",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data
@@ -3749,6 +4293,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 		console.log(item);
 		if(item.status==1){
 			item.status=0;
+			vm.open=true;
 		}else{
 			item.status=1;
 		}
@@ -3884,7 +4429,8 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     vm.seid
     vm.list;						//对象集合
     vm.getinfo;
-
+    vm.skip=0;
+    vm.limit=10;
     //获取sessionId
     login()
     function login(){
@@ -3942,12 +4488,24 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
         })
     }
 
+     
     function list(){
-        StoresResource.list(vm.seid,0,12).then(function(data){
-            console.log(data.data.result);
-            vm.list = data.data.result;
-            console.log(vm.list.data)
-            vm.tableParams = new NgTableParams({},{dataset:vm.list.data});
+        // StoresResource.list(vm.seid,0,0).then(function(data){
+        //     console.log(data.data.result);
+        //     vm.list = data.data.result;
+        //     console.log(vm.list.data)
+        // })
+        
+        vm.tableParams = new NgTableParams({},{
+            getData:function(params){
+                vm.skip=10*(params.page()-1);
+                return StoresResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+                    console.log(data.data.result);
+                    params.total(data.data.result.total)
+                    console.log(params.page())
+                    return data.data.result.data;
+                })
+            }
         })
     }
 
@@ -4309,7 +4867,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/add",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4348,7 +4907,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4375,7 +4935,8 @@ function VirtualResourrce($http,device,version) {
 		return $http({
             url:"/api-admin/virtual/category/"+id+"/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
         })
         .then(function (data) {
              return data
@@ -4784,7 +5345,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/add",
             method:'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4807,7 +5369,8 @@ function SupplierLogoResource($http,device,version) {
 		return $http({
             url:"/api-admin/provider/brand/"+obj.id+"/update",
             method: 'post',
-            params:{
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -4841,18 +5404,101 @@ function SupplierLogoResource($http,device,version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').directive('stores', function () {
-    return {
+angular.module('index_area').directive('stores', function (NgTableParams) {
+	return {
 		restrict: 'E',
 		replace: true,
 		scope: {
-			list:"="
+			list: "=",
+			returnlist:'='
 		},
 		templateUrl: 'Template/StoresSelect.html',
 		link: function (scope, elem, attr) {
-			console.log(scope.list)
+			for(var i in scope.list){
+				scope.list[i].select=true;
+				scope.list[i].status=false;
+			}
+			scope.returnlist = new Array();
+			scope.tableParams = new NgTableParams({}, { dataset: scope.list });
+
+			//添加门店
+			scope.Add = function(item){
+				if(item){
+					item.select=false;
+					item.status=true;
+					item.active=false;
+					scope.returnlist.push(item);
+				}else{
+					for(var i in scope.list){
+						console.log(scope.list[i])
+						if(scope.list[i].select==true){
+							scope.list[i].select=false;
+							scope.list[i].status=true;
+							scope.list[i].active=false;
+							scope.returnlist.push(scope.list[i])
+						}
+					}
+				}
+				scope.tableStores = new NgTableParams({},{dataset:scope.returnlist})
+			}
+
+			scope.All = function(is,item){
+				console.log(is)
+					switch(item){
+							case "AddStore":
+								for(var i in scope.list){
+									if(is){
+											scope.list[i].status=true;
+									}else{
+											scope.list[i].status=false;
+									}
+								}
+							break;
+							case "DelStore":
+								for(var i in scope.returnlist){
+									if(is){
+										scope.returnlist[i].active=true;
+									}else{
+										scope.returnlist[i].active=false;
+									}
+								}
+							break;
+					}
+			}
+
+			scope.Del = function(index){
+				if(!index){
+					
+					for(var i in scope.returnlist){
+						if(scope.returnlist[i].active){
+							console.log(scope.returnlist[i])							
+							for(var j in scope.list){
+								if(scope.list[j].id==scope.returnlist[i].id){
+									scope.list[j].status=false;
+									scope.list[j].select=true;
+								}
+							}
+							scope.returnlist.splice(i,1);
+						}
+					}
+					
+				}else{
+					for(var i in scope.list){
+					if(scope.list[i].id==scope.returnlist[index].id){
+							scope.list[i].status=false;
+							scope.list[i].select=true;
+						}
+					}
+				scope.returnlist.splice(index,1)
+				}
+				
+				scope.tableStores = new NgTableParams({},{dataset:scope.returnlist})
+			}
+
+			
+
 		}
-    }
+	}
 })
 
 })();
@@ -5216,7 +5862,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -5228,7 +5875,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/user/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
         })
         .then(function (data) {
              return data
@@ -5240,7 +5888,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
         })
         .then(function (data) {
              return data
@@ -5251,7 +5900,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
         })
         .then(function (data) {
              return data
@@ -5262,7 +5912,8 @@ function RoleResource($http,device,version) {
         return $http({
             url:"/api-admin/authority/role/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,'roleId':id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,'roleId':id}
         })
         .then(function (data) {
              return data
@@ -5273,8 +5924,8 @@ function RoleResource($http,device,version) {
 (function(){
 "use strict"
 angular.module('index_area').controller('UserListCtrl',UserListCtrl);
-UserListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','UserResource','RoleResource','OperationResource'];
-function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,UserResource,RoleResource,OperationResource){
+UserListCtrl.$inject = ['$rootScope','PublicResource','NgTableParams','RoleResource','$http'];
+function UserListCtrl($rootScope,PublicResource,NgTableParams,RoleResource,$http){
     document.title ="角色管理";
     $rootScope.name="角色管理"
     $rootScope.childrenName="角色管理列表"
@@ -5324,7 +5975,7 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     }
 
     function list(){
-        UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+       /* UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             if(data.data.status=="OK"){
                 vm.list = data.data.result;
                 vm.TableList = new NgTableParams({},{dataset:vm.list});
@@ -5332,7 +5983,23 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
             }else{
                 layer.msg(data.data.message,{icon:2})
             }
-        })
+        })*/
+        vm.tableParams = new NgTableParams({
+            page: 1, // show first page
+            count: 10, // count per page
+            per_page:10
+        }, {
+            filterDelay: 300,
+            getData: function(info) {
+                return $http.get("/api-admin/user/list",{params:{"device":'2.0.0',"version":'PC',"sessionId":vm.seid,"skip":vm.skip,"limit":0}}).then(function(data){
+                    console.log(data.data.result);
+                    vm.skip +=vm.limit;
+                    info.per_page=10;
+                    info.total(1000);
+                    return data.data.result
+                })
+            }
+        });
 
         RoleResource.list(vm.seid,0,0).then(function(data){
             vm.Rolelist = data.data.result;
@@ -5344,14 +6011,6 @@ function UserListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     function get(id){
          RoleResource.get(vm.seid,id).then(function(data){
             vm.info = data.data.result;
-            console.log(vm.Rolelist)
-            // for(var i in vm.info){
-            //     if(typeof(vm.Rolelist[i])!='undefined'){
-            //         if(vm.info[i].id == vm.Rolelist[i].id){
-            //             vm.Rolelist[i].status=true;
-            //         }
-            //     }
-            // }
             for(var i in vm.Rolelist){
                 for(var j in vm.info){
                     if(vm.Rolelist[i].id == vm.info[j].id){

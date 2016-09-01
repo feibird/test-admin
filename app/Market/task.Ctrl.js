@@ -10,6 +10,10 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.specs = new Array();
 
     vm.task = new Object();
+    vm.task.formulaParameter = new Object();
+    vm.task.productIds="";
+    vm.task.timesLimit="";
+    vm.task.amountLimit=""
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
@@ -23,12 +27,29 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
         if(vm.task.storeType=="SELECTED_STORE"){
             vm.task.storeIds = ArryString(vm.FilterStores,true)
         }
+        if(vm.task.exclusive){
+            for(var i in vm.tasklist){
+                
+            }
+        }
         if(vm.task.productType=='SELECTED_PRODUCT'){
             vm.task.productIds = ArryString(vm.specs,false)
         }
+        if(typeof(vm.task.startTime)!="undefined"&&vm.task.startTime!=""&&typeof(vm.task.startTime)!='number'){
+            console.log(typeof(vm.task.startTime))
+            vm.task.startTime = vm.task.startTime.getTime();
+        }
+        if(typeof(vm.task.endTime)!="undefined"&&vm.task.endTime!=""&&typeof(vm.task.endTime)!='number'){
+            console.log(vm.task.endTime)
+            vm.task.endTime = vm.task.endTime.getTime();
+        }
         console.log(vm.task);
          MarketResource.add(vm.seid,vm.task).then(function(data){
-            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg("保存成功",{icon:1})
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
     }
 
@@ -192,6 +213,14 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
             vm.StroesList = new NgTableParams({},{dataset:vm.storesList});   
         })
     }
+    tasklist();
+    function tasklist(){
+        MarketResource.list(vm.seid,0,0).then(function(data){
+            vm.tasklist = data.data.result;
+            console.log(vm.tasklist)
+        })
+    }
+
     good()
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){

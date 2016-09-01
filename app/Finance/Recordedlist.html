@@ -2,215 +2,157 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">提现列表</div>
 		<div class="panel-body">
-			<div class="col-xs-12 ser_lyout ">
-				<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
-					<div class="input-group col-xs-2 ser_input">
-						<div class="input-group-addon">门店</div>
-						<select name="" id="" class="form-control" ng-model='DrawlistCtrl.updateinfo.storeId' ng-options="a.id as a.name for a in DrawlistCtrl.stores">
-							<option selected value='' >请选择</option>
-						</select>
-					</div>
-					<div class="input-group col-xs-2 ser_input">
-						<div class="input-group-addon">提现流水号</div>
-						<input type="text" class="form-control" ng-model="DrawlistCtrl.updateinfo.serialNumber">
-					</div>
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">流水号</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.tradeId' >
 				</div>
-				<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;" >
-					<div class="input-group col-xs-5 ser_input">
-						<span class="input-group-addon">付款时间</span>
-						<input type="text" onclick="laydate()" ng-model="DrawlistCtrl.updateinfo.applyStartDate" class="form-control date " name="applyStartDate" >
-						<span class="input-group-addon">到</span>
-						<input type="text" class="form-control">
-					</div>
-					<div class="input-group col-xs-5 ser_input">
-						<span class="input-group-addon">付款金额</span>
-						<input type="text" class="form-control">
-						<span class="input-group-addon">到</span>
-						<input type="text" class="form-control">
-					</div>
-					<div class="input-group col-xs-5 ser_input">
-						<span class="input-group-addon">结束时间</span>
-						<input type="text" class="form-control">
-						<span class="input-group-addon">到</span>
-						<input type="text" class="form-control">
-					</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">取餐号</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.takeNo' >
 				</div>
-				<div class="ser_lyoutDiv">
-					<a href="javascript:;" class="btn btn-secondary cr_date" ng-click="DrawlistCtrl.Get()">查询</a>
-					<a href="javascript:;" class="btn btn-orange  cr_date">报表导出</a>
-					<a href="javascript:;" ng-click='DrawlistCtrl.count()' class="btn btn-info cr_date">汇总凭据打印</a>
-					<a href="javascript:;" ng-click='DrawlistCtrl.count_detail()'  class="btn cr_date btn-blue">明细凭据打印</a>
-					<a href="javascript:;" id="test" class="btn btn-black">打印测试</a>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">门店</div>
+					<select name="" id="" class="form-control" ng-model='RecordedlistCtrl.filer.storeId' ng-options="i.id as i.name for i in RecordedlistCtrl.store" >
+						<option slected value="" >请选择</option>
+					</select>
+				</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">支付来源</div>
+					<select name="" id="" class="form-control" ng-model='RecordedlistCtrl.filer.sources' >
+						<option value="" selected>请选择</option>
+						<option value="STORE">一键支付</option>
+						<option value="APP">一键订餐</option>
+					</select>
+				</div>	
+			</div>
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+				<div class="input-group col-xs-4 ser_input">
+					<div class="input-group-addon">付款时间</div>
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createStartDate" is-open="open1" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+					<span class="input-group-btn  vt">
+						<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+					<div class="input-group-addon">到</div>
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createEndDate" is-open="open" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+					<span class="input-group-btn vt">
+						<button type="button" class="btn btn-default time-right m0" ng-click="open=true"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+				<div class="input-group col-xs-4 ser_input">
+					<div class="input-group-addon">付款金额</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.minTotalAmount' >
+					<div class="input-group-addon">到</div>
+					<input type="text" class="form-control" ng-model="RecordedlistCtrl.filer.maxTotalAmount">
+					<div class="input-group-addon">元</div>
+				</div>
+			</div>
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;" >
+				<div class="col-xs-4">
+					<button class="btn btn-primary" ng-click='RecordedlistCtrl.filerList()'>查询</button>
+					<button class="btn btn-red" ng-click="RecordedlistCtrl.clearFiler()" >清空</button>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-xs-12 c0">
-		<div class="batch-btn c0">
-				<button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown">
-					批量操作 <span class="caret"></span>
-				</button>
-
-				<ul class="dropdown-menu dropdown-red no-spacing">
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('INIT','operaOk')">批量运营审核成功</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','FinanOk')">批量财务审核成功</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('INIT','operaNo')">批量运营审核打回</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','operaNo')">批量财务审核打回</a></li>
-					<li><a href="javascript:;" ng-click="DrawlistCtrl.operaBtn('FINANCE_APPROVED','complete')">批量打款</a></li>
-				</ul>
-			</div>
 	</div>
 	<div class="list-lyout col-xs-12">
 		<div class="list-table">
 			<div class="panel-body">
-				<table ng-table="DrawlistCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
-					<tr ng-repeat="item in $data">
-						<td width='50' header="'Finance/checkbox.html'"><input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.active" ng-click="!item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}</td>
-						<td data-title="'流水号'" filter="{serialNumber:'number'}" sortable="'serialNumber'"><span ng-class="{false:'textId',true:'textId-hover'}[ishover]" class="textId">{{item.serialNumber}}</span></td>
-						<td data-title="'门店名称'" filter="{name: 'text'}" sortable="'name'">{{item.store.name}}</td>
-						<td data-title="'联系法人'" filter="{legalPerson: 'text'}" sortable="'legalPerson'">{{item.store.legalPerson}}</td>
-						<td data-title="'提现金额'" filter="{amount: 'number'}" sortable="'amount'">{{item.amount}}</td>
-						<td data-title="'申请时间'" filter="{createDate: 'text'}" sortable="'createDate'">{{item.createDate}}</td>
-						<td data-title="'结束时间'" filter="{endDate: 'text'}" sortable="'endDate'">{{item.endDate==null? '暂无':item.endDate}}</td>
-						<td data-title="'提现状态'" filter="{status: 'text'}" sortable="'status'">
-							<span ng-show="item.status=='INIT'">待审核</span>
-							<span ng-show="item.status=='APPROVED'">审核成功</span>
-							<span ng-show="item.status=='FAILED'">审核失败</span>
-							<span ng-show="item.status=='COMPLETED'">打款成功</span>
-							<span ng-show="item.status=='OPERATOR_FAILED'">运营审核失败</span>
-							<span ng-show="item.status=='OPERATOR_APPROVED'">运营审核通过</span>
-							<span ng-show="item.status=='FINANCE_APPROVED'">财务审核通过</span>
+				<table class="table table-bordered table-striped table-condensed text-center">
+					<tr>
+						<th><input type="checkbox" style="margin-right:5px;">00</th>
+						<th>流水号</th>
+						<th>取餐号</th>
+						<th>门店名称</th>
+						<th>OpenId</th>
+						<th>订单来源</th>
+						<th>支付方式</th>
+						<th>付款金额</th>
+						<th>到账金额</th>
+						<th>付款时间</th>
+						<th>操作</th>
+					</tr>
+					<tr ng-repeat="item in RecordedlistCtrl.list">
+						<td width='50'><input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.active" ng-click="!item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+						<td><span class="textId">{{item.payment.tradeId}}</span></td>
+						<td>{{item.trade.takeNo}}</td>
+						<td>{{item.store.name}}</td>
+						<td><span class="textId">{{item.user.openId}}</span></td>
+						<td>
+							{{item.trade.source=='STORE'?'一键支付':null}} 
+							{{item.trade.source=='APP'?'一键订餐':null}}
 						</td>
-						<td data-title="'备注'" filter="{remark: 'text'}" sortable="'index'">{{item.remark==null? '暂无':item.remark}}</td>
-						<td data-title="'操作'">
-							<div class="batch-btn">
-								<button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
-        					操作 <span class="caret"></span>
-        				</button>
-
-								<ul class="dropdown-menu dropdown-default no-spacing">
-									<li><a href="javascript:;" ui-sref="detail({id:item.id})"><span class="fa-eye fa-icon-right"></span>查看</a></li>
-									<li>
-										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaOk',item.id)" ng-show="item.status=='INIT'"><span class="fa-edit fa-icon-right"></span>审核通过</a>
-									</li>
-									<li>
-										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('complete',item.id)" ng-show="item.status=='APPROVED'"><span class="fa-trash fa-icon-right"></span>确认打款</a>
-									</li>
-									<li>
-										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaNo',item.id)" ng-show="item.status=='INIT'"><span class="fa-eye fa-icon-right"></span>打回申请</a>
-									</li>
-									<li><a href="javascript:;"><span class="fa-edit fa-icon-right"></span>打印凭证</a></li>
-								</ul>
-							</div>
+						<td>
+							{{item.payment.channel=="WECHAT_WEB"?'微信公众号':''}} {{item.payment.channel=="WECHAT_APP"?'微信支付':''}} {{item.payment.channel=="ZHIFUBAO_WEB"?'支付宝网页':''}}
+							{{item.payment.channel=="ZHIFUBAO_APP"?'支付宝应用':''}} {{item.payment.channel==null?'线下支付':''}}
+						</td>
+						<td>{{item.reckoning.paidInAmount==null? '暂无':item.reckoning.paidInAmount}}</td>
+						<td>{{item.reckoning.paidInAmount==null? '暂无':item.reckoning.paidInAmount}}</td>
+						<td>{{item.payment.createDate}}</td>
+						<td>
+							<a href="javascript:;" ng-click="RecordedlistCtrl.open(item)" class="btn btn-primary">查看</a>
 						</td>
 					</tr>
 				</table>
+				<uib-pagination items-per-page="12" max-size="5" boundary-links="true" total-items="RecordedlistCtrl.pagecount" ng-model="RecordedlistCtrl.pageint"
+					class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页" ng-change="RecordedlistCtrl.pageChanged()"></uib-pagination>
 			</div>
 		</div>
 	</div>
-	<div class="alertDiv">
-		<div class="alertDiv-tit">您即将对{{DrawlistCtrl.updateinfo.ids.length}}条数据进行批量操作</div>
-		<p>您可以填写备注</p>
-		<textarea name="name" class="form-control" rows="8" ng-model="DrawlistCtrl.updateinfo.remark" cols="40"></textarea>
-		<div class="col-xs-12 text-center">
-			<a href="javascript:;" ng-click="DrawlistCtrl.alertBtn()" class="btn btn-blue">确定</a>
+	<div class="open display_none">
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款流水号</div>
+			<div class="form-control">{{RecordedlistCtrl.info.payment.tradeId}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款门店</div>
+			<div class="form-control">{{RecordedlistCtrl.info.store.name}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">用户OpenId</div>
+			<div class="form-control">{{RecordedlistCtrl.info.user.openId}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">订单来源</div>
+			<div class="form-control">
+				{{RecordedlistCtrl.info.trade.source=='STORE'?'一键支付':null}} 
+				{{RecordedlistCtrl.info.trade.source=='APP'?'一键订餐':null}}
+			</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">支付方式</div>
+			<div class="form-control">
+				{{RecordedlistCtrl.info.payment.channel=="WECHAT_WEB"?'微信公众号':''}}
+				{{RecordedlistCtrl.info.payment.channel=="WECHAT_APP"?'微信支付':''}}
+				{{RecordedlistCtrl.info.payment.channel=="ZHIFUBAO_WEB"?'支付宝网页':''}}
+				{{RecordedlistCtrl.info.payment.channel=="ZHIFUBAO_APP"?'支付宝应用':''}}
+				{{RecordedlistCtrl.info.payment.channel==null?'线下支付':''}}
+			</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">到账金额</div>
+			<div class="form-control">{{RecordedlistCtrl.info.reckoning.paidInAmount==null? '暂无':RecordedlistCtrl.info.reckoning.paidInAmount}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款时间</div>
+			<div class="form-control">{{RecordedlistCtrl.info.payment.createDate}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">用户昵称</div>
+			<div class="form-control">{{RecordedlistCtrl.info.user.nickname}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">订单号</div>
+			<div class="form-control">{{RecordedlistCtrl.info.reckoning.id}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">取餐号</div>
+			<div class="form-control"></div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">支付号</div>
+			<div class="form-control"></div>
 		</div>
 	</div>
-	<div class="count">
-		<p class="count-title">提现日汇总凭据</p>
-		<div class="count-lyout">
-			<table>
-				<tr>
-					<td class='text-center' >提现日期</td>
-					<td>2016-08-19</td>
-					<td class='text-center' >连锁品牌</td>
-					<td>芭比馒头</td>
-				</tr>
-				<tr>
-					<td class='text-center' >提现笔数</td>
-					<td>{{DrawlistCtrl.count.count}}笔</td>
-					<td class='text-center' >申请提现总额</td>
-					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfApply}}</td>
-				</tr>
-				<tr>
-					<td class='text-center' >提现门店总数</td>
-					<td>{{DrawlistCtrl.count.storeNum}}</td>
-					<td class='text-center' >审核通过笔数</td>
-					<td>{{DrawlistCtrl.count.approve}}笔</td>
-				</tr>
-				<tr>
-					<td class='text-center' >审核拒绝笔数</td>
-					<td>{{DrawlistCtrl.count.reject}}笔</td>
-					<td class='text-center' >打款总额</td>
-					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfComplete}}</td>
-				</tr>
-				<tr>
-					<td class='text-center' >运营审核人员</td>
-					<td colspan="3">
-						<p ng-repeat="item in DrawlistCtrl.count.audits.COMPLETE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
-					</td>
-				</tr>
-				<tr>
-					<td class='text-center' >财务审核人员</td>
-					<td colspan="3">
-						<p ng-repeat="item in DrawlistCtrl.count.audits.FINANCE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
-					</td>
-				</tr>
-				<tr>
-					<td class='text-center' >运营打款人员</td>
-					<td colspan="3">
-						<p ng-repeat="item in DrawlistCtrl.count.audits.OPERATE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div class="col-xs-12 text-center">
-			<a href="javascript:;" id='countBtn'  class="btn btn-black">打印</a>
-		</div>
-	</div>
-	<div class="count-detail">
-		<div class="detail-title">明细凭据<a href="javascript:;" id='detailBtn' class="btn btn-black" >打印明细</a></div>
-		<div class="detail-lyout">
-			<table>
-				<tr>
-					<th width='150'>申请时间</th>
-					<th width='150'>流水号</th>
-					<th width='100' >提现金额</th>
-					<th width='150' >提现门店</th>
-					<th width='70' >店长姓名</th>
-					<th width='120' >手机号</th>
-					<th width='70' >运营人员</th>
-					<th width='70' >财务人员</th>
-					<th width='70' >打款人员</th>
-					<th width='150'>打款时间</th>
-				</tr>
-				<tr ng-repeat='item in DrawlistCtrl.count_detail'>
-					<td class='w50'>{{item.createDate}}</td>
-					<td><span class="w100">{{item.serialNumber}}</span></td>
-					<td class='w10'><i>￥</i>{{item.amount}}</td>
-					<td><span  class='w80'>{{item.store.name}}</span></td>
-					<td class='w50'>{{item.applyUser.name}}</td>
-					<td>{{item.applyUser.phoneNumber}}</td>
-					<td class='w50'>{{item.operatorUser.name==null?'暂无':item.operatorUser.name}}</td>
-					<td class='w50'>{{item.financeUser.name==null?'暂无':item.financeUser.name}}</td>
-					<td class='w50'>{{item.completeUser.name==null?'暂无':item.completeUser.name}}</td>
-					<td>{{item.endDate==null?'暂无':item.endDate}}</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<script>
-		$(function(){
-			$("#countBtn").click(function(){
-				$(this).hide();
-				$('.count').jqprint();
-				$(this).show();
-			})
-
-			$("#detailBtn").click(function(){
-				$(this).hide();
-				$('.count-detail').jqprint();
-				$(this).show();
-			})
-		})
-	</script>

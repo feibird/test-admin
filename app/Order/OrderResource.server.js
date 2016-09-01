@@ -53,7 +53,8 @@ function OrderResource($http,device,version) {
         return $http({
             url:"/api-admin/trade/update-to-refund-completed",
             method: 'post',
-            params:{
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
                   "tradeId":id,
                   "device":device,
                   "version":version,

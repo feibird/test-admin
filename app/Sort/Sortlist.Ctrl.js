@@ -94,6 +94,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 		console.log(item);
 		if(item.status==1){
 			item.status=0;
+			vm.open=true;
 		}else{
 			item.status=1;
 		}

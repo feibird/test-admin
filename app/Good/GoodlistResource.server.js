@@ -58,7 +58,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/add",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -106,7 +107,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+obj.id+"/update",
         method: 'post',
-        params:{
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
 				"device":device,
 				"version":version,
 				"sessionId":seid,
@@ -141,7 +143,8 @@ function GoodResource($http,device,version) {
 		return $http({
         url:"/api-admin/base/product/"+id+"/remove",
         method: 'post',
-        params:{"device":device,"version":version,"sessionId":seid}
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{"device":device,"version":version,"sessionId":seid}
     })
     .then(function (data) {
          return data

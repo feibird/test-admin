@@ -1,16 +1,18 @@
 .page-container .main-content{z-index: inherit;}
 .page-container .main-content:hover{z-index: inherit;}
 .layui-layer-setwin .layui-layer-close2{z-index: 100; }
+.layui-layer-content{padding-top: 5px;}
 .input-show{text-align: left;}
 .input-hide{text-align: center;cursor:auto!important;background-color:transparent!important;border: 0;box-shadow:none;}
 .fr_success{color: #428bca;}
 .display_none{display: none;}
-.ser_lyout{border: 2px solid #ddd;background:#fbfbfb;margin: 0;padding: 0;}
+.ser_lyout{border: 2px solid #ddd;background:#fbfbfb;margin: 0;padding: 10px;}
 .ser_lyoutDiv{padding: 5px 0;}
-.ser_lyoutDiv .btn{margin:10px 20px;}
+/*.ser_lyoutDiv .btn{margin:10px 20px;}*/
 .ser_input{float: left!important;margin: 5px 10px;}
 .ser_input .input-group-addon{background: #fbfbfb;border: none;}
 .batch-btn{display: inline-block;position: relative;margin: 0 5px;}
 .textId-hover{display: inline-block;white-space:nowrap;vertical-align: middle;}
 .textId{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 100px;display: inline-block;vertical-align: middle;}
 .dropdown-menu.no-spacing{margin-top: 0;}
+.time-right{border: 1px solid #e4e4e4;background: #eee;margin-right: 10px!important;border-left: 0;}

@@ -41,21 +41,18 @@
 						    否
 						  </label>
 						</div>
-						<table class='table table-responsive table-hover' ng-show='taskCtrl.exclusive' >
+						<table class='table table-responsive table-hover' ng-show='taskCtrl.task.exclusive' >
 							<tr>
+								<th width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >全选</th>
 								<th>活动名称</th>
 								<th>活动id</th>
 								<th>优先级</th>
 							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
-							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
+							<tr class='text-center' ng-repeat="item in taskCtrl.tasklist" >
+								<td width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+								<td>{{item.name}}</td>
+								<td><span class="textId">{{item.id}}</span></td>
+								<td>{{item.priority}}</td>
 							</tr>
 						</table>
 					</div>
@@ -162,9 +159,17 @@
 					<div class="form-layout">
 						<div class="input-group">
 							<div class="input-group-addon">从</div>
-							<input type="text" class="form-control date" name='startTime' onclick="laydate()" ng-model='taskCtrl.task.startTime' >
+							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.startTime" is-open="open1" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+							<span class="input-group-btn  vt">
+								<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
+							</span>
 							<div class="input-group-addon">到</div>
-							<input type="text" class="form-control date" name='endTime' onclick="laydate()" ng-model='taskCtrl.task.endTime' >
+							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.endTime" is-open="open2" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+							<span class="input-group-btn  vt">
+								<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -175,22 +180,22 @@
 						<div class="form-layout">
 						<div class="radio">
 						  <label>
-						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="CONTINUOUS" checked>
-						    仅限一次
+						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="NO_LIMIT" checked>
+						    无限制
 						  </label>
 						</div>
 						<div class="radio">
 						  <label>
-						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT">
+						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="CONTINUOUS">
 						    限制次数
 						  </label>
-							<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio" ng-model='taskCtrl.task.timesLimit'>次
+							<input type="text" ng-disabled="taskCtrl.task.timesLimitType!='CONTINUOUS'" class="input_radio" ng-model='taskCtrl.task.timesLimit'>次
 						</div>
 						<div class="radio">
 						  <label>
 						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT">
 						    限制周期
-						    &nbsp;周期<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">天内<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">次
+						    &nbsp;周期<input type="text" ng-disabled="taskCtrl.task.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">次
 						  </label>
 						</div>
 					</div>
@@ -269,15 +274,11 @@
 		<div class="panel-heading">活动促销方式</div>
 		<div class="panel-body">
 					<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单无关
+					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.amount' > 订单无关
 					</label>
 						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单满
-						<input type="text" class="input_radio">元
-					</label>
-						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单满
-						<input type="text" class="input_radio">个商品
+					  <input type="radio" name="enabled" value="true" ng-change="amount=true" ng-model='taskCtrl.task.amount' > 订单满
+						<input type="text" class="input_radio" ng-model="taskCtrl.task.amountLimit" ng-disabled="!amount" >元
 					</label>
 		</div>
 	</div>
@@ -286,27 +287,36 @@
 		<div class="panel-body">
 				<div class="radio">
 					<label>
-						<input type="radio" name="enabled" value="CUT" ng-model='taskCtrl.task.type' > 订单减免<input type="text" ng-model='taskCtrl.task.amountLimit' class="input_radio">元
+						<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='taskCtrl.task.type' > 
+						订单减免
+						<input type="text" ng-disabled="!hide" ng-model='taskCtrl.task.formulaParameter.cutAmount' class="input_radio">
+						元
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="enabled" value="RANDOM_CUT" ng-model='taskCtrl.task.type' > 随机减<input type="text" class="input_radio">元
+						<input type="radio" name="type" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='taskCtrl.task.type' >
+						随机减免
+						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="taskCtrl.task.formulaParameter.randomStart">
+						%到
+						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="taskCtrl.task.formulaParameter.randomEnd">
 					</label>
 				</div>
 				<div class="radio">		
 					<label>
-						<input type="radio" name="enabled" value="DISCOUNT" ng-model='taskCtrl.task.type' > 订单折扣<input type="text" class="input_radio">%
+						<input type="radio" name="type" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' >
+						订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
+						%
 					</label>
 				</div>
 				<div class="radio">		
 					<label>
-						<input type="radio" name="enabled" value="COUPON" ng-model='taskCtrl.task.type' > 订单赠品
+						<input type="radio" name="type" value="COUPON" ng-model='taskCtrl.task.type' > 订单赠品
 					</label>
 				</div>
 				<div class="radio">		
 					<label>
-						<input type="radio" name="enabled" value="GIFT" ng-model='taskCtrl.task.type' > 连贯促销
+						<input type="radio" name="type" value="GIFT" ng-model='taskCtrl.task.type' > 连贯促销
 					</label>
 				</div>
 		</div>

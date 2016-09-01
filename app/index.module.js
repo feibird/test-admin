@@ -2,8 +2,21 @@ angular
     .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
     .constant("version","2.0.0")		//定义全局变量:版本号
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
         $urlRouterProvider.otherwise("/stores/list");
+        
+        $httpProvider.defaults.transformRequest = function(obj){
+     var str = [];
+     for(var p in obj){
+       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+     }
+     return str.join("&");
+   }
+
+   $httpProvider.defaults.headers.post = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+   }
+        
         $stateProvider
         .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",
@@ -41,12 +54,6 @@ angular
                 controller: 'OrderlistCtrl as OrderlistCtrl',
             params: {'index':5}
         })
-        // .state("/order/Drawlist", {                                                              //结账管理
-        //         url: "/order/Drawlist",
-        //         templateUrl: "Order/Drawlist.html",
-        //         controller: 'DrawlistCtrl as DrawlistCtrl',
-        //     params: {'index':5}
-        // })
         .state("/good/list", {                                                                   //商品管理
                 url: "/good/list",
                 templateUrl: "Good/list.html",
@@ -77,7 +84,7 @@ angular
                 controller: 'RoleListCtrl as RoleListCtrl',
                 params: {'index':5}
         })
-        .state("/music/list", {                                                               //角色管理
+        .state("/music/list", {                                                               //语音管理
                 url: "/music/musiclist",
                 templateUrl: "Music/list.html",
                 controller: 'MusicListCtrl as MusicListCtrl',

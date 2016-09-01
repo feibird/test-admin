@@ -29,7 +29,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/add",
             method: 'post',
-            params:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
         })
         .then(function (data) {
              return data
@@ -46,7 +47,8 @@ function SortResource($http,device,version) {
          return $http({
             url:"/api-admin/category/"+id+"/update",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -59,8 +61,9 @@ function SortResource($http,device,version) {
     function remove(seid,id){
          return $http({
             url:"/api-admin/category/"+id+"/remove",
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
         })
         .then(function (data) {
              return data
@@ -74,7 +77,8 @@ function SortResource($http,device,version) {
         return $http({
             url:"/api-admin/category/"+id+"/get",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{"device":device,"version":version,"sessionId":seid,"id":id}
         })
         .then(function (data) {
              return data

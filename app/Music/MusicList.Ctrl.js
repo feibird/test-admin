@@ -2,10 +2,15 @@ angular.module('index_area').config(config).controller('MusicListCtrl',MusicList
 config.$inject = ['$stateProvider'];
 function config($stateProvider){
     $stateProvider
-    .state("add", {
+    .state("mucadd", {
         url: "/music/addmusic",
         templateUrl: "Music/AddMusic.html",
         controller: 'AddMusicCtrl as AddMusicCtrl'
+    })
+    .state("mucupdate", {
+        url: "/music/updatemusic/{id:string}",
+        templateUrl: "Music/UpdateMusic.html",
+        controller: 'UpdateMusicCtrl as UpdateMusicCtrl'
     })
 }
 MusicListCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','MusicResource'];
@@ -34,6 +39,14 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         }
     }
 
+    vm.delBtn = function(id){
+        layer.confirm('您确定要删除语音？', {
+				btn: ['确定','取消'] //按钮
+		}, function(){
+			    del(id);
+		});
+    }
+
     function list(){
         MusicResource.list(vm.seid,0,0).then(function(data){            
             vm.list = data.data.result.data;
@@ -44,7 +57,6 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
                 }
             }
             console.log(vm.list)
-            vm.List = new NgTableParams({},{dataset:vm.list});
         })
     }
 
@@ -66,6 +78,17 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         s = "0" + s;
         }
         return Y + M + D;
+    }
+
+    function del(id){
+        MusicResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status =="OK"){
+                layer.msg('删除成功',{icon:1});
+                list();
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
     }
 
 }
