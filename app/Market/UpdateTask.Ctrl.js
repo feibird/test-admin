@@ -255,6 +255,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             }
         } else {
             for (var i in obj) {
+                console.log(obj[i])
                 StoreArry += obj[i].spec.id + ","
             }
         }

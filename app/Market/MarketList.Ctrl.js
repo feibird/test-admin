@@ -30,7 +30,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 icon: 2
             }, function (index) {
                 layer.close(index);
-                PublicResource.Urllogin();
+                PublicResource.Urllogin() ;
             });
         } else {
             vm.seid = PublicResource.seid(vm.user);

@@ -13,6 +13,8 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.maxTotalAmount = "";
   vm.filer.takeNo = "";
   vm.filer.tradeId = "";
+  vm.filer.createStartDate="";
+  vm.filer.createEndDate = ""
   vm.pagecount;                                                           //分页总数
   vm.pageint = 1;
 
@@ -27,15 +29,23 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
 
   //筛选查询
   vm.filerList = function(){
-    console.log(vm.filer)
-   if(typeof(vm.filer.createStartDate)!="undefined"||vm.filer.createStartDate==""){
-     console.log(vm.filer.createStartDate)
-     vm.filer.createStartDate = vm.filer.createStartDate.getTime();
-   }
-   if(typeof(vm.filer.createEndDate)!="undefined"||vm.filer.createEndDate==""){
-     vm.filer.createEndDate = vm.filer.createEndDate.getTime();
-   }
-      list();
+    vm.filer.createStartDate = GTM(vm.filer.createStartDate)
+    vm.filer.createEndDate = GTM(vm.filer.createEndDate)
+    list();
+  }
+
+  function GTM(is,data){
+    console.log(typeof(data))
+    if(typeof(data)=='undefined'||data==""||data==null||typeof(data)=='number'){
+        return data;
+    }else{
+        data = chang_time(data);
+        if(is){
+            data = data+"23:59:59";
+        }
+        return data = new Date(data).getTime();
+    }
+    
   }
 
   vm.clearFiler = function(){
@@ -58,6 +68,22 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
 		  area: ['440px', 'auto'], //宽高
 		  content:$(".open")
 		});
+  }
+
+  vm.exel = function(){
+    vm.filer.createStartDate = GTM(false,vm.filer.createStartDate)
+    vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
+    console.log(vm.filer)
+    window.open("/api-admin/report/trade/detail/excel?sessionId="+vm.seid
+          +"&device="+'pc'
+          +"&version="+'2.0.0'
+          +"&sources="+vm.filer.sources
+          +"&detail="+vm.filer.detail
+          +"&storeId="+vm.filer.storeId
+          +"&completeEndDate="+vm.filer.createEndDate
+          +"&completeStartDate="+vm.filer.createStartDate
+          )
+   
   }
 
   function login() {
@@ -102,4 +128,25 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
       console.log(vm.store)
     })
   }
+
+   function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+        return Y + M + D;
+    }
+
 }

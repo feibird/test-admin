@@ -41,20 +41,6 @@
 						    否
 						  </label>
 						</div>
-						<table class='table table-responsive table-hover' ng-show='taskCtrl.task.exclusive' >
-							<tr>
-								<th width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >全选</th>
-								<th>活动名称</th>
-								<th>活动id</th>
-								<th>优先级</th>
-							</tr>
-							<tr class='text-center' ng-repeat="item in taskCtrl.tasklist" >
-								<td width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >{{$index+1>9?$index+1:'0'+($index+1)}}</td>
-								<td>{{item.name}}</td>
-								<td><span class="textId">{{item.id}}</span></td>
-								<td>{{item.priority}}</td>
-							</tr>
-						</table>
 					</div>
 				</div>
 			</div>
@@ -195,7 +181,7 @@
 						  <label>
 						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT">
 						    限制周期
-						    &nbsp;周期<input type="text" ng-disabled="taskCtrl.task.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">次
+						    &nbsp;周期<input type="text" ng-model="taskCtrl.task.timesLimitCycle" ng-disabled="taskCtrl.task.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-model='taskCtrl.task.timesLimit' ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">次
 						  </label>
 						</div>
 					</div>
@@ -209,10 +195,10 @@
 						<div class="form-title">选择促销商品范围:</div>
 						<div class="form-layout">
 							<label class="radio-inline">
-								<input type="radio" name="enabled" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 全场通用
+								<input type="radio" name="productType" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 全场通用
 							</label>
 								<label class="radio-inline">
-								<input type="radio" name="enabled" value="SELECTED_PRODUCT" ng-model='taskCtrl.task.productType' > 限定单品
+								<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='taskCtrl.task.productType' > 限定单品
 							</label>
 						</div>
 					</div>
@@ -257,7 +243,7 @@
 															<td width='100' data-title="'门店品牌'" filter="{'providerBrand.name': 'text'}" sortable="'name'" >{{item.providerBrand.name}}</td>
 															<td width='100' data-title="'一级分类'" filter="{'categories.data.name': 'text'}" sortable="'name'" >{{item.categories.data.name}}</td>
 															<td data-title="'二级分类'" filter="{'categories.children.name': 'text'}" sortable="'name'" >{{item.categories.children.name}}</td>
-															<td data-title="'名称'" filter="{'name': 'text'}" >{{item.name}}</td>
+															<td data-title="'名称'" filter="{'name': 'text'}" >{{item.name}} </td>
 															<td data-title="'规格'" filter="{'spec.name': 'text'}" >{{item.spec.name}}</td>
 															<td data-title="'操作'">
 																<a href="javascript:;" class="btn btn-primary" ng-disabled="item.status" ng-click='taskCtrl.delSpecs($index,item.spec.id)' >删除</a>
@@ -274,10 +260,10 @@
 		<div class="panel-heading">活动促销方式</div>
 		<div class="panel-body">
 					<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.amount' > 订单无关
+					  <input type="radio" name="amount" value="true" ng-model='taskCtrl.task.amount' > 订单无关
 					</label>
 						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-change="amount=true" ng-model='taskCtrl.task.amount' > 订单满
+					  <input type="radio" name="amount" value="true" ng-change="amount=true" ng-model='taskCtrl.task.amount' > 订单满
 						<input type="text" class="input_radio" ng-model="taskCtrl.task.amountLimit" ng-disabled="!amount" >元
 					</label>
 		</div>
