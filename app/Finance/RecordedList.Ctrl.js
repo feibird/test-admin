@@ -15,22 +15,22 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.tradeId = "";
   vm.filer.createStartDate="";
   vm.filer.createEndDate = ""
-  vm.pagecount;                                                           //分页总数
+  vm.pagecount; 
+  vm.skip=0;
+  vm.limit=50;                                                          //分页总数
   vm.pageint = 1;
 
   //分页点击事件
   vm.pageChanged = function () {
-    vm.skip = (vm.pageint - 1) * 12;
-    info_list(vm.seid);
-    $location.search('page', vm.pageint)
-    console.log(vm.pageint)
+    vm.skip = (vm.pageint - 1) * vm.limit;
+    list(vm.seid);
   }
   login();
 
   //筛选查询
   vm.filerList = function(){
-    vm.filer.createStartDate = GTM(vm.filer.createStartDate)
-    vm.filer.createEndDate = GTM(vm.filer.createEndDate)
+    vm.filer.createStartDate = GTM(false,vm.filer.createStartDate)
+    vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
     list();
   }
 
@@ -104,7 +104,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   stores();
   //入账列表
   function list() {
-    RecordedResource.list(vm.seid,vm.filer, 0, 10).then(function (data) {
+    RecordedResource.list(vm.seid,vm.filer,vm.skip,vm.limit).then(function (data) {
       console.log(data.data)
       vm.list = data.data.result;
       for (var i in vm.list) {
@@ -118,6 +118,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   function total(){
     RecordedResource.total(vm.seid).then(function(data){
         vm.pagecount = data.data.result;
+        console.log(vm.pagecount)
     })
   }
 

@@ -491,7 +491,66 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
       })
    }
 
+   vm.status = function(status){
+      switch(status){
+        case 'complete':
+        layer.confirm('是否打款？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                complete()
+            });
+           
+        break;
+        case 'operaOk':
+        layer.confirm('是否通过？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                operaOk();
+            });
+            
+        break;
+        case 'FinanOk':
+        layer.confirm('是否通过？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                FinanOk();
+            });
+        break;
+      }
+   }
 
+ //确认打款
+  function complete() {
+    DrawResource.complete(vm.seid, vm.info).then(function(data) {
+      console.log(data);
+      if (data.data.status == "OK") {
+        layer.msg("操作成功~", {
+          icon: 1
+        });
+      } else {
+        layer.msg(data.data.message, {
+          icon: 2
+        });
+      }
+      list();
+    });
+  }
+
+  //财务审核成功
+  function FinanOk() {
+    DrawResource.FinanOk(vm.seid, vm.info).then(function(data) {
+      layer.msg(data.data.result)
+      list();
+    })
+  }
+
+  //运营审核成功
+  function operaOk() {
+    DrawResource.operaOk(vm.seid, vm.info).then(function(data) {
+      layer.msg(data.data.result)
+      list();
+    })
+  }
 
   function login() {
     vm.user = PublicResource.seid("admin");
@@ -538,7 +597,7 @@ angular.module('index_area').config(config).controller('DrawlistCtrl', DrawlistC
 function config($stateProvider) {
   $stateProvider
     .state("detail", {
-      url: "/finance/drawdetail{id:string}",
+      url: "/finance/drawdetail/{id:string}",
       templateUrl: "Finance/DrawDetail.html",
       controller: 'DrawDetailCtrl as DrawDetailCtrl'
     })
@@ -548,15 +607,15 @@ function config($stateProvider) {
       controller: 'RecordedlistCtrl as RecordedlistCtrl'
     })
 }
-DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams'];
+DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams','$http',"device","version"];
 /***调用接口***/
-function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams) {
+function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams,$http,device,version) {
   document.title = "提现管理";
   $rootScope.name = "提现管理";
   $rootScope.childrenName = "提现管理列表";
   var vm = this;
   vm.skip = 0; //起始数据下标
-  vm.limit = 12; //最大数据下标
+  vm.limit = 10; //最大数据下标
   vm.stores; //门店集合
   vm.list;
   vm.get = new Object();
@@ -849,19 +908,41 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   }
 
   function list() {
-    DrawResource.list(vm.seid, vm.updateinfo, 0, 100).then(function(data) {
-      vm.list = data.data.result.data;
-      for (var i in vm.list) {
-        vm.list[i].active = false;
-        vm.list[i].createDate = chang_time(new Date(vm.list[i].createDate));
-        if (vm.list[i].endDate != null) {
-          vm.list[i].endDate = chang_time(new Date(vm.list[i].endDate));
+
+    vm.tableParams = new NgTableParams({
+        page: 1, // show first page
+        count: 10, // count per page
+        per_page:10
+    }, {
+        filterDelay: 300,
+        getData: function(info) {
+            vm.skip=vm.limit*(info.page()-1);
+            return $http.get("/api-admin/draw/list", {
+              params: {
+                "device": device,
+                "version": version,
+                "sessionId": vm.seid,
+                "skip": vm.skip,
+                "limit": vm.limit,
+                'storeId': vm.updateinfo.storeId,
+                'status': vm.updateinfo.status,
+                "applyStartDate":vm.updateinfo.applyStartDate,
+                "applyEndDate": vm.updateinfo.applyEndDate,
+                "completeStartDate":vm.updateinfo.completeStartDate,
+                "completeEndDate":vm.updateinfo.completeEndDate,
+                "serialNumber": vm.updateinfo.serialNumber
+              }
+            }).then(function(data){
+                console.log(info.page())
+                info.total(data.data.result.total);
+                info.per_page=10;
+                for(var i in data.data.result.data){
+                  data.data.result.data[i].createDate = chang_time(new Date(data.data.result.data[i].createDate))
+                  data.data.result.data[i].endDate = chang_time(new Date(data.data.result.data[i].endDate))
+                }
+                return data.data.result.data;
+            })
         }
-      }
-      vm.tableParams = new NgTableParams({}, {
-        dataset: vm.list
-      });
-      console.log(vm.list);
     });
   }
 
@@ -1042,7 +1123,11 @@ function DrawResource($http, device, version) {
 
   //确认打款
   function complete(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/complete",
         method: 'post',
@@ -1062,7 +1147,11 @@ function DrawResource($http, device, version) {
 
   //运营审核通过
   function operaOk(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/approve-operate",
         method: 'post',
@@ -1080,9 +1169,14 @@ function DrawResource($http, device, version) {
       })
   }
 
-  //运营审核通过
+  //运营审核失败
   function operaNo(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
+    
     return $http({
         url: "/api-admin/draw/reject-operate",
         method: 'post',
@@ -1102,7 +1196,11 @@ function DrawResource($http, device, version) {
 
   //财务审核不通过
   function FinanNo(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/reject-finance",
         method: 'post',
@@ -1122,7 +1220,11 @@ function DrawResource($http, device, version) {
 
   //财务审核通过
   function FinanOk(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/approve-finance",
         method: 'post',
@@ -1164,6 +1266,9 @@ function DrawResource($http, device, version) {
 
   //将数组组成字符串
   function arry(obj) {
+    if(typeof(obj)=="undefined"){
+      return obj
+    }
     var ids = "";
     for (var i in obj) {
       ids += obj[i] + ","
@@ -1208,22 +1313,22 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.tradeId = "";
   vm.filer.createStartDate="";
   vm.filer.createEndDate = ""
-  vm.pagecount;                                                           //分页总数
+  vm.pagecount; 
+  vm.skip=0;
+  vm.limit=50;                                                          //分页总数
   vm.pageint = 1;
 
   //分页点击事件
   vm.pageChanged = function () {
-    vm.skip = (vm.pageint - 1) * 12;
-    info_list(vm.seid);
-    $location.search('page', vm.pageint)
-    console.log(vm.pageint)
+    vm.skip = (vm.pageint - 1) * vm.limit;
+    list(vm.seid);
   }
   login();
 
   //筛选查询
   vm.filerList = function(){
-    vm.filer.createStartDate = GTM(vm.filer.createStartDate)
-    vm.filer.createEndDate = GTM(vm.filer.createEndDate)
+    vm.filer.createStartDate = GTM(false,vm.filer.createStartDate)
+    vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
     list();
   }
 
@@ -1297,7 +1402,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   stores();
   //入账列表
   function list() {
-    RecordedResource.list(vm.seid,vm.filer, 0, 10).then(function (data) {
+    RecordedResource.list(vm.seid,vm.filer,vm.skip,vm.limit).then(function (data) {
       console.log(data.data)
       vm.list = data.data.result;
       for (var i in vm.list) {
@@ -1311,6 +1416,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   function total(){
     RecordedResource.total(vm.seid).then(function(data){
         vm.pagecount = data.data.result;
+        console.log(vm.pagecount)
     })
   }
 
@@ -1366,6 +1472,7 @@ function RecordedResource($http, device, version) {
    * 获取入账列表
    */
   function list(seid, obj, skip, limit) {
+    console.log(obj)
     return $http.get("/api-admin/journal/list", {
       params: {
         "device": device,

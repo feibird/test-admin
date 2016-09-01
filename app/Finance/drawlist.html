@@ -9,8 +9,8 @@
 						<select name="" id="" class="form-control" ng-model="DrawlistCtrl.updateinfo.status">
 							<option value="" selected>请选择</option>
 							<option value="INIT" >提交审核中</option>
-							<option value="FINANCE_APPROVED" >审核成功</option>
-							<option value="FINANCE_FAILED" >审核失败</option>
+							<option value="FINANCE_APPROVED" >财务审核成功</option>
+							<option value="FINANCE_FAILED" >财务审核失败</option>
 							<option value="COMPLETED" >打款成功</option>
 							<option value="OPERATOR_FAILED" >运营审核失败</option>
 							<option value="OPERATOR_APPROVED" >运营审核通过</option>
@@ -115,19 +115,19 @@
 
 								<ul class="dropdown-menu dropdown-default no-spacing">
 									<li><a href="javascript:;" ui-sref="detail({id:item.id})"><span class="fa-eye fa-icon-right"></span>查看</a></li>
-									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2">
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='INIT'" >
 										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaOk',item.id)" ><span class="fa-edit fa-icon-right"></span>运营审核通过</a>
 									</li>
-									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1">
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-hide="item.status!='OPERATOR_APPROVED'" >
 										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('FinanOk',item.id)" ><span class="fa-eye fa-icon-right"></span>财务审核通过</a>
 									</li>
-									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2">
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='FINANCE_APPROVED'" >
 										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('complete',item.id)"><span class="fa-trash fa-icon-right"></span>确认打款</a>
 									</li>
-									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2">
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='INIT'" >
 										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaNo',item.id)" ><span class="fa-eye fa-icon-right"></span>运营打回申请</a>
 									</li>
-									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1">
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-hide="item.status!='OPERATOR_APPROVED'" >
 										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('FinanNo',item.id)" ><span class="fa-eye fa-icon-right"></span>财务打回申请</a>
 									</li>
 									<li><a href="javascript:;" ng-click='DrawlistCtrl.Credential(item.id)' ><span class="fa-edit fa-icon-right"></span>打印凭证</a></li>
@@ -287,5 +287,5 @@
 		</div>
 	</div>
 	<script  type="text/ng-template" id="checkbox.html" >
-		<input type="checkbox" ng-click="DrawlistCtrl.All()" >
+		<input type="checkbox" ng-click="DrawlistCtrl.All()" style="margin-right:5px;" >00
 	</script>

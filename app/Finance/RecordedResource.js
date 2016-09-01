@@ -17,6 +17,7 @@ function RecordedResource($http, device, version) {
    * 获取入账列表
    */
   function list(seid, obj, skip, limit) {
+    console.log(obj)
     return $http.get("/api-admin/journal/list", {
       params: {
         "device": device,

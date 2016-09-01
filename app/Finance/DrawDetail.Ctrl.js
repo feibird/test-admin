@@ -23,7 +23,66 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
       })
    }
 
+   vm.status = function(status){
+      switch(status){
+        case 'complete':
+        layer.confirm('是否打款？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                complete()
+            });
+           
+        break;
+        case 'operaOk':
+        layer.confirm('是否通过？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                operaOk();
+            });
+            
+        break;
+        case 'FinanOk':
+        layer.confirm('是否通过？', {
+            btn: ['确定','取消'] //按钮
+            }, function(){
+                FinanOk();
+            });
+        break;
+      }
+   }
 
+ //确认打款
+  function complete() {
+    DrawResource.complete(vm.seid, vm.info).then(function(data) {
+      console.log(data);
+      if (data.data.status == "OK") {
+        layer.msg("操作成功~", {
+          icon: 1
+        });
+      } else {
+        layer.msg(data.data.message, {
+          icon: 2
+        });
+      }
+      list();
+    });
+  }
+
+  //财务审核成功
+  function FinanOk() {
+    DrawResource.FinanOk(vm.seid, vm.info).then(function(data) {
+      layer.msg(data.data.result)
+      list();
+    })
+  }
+
+  //运营审核成功
+  function operaOk() {
+    DrawResource.operaOk(vm.seid, vm.info).then(function(data) {
+      layer.msg(data.data.result)
+      list();
+    })
+  }
 
   function login() {
     vm.user = PublicResource.seid("admin");

@@ -83,7 +83,11 @@ function DrawResource($http, device, version) {
 
   //确认打款
   function complete(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/complete",
         method: 'post',
@@ -103,7 +107,11 @@ function DrawResource($http, device, version) {
 
   //运营审核通过
   function operaOk(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/approve-operate",
         method: 'post',
@@ -121,9 +129,14 @@ function DrawResource($http, device, version) {
       })
   }
 
-  //运营审核通过
+  //运营审核失败
   function operaNo(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
+    
     return $http({
         url: "/api-admin/draw/reject-operate",
         method: 'post',
@@ -143,7 +156,11 @@ function DrawResource($http, device, version) {
 
   //财务审核不通过
   function FinanNo(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/reject-finance",
         method: 'post',
@@ -163,7 +180,11 @@ function DrawResource($http, device, version) {
 
   //财务审核通过
   function FinanOk(seid, obj) {
-    var ids = arry(obj.ids);
+    if(typeof(obj.ids)=='undefined'){
+      var ids = obj.id
+    }else{
+      var ids = arry(obj.ids);
+    }
     return $http({
         url: "/api-admin/draw/approve-finance",
         method: 'post',
@@ -205,6 +226,9 @@ function DrawResource($http, device, version) {
 
   //将数组组成字符串
   function arry(obj) {
+    if(typeof(obj)=="undefined"){
+      return obj
+    }
     var ids = "";
     for (var i in obj) {
       ids += obj[i] + ","

@@ -3,7 +3,7 @@ angular.module('index_area').config(config).controller('DrawlistCtrl', DrawlistC
 function config($stateProvider) {
   $stateProvider
     .state("detail", {
-      url: "/finance/drawdetail{id:string}",
+      url: "/finance/drawdetail/{id:string}",
       templateUrl: "Finance/DrawDetail.html",
       controller: 'DrawDetailCtrl as DrawDetailCtrl'
     })
@@ -13,15 +13,15 @@ function config($stateProvider) {
       controller: 'RecordedlistCtrl as RecordedlistCtrl'
     })
 }
-DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams'];
+DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams','$http',"device","version"];
 /***调用接口***/
-function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams) {
+function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams,$http,device,version) {
   document.title = "提现管理";
   $rootScope.name = "提现管理";
   $rootScope.childrenName = "提现管理列表";
   var vm = this;
   vm.skip = 0; //起始数据下标
-  vm.limit = 12; //最大数据下标
+  vm.limit = 10; //最大数据下标
   vm.stores; //门店集合
   vm.list;
   vm.get = new Object();
@@ -314,19 +314,41 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   }
 
   function list() {
-    DrawResource.list(vm.seid, vm.updateinfo, 0, 100).then(function(data) {
-      vm.list = data.data.result.data;
-      for (var i in vm.list) {
-        vm.list[i].active = false;
-        vm.list[i].createDate = chang_time(new Date(vm.list[i].createDate));
-        if (vm.list[i].endDate != null) {
-          vm.list[i].endDate = chang_time(new Date(vm.list[i].endDate));
+
+    vm.tableParams = new NgTableParams({
+        page: 1, // show first page
+        count: 10, // count per page
+        per_page:10
+    }, {
+        filterDelay: 300,
+        getData: function(info) {
+            vm.skip=vm.limit*(info.page()-1);
+            return $http.get("/api-admin/draw/list", {
+              params: {
+                "device": device,
+                "version": version,
+                "sessionId": vm.seid,
+                "skip": vm.skip,
+                "limit": vm.limit,
+                'storeId': vm.updateinfo.storeId,
+                'status': vm.updateinfo.status,
+                "applyStartDate":vm.updateinfo.applyStartDate,
+                "applyEndDate": vm.updateinfo.applyEndDate,
+                "completeStartDate":vm.updateinfo.completeStartDate,
+                "completeEndDate":vm.updateinfo.completeEndDate,
+                "serialNumber": vm.updateinfo.serialNumber
+              }
+            }).then(function(data){
+                console.log(info.page())
+                info.total(data.data.result.total);
+                info.per_page=10;
+                for(var i in data.data.result.data){
+                  data.data.result.data[i].createDate = chang_time(new Date(data.data.result.data[i].createDate))
+                  data.data.result.data[i].endDate = chang_time(new Date(data.data.result.data[i].endDate))
+                }
+                return data.data.result.data;
+            })
         }
-      }
-      vm.tableParams = new NgTableParams({}, {
-        dataset: vm.list
-      });
-      console.log(vm.list);
     });
   }
 
