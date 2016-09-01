@@ -11,6 +11,9 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
 
     vm.task = new Object();
     vm.task.formulaParameter = new Object();
+    vm.task.productIds="";
+    vm.task.timesLimit="";
+    vm.task.amountLimit=""
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
@@ -23,6 +26,11 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
         vm.task.storeIds=""
         if(vm.task.storeType=="SELECTED_STORE"){
             vm.task.storeIds = ArryString(vm.FilterStores,true)
+        }
+        if(vm.task.exclusive){
+            for(var i in vm.tasklist){
+                
+            }
         }
         if(vm.task.productType=='SELECTED_PRODUCT'){
             vm.task.productIds = ArryString(vm.specs,false)
@@ -205,6 +213,14 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
             vm.StroesList = new NgTableParams({},{dataset:vm.storesList});   
         })
     }
+    tasklist();
+    function tasklist(){
+        MarketResource.list(vm.seid,0,0).then(function(data){
+            vm.tasklist = data.data.result;
+            console.log(vm.tasklist)
+        })
+    }
+
     good()
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){

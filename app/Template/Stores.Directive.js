@@ -4,7 +4,7 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 		replace: true,
 		scope: {
 			list: "=",
-			selectlist:'='
+			returnlist:'='
 		},
 		templateUrl: 'Template/StoresSelect.html',
 		link: function (scope, elem, attr) {
@@ -12,7 +12,7 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 				scope.list[i].select=true;
 				scope.list[i].status=false;
 			}
-			scope.selectList = new Array();
+			scope.returnlist = new Array();
 			scope.tableParams = new NgTableParams({}, { dataset: scope.list });
 
 			//添加门店
@@ -21,7 +21,7 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 					item.select=false;
 					item.status=true;
 					item.active=false;
-					scope.selectList.push(item);
+					scope.returnlist.push(item);
 				}else{
 					for(var i in scope.list){
 						console.log(scope.list[i])
@@ -29,11 +29,11 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 							scope.list[i].select=false;
 							scope.list[i].status=true;
 							scope.list[i].active=false;
-							scope.selectList.push(scope.list[i])
+							scope.returnlist.push(scope.list[i])
 						}
 					}
 				}
-				scope.tableStores = new NgTableParams({},{dataset:scope.selectList})
+				scope.tableStores = new NgTableParams({},{dataset:scope.returnlist})
 			}
 
 			scope.All = function(is,item){
@@ -49,11 +49,11 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 								}
 							break;
 							case "DelStore":
-								for(var i in scope.selectList){
+								for(var i in scope.returnlist){
 									if(is){
-										scope.selectList[i].active=true;
+										scope.returnlist[i].active=true;
 									}else{
-										scope.selectList[i].active=false;
+										scope.returnlist[i].active=false;
 									}
 								}
 							break;
@@ -63,30 +63,30 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 			scope.Del = function(index){
 				if(!index){
 					
-					for(var i in scope.selectList){
-						if(scope.selectList[i].active){
-							console.log(scope.selectList[i])							
+					for(var i in scope.returnlist){
+						if(scope.returnlist[i].active){
+							console.log(scope.returnlist[i])							
 							for(var j in scope.list){
-								if(scope.list[j].id==scope.selectList[i].id){
+								if(scope.list[j].id==scope.returnlist[i].id){
 									scope.list[j].status=false;
 									scope.list[j].select=true;
 								}
 							}
-							scope.selectList.splice(i,1);
+							scope.returnlist.splice(i,1);
 						}
 					}
 					
 				}else{
 					for(var i in scope.list){
-					if(scope.list[i].id==scope.selectList[index].id){
+					if(scope.list[i].id==scope.returnlist[index].id){
 							scope.list[i].status=false;
 							scope.list[i].select=true;
 						}
 					}
-				scope.selectList.splice(index,1)
+				scope.returnlist.splice(index,1)
 				}
 				
-				scope.tableStores = new NgTableParams({},{dataset:scope.selectList})
+				scope.tableStores = new NgTableParams({},{dataset:scope.returnlist})
 			}
 
 			

@@ -30,18 +30,34 @@
 				<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;" >
 					<div class="input-group col-xs-5 ser_input">
 						<span class="input-group-addon">申请时间</span>
-						<input type="text" onclick="laydate()" ng-model="DrawlistCtrl.updateinfo.applyStartDate" class="form-control date " name="applyStartDate" >
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.applyStartDate" is-open="open1" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 						<span class="input-group-addon">到</span>
-						<input type="text" onclick="laydate()" ng-model="DrawlistCtrl.updateinfo.applyEndDate" class="form-control date" name="applyEndDate" >
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.applyEndDate" is-open="open2" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 					</div>
 					<div class="input-group col-xs-5 ser_input">
 						<span class="input-group-addon">结束时间</span>
-						<input type="text" onclick="laydate()" ng-model="DrawlistCtrl.updateinfo.completetStartDate" class="form-control date" name="completetStartDate">
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.completeStartDate" is-open="open3" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open3=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 						<span class="input-group-addon">到</span>
-						<input type="text" onclick="laydate()" ng-model="DrawlistCtrl.updateinfo.completeEndDate" class="form-control date" name="completeEndDate" >
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.completeEndDate" is-open="open4" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open4=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 					</div>
 				</div>
-				<div class="ser_lyoutDiv">
+				<div class="ser_lyoutDiv col-xs-12" style="margin-top:10px;padding-left:20px;" >
 					<a href="javascript:;" class="btn btn-secondary cr_date" ng-click="DrawlistCtrl.Get()">查询</a>
 					<a href="javascript:;" ng-click='DrawlistCtrl.exel()' class="btn btn-orange  cr_date">报表导出</a>
 					<a href="javascript:;" ng-click='DrawlistCtrl.countBtn()' class="btn btn-info cr_date">汇总凭据打印</a>
@@ -71,7 +87,7 @@
 			<div class="panel-body">
 				<table ng-table="DrawlistCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
 					<tr ng-repeat="item in $data">
-						<td width='50' header="'Finance/checkbox.html'">v</td>
+						<td width='50' header="'checkbox.html'"><input type="checkbox" style="margin-right:5px;" >{{$index+1>9?$index+1:'0'+($index+1)}}</td>
 						<td data-title="'流水号'" filter="{serialNumber:'number'}" sortable="'serialNumber'"><span ng-class="{false:'textId',true:'textId-hover'}[ishover]" class="textId">{{item.serialNumber}}</span></td>
 						<td data-title="'门店名称'" filter="{name: 'text'}" sortable="'name'">{{item.store.name}}</td>
 						<td data-title="'联系法人'" filter="{legalPerson: 'text'}" sortable="'legalPerson'">{{item.store.legalPerson}}</td>
@@ -270,3 +286,6 @@
 			</table>
 		</div>
 	</div>
+	<script  type="text/ng-template" id="checkbox.html" >
+		<input type="checkbox" ng-click="DrawlistCtrl.All()" >
+	</script>

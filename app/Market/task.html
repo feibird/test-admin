@@ -41,21 +41,18 @@
 						    否
 						  </label>
 						</div>
-						<table class='table table-responsive table-hover' ng-show='taskCtrl.exclusive' >
+						<table class='table table-responsive table-hover' ng-show='taskCtrl.task.exclusive' >
 							<tr>
+								<th width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >全选</th>
 								<th>活动名称</th>
 								<th>活动id</th>
 								<th>优先级</th>
 							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
-							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
+							<tr class='text-center' ng-repeat="item in taskCtrl.tasklist" >
+								<td width='100' class="text-left" ><input type="checkbox" style="margin-right:5px;" >{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+								<td>{{item.name}}</td>
+								<td><span class="textId">{{item.id}}</span></td>
+								<td>{{item.priority}}</td>
 							</tr>
 						</table>
 					</div>
@@ -277,11 +274,11 @@
 		<div class="panel-heading">活动促销方式</div>
 		<div class="panel-body">
 					<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.enabled' > 订单无关
+					  <input type="radio" name="enabled" value="true" ng-model='taskCtrl.task.amount' > 订单无关
 					</label>
 						<label class="radio-inline">
-					  <input type="radio" name="enabled" value="true" ng-change="enbleds=true" ng-model='taskCtrl.task.enabled' > 订单满
-						<input type="text" class="input_radio" ng-disabled="!enbleds" >元
+					  <input type="radio" name="enabled" value="true" ng-change="amount=true" ng-model='taskCtrl.task.amount' > 订单满
+						<input type="text" class="input_radio" ng-model="taskCtrl.task.amountLimit" ng-disabled="!amount" >元
 					</label>
 		</div>
 	</div>

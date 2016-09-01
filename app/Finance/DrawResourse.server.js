@@ -32,10 +32,10 @@ function DrawResource($http, device, version) {
         "limit": limit,
         'storeId': obj.storeId,
         'status': obj.status,
-        "applyStartDate": dateTime(obj.applyStartDate) ? dateTime(obj.applyStartDate) : null,
-        "applyEndDate": dateTime(obj.applyEndDate) ? dateTime(obj.applyEndDate) : null,
-        "completetStartDate": dateTime(obj.completetStartDate) ? dateTime(obj.completetStartDate) : null,
-        "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
+        "applyStartDate":obj.applyStartDate,
+        "applyEndDate": obj.applyEndDate,
+        "completeStartDate":obj.completeStartDate,
+        "completeEndDate":obj.completeEndDate,
         "serialNumber": obj.serialNumber
       }
     }).then(function(data) {

@@ -54,12 +54,6 @@ angular
                 controller: 'OrderlistCtrl as OrderlistCtrl',
             params: {'index':5}
         })
-        // .state("/order/Drawlist", {                                                              //结账管理
-        //         url: "/order/Drawlist",
-        //         templateUrl: "Order/Drawlist.html",
-        //         controller: 'DrawlistCtrl as DrawlistCtrl',
-        //     params: {'index':5}
-        // })
         .state("/good/list", {                                                                   //商品管理
                 url: "/good/list",
                 templateUrl: "Good/list.html",
