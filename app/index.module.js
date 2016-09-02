@@ -115,8 +115,11 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
             })
         }else{
             seid = PublicResource.seid(user);
+            $rootScope.seid = seid;
         }
     }
+    console.log($rootScope.seid)
+    
 
     $rootScope.logout = function(){
         PublicResource.logout(seid).then(function(data){

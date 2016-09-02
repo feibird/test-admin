@@ -14,11 +14,16 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.task.productIds="";
     vm.task.timesLimit="";
     vm.task.amountLimit=""
-    vm.task.storesId=""
+    vm.task.storesId=[];
+    vm.task.goodsId=[];
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
 
+
+    vm.AddTask = function(){
+        console.log(vm.task)
+    }
 
     function login() {
         vm.user = PublicResource.seid("admin");

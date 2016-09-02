@@ -117,8 +117,11 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
             })
         }else{
             seid = PublicResource.seid(user);
+            $rootScope.seid = seid;
         }
     }
+    console.log($rootScope.seid)
+    
 
     $rootScope.logout = function(){
         PublicResource.logout(seid).then(function(data){
@@ -3297,11 +3300,16 @@ function taskCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTablePa
     vm.task.productIds="";
     vm.task.timesLimit="";
     vm.task.amountLimit=""
-    vm.task.storesId=""
+    vm.task.storesId=[];
+    vm.task.goodsId=[];
     vm.FilterStores = new Array();      //已选择门店
     vm.GoodSpecs = new Array();
     login();
 
+
+    vm.AddTask = function(){
+        console.log(vm.task)
+    }
 
     function login() {
         vm.user = PublicResource.seid("admin");
@@ -5381,84 +5389,211 @@ function SupplierLogoResource($http,device,version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').directive('stores', function (NgTableParams) {
+angular.module('index_area').directive('goods', function (GoodResource,$rootScope) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            list: "=",
+            returnlist: '='
+        },
+        templateUrl: 'Template/GoodsSelect.html',
+        link: function (scope, elem, attr) {
+            scope.list = ArryAnalysis(scope.list);
+            scope.pagecount;
+            scope.skip=0;
+            scope.limit=10;
+            scope.seid = $rootScope.seid;
+            Goods();
+
+            scope.pageChanged = function(){
+                scope.skip = (scope.pageint-1)*scope.limit;
+				Goods();
+            }
+
+            function Goods(){
+                GoodResource.list(scope.seid,null,scope.skip,scope.limit).then(function(data){
+                    scope.list = data.data.result.data;
+                    scope.pagecount = data.data.result.total;
+                    scope.list = ArryAnalysis(scope.list)
+                    console.log(scope.list)
+                })
+            }
+
+            //批量删除,删除
+            scope.Add = function(item){
+                if (item) {	
+					item.status = false;
+					item.active = true;
+					scope.returnlist.push(item);
+				} else {
+					for (var i in scope.list) {
+						if (scope.list[i].status == true&&scope.list[i].active==true) {
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+							scope.returnlist.push(scope.list[i])
+						}
+					}
+				}
+            }
+
+            scope.All = function(is,all){
+                console.log(all)
+                switch(all){
+                    case "add":
+                        for(var i in scope.list){
+                            scope.list[i].active=is;
+                        }
+                    break;
+                    case "del":
+                        for(var i in scope.returnlist){
+                            scope.returnlist[i].check=is;
+                        }
+                    break;
+                }
+            }
+
+            //批量删除/删除
+			scope.Del = function (id,index,is) {
+				if (is) {
+					for (var i in scope.returnlist){
+						if (scope.returnlist[i].active) {
+							for (var j in scope.list) {
+								if (scope.list[j].spec.id == scope.returnlist[i].spec.id) {
+									scope.list[j].status = true;
+									scope.list[j].active = false;
+								}
+							}
+							scope.returnlist.splice(i,1);
+						}
+					}
+
+				} else {
+					scope.returnlist.splice(index, 1);
+					for(var i in scope.list){
+						if(scope.list[i].spec.id==id){
+                            console.log(scope.list[i])
+							scope.list[i].status = true;
+                            scope.list[i].active = false;
+						}
+					}
+				}
+			}
+
+            //list转
+            function ArryAnalysis(obj) {
+                var good = new Object();
+                var GoodSpecs = new Array();
+                good.categories = new Object();
+                for (var i in obj) {
+                    for (var j in obj[i].specs) {
+                        good.name = obj[i].name;
+                        good.categories.children = obj[i].categories.children[0].data;
+                        good.categories.data = obj[i].categories.data;
+                        good.providerBrand = obj[i].providerBrand;
+                        good.spec = obj[i].specs[j]
+                        good.status = true;
+                        GoodSpecs.push(good);
+                        good = new Object();
+                        good.categories = new Object();
+                    }
+                }
+                return GoodSpecs;
+            }
+        }
+    }
+})
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').directive('stores', function (StoresResource,$rootScope) {
 	return {
 		restrict: 'E',
 		replace: true,
 		scope: {
-			list: "=",
 			returnlist: '='
 		},
 		templateUrl: 'Template/StoresSelect.html',
 		link: function (scope, elem, attr) {
-			for (var i in scope.list) {
-				scope.list[i].select = true;
-				scope.list[i].status = false;
+			scope.seid = $rootScope.seid;
+			scope.skip = 0;
+			scope.limit = 10;
+
+			scope.returnlist = new Array();
+			
+			scope.pageChanged = function(){
+				scope.skip = (scope.pageint-1)*scope.limit;
+				store();
+			}
+			store()
+			function store(){
+				StoresResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
+					console.log(data);
+					scope.list = data.data.result.data;
+					console.log(scope.list)
+					for (var i in scope.list) {
+							scope.list[i].select = true;
+							scope.list[i].status = false;
+						}
+
+					scope.pagecount=data.data.result.total;
+				})
 			}
 
-			scope.select = new Array();
-			
+			scope.All = function(is,all){
+                console.log(all)
+                switch(all){
+                    case "add":
+                        for(var i in scope.list){
+                            scope.list[i].status=is;
+                        }
+                    break;
+                    case "del":
+                        for(var i in scope.returnlist){
+                            scope.returnlist[i].active=is;
+                        }
+                    break;
+                }
+            }
+
 			//添加门店
 			scope.Add = function (item) {
 				if (item) {
 					item.select = false;
 					item.status = true;
 					item.active = false;
-					scope.select.push(item);
+					scope.returnlist.push(item);
 				} else {
 					for (var i in scope.list) {
-						console.log(scope.list[i])
-						if (scope.list[i].select == true) {
+						if (scope.list[i].status == true&&scope.list[i].select==true) {
 							scope.list[i].select = false;
 							scope.list[i].status = true;
 							scope.list[i].active = false;
-							scope.select.push(scope.list[i])
+							scope.returnlist.push(scope.list[i])
 						}
 					}
 				}
 			}
 
-			scope.All = function (is, item) {
-				console.log(is)
-				switch (item) {
-					case "AddStore":
-						for (var i in scope.list) {
-							if (is) {
-								scope.list[i].status = true;
-							} else {
-								scope.list[i].status = false;
-							}
-						}
-						break;
-					case "DelStore":
-						for (var i in scope.select) {
-							if (is) {
-								scope.select[i].active = true;
-							} else {
-								scope.select[i].active = false;
-							}
-						}
-						break;
-				}
-			}
-
-			scope.Del = function (id,index) {
-				if (false) {
-					for (var i in scope.select) {
-						if (scope.select[i].active) {
-							console.log(scope.select[i])
+			
+			//批量删除/删除
+			scope.Del = function (id,index,is) {
+				if (is) {
+					for (var i in scope.returnlist) {
+						if (scope.returnlist[i].active) {
 							for (var j in scope.list) {
-								if (scope.list[j].id == scope.select[i].id) {
+								if (scope.list[j].id == scope.returnlist[i].id) {
 									scope.list[j].status = false;
 									scope.list[j].select = true;
 								}
 							}
-							scope.select.splice(i,1);
+							scope.returnlist.splice(i,1);
 						}
 					}
 
 				} else {
-					scope.select.splice(index, 1);
+					scope.returnlist.splice(index, 1);
 					for(var i in scope.list){
 						if(scope.list[i].id==id){
 							scope.list[i].status=false;
@@ -5467,7 +5602,6 @@ angular.module('index_area').directive('stores', function (NgTableParams) {
 					}
 				}
 			}
-
 		}
 	}
 })

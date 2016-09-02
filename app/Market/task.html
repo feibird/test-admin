@@ -84,7 +84,7 @@
 			    部分门店
 			  </label>
 			</div>
-			<stores list='taskCtrl.stores' returnlist='taskCtrl.task.storesId' data-ng-if="taskCtrl.stores.length>0" ></stores>
+			<stores ng-show="taskCtrl.task.storeType=='SELECTED_STORE'" returnlist='taskCtrl.task.storesId' data-ng-if="taskCtrl.stores.length>0"></stores>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -146,63 +146,12 @@
 				<div class="form-title">选择促销商品范围:</div>
 				<div class="form-layout">
 					<label class="radio-inline">
-								<input type="radio" name="productType" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 全场通用
-							</label>
+						<input type="radio" name="productType" value="ALL_PRODUCT" ng-model='taskCtrl.task.productType' > 全场通用
+					</label>
 					<label class="radio-inline">
-								<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='taskCtrl.task.productType' > 限定单品
-							</label>
-				</div>
-			</div>
-			<div class="col-xs-12 p0" ng-show="taskCtrl.task.productType==='SELECTED_PRODUCT'">
-				<div class="col-xs-6 p0" style="padding-right:5px;">
-					<div class="panel panel-default panel-border">
-						<div class="panel-body">
-							<p class="Filter-title">
-								全部商品
-								<a href="javascript:;" class="btn btn-turquoise pull-right" ng-click="taskCtrl.SpecsAll()">添加</a>
-							</p>
-							<table ng-table="taskCtrl.GoodList" class="table table-bordered table-striped table-condensed text-center">
-								<tr ng-repeat="item in $data track by $index">
-									<td width='50' header="'Specscheck.html'">
-										<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-disabled="!item.status" ng-model="item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-									</td>
-									<td width='100' data-title="'门店品牌'" filter="{'providerBrand.name': 'text'}" sortable="'name'">{{item.providerBrand.name}}</td>
-									<td width='100' data-title="'一级分类'" filter="{'categories.data.name': 'text'}" sortable="'name'">{{item.categories.data.name}}</td>
-									<td data-title="'二级分类'" filter="{'categories.children.name': 'text'}" sortable="'name'">{{item.categories.children.name}}</td>
-									<td data-title="'名称'" filter="{'name': 'text'}">{{item.name}}</td>
-									<td data-title="'规格'" filter="{'spec.name': 'text'}">{{item.spec.name}}</td>
-									<td data-title="'操作'">
-										<a href="javascript:;" class="btn btn-primary" ng-disabled="!item.status" ng-click='taskCtrl.AddSpecs(item)'>添加</a>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 p0" style="padding-left:5px;">
-					<div class="panel panel-default panel-border">
-						<div class="panel-body">
-							<p class="Filter-title">
-								已选商品
-								<a href="javascript:;" class="btn btn-turquoise pull-right" ng-click="taskCtrl.delSpecs()">删除</a>
-							</p>
-							<table ng-table="taskCtrl.specList" class="table table-bordered table-striped table-condensed text-center">
-								<tr ng-repeat="item in $data track by $index">
-									<td width='50' header="'DelSpecscheck.html'">
-										<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-disabled="item.status" ng-model="item.check" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-									</td>
-									<td width='100' data-title="'门店品牌'" filter="{'providerBrand.name': 'text'}" sortable="'name'">{{item.providerBrand.name}}</td>
-									<td width='100' data-title="'一级分类'" filter="{'categories.data.name': 'text'}" sortable="'name'">{{item.categories.data.name}}</td>
-									<td data-title="'二级分类'" filter="{'categories.children.name': 'text'}" sortable="'name'">{{item.categories.children.name}}</td>
-									<td data-title="'名称'" filter="{'name': 'text'}">{{item.name}} </td>
-									<td data-title="'规格'" filter="{'spec.name': 'text'}">{{item.spec.name}}</td>
-									<td data-title="'操作'">
-										<a href="javascript:;" class="btn btn-primary" ng-disabled="item.status" ng-click='taskCtrl.delSpecs($index,item.spec.id)'>删除</a>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
+						<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='taskCtrl.task.productType' > 限定单品
+					</label>
+					<goods list='taskCtrl.good' returnlist='taskCtrl.task.goodsId' ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'" data-ng-if='taskCtrl.good.length>1' ></goods>
 				</div>
 			</div>
 		</div>
