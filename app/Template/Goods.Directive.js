@@ -3,7 +3,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
         restrict: 'E',
         replace: true,
         scope: {
-            list: "=",
             returnlist: '='
         },
         templateUrl: 'Template/GoodsSelect.html',

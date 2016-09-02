@@ -29,13 +29,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
     //查询分类列表
    list(vm.seid);
     
-    //新增子类框
-	vm.openmask = function(size){				
-		var modalInstance =open({			
-			templateUrl:'public/modal.html',
-			controller: 'ModalCtrl'			
-		})
-	}
 	
 	//关闭弹出层
 	vm.closechildren = function(){		

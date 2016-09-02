@@ -99,7 +99,7 @@
 					</div>
 				</header>		
 				<ul id="main-menu" class="main-menu">
-					<li class="active opened active">
+					<li>
 						<a href="javascript:;" ui-sref="/good/list">
 							<i class="linecons-cog"></i>
 							<span class="title">基础商品管理</span>
@@ -248,7 +248,7 @@
 							</li>
 						</ul>						
 					</li>
-					<li class="active opened active">
+					<li>
 						<a href="javascript:;" ui-sref="/music/list">
 							<i class="linecons-cog"></i>
 							<span class="title">语音推送管理</span>
@@ -310,13 +310,13 @@
 				</ul>
 				
 			</nav>
-		<div class="col-xs-12">
+		<div class="col-xs-12 p0">
 			<ol class="breadcrumb bc-2">
-				<li>
-					<a href="dashboard-1.html"><i class="fa-home"></i>首页</a>
+				<li ui-sref="/good/list" >
+					<a href="javascript:;"><i class="fa-home"></i>首页</a>
 				</li>
 				<li>
-					<a href="ui-panels.html">{{name}}</a>
+					<a href="javascript:;">{{name}}</a>
 				</li>
 				<li class="active">
 					<strong>{{childrenName}}</strong>

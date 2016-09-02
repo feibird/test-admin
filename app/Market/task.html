@@ -84,7 +84,7 @@
 			    部分门店
 			  </label>
 			</div>
-			<stores ng-show="taskCtrl.task.storeType=='SELECTED_STORE'" returnlist='taskCtrl.task.storesId' data-ng-if="taskCtrl.stores.length>0"></stores>
+			<stores ng-show="taskCtrl.task.storeType=='SELECTED_STORE'" returnlist='taskCtrl.task.storesId'></stores>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -151,7 +151,7 @@
 					<label class="radio-inline">
 						<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='taskCtrl.task.productType' > 限定单品
 					</label>
-					<goods list='taskCtrl.good' returnlist='taskCtrl.task.goodsId' ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'" data-ng-if='taskCtrl.good.length>1' ></goods>
+					<goods returnlist='taskCtrl.task.goodsId' ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'"></goods>
 				</div>
 			</div>
 		</div>
@@ -171,39 +171,61 @@
 	<div class="panel panel-default panel-border">
 		<div class="panel-heading">请选择优惠方式</div>
 		<div class="panel-body">
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='taskCtrl.task.type' > 
-						订单减免
-						<input type="text" ng-disabled="!hide" ng-model='taskCtrl.task.formulaParameter.cutAmount' class="input_radio">
-						元
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='taskCtrl.task.type' >
-						随机减免
-						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="taskCtrl.task.formulaParameter.randomStart">
-						%到
-						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="taskCtrl.task.formulaParameter.randomEnd">
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' >
-						订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
-						%
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="COUPON" ng-model='taskCtrl.task.type' > 订单赠品
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="GIFT" ng-model='taskCtrl.task.type' > 连贯促销
-					</label>
+			<div class="col-xs-12">
+				<div class="col-xs-2">
+					<div class="radio">
+						<label>
+										<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='taskCtrl.task.type' > 
+										订单减免
+										<input type="text" ng-disabled="!hide" ng-model='taskCtrl.task.formulaParameter.cutAmount' class="input_radio">
+										元
+									</label>
+					</div>
+					<div class="radio">
+						<label>
+										<input type="radio" name="type" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='taskCtrl.task.type' >
+										随机减免								
+									</label>
+					</div>
+					<div class="radio">
+						<label>
+										<input type="radio" name="type" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' >
+										订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
+										%
+									</label>
+					</div>
+					<div class="radio">
+						<label>
+										<input type="radio" name="type" value="COUPON" ng-model='taskCtrl.task.type' > 订单赠品
+									</label>
+					</div>
+					<div class="radio">
+						<label>
+									<input type="radio" name="type" value="GIFT" ng-model='taskCtrl.task.type' > 连贯促销
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-10" ng-show="taskCtrl.task.type=='RANDOM_CUT'">
+					<div class='panel panel-default panel-border'>
+						<div class="panel-heading">
+							<button class="btn btn-primary" ng-click="taskCtrl.Addinterval()">添加</button>
+						</div>
+						<div class="panel-body">
+							<div class='admin-input-lyout' ng-repeat="item in taskCtrl.interval">
+								<div class="admin-input-title">规则:</div>
+								<div class='admin-input'>
+									<input type="text" ng-model="item.start">
+									<span>元至</span>
+									<input type="text" ng-model='item.end'>
+									<span>元总概率</span>
+									<input type="text" ng-model='item.count'>
+									<span>%</span>
+									<button class="btn btn-red" ng-click="taskCtrl.Delinterval($index)">删除</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -212,15 +234,3 @@
 		<a href="javascript:;" class="btn btn-primary">取消</a>
 	</div>
 </div>
-<script type="text/ng-template" id="Storescheck.html">
-	<input type="checkbox" ng-click='taskCtrl.All("AddStore")' >
-</script>
-<script type="text/ng-template" id="DelStores.html">
-	<input type="checkbox" ng-click='taskCtrl.All("DelStore")' >
-</script>
-<script type="text/ng-template" id="Specscheck.html">
-	<input type="checkbox" ng-click='taskCtrl.All("AddSpecs")' >
-</script>
-<script type="text/ng-template" id="DelSpecscheck.html">
-	<input type="checkbox" ng-click='taskCtrl.All("DelSpecs")' >
-</script>

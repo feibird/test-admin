@@ -50,6 +50,7 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 
 			//添加门店
 			scope.Add = function (item) {
+				
 				if (item) {
 					item.select = false;
 					item.status = true;

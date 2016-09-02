@@ -68,9 +68,10 @@ th{vertical-align: middle!important;height: 51px;}
 .count,.count-detail,.credential .printBtn{position: absolute;top:10px;right: 0;}
 .user-info-menu li{min-height: 0!important;}
 .user-profile{min-height: 0!important;}
-.user-info-navbar{margin: -30px -30px 0px;}
-.breadcrumb.bc-2{height: 120px;border-top: 2px solid #dfdfdf;border-bottom: 2px solid #dfdfdf;margin: 0 -45px;padding: 0 25px;background:#f7f7f7;}
-.breadcrumb.bc-2 li{height: 120px;line-height: 120px;}
+.user-info-navbar{margin: -15px -15px 0px;}
+.breadcrumb.bc-2{height: 85px;border: 2px solid #dfdfdf;padding: 0 40px;background:#f7f7f7;}
+.breadcrumb.bc-2 li{height: 85px;line-height: 85px;}
+.user-info-navbar .user-info-menu>li>a{top: 0;}
 .m0{margin: 0!important;}
 .w100{width: 100px;}
 .p0{padding: 0;}
@@ -95,3 +96,4 @@ th{vertical-align: middle!important;height: 51px;}
 .RoleDiv,.addRole,.operList{padding:10px;}
 .vt{vertical-align: top;}
 /****end****/
+.page-container .main-content{padding: 15px 15px 0;background: white;}

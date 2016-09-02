@@ -101,7 +101,6 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
     login();
     var userName;
     var user;
-
     PublicResource.user(seid).then(function(data){
         userName = data.result.name;
     });

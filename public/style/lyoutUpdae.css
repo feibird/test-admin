@@ -16,7 +16,15 @@
 .textId{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 100px;display: inline-block;vertical-align: middle;}
 .dropdown-menu.no-spacing{margin-top: 0;}
 .time-right{border: 1px solid #e4e4e4;background: #eee;margin-right: 10px!important;border-left: 0;}
-
+.radio{margin-top: 0;}
 /***Dirtiver***/
 .check-right{margin-right: 5px!important;}
+.admin-input-lyout{margin: 5px 0;}
+.admin-input-lyout .admin-input-title{display: inline-block;vertical-align: top;line-height: 32px;}
+.admin-input-lyout .admin-input{display: inline-block;vertical-align: top;}
+.admin-input-lyout .admin-input span{display: inline-block;vertical-align: top;height:32px;line-height:32px;}
+.admin-input-lyout .admin-input button{margin-left: 10px;}
+.admin-input-lyout .admin-input input[type=text]{width: 50px;height: 32px;margin: 0 10px;outline: none;padding: 0 5px;}
+.admin-input-lyout .admin-input input[type=text]:focus{border:1px solid rgba(104,184,40,.5);padding: 0 5px;}
+.sidebar-menu .main-menu a>i{    display: inline-block;width: 20px;text-align: center;}
 /***end***/

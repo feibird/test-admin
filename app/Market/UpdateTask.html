@@ -41,23 +41,6 @@
 						    否
 						  </label>
 						</div>
-						<table class='table table-responsive table-hover' ng-show='UpdateTaskCtrl.exclusive'>
-							<tr>
-								<th>活动名称</th>
-								<th>活动id</th>
-								<th>优先级</th>
-							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
-							</tr>
-							<tr class='text-center'>
-								<td>全场满20-5</td>
-								<td>123</td>
-								<td>123</td>
-							</tr>
-						</table>
 					</div>
 				</div>
 			</div>
@@ -101,56 +84,7 @@
 			    部分门店
 			  </label>
 			</div>
-			<div class="storesFilter col-xs-12" ng-show='UpdateTaskCtrl.data.storeType==="SELECTED_STORE"'>
-				<div class="col-xs-6">
-					<p class='Filter-title'>
-						全部门店
-						<a href="javascript:;" class="btn btn-turquoise pull-right" ng-click='UpdateTaskCtrl.TopStore()'>添加</a>
-					</p>
-					<table ng-table="UpdateTaskCtrl.StroesList" class="table table-bordered table-striped table-condensed text-center">
-						<tr ng-repeat="item in $data">
-							<td width='50' header="'Storescheck.html'">
-								<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-disabled="!item.status" ng-model="item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-							</td>
-							<td width='100' data-title="'门店品牌'" filter="{brand: 'text'}" sortable="'name'">{{item.brand.name}}</td>
-							<td width='100' data-title="'门店类型'" filter="{type: 'text'}" sortable="'type'">
-								<span ng-show='item.type=="DIRECT_STORE"'>连锁店</span>
-								<span ng-show='item.type=="FRANCHISED_STORE"'>加盟店</span>
-							</td>
-							<td data-title="'门店区域'" filter="{'source': 'text'}" sortable="'brand.name'">{{item.areas[2].name+'-'+item.areas[3].name}}</td>
-							<td data-title="'门店名称'" filter="{'name': 'text'}">{{item.name}}</td>
-							<td data-title="'操作'">
-								<a href="javascript:;" class="btn btn-primary" ng-disabled="!item.status" ng-click='UpdateTaskCtrl.AddStores(item)'>添加</a>
-							</td>
-						</tr>
-					</table>
-
-				</div>
-				<div class="col-xs-6 ">
-					<p class='Filter-title'>
-						已选门店
-						<a href="javascript:;" class="btn btn-red pull-right" ng-click="UpdateTaskCtrl.delStores(null)">删除</a>
-					</p>
-					<table class="table-bordered table-striped table-condensed text-center col-xs-12 ">
-						<tr>
-							<th width='50'><input type="checkbox" class='form-contol' ng-click='UpdateTaskCtrl.All("DelStore")'></th>
-							<th>门店名称</th>
-							<th>门店区域</th>
-							<th width='50'>操作</th>
-						</tr>
-						<tr ng-repeat='list in UpdateTaskCtrl.FilterStores'>
-							<td>
-								<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="list.check" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-							</td>
-							<td>{{list.name}}</td>
-							<td>2</td>
-							<td>
-								<a href="javascript:;" class="btn btn-primary" ng-click='UpdateTaskCtrl.delStores(list.name)'>删除</a>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
+			<stores returnlist="UpdateTaskCtrl.data.promotionStoreList"></stores>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -219,58 +153,7 @@
 							</label>
 				</div>
 			</div>
-			<div class="col-xs-12 p0" ng-show="UpdateTaskCtrl.data.productType==='SELECTED_PRODUCT'">
-				<div class="col-xs-6 p0" style="padding-right:5px;">
-					<div class="panel panel-default panel-border">
-						<div class="panel-body">
-							<p class="Filter-title">
-								全部商品
-								<a href="javascript:;" class="btn btn-turquoise pull-right" ng-click="UpdateTaskCtrl.SpecsAll()">添加</a>
-							</p>
-							<table ng-table="UpdateTaskCtrl.GoodList" class="table table-bordered table-striped table-condensed text-center">
-								<tr ng-repeat="item in $data track by $index">
-									<td width='50' header="'Specscheck.html'">
-										<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-disabled="!item.status" ng-model="item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-									</td>
-									<td width='100' data-title="'门店品牌'" filter="{'providerBrand.name': 'text'}" sortable="'name'">{{item.providerBrand.name}}</td>
-									<td width='100' data-title="'一级分类'" filter="{'categories.data.name': 'text'}" sortable="'name'">{{item.categories.data.name}}</td>
-									<td data-title="'二级分类'" filter="{'categories.children.name': 'text'}" sortable="'name'">{{item.categories.children.name}}</td>
-									<td data-title="'名称'" filter="{'name': 'text'}">{{item.name}}</td>
-									<td data-title="'规格'" filter="{'spec.name': 'text'}">{{item.spec.name}}</td>
-									<td data-title="'操作'">
-										<a href="javascript:;" class="btn btn-primary" ng-disabled="!item.status" ng-click='UpdateTaskCtrl.AddSpecs(item)'>添加</a>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 p0" style="padding-left:5px;">
-					<div class="panel panel-default panel-border">
-						<div class="panel-body">
-							<p class="Filter-title">
-								已选商品
-								<a href="javascript:;" class="btn btn-turquoise pull-right" ng-click="UpdateTaskCtrl.delSpecs()">删除</a>
-							</p>
-							<table ng-table="UpdateTaskCtrl.specList" class="table table-bordered table-striped table-condensed text-center">
-								<tr ng-repeat="item in $data track by $index">
-									<td width='50' header="'DelSpecscheck.html'">
-										<input type="checkbox" ng-true-value='true' ng-false-value='false' ng-disabled="item.status" ng-model="item.check" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}
-									</td>
-									<td width='100' data-title="'门店品牌'" filter="{'providerBrand.name': 'text'}" sortable="'name'">{{item.providerBrand.name}}</td>
-									<td width='100' data-title="'一级分类'" filter="{'categories.data.name': 'text'}" sortable="'name'">{{item.categories.data.name}}</td>
-									<td data-title="'二级分类'" filter="{'categories.children.name': 'text'}" sortable="'name'">{{item.categories.children.name}}</td>
-									<td data-title="'名称'" filter="{'name': 'text'}">{{item.name}}</td>
-									<td data-title="'规格'" filter="{'spec.name': 'text'}">{{item.spec.name}}</td>
-									<td data-title="'操作'">
-										<a href="javascript:;" class="btn btn-primary" ng-disabled="item.status" ng-click='UpdateTaskCtrl.delSpecs($index,item.spec.id)'>删除</a>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
+			<goods returnlist='UpdateTaskCtrl.data.promotionProductList'></goods>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -288,39 +171,60 @@
 	<div class="panel panel-default panel-border">
 		<div class="panel-heading">请选择优惠方式</div>
 		<div class="panel-body">
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='UpdateTaskCtrl.data.type' > 
-						订单减免
-						<input type="text" ng-disabled="!hide" ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
-						元
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='UpdateTaskCtrl.data.type' >
-						随机减免
-						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="UpdateTaskCtrl.data.formulaParameterMap.randomStart">
-						%到
-						<input type="text" ng-disabled="!hide2" class="input_radio" ng-model="UpdateTaskCtrl.data.formulaParameterMap.randomEnd">
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="DISCOUNT" ng-model='UpdateTaskCtrl.data.type' ng-change='hide=false;hide2=false;hide3=true' >
-						订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
-						%
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="COUPON" ng-model='UpdateTaskCtrl.data.type' > 订单赠品
-					</label>
-			</div>
-			<div class="radio">
-				<label>
-						<input type="radio" name="type" value="GIFT" ng-model='UpdateTaskCtrl.data.type' > 连贯促销
-					</label>
+			<div class="col-xs-12">
+				<div class="col-xs-2">
+					<div class="radio">
+						<label>
+							<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='UpdateTaskCtrl.data.type' > 
+							订单减免
+							<input type="text" ng-disabled="!hide" ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
+							元
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="type" value="RANDOM_CUT" ng-change="hide2=true;hide3=false;hide=false;" ng-model='UpdateTaskCtrl.data.type' >随机减免
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="type" value="DISCOUNT" ng-model='UpdateTaskCtrl.data.type' ng-change='hide=false;hide2=false;hide3=true' >
+							订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
+							%
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="type" value="COUPON" ng-model='UpdateTaskCtrl.data.type' > 订单赠品
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="type" value="GIFT" ng-model='UpdateTaskCtrl.data.type' > 连贯促销
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-10">
+					<div class='panel panel-default panel-border'>
+						<div class="panel-heading">
+							<button class="btn btn-primary">添加</button>
+						</div>
+						<div class="panel-body">
+							<div class='admin-input-lyout'>
+								<div class="admin-input-title">规则:</div>
+								<div class='admin-input'>
+									<input type="text" class="" >
+									<span>元至</span>
+									<input type="text" class="">
+									<span>元总概率</span>
+									<input type="text" class="">
+									<span>%</span>
+									<button class="btn btn-red">删除</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -329,15 +233,3 @@
 		<a href="javascript:;" class="btn btn-primary">取消</a>
 	</div>
 </div>
-<script type="text/ng-template" id="Storescheck.html">
-	<input type="checkbox" ng-click='UpdateTaskCtrl.All("AddStore")' >
-</script>
-<script type="text/ng-template" id="DelStores.html">
-	<input type="checkbox" ng-click='UpdateTaskCtrl.All("DelStore")' >
-</script>
-<script type="text/ng-template" id="Specscheck.html">
-	<input type="checkbox" ng-click='UpdateTaskCtrl.All("AddSpecs")' >
-</script>
-<script type="text/ng-template" id="DelSpecscheck.html">
-	<input type="checkbox" ng-click='UpdateTaskCtrl.All("DelSpecs")' >
-</script>
