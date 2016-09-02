@@ -3,24 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ad0c60e8-db01-478c-a917-90041f7ef4e9" name="默认的" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/MarketResourse.server.js" afterPath="$PROJECT_DIR$/app/Market/MarketResourse.server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/UpdateTask.Ctrl.js" afterPath="$PROJECT_DIR$/app/Market/UpdateTask.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/UpdateTask.html" afterPath="$PROJECT_DIR$/app/Market/UpdateTask.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/task.Ctrl.js" afterPath="$PROJECT_DIR$/app/Market/task.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/task.html" afterPath="$PROJECT_DIR$/app/Market/task.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Sort/Sortlist.Ctrl.js" afterPath="$PROJECT_DIR$/app/Sort/Sortlist.Ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Sort/list.html" afterPath="$PROJECT_DIR$/app/Sort/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Template/Goods.Directive.js" afterPath="$PROJECT_DIR$/app/Template/Goods.Directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Template/Stores.Directive.js" afterPath="$PROJECT_DIR$/app/Template/Stores.Directive.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.module.js" afterPath="$PROJECT_DIR$/app/index.module.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/app.js" afterPath="$PROJECT_DIR$/dist/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/style.min.css" afterPath="$PROJECT_DIR$/dist/style.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/app.js" afterPath="$PROJECT_DIR$/public/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.css" afterPath="$PROJECT_DIR$/public/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.min.css" afterPath="$PROJECT_DIR$/public/style.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style/lyoutUpdae.css" afterPath="$PROJECT_DIR$/public/style/lyoutUpdae.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style/public.css" afterPath="$PROJECT_DIR$/public/style/public.css" />
     </list>
     <ignored path="test-admin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,15 +30,7 @@
               <caret line="10" column="52" selection-start-line="10" selection-start-column="52" selection-end-line="10" selection-end-column="52" />
               <folding>
                 <marker date="1472807206000" expanded="true" signature="296:2497" ph="{...}" />
-                <marker date="1472807206000" expanded="true" signature="424:582" ph="{...}" />
-                <marker date="1472807206000" expanded="true" signature="467:550" ph="{...}" />
-                <marker date="1472807206000" expanded="true" signature="625:691" ph="{&quot;Content-Type&quot;: 'application/x-www-form-urlencoded'...}" />
                 <marker date="1472807206000" expanded="true" signature="700:2497" ph="{...}" />
-                <marker date="1472807206000" expanded="true" signature="753:984" ph="{&quot;url&quot;: &quot;/sort/list&quot;...}" />
-                <marker date="1472807206000" expanded="true" signature="1023:1290" ph="{&quot;url&quot;: &quot;/supplierlogo/list&quot;...}" />
-                <marker date="1472807206000" expanded="true" signature="1618:1886" ph="{&quot;url&quot;: &quot;/stores/list&quot;...}" />
-                <marker date="1472807206000" expanded="true" signature="1914:2183" ph="{&quot;url&quot;: &quot;/label/list&quot;...}" />
-                <marker date="1472807206000" expanded="true" signature="2220:2487" ph="{&quot;url&quot;: &quot;/order/orderlist&quot;...}" />
               </folding>
             </state>
           </provider>
@@ -75,7 +49,7 @@
       <file leaf-file-name="list.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Sort/list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
+            <state relative-caret-position="538">
               <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#div#0;n#div#2;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -122,7 +96,6 @@
               <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
               <folding>
                 <marker date="1472798225000" expanded="true" signature="2434:2438" ph="{...}" />
-                <marker date="1472798225000" expanded="true" signature="2434:2441" ph="{&quot;restrict&quot;: 'E'...}" />
               </folding>
             </state>
           </provider>
@@ -213,10 +186,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="77" />
-    <option name="y" value="54" />
-    <option name="width" value="1280" />
-    <option name="height" value="709" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="809" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -249,7 +221,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -268,41 +239,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test-admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sort" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -422,6 +362,7 @@
       <workItem from="1472695911726" duration="653000" />
       <workItem from="1472696777111" duration="188000" />
       <workItem from="1472809107743" duration="243000" />
+      <workItem from="1472809431622" duration="303000" />
     </task>
     <task id="LOCAL-00001" summary="合并冲突">
       <created>1472191752003</created>
@@ -434,7 +375,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31965000" />
+    <option name="totallyTimeSpent" value="32268000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -446,12 +387,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="54" width="1280" height="709" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="809" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2152502" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19097957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27620396" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="版本控制" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32715008" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32715008" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243626" sideWeight="0.51231134" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32546374" sideWeight="0.48768863" order="8" side_tool="false" content_ui="tabs" />
@@ -716,15 +657,7 @@
           <caret line="10" column="52" selection-start-line="10" selection-start-column="52" selection-end-line="10" selection-end-column="52" />
           <folding>
             <marker date="1472807206000" expanded="true" signature="296:2497" ph="{...}" />
-            <marker date="1472807206000" expanded="true" signature="424:582" ph="{...}" />
-            <marker date="1472807206000" expanded="true" signature="467:550" ph="{...}" />
-            <marker date="1472807206000" expanded="true" signature="625:691" ph="{&quot;Content-Type&quot;: 'application/x-www-form-urlencoded'...}" />
             <marker date="1472807206000" expanded="true" signature="700:2497" ph="{...}" />
-            <marker date="1472807206000" expanded="true" signature="753:984" ph="{&quot;url&quot;: &quot;/sort/list&quot;...}" />
-            <marker date="1472807206000" expanded="true" signature="1023:1290" ph="{&quot;url&quot;: &quot;/supplierlogo/list&quot;...}" />
-            <marker date="1472807206000" expanded="true" signature="1618:1886" ph="{&quot;url&quot;: &quot;/stores/list&quot;...}" />
-            <marker date="1472807206000" expanded="true" signature="1914:2183" ph="{&quot;url&quot;: &quot;/label/list&quot;...}" />
-            <marker date="1472807206000" expanded="true" signature="2220:2487" ph="{&quot;url&quot;: &quot;/order/orderlist&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -818,7 +751,6 @@
           <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
           <folding>
             <marker date="1472798225000" expanded="true" signature="2434:2438" ph="{...}" />
-            <marker date="1472798225000" expanded="true" signature="2434:2441" ph="{&quot;restrict&quot;: 'E'...}" />
           </folding>
         </state>
       </provider>
@@ -841,7 +773,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Sort/list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
+        <state relative-caret-position="538">
           <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
           <folding>
             <element signature="n#style#0;n#i#0;n#div#0;n#div#2;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
