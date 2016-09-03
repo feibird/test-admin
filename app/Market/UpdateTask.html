@@ -12,10 +12,10 @@
 				<div class="form-title">是否有效</div>
 				<div class="form-layout">
 					<label class="radio-inline">
-					  <input type="radio" name="enabled"  ng-model='UpdateTaskCtrl.data.enabled' ng-checked="UpdateTaskCtrl.data.enabled" value="true" > 是
+					  <input type="radio" name="enabled" value="true" ng-model='UpdateTaskCtrl.data.enabled'  ng-checked="UpdateTaskCtrl.data.enabled" > 是
 					</label>
 					<label class="radio-inline">
-					  <input type="radio" name="enabled"  ng-model='UpdateTaskCtrl.data.enabled' ng-checked="UpdateTaskCtrl.data.enabled" value="false" > 否
+					  <input type="radio" name="enabled" value="false" ng-model='UpdateTaskCtrl.data.enabled' ng-checked="UpdateTaskCtrl.data.enabled"> 否
 					</label>
 				</div>
 			</div>
@@ -84,7 +84,7 @@
 			    部分门店
 			  </label>
 			</div>
-			<stores returnlist="UpdateTaskCtrl.data.promotionStoreList"></stores>
+			<stores ng-show="UpdateTaskCtrl.data.storeType=='SELECTED_STORE'" returnlist="UpdateTaskCtrl.data.promotionStoreList"></stores>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -153,7 +153,7 @@
 							</label>
 				</div>
 			</div>
-			<goods returnlist='UpdateTaskCtrl.data.promotionProductList'></goods>
+			<goods ng-show="UpdateTaskCtrl.data.productType=='SELECTED_PRODUCT'" returnlist='UpdateTaskCtrl.data.promotionProductList'></goods>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -177,7 +177,7 @@
 						<label>
 							<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='UpdateTaskCtrl.data.type' > 
 							订单减免
-							<input type="text" ng-disabled="!hide" ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
+							<input type="text" ng-disabled="!hide"  ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
 							元
 						</label>
 					</div>
@@ -204,22 +204,22 @@
 						</label>
 					</div>
 				</div>
-				<div class="col-xs-10">
+				<div class="col-xs-10" ng-show="UpdateTaskCtrl.data.type=='RANDOM_CUT'">
 					<div class='panel panel-default panel-border'>
 						<div class="panel-heading">
-							<button class="btn btn-primary">添加</button>
+							<button class="btn btn-primary" ng-click="UpdateTaskCtrl.Addinterval()">添加</button>
 						</div>
 						<div class="panel-body">
-							<div class='admin-input-lyout'>
+							<div class='admin-input-lyout' ng-repeat="list in UpdateTaskCtrl.interval">
 								<div class="admin-input-title">规则:</div>
 								<div class='admin-input'>
-									<input type="text" class="" >
+									<input type="text" ng-model='list.start'>
 									<span>元至</span>
-									<input type="text" class="">
+									<input type="text" ng-model="list.end">
 									<span>元总概率</span>
-									<input type="text" class="">
+									<input type="text" ng-model="list.count">
 									<span>%</span>
-									<button class="btn btn-red">删除</button>
+									<button class="btn btn-red" ng-click="UpdateTaskCtrl.Delinterval($index)">删除</button>
 								</div>
 							</div>
 						</div>

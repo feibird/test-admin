@@ -22,6 +22,7 @@ function MusicResource($http,device,version) {
       }
 
       function add(seid,obj){
+          console.log(obj)
            return $http({
             url:"/api-admin/voice/add",
             method: 'post',
@@ -32,13 +33,12 @@ function MusicResource($http,device,version) {
                 "sessionId":seid,
                 "name":obj.name,
                 "effective":obj.effective,
-                "type":obj.type,
+                "type":obj.productType,
                 "content":obj.content,
                 "allStore":obj.allStore,
                 "storeIds":obj.storeId,
                 "dates":JSON.stringify(obj.dates),
-                "times":JSON.stringify(obj.times),
-                "formulaParameter":obj.formulaParameter
+                "times":JSON.stringify(obj.times)
               }
         })
         .then(function (data) {

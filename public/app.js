@@ -2820,6 +2820,25 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     }
 
+    vm.delBtn = function(id){
+        layer.confirm('您确定要删除此条？', {
+			  btn: ['确定','取消'] //按钮
+		}, function(){
+			remove(id)
+		});
+    }
+
+    function remove(id){
+        MarketResource.remove(vm.seid,id).then(function(data){
+            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg('删除成功！',{icon:1});
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
     function chang_time(date) {
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
@@ -2884,11 +2903,11 @@ function MarketResource($http, device, version) {
         "startTime": obj.startTime,                     //开始时间
         "endTime": obj.endTime,                         //结束时间
         "storeType": obj.storeType,                     //门店类型
-        "storeIds": obj.storeIds,                       //门店id
+        "storeIds": obj.storesIds,                       //门店id
         "userType": obj.userType,                       //用户类型
         "timesLimitCycle": obj.timesLimitCycle,          //周期天数
         "productType": obj.productType,
-        "productIds": obj.productIds,
+        "productIds": obj.goodsIds,
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
         "amountLimit": obj.amountLimit,
@@ -3035,10 +3054,11 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     login();
     get(vm.id)
 
-   
+
     vm.UpTask = function () {
-        vm.data.storesIds = ArryString(vm.data.storesId, true);
-        vm.data.goodsIds = ArryString(vm.data.goodsId, false);
+        vm.data.storesIds = ArryString(vm.data.promotionStoreList, true);
+        vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
+        console.log(vm.data)
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
             console.log(typeof (vm.data.startTime))
             vm.data.startTime = vm.data.startTime.getTime();
@@ -3046,6 +3066,14 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         if (typeof (vm.data.endTime) != "undefined" && vm.data.endTime != "" && typeof (vm.data.endTime) != 'number') {
             console.log(vm.data.endTime)
             vm.data.endTime = vm.data.endTime.getTime();
+        }
+        if (vm.data.type == 'RANDOM_CUT') {
+            if (vm.interval.length > 1) {
+                vm.data.formulaParameterMap = {};
+                for (var i in vm.interval) {
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count;
+                }
+            }
         }
         console.log(vm.data);
         MarketResource.update(vm.seid, vm.data).then(function (data) {
@@ -3073,18 +3101,23 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     //将已选择的门店或者商品规格提取id为字符串链接
     function ArryString(obj, status) {
-         console.log(obj, typeof (obj))
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
             var StoreArry = "";
             if (status) {
                 for (var i in obj) {
-                    StoreArry += obj[i].id + ","
+                    StoreArry += obj[i].id + ",";
                 }
             } else {
                 for (var i in obj) {
-                    StoreArry += obj[i].spec.id + ","
+                    
+                    console.log(obj[i].spec)
+                    if(typeof(obj[i].spec)=='undefined'){
+                        StoreArry+=obj[i].productSpecData.id+",";
+                    }else{
+                        StoreArry += obj[i].spec.id + ",";
+                    }
                 }
             }
             StoreArry = StoreArry.substring(0, StoreArry.length - 1)
@@ -3092,14 +3125,61 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         }
     }
 
+    vm.Addinterval = function () {
+        var add = { start: 0, end: 0, count: 0 };
+        vm.interval.push(add)
+    }
+
+    vm.Delinterval = function (index) {
+        console.log(index)
+        vm.interval.splice(index, 1)
+    }
+
     //获取运营数据
     function get(id) {
         MarketResource.get(vm.seid, id).then(function (data) {
             vm.data = data.data.result;
-            console.log(vm.data)
+            console.log(vm.data);
+            Get_interval(vm.data.formulaParameterMap);
+            Get_goods(vm.data.promotionProductList);
         })
     }
 
+    //解析Interbal(随机机制)
+    function Get_interval(obj) {
+        vm.interval = [];
+        for (var i in obj) {
+            if (i.indexOf('interval') > -1) {
+                var json = new Object();
+                json.start = i.substring(9, i.length).split("_")[0];
+                json.end = i.substring(9, i.length).split("_")[1];
+                json.count = obj[i];
+                vm.interval.push(json);
+            }
+        }
+    }
+
+
+
+    //解析规格list
+    function Get_goods(obj) {
+        console.log(obj)
+        var goods = [];
+        var spec = {};
+        spec.categories={};
+        for(var i in obj){
+            spec.id = obj[i].productSpecData.id;
+            spec.spec = obj[i].productSpecData;
+            spec.categories.data = obj[i].categoryList[0];
+            spec.categories.children = obj[i].categoryList[1];
+            spec.name=obj[i].baseProduct.name;
+            spec.providerBrand = obj[i].brand;
+            goods.push(spec);
+            spec = {};
+            spec.categories={};
+        }
+        vm.data.promotionProductList = goods;
+    }
 }
 })();
 (function(){
@@ -3395,6 +3475,7 @@ function MusicResource($http,device,version) {
       }
 
       function add(seid,obj){
+          console.log(obj)
            return $http({
             url:"/api-admin/voice/add",
             method: 'post',
@@ -3405,13 +3486,12 @@ function MusicResource($http,device,version) {
                 "sessionId":seid,
                 "name":obj.name,
                 "effective":obj.effective,
-                "type":obj.type,
+                "type":obj.productType,
                 "content":obj.content,
                 "allStore":obj.allStore,
                 "storeIds":obj.storeId,
                 "dates":JSON.stringify(obj.dates),
-                "times":JSON.stringify(obj.times),
-                "formulaParameter":obj.formulaParameter
+                "times":JSON.stringify(obj.times)
               }
         })
         .then(function (data) {
@@ -5242,7 +5322,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
                     scope.list = data.data.result.data;
                     scope.pagecount = data.data.result.total;
                     scope.list = ArryAnalysis(scope.list)
-                    console.log(scope.list)
                 })
             }
 
@@ -5264,7 +5343,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
             }
 
             scope.All = function(is,all){
-                console.log(all)
                 switch(all){
                     case "add":
                         for(var i in scope.list){
@@ -5298,7 +5376,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 					scope.returnlist.splice(index, 1);
 					for(var i in scope.list){
 						if(scope.list[i].spec.id==id){
-                            console.log(scope.list[i])
 							scope.list[i].status = true;
                             scope.list[i].active = false;
 						}
@@ -5359,9 +5436,7 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 			store()
 			function store(){
 				StoresResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
-					console.log(data);
 					scope.list = data.data.result.data;
-					console.log(scope.list)
 					for (var i in scope.list) {
 							scope.list[i].select = true;
 							scope.list[i].status = false;
@@ -5372,7 +5447,6 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 			}
 
 			scope.All = function(is,all){
-                console.log(all)
                 switch(all){
                     case "add":
                         for(var i in scope.list){

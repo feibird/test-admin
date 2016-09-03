@@ -55,6 +55,25 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     }
 
+    vm.delBtn = function(id){
+        layer.confirm('您确定要删除此条？', {
+			  btn: ['确定','取消'] //按钮
+		}, function(){
+			remove(id)
+		});
+    }
+
+    function remove(id){
+        MarketResource.remove(vm.seid,id).then(function(data){
+            console.log(data)
+            if(data.data.status=="OK"){
+                layer.msg('删除成功！',{icon:1});
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
     function chang_time(date) {
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';

@@ -24,7 +24,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
                     scope.list = data.data.result.data;
                     scope.pagecount = data.data.result.total;
                     scope.list = ArryAnalysis(scope.list)
-                    console.log(scope.list)
                 })
             }
 
@@ -46,7 +45,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
             }
 
             scope.All = function(is,all){
-                console.log(all)
                 switch(all){
                     case "add":
                         for(var i in scope.list){
@@ -80,7 +78,6 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 					scope.returnlist.splice(index, 1);
 					for(var i in scope.list){
 						if(scope.list[i].spec.id==id){
-                            console.log(scope.list[i])
 							scope.list[i].status = true;
                             scope.list[i].active = false;
 						}

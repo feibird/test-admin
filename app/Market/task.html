@@ -160,11 +160,11 @@
 		<div class="panel-heading">活动促销方式</div>
 		<div class="panel-body">
 			<label class="radio-inline">
-					  <input type="radio" name="amount" value="true" ng-model='taskCtrl.task.amount' > 订单无关
+					  <input type="radio" name="amount" value='' ng-model='taskCtrl.task.amount' > 订单无关
 					</label>
 			<label class="radio-inline">
-					  <input type="radio" name="amount" value="true" ng-change="amount=true" ng-model='taskCtrl.task.amount' > 订单满
-						<input type="text" class="input_radio" ng-model="taskCtrl.task.amountLimit" ng-disabled="!amount" >元
+					  <input type="radio" name="amount" value='false' ng-model='taskCtrl.task.amount' checked > 订单满
+						<input type="text" class="input_radio" ng-model="taskCtrl.task.amountLimit" ng-disabled="!taskCtrl.task.amount" >元
 					</label>
 		</div>
 	</div>

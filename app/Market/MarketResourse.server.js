@@ -36,11 +36,11 @@ function MarketResource($http, device, version) {
         "startTime": obj.startTime,                     //开始时间
         "endTime": obj.endTime,                         //结束时间
         "storeType": obj.storeType,                     //门店类型
-        "storeIds": obj.storeIds,                       //门店id
+        "storeIds": obj.storesIds,                       //门店id
         "userType": obj.userType,                       //用户类型
         "timesLimitCycle": obj.timesLimitCycle,          //周期天数
         "productType": obj.productType,
-        "productIds": obj.productIds,
+        "productIds": obj.goodsIds,
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
         "amountLimit": obj.amountLimit,

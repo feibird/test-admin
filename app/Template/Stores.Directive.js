@@ -20,9 +20,7 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 			store()
 			function store(){
 				StoresResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
-					console.log(data);
 					scope.list = data.data.result.data;
-					console.log(scope.list)
 					for (var i in scope.list) {
 							scope.list[i].select = true;
 							scope.list[i].status = false;
@@ -33,7 +31,6 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 			}
 
 			scope.All = function(is,all){
-                console.log(all)
                 switch(all){
                     case "add":
                         for(var i in scope.list){

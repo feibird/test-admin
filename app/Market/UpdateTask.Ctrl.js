@@ -28,10 +28,11 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     login();
     get(vm.id)
 
-   
+
     vm.UpTask = function () {
-        vm.data.storesIds = ArryString(vm.data.storesId, true);
-        vm.data.goodsIds = ArryString(vm.data.goodsId, false);
+        vm.data.storesIds = ArryString(vm.data.promotionStoreList, true);
+        vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
+        console.log(vm.data)
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
             console.log(typeof (vm.data.startTime))
             vm.data.startTime = vm.data.startTime.getTime();
@@ -39,6 +40,14 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         if (typeof (vm.data.endTime) != "undefined" && vm.data.endTime != "" && typeof (vm.data.endTime) != 'number') {
             console.log(vm.data.endTime)
             vm.data.endTime = vm.data.endTime.getTime();
+        }
+        if (vm.data.type == 'RANDOM_CUT') {
+            if (vm.interval.length > 1) {
+                vm.data.formulaParameterMap = {};
+                for (var i in vm.interval) {
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count;
+                }
+            }
         }
         console.log(vm.data);
         MarketResource.update(vm.seid, vm.data).then(function (data) {
@@ -66,18 +75,23 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     //将已选择的门店或者商品规格提取id为字符串链接
     function ArryString(obj, status) {
-         console.log(obj, typeof (obj))
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
             var StoreArry = "";
             if (status) {
                 for (var i in obj) {
-                    StoreArry += obj[i].id + ","
+                    StoreArry += obj[i].id + ",";
                 }
             } else {
                 for (var i in obj) {
-                    StoreArry += obj[i].spec.id + ","
+                    
+                    console.log(obj[i].spec)
+                    if(typeof(obj[i].spec)=='undefined'){
+                        StoreArry+=obj[i].productSpecData.id+",";
+                    }else{
+                        StoreArry += obj[i].spec.id + ",";
+                    }
                 }
             }
             StoreArry = StoreArry.substring(0, StoreArry.length - 1)
@@ -85,12 +99,59 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         }
     }
 
+    vm.Addinterval = function () {
+        var add = { start: 0, end: 0, count: 0 };
+        vm.interval.push(add)
+    }
+
+    vm.Delinterval = function (index) {
+        console.log(index)
+        vm.interval.splice(index, 1)
+    }
+
     //获取运营数据
     function get(id) {
         MarketResource.get(vm.seid, id).then(function (data) {
             vm.data = data.data.result;
-            console.log(vm.data)
+            console.log(vm.data);
+            Get_interval(vm.data.formulaParameterMap);
+            Get_goods(vm.data.promotionProductList);
         })
     }
 
+    //解析Interbal(随机机制)
+    function Get_interval(obj) {
+        vm.interval = [];
+        for (var i in obj) {
+            if (i.indexOf('interval') > -1) {
+                var json = new Object();
+                json.start = i.substring(9, i.length).split("_")[0];
+                json.end = i.substring(9, i.length).split("_")[1];
+                json.count = obj[i];
+                vm.interval.push(json);
+            }
+        }
+    }
+
+
+
+    //解析规格list
+    function Get_goods(obj) {
+        console.log(obj)
+        var goods = [];
+        var spec = {};
+        spec.categories={};
+        for(var i in obj){
+            spec.id = obj[i].productSpecData.id;
+            spec.spec = obj[i].productSpecData;
+            spec.categories.data = obj[i].categoryList[0];
+            spec.categories.children = obj[i].categoryList[1];
+            spec.name=obj[i].baseProduct.name;
+            spec.providerBrand = obj[i].brand;
+            goods.push(spec);
+            spec = {};
+            spec.categories={};
+        }
+        vm.data.promotionProductList = goods;
+    }
 }
