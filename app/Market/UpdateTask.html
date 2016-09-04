@@ -225,6 +225,35 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-xs-10" ng-show="UpdateTaskCtrl.data.type=='COUPON'">
+					<div class='panel panel-default panel-border'>
+						<div class="panel-heading">
+							赠品列表
+						</div>
+						<div class="panel-body">
+								<prems returnlist='UpdateTaskCtrl.data.prems'></prems>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">
+			活动成本承担方和承担比例
+			<button class="btn btn-primary" ng-click="UpdateTaskCtrl.AddcostSources()">添加</button>
+		</div>
+		<div class="panel-body">
+			<div class="input-group col-xs-4 mt10" ng-repeat="item in UpdateTaskCtrl.data.costSources">
+				<div class="input-group-addon">承担方选择</div>
+				<select name="" id="" class="form-control" ng-model='item.costSourceId' ng-options="a.id as a.name for a in UpdateTaskCtrl.resource"
+					style="min-width:150px;">
+						<option value="" selected >请选择</option>
+					</select>
+				<div class="input-group-addon">|&nbsp;&nbsp;承担比例</div>
+				<input type="text" class="form-control" ng-model='item.ratio'>
+				<div class="input-group-addon">%</div>
+				<div class="input-group-btn"><a href="javascript:;" ng-click="UpdateTaskCtrl.DelcostSources()" class="btn btn-red">删除</a></div>
 			</div>
 		</div>
 	</div>

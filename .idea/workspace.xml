@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad0c60e8-db01-478c-a917-90041f7ef4e9" name="默认的" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/app.js" afterPath="$PROJECT_DIR$/dist/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/style.min.css" afterPath="$PROJECT_DIR$/dist/style.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/MarketList.Ctrl.js" afterPath="$PROJECT_DIR$/app/Market/MarketList.Ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/Premiums.Ctrl.js" afterPath="$PROJECT_DIR$/app/Market/Premiums.Ctrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/Premiums.html" afterPath="$PROJECT_DIR$/app/Market/Premiums.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Market/Premiums.server.js" afterPath="$PROJECT_DIR$/app/Market/Premiums.server.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/app.js" afterPath="$PROJECT_DIR$/public/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.css" afterPath="$PROJECT_DIR$/public/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style.min.css" afterPath="$PROJECT_DIR$/public/style.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/style/public.css" afterPath="$PROJECT_DIR$/public/style/public.css" />
     </list>
     <ignored path="test-admin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
-              <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+              <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -49,8 +54,8 @@
       <file leaf-file-name="list.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Sort/list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
+            <state relative-caret-position="358">
+              <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#div#0;n#div#2;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#div#0;n#div#3;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -92,9 +97,13 @@
       <file leaf-file-name="Stores.Directive.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Template/Stores.Directive.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-              <folding />
+            <state relative-caret-position="90">
+              <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+              <folding>
+                <marker date="1472891415000" expanded="true" signature="495:582" ph="{...}" />
+                <marker date="1472891415000" expanded="true" signature="575:582" ph="{...}" />
+                <marker date="1472891415000" expanded="true" signature="823:1272" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -361,7 +370,7 @@
       <workItem from="1472696777111" duration="188000" />
       <workItem from="1472809107743" duration="243000" />
       <workItem from="1472809431622" duration="303000" />
-      <workItem from="1472876418523" duration="4000" />
+      <workItem from="1472876418523" duration="278000" />
     </task>
     <task id="LOCAL-00001" summary="合并冲突">
       <created>1472191752003</created>
@@ -374,7 +383,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32272000" />
+    <option name="totallyTimeSpent" value="32546000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -387,9 +396,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="809" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19097957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19097957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27620396" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32715008" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243626" sideWeight="0.51231134" order="7" side_tool="true" content_ui="tabs" />
@@ -712,7 +721,7 @@
     <entry file="file://$PROJECT_DIR$/app/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -743,9 +752,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Template/Stores.Directive.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="26" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding />
+        <state relative-caret-position="90">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <marker date="1472891415000" expanded="true" signature="495:582" ph="{...}" />
+            <marker date="1472891415000" expanded="true" signature="575:582" ph="{...}" />
+            <marker date="1472891415000" expanded="true" signature="823:1272" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -767,8 +780,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Sort/list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
+        <state relative-caret-position="358">
+          <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
           <folding>
             <element signature="n#style#0;n#i#0;n#div#0;n#div#2;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#i#0;n#div#0;n#div#3;n#li#1;n#ul#0;n#div#1;n#div#1;n#div#0;n#!!top" expanded="true" />

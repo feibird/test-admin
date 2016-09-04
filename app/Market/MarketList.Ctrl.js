@@ -12,6 +12,11 @@ function config($stateProvider) {
             templateUrl: "Market/UpdateTask.html",
             controller: 'UpdateTaskCtrl as UpdateTaskCtrl'
         })
+        .state("premlist", {
+            url: "/market/premlist",
+            templateUrl: "Market/Premiums.html",
+            controller: 'PremlistCtrl as PremlistCtrl'
+        })
 }
 MarketListCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource'];
 function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource) {

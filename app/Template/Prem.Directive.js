@@ -1,29 +1,32 @@
-angular.module('index_area').directive('goods', function (GoodResource,$rootScope) {
+angular.module('index_area').directive('prems', function (PremResource,$rootScope) {
     return {
         restrict: 'E',
         replace: true,
         scope: {
             returnlist: '='
         },
-        templateUrl: 'Template/GoodsSelect.html',
+        templateUrl: 'Template/PremSelect.html',
         link: function (scope, elem, attr) {
-            scope.list = ArryAnalysis(scope.list);
             scope.pagecount;
             scope.skip=0;
             scope.limit=10;
             scope.seid = $rootScope.seid;
-            Goods();
+            Prems();
 
             scope.pageChanged = function(){
                 scope.skip = (scope.pageint-1)*scope.limit;
-				Goods();
+				Prems();
             }
 
-            function Goods(){
-                GoodResource.list(scope.seid,null,scope.skip,scope.limit).then(function(data){
-                    scope.list = data.data.result.data;
+            function Prems(){
+                PremResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
+                    scope.list = data.data.result;
+                    console.log(scope.list)
+                    for(var i in scope.list){
+                        scope.list[i].status=true;
+                        scope.list[i].active=false;
+                    }
                     scope.pagecount = data.data.result.total;
-                    scope.list = ArryAnalysis(scope.list)
                 })
             }
 
@@ -63,9 +66,9 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 			scope.Del = function (id,index,is) {
 				if (is) {
 					for (var i in scope.returnlist){
-						if (scope.returnlist[i].check) {
+						if (scope.returnlist[i].active) {
 							for (var j in scope.list) {
-								if (scope.list[j].spec.id == scope.returnlist[i].spec.id) {
+								if (scope.list[j].id == scope.returnlist[i].id) {
 									scope.list[j].status = true;
 									scope.list[j].active = false;
 								}
@@ -77,34 +80,13 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 				} else {
 					scope.returnlist.splice(index, 1);
 					for(var i in scope.list){
-						if(scope.list[i].spec.id==id){
+						if(scope.list[i].id==id){
 							scope.list[i].status = true;
                             scope.list[i].active = false;
 						}
 					}
 				}
 			}
-
-            //list转
-            function ArryAnalysis(obj) {
-                var good = new Object();
-                var GoodSpecs = new Array();
-                good.categories = new Object();
-                for (var i in obj) {
-                    for (var j in obj[i].specs) {
-                        good.name = obj[i].name;
-                        good.categories.children = obj[i].categories.children[0].data;
-                        good.categories.data = obj[i].categories.data;
-                        good.providerBrand = obj[i].providerBrand;
-                        good.spec = obj[i].specs[j]
-                        good.status = true;
-                        GoodSpecs.push(good);
-                        good = new Object();
-                        good.categories = new Object();
-                    }
-                }
-                return GoodSpecs;
-            }
         }
     }
 })

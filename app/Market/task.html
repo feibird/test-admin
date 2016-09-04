@@ -96,13 +96,13 @@
 					<div class="form-layout">
 						<div class="input-group">
 							<div class="input-group-addon">从</div>
-							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.startTime" is-open="open1" datepicker-options="dateOptions"
+							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.startTime" is-open="open1" datepicker-options="taskCtrl.date"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
 							<div class="input-group-addon">到</div>
-							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.endTime" is-open="open2" datepicker-options="dateOptions"
+							<input type="text" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.endTime" is-open="open2" datepicker-options="taskCtrl.date"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -187,22 +187,17 @@
 										随机减免								
 									</label>
 					</div>
+					<!--<div class="radio">
+						<label>
+								<input type="radio" name="type" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' >
+								订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
+								%
+							</label>
+					</div>-->
 					<div class="radio">
 						<label>
-										<input type="radio" name="type" value="DISCOUNT" ng-model='taskCtrl.task.type' ng-change='hide=false;hide2=false;hide3=true' >
-										订单折扣<input  ng-disabled="!hide3" type="text" class="input_radio">
-										%
+										<input type="radio" name="type" value="GIFT" ng-model='taskCtrl.task.type' > 订单赠品
 									</label>
-					</div>
-					<div class="radio">
-						<label>
-										<input type="radio" name="type" value="COUPON" ng-model='taskCtrl.task.type' > 订单赠品
-									</label>
-					</div>
-					<div class="radio">
-						<label>
-									<input type="radio" name="type" value="GIFT" ng-model='taskCtrl.task.type' > 连贯促销
-						</label>
 					</div>
 				</div>
 				<div class="col-xs-10" ng-show="taskCtrl.task.type=='RANDOM_CUT'">
@@ -226,6 +221,35 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-xs-10" ng-show="taskCtrl.task.type=='COUPON'">
+					<div class='panel panel-default panel-border'>
+						<div class="panel-heading">
+							赠品列表
+						</div>
+						<div class="panel-body">
+							<prems returnlist='taskCtrl.task.prems'></prems>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">
+			活动成本承担方和承担比例
+			<button class="btn btn-primary" ng-click="taskCtrl.AddcostSources()">添加</button>
+		</div>
+		<div class="panel-body">
+			<div class="input-group col-xs-4 mt10" ng-repeat="item in taskCtrl.task.costSources">
+				<div class="input-group-addon">承担方选择</div>
+				<select name="" id="" class="form-control" ng-model='item.costSourceId' ng-options="a.id as a.name for a in taskCtrl.resource"
+					style="min-width:150px;">
+						<option value="" selected >请选择</option>
+					</select>
+				<div class="input-group-addon">|&nbsp;&nbsp;承担比例</div>
+				<input type="text" class="form-control" ng-model='item.ratio'>
+				<div class="input-group-addon">%</div>
+				<div class="input-group-btn"><a href="javascript:;" ng-click="taskCtrl.DelcostSources()" class="btn btn-red">删除</a></div>
 			</div>
 		</div>
 	</div>

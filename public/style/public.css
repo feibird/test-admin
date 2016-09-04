@@ -11,7 +11,6 @@
 .input_radio:focus{border:1px solid rgba(104,184,40,.5);padding: 0 5px;}
 p{margin-bottom: 0;color: #333;}
 td{vertical-align: middle!important;}
-th{vertical-align: middle!important;height: 51px;}
 .table{margin-bottom: 0px;}
 .mr10{margin-right: 10px;vertical-align: inherit;}
 .pagination-sm{margin-right: -15px;}
@@ -53,7 +52,6 @@ th{vertical-align: middle!important;height: 51px;}
 .count-detail .detail-title a{position: absolute;right: 0px;top:10px;}
 .count-detail .detail-lyout table{width: 100%;border:1px solid black;margin-bottom: 20px;}
 .count-detail .detail-lyout table tr{height: 40px;border:1px solid black;}
-.count-detail .detail-lyout table tr td,th{height: 40px;border:1px solid black;text-align: center;}
 .detail-layout{margin: 10px 0;}
 .detail-layout p{margin-left: 10px;display: inline-block;}
 .detail-layout p span{color: red;}
@@ -93,7 +91,7 @@ th{vertical-align: middle!important;height: 51px;}
 
 .Filter-title{height: 40px;line-height: 40px;background: black;color: white;padding-left: 10px;}
 .Filter-title .btn{margin-top: 4px;margin-right: 4px;}
-.RoleDiv,.addRole,.operList{padding:10px;}
+.RoleDiv,.addRole,.operList,.add_operk,.update_operk,get_operk{padding:10px;}
 .vt{vertical-align: top;}
 /****end****/
 .page-container .main-content{padding: 15px 15px 0;background: white;}

@@ -14,6 +14,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     vm.data.amountLimit = ""
     vm.data.storesId = [];
     vm.data.goodsId = [];
+    vm.data.prems = [];
     vm.data.name = "";
     vm.data.description = "";
     vm.data.startTime = "";
@@ -24,7 +25,8 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     vm.data.enabled = "";
     vm.data.excluslve = "";
     vm.data.priority = "";
-    vm.data.type = ""
+    vm.data.type = "";
+    vm.data.costSources=[];
     login();
     get(vm.id)
 
@@ -32,6 +34,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     vm.UpTask = function () {
         vm.data.storesIds = ArryString(vm.data.promotionStoreList, true);
         vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
+        vm.data.prems = ArryString(vm.data.prems, true);
         console.log(vm.data)
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
             console.log(typeof (vm.data.startTime))
@@ -109,13 +112,32 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         vm.interval.splice(index, 1)
     }
 
+    vm.AddcostSources=function(){
+        var add = {costSourceId:"",ratio:""};
+        vm.data.costSources.push(add)
+    }
+
+    vm.DelcostSources=function(index){
+        vm.data.costSources.splice(index,1)
+    }
+
     //获取运营数据
     function get(id) {
         MarketResource.get(vm.seid, id).then(function (data) {
             vm.data = data.data.result;
+            vm.data.prems = [];
+            vm.data.costSources=[];
             console.log(vm.data);
             Get_interval(vm.data.formulaParameterMap);
             Get_goods(vm.data.promotionProductList);
+        })
+    }
+
+    resource();
+    function resource(){
+        MarketResource.resource(vm.seid,0,0).then(function (data) {
+           vm.resource = data.data.result;
+           console.log(vm.resource)
         })
     }
 

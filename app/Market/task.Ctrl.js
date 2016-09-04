@@ -13,6 +13,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.task.amountLimit = ""
     vm.task.storesId = [];
     vm.task.goodsId = [];
+    vm.task.prems = [];
     vm.task.name = "";
     vm.task.description = "";
     vm.task.startTime = "";
@@ -23,7 +24,10 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.task.enabled = "";
     vm.task.excluslve = "";
     vm.task.priority = "";
-    vm.task.type = ""
+    vm.task.type = "";
+    vm.task.costSources=[];
+    vm.date={}
+    vm.date.minDate = typeof(vm.date.minDate) ? 'undefined' : new Date();
     login();
 
      vm.interval=[{
@@ -31,6 +35,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
             end:0,
             count:0
         }];
+    
     
     vm.Addinterval=function(){
         var add = {start:0,end:0,count:0};
@@ -42,7 +47,17 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         vm.interval.splice(index,1)
     }
 
+    vm.AddcostSources=function(){
+        var add = {costSourceId:"",ratio:""};
+        vm.task.costSources.push(add)
+    }
+
+    vm.DelcostSources=function(index){
+        vm.task.costSources.splice(index,1)
+    }
+
     vm.AddTask = function () {
+        console.log(vm.task);
         if(vm.interval.length>1){
             for(var i in vm.interval){
                 vm.task.formulaParameter['interval_'+vm.interval[i].start+"_"+vm.interval[i].end] = vm.interval[i].count;
@@ -50,6 +65,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         }
         vm.task.storesIds = ArryString(vm.task.storesId, true);
         vm.task.goodsIds = ArryString(vm.task.goodsId, false);
+        vm.task.prems = ArryString(vm.task.prems, true);
         if (typeof (vm.task.startTime) != "undefined" && vm.task.startTime != "" && typeof (vm.task.startTime) != 'number') {
             console.log(typeof (vm.task.startTime))
             vm.task.startTime = vm.task.startTime.getTime();
@@ -81,6 +97,14 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         } else {
             vm.seid = PublicResource.seid(vm.user);
         }
+    }
+
+    resource();
+    function resource(){
+        MarketResource.resource(vm.seid,0,0).then(function (data) {
+           vm.resource = data.data.result;
+           console.log(vm.resource)
+        })
     }
 
 
