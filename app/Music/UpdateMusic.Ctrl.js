@@ -14,7 +14,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     console.log(vm.id)
     //获取sessionId
     login()
-    stores();
     get(vm.id)
     function login() {
         vm.user = PublicResource.seid("admin");
@@ -26,56 +25,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         } else {
             vm.seid = PublicResource.seid(vm.user);
         }
-    }
-
-    //选择部分门店
-    vm.Addstore = function (item) {
-        if (item) {
-            item.select = false;
-            item.status = true;
-            item.active = false;
-            vm.music.store.push(item);
-        } else {
-            for (var i in vm.stores) {
-                console.log(vm.stores[i])
-                if (vm.stores[i].select == true) {
-                    vm.stores[i].select = false;
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.selectList.push(vm.stores[i])
-                }
-            }
-        }
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
-
-
-    //删除所选门店
-    vm.Delstore = function (index) {
-        if (!index) {
-            for (var i in vm.selectList) {
-                if (vm.selectList[i].active) {
-                    for (var j in vm.stores) {
-                        if (vm.stores[j].id == vm.selectList[i].id) {
-                            vm.stores[j].status = false;
-                            vm.stores[j].select = true;
-                        }
-                    }
-                    vm.selectList.splice(i, 1);
-                }
-            }
-
-        } else {
-            for (var i in vm.stores) {
-                if (vm.stores[i].id == vm.music.store[index].id) {
-                    vm.stores[i].status = false;
-                    vm.stores[i].select = true;
-                }
-            }
-            vm.music.store.splice(index, 1)
-        }
-
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
     }
 
 
@@ -122,22 +71,9 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         MusicResource.get(vm.seid,id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
-            vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
         })
     }
 
-    function stores() {
-        StoresResource.list(vm.seid, 0, 0).then(function (data) {
-            vm.stores = data.data.result.data;
-            for (var i in vm.stores) {
-                vm.stores[i].select = true;
-                vm.stores[i].status = false;
-            }
-            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
-            console.log(vm.stores);
-            Ifstore(vm.stores, vm.music.store)
-        })
-    }
 
     function update() {
         MusicResource.update(vm.seid,vm.music).then(function (data) {
@@ -172,19 +108,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
             s = "0" + s;
         }
         return Y + M + D;
-    }
-
-    function Ifstore(a, b) {
-        console.log(vm.stores);
-        for (var i in a) {
-            for (var j in b) {
-                if (a[i].id == b[j].id) {
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.stores[i].select = false;
-                }
-            }
-        }
     }
 
     function dateTime(data) {

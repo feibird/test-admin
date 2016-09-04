@@ -1,0 +1,130 @@
+<div class="list">
+    <div class="list-header col-xs-12">
+    	 <div class="col-xs-6">
+    	 	<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.show=true">新增</a>
+    	 </div>
+    </div>
+    <div class="list-lyout col-xs-12">
+        <div class="list-table">
+			<div class="panel-body">
+				<table ng-table="LabellistCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
+					<tr ng-show="LabellistCtrl.show">
+						<td data-title="'编号'" >X</td>
+						<td data-title="'标签名称'" >
+							<input type="text" class="form-control" ng-model="LabellistCtrl.addinfo.name" placeholder="请输入标签名字" >
+						</td>
+						<td data-title="'连锁品牌'" width="300" >
+							<div class="input-group">
+								<input type="text" ng-model="LabellistCtrl.addinfo.brand" uib-typeahead="a as a.name for a in LabellistCtrl.logolist" class="form-control" >
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button"><span class="fa-sort"></span></button>
+								</span>
+							</div>
+						</td>
+						<td data-title="'操作'" >
+							<a href="JavaScript:;" class="btn btn-primary" ng-click="LabellistCtrl.addBtn(LabellistCtrl.addinfo)" ><span class="fa-edit fa-icon-right"></span>保存</a>
+							<a href="JavaScript:;" class="btn btn-red"><span class="fa-trash fa-icon-right"></span>撤销</a>
+						</td>
+					</tr>
+					<tr ng-repeat="item in $data">
+						<td data-title="'编号'" filter="{name: 'text'}" sortable="'name'">{{$index}}</td>
+						<td data-title="'标签名称'" filter="{sort: 'number'}" sortable="'index'">
+							<input type="text" ng-model="item.name" class="form-control"  ng-disabled="!item.status"  ng-class="{true:'input-show',false:'input-hide'}[item.status]" >
+						</td>
+						<td data-title="'连锁品牌'" filter="{namea: 'text'}" sortable="'name'">
+							{{item.brand.name?item.brand.name:'暂无'}}
+						</td>
+						<td data-title="'操作'">
+							<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.updateBtn(item)"><span class="fa-edit fa-icon-right"></span>{{item.status==false?'编辑':'保存'}}</a>
+							<a href="javascript:;" class="btn btn-red" ng-click="LabellistCtrl.delBtn(item.id)"><span class="fa-trash fa-icon-right"></span>删除</a>	
+						</td>		        	
+					</tr>
+				</table>
+			</div>		
+        </div>
+		<div class="info_add opera_layer">
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">品牌名称</div>
+			      <input type="text" class="form-control" ng-model="LabellistCtrl.addinfo.name">			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">排序</div>
+			      <input type="text" class="form-control"ng-model="LabellistCtrl.addinfo.sort">			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">品牌前缀</div>
+			      <input type="text" class="form-control"ng-model="LabellistCtrl.addinfo.serialPrefix">			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<div class="input-group">
+			        <div class="input-group-addon">品牌分类</div>
+			      	<select ng-model="LabellistCtrl.addinfo.category" ng-options="a.data.name for a in LabellistCtrl.sortlist.children" class="form-control">
+						<option value="" selected hidden>请选择</option>						
+					</select>
+					<select ng-model="LabellistCtrl.addinfo.children" ng-options="a.data.name for a in LabellistCtrl.addinfo.category.children" class="form-control">
+						<option value="" selected hidden>请选择</option>
+					</select>			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<span class="lyout-title">品牌logo</span>
+				<div class="lyoutdiv imgUpload">
+					<form action="" class="upform">
+						
+						<input class="Uploadinput" class="file" type="file">
+						<a href="javascript:;" class="loadBtn btn btn-primary">上传</a>
+						<img src="" alt="" class="uploadimg" width="100">
+					</form>
+				</div>
+			</div>
+			<div class="col-xs-12 text-center">
+				<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.addlist()">保存</a>					
+				<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.closechildren()">取消</a>
+			</div>
+		</div>
+		<div class="info_update opera_layer ">
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">品牌名称</div>
+			      <input type="text" class="form-control"ng-model="LabellistCtrl.updateinfo.name">			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">排序</div>
+			      <input type="text" class="form-control"ng-model="LabellistCtrl.updateinfo.sort">			      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<div class="input-group">
+			      <div class="input-group-addon">品牌分类</div>
+			      <select ng-model="LabellistCtrl.updateinfo.category" class="form-control" ng-options="a.data.name for a in LabellistCtrl.sortlist.children">
+					<option value="a.data.id"  selected hidden>请选择</option>						
+				</select>
+				<select ng-model="LabellistCtrl.updateinfo.children" class="form-control" ng-options="a.data.name for a in LabellistCtrl.updateinfo.category.children">
+					<option value="" selected hidden>请选择</option>
+				</select>		      
+			    </div>
+			</div>
+			<div class="update-lyout">
+				<span class="lyout-title">品牌logo</span>
+				<div class="lyoutdiv imgUpload">
+					<form action="" id="upform">
+						<input id="Uploadinput" class="file" type="file">
+						<a href="javascript:;" class="loadBtn btn btn-primary">上传</a>
+						<img src="{{LabellistCtrl.updateinfo.logo}}" alt="" class="uploadimg">
+					</form>
+				</div>
+			</div>
+			<div class="col-xs-12 text-center">
+				<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.upinfo()">修改</a>					
+				<a href="javascript:;" class="btn btn-primary" ng-click="LabellistCtrl.closechildren()">取消</a>
+			</div>
+		</div>
+    </div>

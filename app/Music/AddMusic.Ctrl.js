@@ -28,68 +28,7 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
 
 
-    //选择部分门店
-    vm.Addstore = function (item) {
-        if (item) {
-            item.select = false;
-            item.status = true;
-            item.active = false;
-            vm.music.store.push(item);
-        } else {
-            for (var i in vm.stores) {
-                console.log(vm.stores[i])
-                if (vm.stores[i].select == true) {
-                    vm.stores[i].select = false;
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.selectList.push(vm.stores[i])
-                }
-            }
-        }
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
 
-
-    //删除所选门店
-    vm.Delstore = function (index) {
-        if (!index) {
-            for (var i in vm.selectList) {
-                if (vm.selectList[i].active) {
-                    for (var j in vm.stores) {
-                        if (vm.stores[j].id == vm.selectList[i].id) {
-                            vm.stores[j].status = false;
-                            vm.stores[j].select = true;
-                        }
-                    }
-                    vm.selectList.splice(i, 1);
-                }
-            }
-
-        } else {
-            for (var i in vm.stores) {
-                if (vm.stores[i].id == vm.music.store[index].id) {
-                    vm.stores[i].status = false;
-                    vm.stores[i].select = true;
-                }
-            }
-            vm.music.store.splice(index, 1)
-        }
-
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
-
-
-    Stores();
-    function Stores() {
-        StoresResource.list(vm.seid, 0, 0).then(function (data) {
-            vm.stores = data.data.result.data;
-            for (var i in vm.stores) {
-                vm.stores[i].select = true;
-                vm.stores[i].status = false;
-            }
-            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
-        })
-    }
     vm.add = function () {
         startAdd();
         addData();
@@ -124,10 +63,23 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
             }
         }
 
-        for(var i in vm.music.store){
-            vm.music.storeId+=vm.music.store[i].id+","
+        for(var i in vm.music.storeid){
+            vm.music.storeId+=vm.music.storeid[i].id+","
         }
         vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+    }
+
+    function ArryString(objs) {
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var StoreArry = "";
+            for (var i in obj) {
+                    StoreArry += obj[i].id + ",";
+                }
+            StoreArry = StoreArry.substring(0, StoreArry.length - 1)
+            return StoreArry
+        }
     }
 
     function addData(){

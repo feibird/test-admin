@@ -2926,7 +2926,7 @@ function MarketResource($http, device, version) {
         "extensibleCriteria": "",
         "giftIds":obj.prems,
         "enabled": obj.enabled,
-        "costSources":obj.costSources,
+        "costSources":JSON.stringify(obj.costSources),
         "exclusive": obj.exclusive,
         "priority": obj.priority,
         "type": obj.type,
@@ -3595,68 +3595,7 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
 
 
-    //选择部分门店
-    vm.Addstore = function (item) {
-        if (item) {
-            item.select = false;
-            item.status = true;
-            item.active = false;
-            vm.music.store.push(item);
-        } else {
-            for (var i in vm.stores) {
-                console.log(vm.stores[i])
-                if (vm.stores[i].select == true) {
-                    vm.stores[i].select = false;
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.selectList.push(vm.stores[i])
-                }
-            }
-        }
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
 
-
-    //删除所选门店
-    vm.Delstore = function (index) {
-        if (!index) {
-            for (var i in vm.selectList) {
-                if (vm.selectList[i].active) {
-                    for (var j in vm.stores) {
-                        if (vm.stores[j].id == vm.selectList[i].id) {
-                            vm.stores[j].status = false;
-                            vm.stores[j].select = true;
-                        }
-                    }
-                    vm.selectList.splice(i, 1);
-                }
-            }
-
-        } else {
-            for (var i in vm.stores) {
-                if (vm.stores[i].id == vm.music.store[index].id) {
-                    vm.stores[i].status = false;
-                    vm.stores[i].select = true;
-                }
-            }
-            vm.music.store.splice(index, 1)
-        }
-
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
-
-
-    Stores();
-    function Stores() {
-        StoresResource.list(vm.seid, 0, 0).then(function (data) {
-            vm.stores = data.data.result.data;
-            for (var i in vm.stores) {
-                vm.stores[i].select = true;
-                vm.stores[i].status = false;
-            }
-            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
-        })
-    }
     vm.add = function () {
         startAdd();
         addData();
@@ -3691,10 +3630,23 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
             }
         }
 
-        for(var i in vm.music.store){
-            vm.music.storeId+=vm.music.store[i].id+","
+        for(var i in vm.music.storeid){
+            vm.music.storeId+=vm.music.storeid[i].id+","
         }
         vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+    }
+
+    function ArryString(objs) {
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var StoreArry = "";
+            for (var i in obj) {
+                    StoreArry += obj[i].id + ",";
+                }
+            StoreArry = StoreArry.substring(0, StoreArry.length - 1)
+            return StoreArry
+        }
     }
 
     function addData(){
@@ -3716,95 +3668,114 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
 (function(){
 "use strict"
 angular.module('index_area').factory('MusicResource', MusicResource);
-MusicResource.$inject = ['$http','device','version'];
-function MusicResource($http,device,version) {
+MusicResource.$inject = ['$http', 'device', 'version'];
+function MusicResource($http, device, version) {
     return {
-		list:list,
-        add:add,
-        update:update,
-        remove:remove,
-        get:get
+        list: list,
+        add: add,
+        update: update,
+        remove: remove,
+        get: get,
+        status:status
     };
 
-      function list(seid,skip,limit){
-          return $http.get("/api-admin/voice/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-        return data
-      })
-      }
+    function list(seid, skip, limit) {
+        return $http.get("/api-admin/voice/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
+            return data
+        })
+    }
 
-      function get(seid,id,skip,limit){
-          return $http.get("/api-admin/voice/get",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"voiceId":id}}).then(function(data){
-        return data
-      })
-      }
+    function get(seid, id, skip, limit) {
+        return $http.get("/api-admin/voice/get", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit, "voiceId": id } }).then(function (data) {
+            return data
+        })
+    }
 
-      function add(seid,obj){
-          console.log(obj)
-           return $http({
-            url:"/api-admin/voice/add",
+    function status(seid,obj){
+        return $http({
+            url: "/api-admin/voice/update-status",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                "effective":obj.effective,
-                "type":obj.productType,
-                "content":obj.content,
-                "allStore":obj.allStore,
-                "storeIds":obj.storeId,
-                "dates":JSON.stringify(obj.dates),
-                "times":JSON.stringify(obj.times)
-              }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "ids":obj.ids,
+                "effective":obj.status
+            }
         })
         .then(function (data) {
             return data
         })
-      }
+    }
 
-      function update(seid,obj){
-           return $http({
-            url:"/api-admin/voice/update",
+    function add(seid, obj) {
+        console.log(obj)
+        return $http({
+            url: "/api-admin/voice/add",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                'id':obj.id,
-                "effective":obj.effective,
-                "type":obj.type,
-                "content":obj.content,
-                "allStore":obj.allStore,
-                "storeIds":obj.storeId,
-                "dates":JSON.stringify(obj.voiceDates),
-                "times":JSON.stringify(obj.voiceTimes)
-              }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "name": obj.name,
+                "effective": obj.effective,
+                "type": obj.productType,
+                "content": obj.content,
+                "allStore": obj.allStore,
+                "storeIds": obj.storeId,
+                "dates": JSON.stringify(obj.dates),
+                "times": JSON.stringify(obj.times)
+            }
         })
         .then(function (data) {
             return data
         })
-      }
+    }
 
-       function remove(seid,ids){
-           return $http({
-            url:"/api-admin/voice/remove",
+    function update(seid, obj) {
+        return $http({
+            url: "/api-admin/voice/update",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "ids":ids
-              }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "name": obj.name,
+                'id': obj.id,
+                "effective": obj.effective,
+                "type": obj.type,
+                "content": obj.content,
+                "allStore": obj.allStore,
+                "storeIds": obj.storeId,
+                "dates": JSON.stringify(obj.voiceDates),
+                "times": JSON.stringify(obj.voiceTimes)
+            }
         })
-        .then(function (data) {
-            return data
+            .then(function (data) {
+                return data
+            })
+    }
+
+    function remove(seid, ids) {
+        return $http({
+            url: "/api-admin/voice/remove",
+            method: 'post',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "ids": ids
+            }
         })
-      }
-    
+            .then(function (data) {
+                return data
+            })
+    }
+
 }
 })();
 (function(){
@@ -3850,12 +3821,62 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         }
     }
 
+
+    vm.layer = function(id){
+        get(id)
+        layer.open({
+            title:'语音详情',
+            area:['400px','500px'],
+            type:1,
+            content:$('.oper')
+        })
+    }
+
+    vm.is_effective = function(item){
+        vm.status = new Object();
+        vm.status.ids = item.id;
+        layer.confirm('是否修改语音状态？',{
+            btn:['启用','禁用']
+        },function(){
+            vm.status.status=true;
+            MusicResource.status(vm.seid,vm.status).then(function(data){
+               if(data.data.status=="OK"){
+                   layer.msg('修改成功',{icon:1});
+               }else{
+                   layer.msg(data.data.message,{icon:2});
+               }
+               list();
+            })
+        },function(){
+            vm.status.status=false;
+            MusicResource.status(vm.seid,vm.status).then(function(data){
+                if(data.data.status=="OK"){
+                   layer.msg('修改成功',{icon:1});
+               }else{
+                   layer.msg(data.data.message,{icon:2});
+               }
+               list();
+            })
+        }) 
+    }
+
     vm.delBtn = function(id){
         layer.confirm('您确定要删除语音？', {
 				btn: ['确定','取消'] //按钮
 		}, function(){
 			    del(id);
 		});
+    }
+
+    function get(id){
+        MusicResource.get(vm.seid,id).then(function(data){            
+            vm.info = data.data.result;
+            for(var j in vm.info.voiceDates){
+                vm.info.voiceDates[j].endDate = chang_time(new Date(vm.info.voiceDates[j].endDate));
+                vm.info.voiceDates[j].startDate = chang_time(new Date(vm.info.voiceDates[j].startDate));
+            }
+            console.log(vm.info)
+        })
     }
 
     function list(){
@@ -3923,7 +3944,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     console.log(vm.id)
     //获取sessionId
     login()
-    stores();
     get(vm.id)
     function login() {
         vm.user = PublicResource.seid("admin");
@@ -3935,56 +3955,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         } else {
             vm.seid = PublicResource.seid(vm.user);
         }
-    }
-
-    //选择部分门店
-    vm.Addstore = function (item) {
-        if (item) {
-            item.select = false;
-            item.status = true;
-            item.active = false;
-            vm.music.store.push(item);
-        } else {
-            for (var i in vm.stores) {
-                console.log(vm.stores[i])
-                if (vm.stores[i].select == true) {
-                    vm.stores[i].select = false;
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.selectList.push(vm.stores[i])
-                }
-            }
-        }
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
-    }
-
-
-    //删除所选门店
-    vm.Delstore = function (index) {
-        if (!index) {
-            for (var i in vm.selectList) {
-                if (vm.selectList[i].active) {
-                    for (var j in vm.stores) {
-                        if (vm.stores[j].id == vm.selectList[i].id) {
-                            vm.stores[j].status = false;
-                            vm.stores[j].select = true;
-                        }
-                    }
-                    vm.selectList.splice(i, 1);
-                }
-            }
-
-        } else {
-            for (var i in vm.stores) {
-                if (vm.stores[i].id == vm.music.store[index].id) {
-                    vm.stores[i].status = false;
-                    vm.stores[i].select = true;
-                }
-            }
-            vm.music.store.splice(index, 1)
-        }
-
-        vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
     }
 
 
@@ -4031,22 +4001,9 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         MusicResource.get(vm.seid,id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
-            vm.selecttable = new NgTableParams({}, { dataset: vm.music.store })
         })
     }
 
-    function stores() {
-        StoresResource.list(vm.seid, 0, 0).then(function (data) {
-            vm.stores = data.data.result.data;
-            for (var i in vm.stores) {
-                vm.stores[i].select = true;
-                vm.stores[i].status = false;
-            }
-            vm.tableStores = new NgTableParams({}, { dataset: vm.stores });
-            console.log(vm.stores);
-            Ifstore(vm.stores, vm.music.store)
-        })
-    }
 
     function update() {
         MusicResource.update(vm.seid,vm.music).then(function (data) {
@@ -4083,19 +4040,6 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         return Y + M + D;
     }
 
-    function Ifstore(a, b) {
-        console.log(vm.stores);
-        for (var i in a) {
-            for (var j in b) {
-                if (a[i].id == b[j].id) {
-                    vm.stores[i].status = true;
-                    vm.stores[i].active = false;
-                    vm.stores[i].select = false;
-                }
-            }
-        }
-    }
-
     function dateTime(data) {
         if (data == null || data.length < 1) {
             return false;
@@ -4106,6 +4050,165 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         var time = new Date(date[0], date[1] - 1, date[2]).getTime();
         return time;
     }
+}
+
+})();
+(function(){
+"use strict"
+/**
+ * 提供功能API封装
+ */
+angular.module('index_area').factory('OrderResource', OrderResource);
+OrderResource.$inject = ['$http','device','version'];
+function OrderResource($http,device,version) {
+    return {
+        list:list,
+        get:get,
+        refund:refund,
+        Statuslist:Statuslist
+    };
+
+
+    /**
+     * list
+     * 获取订单列表
+     */
+    function list(seid,obj,skip,limit){
+        return $http.get("/api-admin/trade/list",
+            {params:{"device":device,
+                "version":version,
+                "sessionId":seid,
+                "skip":skip,
+                "limit":limit,
+                "takeNo":obj.id,
+                "status":obj.status
+            }}).then(function(data){
+            return data
+        })
+    }
+
+    /**
+     * 获取某个分类
+     */
+    function get(seid,id){
+        return $.ajax({
+            type:"get",
+            url:"/api-admin/trade/"+id+"/get",
+            dataType:"json",
+            data:{"device":device,"version":version,"sessionId":seid},
+            async:false,
+            success:function(response){
+                console.log(response)
+                return response.data;
+            }
+        });
+    }
+
+    //退款申请
+
+    function refund(seid,id){
+        return $http({
+            url:"/api-admin/trade/update-to-refund-completed",
+            method: 'post',
+            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
+                  "tradeId":id,
+                  "device":device,
+                  "version":version,
+                  "sessionId":seid
+              }
+        })
+        .then(function (data) {
+             return data;
+        })
+    }
+
+    function Statuslist(seid,status,skip,limit){
+        return $http.get("/api-admin/trade/list",
+            {params:{"device":device,
+                "version":version,
+                "sessionId":seid,
+                "skip":skip,
+                "limit":limit,
+                "status":status
+            }}).then(function(data){
+            return data
+        })
+    }    
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
+OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
+/***调用接口***/
+function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
+    document.title ="订单管理";
+    $rootScope.name="订单管理";
+	$rootScope.childrenName="订单管理列表";
+    var vm = this;
+    vm.stores;              //门店集合
+    vm.list;
+    vm.get = new Object();
+    vm.filerPay=[
+        {title:'微信公众号',id:'WECHAT_WEB'},  
+        {title:'微信支付',id:'WECHAT_APP'},  
+        {title:'支付宝网页',id:'ZHIFUBAO_WEB'},  
+        {title:'支付宝应用',id:'ZHIFUBAO_APP'},  
+        {title:'线下支付',id:null}
+    ]
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.St_order = function(){
+        list();
+    }
+
+    list();
+
+    function list(){
+        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
+            vm.list = data.data.result.data;
+            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
+            vm.pagecount =data.data.result.total;            
+            console.log(data);
+            for(var i in vm.list){
+                vm.list[i].createDate=change_time(vm.list[i].createDate);
+               if(vm.list[i].endDate!=null){
+                    vm.list[i].endDate = change_time(vm.list[i].endDate)
+               }
+            }
+            console.log(vm.list);
+        })
+    }
+
+    function change_time(nS){
+        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
+    }
+
+    function update(status,id){
+        OrderResource.update(vm.seid,status,id).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.alert('修改成功',{icon:1})
+            }else{
+                layer.alert(data.data.message,{icon:2})
+            }
+            list();
+        })
+    }
+
 }
 
 })();
@@ -4383,165 +4486,6 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	
 	
 }
-})();
-(function(){
-"use strict"
-/**
- * 提供功能API封装
- */
-angular.module('index_area').factory('OrderResource', OrderResource);
-OrderResource.$inject = ['$http','device','version'];
-function OrderResource($http,device,version) {
-    return {
-        list:list,
-        get:get,
-        refund:refund,
-        Statuslist:Statuslist
-    };
-
-
-    /**
-     * list
-     * 获取订单列表
-     */
-    function list(seid,obj,skip,limit){
-        return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "takeNo":obj.id,
-                "status":obj.status
-            }}).then(function(data){
-            return data
-        })
-    }
-
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){
-        return $.ajax({
-            type:"get",
-            url:"/api-admin/trade/"+id+"/get",
-            dataType:"json",
-            data:{"device":device,"version":version,"sessionId":seid},
-            async:false,
-            success:function(response){
-                console.log(response)
-                return response.data;
-            }
-        });
-    }
-
-    //退款申请
-
-    function refund(seid,id){
-        return $http({
-            url:"/api-admin/trade/update-to-refund-completed",
-            method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                  "tradeId":id,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
-        })
-        .then(function (data) {
-             return data;
-        })
-    }
-
-    function Statuslist(seid,status,skip,limit){
-        return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "status":status
-            }}).then(function(data){
-            return data
-        })
-    }    
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
-OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
-/***调用接口***/
-function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
-    document.title ="订单管理";
-    $rootScope.name="订单管理";
-	$rootScope.childrenName="订单管理列表";
-    var vm = this;
-    vm.stores;              //门店集合
-    vm.list;
-    vm.get = new Object();
-    vm.filerPay=[
-        {title:'微信公众号',id:'WECHAT_WEB'},  
-        {title:'微信支付',id:'WECHAT_APP'},  
-        {title:'支付宝网页',id:'ZHIFUBAO_WEB'},  
-        {title:'支付宝应用',id:'ZHIFUBAO_APP'},  
-        {title:'线下支付',id:null}
-    ]
-    //获取sessionId
-     login();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-    vm.St_order = function(){
-        list();
-    }
-
-    list();
-
-    function list(){
-        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
-            vm.list = data.data.result.data;
-            vm.tableParams = new NgTableParams({},{dataset:vm.list});   
-            vm.pagecount =data.data.result.total;            
-            console.log(data);
-            for(var i in vm.list){
-                vm.list[i].createDate=change_time(vm.list[i].createDate);
-               if(vm.list[i].endDate!=null){
-                    vm.list[i].endDate = change_time(vm.list[i].endDate)
-               }
-            }
-            console.log(vm.list);
-        })
-    }
-
-    function change_time(nS){
-        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
-    }
-
-    function update(status,id){
-        OrderResource.update(vm.seid,status,id).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.alert('修改成功',{icon:1})
-            }else{
-                layer.alert(data.data.message,{icon:2})
-            }
-            list();
-        })
-    }
-
-}
-
 })();
 (function(){
 "use strict"

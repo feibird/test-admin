@@ -39,12 +39,62 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         }
     }
 
+
+    vm.layer = function(id){
+        get(id)
+        layer.open({
+            title:'语音详情',
+            area:['400px','500px'],
+            type:1,
+            content:$('.oper')
+        })
+    }
+
+    vm.is_effective = function(item){
+        vm.status = new Object();
+        vm.status.ids = item.id;
+        layer.confirm('是否修改语音状态？',{
+            btn:['启用','禁用']
+        },function(){
+            vm.status.status=true;
+            MusicResource.status(vm.seid,vm.status).then(function(data){
+               if(data.data.status=="OK"){
+                   layer.msg('修改成功',{icon:1});
+               }else{
+                   layer.msg(data.data.message,{icon:2});
+               }
+               list();
+            })
+        },function(){
+            vm.status.status=false;
+            MusicResource.status(vm.seid,vm.status).then(function(data){
+                if(data.data.status=="OK"){
+                   layer.msg('修改成功',{icon:1});
+               }else{
+                   layer.msg(data.data.message,{icon:2});
+               }
+               list();
+            })
+        }) 
+    }
+
     vm.delBtn = function(id){
         layer.confirm('您确定要删除语音？', {
 				btn: ['确定','取消'] //按钮
 		}, function(){
 			    del(id);
 		});
+    }
+
+    function get(id){
+        MusicResource.get(vm.seid,id).then(function(data){            
+            vm.info = data.data.result;
+            for(var j in vm.info.voiceDates){
+                vm.info.voiceDates[j].endDate = chang_time(new Date(vm.info.voiceDates[j].endDate));
+                vm.info.voiceDates[j].startDate = chang_time(new Date(vm.info.voiceDates[j].startDate));
+            }
+            console.log(vm.info)
+        })
     }
 
     function list(){

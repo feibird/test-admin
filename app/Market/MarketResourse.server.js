@@ -54,7 +54,7 @@ function MarketResource($http, device, version) {
         "extensibleCriteria": "",
         "giftIds":obj.prems,
         "enabled": obj.enabled,
-        "costSources":obj.costSources,
+        "costSources":JSON.stringify(obj.costSources),
         "exclusive": obj.exclusive,
         "priority": obj.priority,
         "type": obj.type,

@@ -1,0 +1,26 @@
+<div class="list">
+    <div class="list-lyout col-xs-12">
+        <div class="list-table">
+            <div class="panel-body">
+                <table ng-table="UserListCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
+                    <tr ng-repeat="item in $data">
+                        <td data-title="'角色名称'" filter="{name: 'text'}" sortable="'name'" >{{item.name}}</td>
+                        <td data-title="'角色昵称'" filter="{nickname: 'text'}" sortable="'nickname'" >{{item.nickname}}</td>
+                        <td data-title="'手机号'" filter="{phoneNumber: 'text'}" sortable="'phoneNumber'" >{{item.phoneNumber}}</td>
+                        <td data-title="'操作'">
+                            <a href="javascript:;" class="btn btn-primary" ng-click="UserListCtrl.get(item.id)" ><span class="inecons-user fa-icon-right"></span>角色管理</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="RoleDiv display_none">
+    <div class="checkbox" ng-repeat="item in UserListCtrl.Rolelist" >
+        <label>
+            <input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.status" ng-change='UserListCtrl.statusBtn(item.status,item.id)' value="">
+            {{item.name}}
+        </label>
+    </div>
+</div>
