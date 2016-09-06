@@ -17,7 +17,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filer.createEndDate = ""
   vm.pagecount; 
   vm.skip=0;
-  vm.limit=50;                                                          //分页总数
+  vm.limit=20;                                                          //分页总数
   vm.pageint = 1;
 
   //分页点击事件
@@ -31,15 +31,17 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filerList = function(){
     vm.filer.createStartDate = GTM(false,vm.filer.createStartDate)
     vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
+    console.log( vm.filer);
+    return false;
     list();
   }
 
   function GTM(is,data){
-    console.log(typeof(data))
     if(typeof(data)=='undefined'||data==""||data==null||typeof(data)=='number'){
         return data;
     }else{
         data = chang_time(data);
+        console.log(data)
         if(is){
             data = data+"23:59:59";
         }
@@ -75,15 +77,26 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
     console.log(vm.filer)
     window.open("/api-admin/report/trade/detail/excel?sessionId="+vm.seid
-          +"&device="+'pc'
-          +"&version="+'2.0.0'
-          +"&sources="+vm.filer.sources
-          +"&detail="+vm.filer.detail
-          +"&storeId="+vm.filer.storeId
-          +"&completeEndDate="+vm.filer.createEndDate
-          +"&completeStartDate="+vm.filer.createStartDate
+            +"&device="+'pc'
+            +"&version="+'2.0.0'
+            +"&sources="+vm.filer.sources
+            +"&detail="+vm.filer.detail
+            +"&storeId="+vm.filer.storeId
+            +"&completeEndDate="+vm.filer.createEndDate
+            +"&completeStartDate="+vm.filer.createStartDate
           )
-   
+  }
+
+  vm.excel = function(){
+    vm.filer.createStartDate = GTM(false,vm.filer.createStartDate)
+    vm.filer.createEndDate = GTM(true,vm.filer.createEndDate)
+    window.open("/api-admin/report/trade/product/excel?sessionId="+vm.seid
+            +"&device="+'pc'
+            +"&version="+'2.0.0'
+            +"&storeId="+vm.filer.storeId
+            +"&endDate="+vm.filer.createEndDate
+            +"&startDate="+vm.filer.createStartDate
+          )
   }
 
   function login() {
@@ -131,8 +144,8 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   }
 
    function chang_time(date) {
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分

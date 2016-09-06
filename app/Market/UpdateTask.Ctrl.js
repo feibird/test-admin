@@ -35,6 +35,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         vm.data.storesIds = ArryString(vm.data.promotionStoreList, true);
         vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
         vm.data.prems = ArryString(vm.data.prems, true);
+        vm.data.costSources = objstring(vm.data.promotionCostSourceList);
         console.log(vm.data)
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
             console.log(typeof (vm.data.startTime))
@@ -76,6 +77,19 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         }
     }
 
+    function objstring(obj) {
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var json = new Object();
+            for (var i in obj) {
+                json[obj[i].costSourceId] = obj[i].ratio;
+            }
+            return json;
+        }
+
+    }
+
     //将已选择的门店或者商品规格提取id为字符串链接
     function ArryString(obj, status) {
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
@@ -114,11 +128,11 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     vm.AddcostSources=function(){
         var add = {costSourceId:"",ratio:""};
-        vm.data.costSources.push(add)
+        vm.data.promotionCostSourceList.push(add)
     }
 
     vm.DelcostSources=function(index){
-        vm.data.costSources.splice(index,1)
+        vm.data.promotionCostSourceList.splice(index,1)
     }
 
     //获取运营数据

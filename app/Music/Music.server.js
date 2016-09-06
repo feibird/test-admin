@@ -7,7 +7,8 @@ function MusicResource($http, device, version) {
         update: update,
         remove: remove,
         get: get,
-        status:status
+        status: status,
+        count:count
     };
 
     function list(seid, skip, limit) {
@@ -22,7 +23,7 @@ function MusicResource($http, device, version) {
         })
     }
 
-    function status(seid,obj){
+    function status(seid, obj) {
         return $http({
             url: "/api-admin/voice/update-status",
             method: 'post',
@@ -31,13 +32,13 @@ function MusicResource($http, device, version) {
                 "device": device,
                 "version": version,
                 "sessionId": seid,
-                "ids":obj.ids,
-                "effective":obj.status
+                "ids": obj.ids,
+                "effective": obj.status
             }
         })
-        .then(function (data) {
-            return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
     function add(seid, obj) {
@@ -60,9 +61,9 @@ function MusicResource($http, device, version) {
                 "times": JSON.stringify(obj.times)
             }
         })
-        .then(function (data) {
-            return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
     function update(seid, obj) {
@@ -105,6 +106,12 @@ function MusicResource($http, device, version) {
             .then(function (data) {
                 return data
             })
+    }
+
+    function count(seid){
+         return $http.get("/api-admin/voice/count", { params: { "device": device, "version": version, "sessionId": seid} }).then(function (data) {
+            return data
+        })
     }
 
 }

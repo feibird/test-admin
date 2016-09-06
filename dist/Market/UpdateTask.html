@@ -96,13 +96,13 @@
 					<div class="form-layout">
 						<div class="input-group">
 							<div class="input-group-addon">从</div>
-							<input type="text" class="form-control" uib-datepicker-popup ng-model="UpdateTaskCtrl.data.startTime" is-open="open1" datepicker-options="dateOptions"
+							<input type="text" class="form-control" placeholder="请输入有效时间启始"  uib-datepicker-popup ng-model="UpdateTaskCtrl.data.startTime" is-open="open1" datepicker-options="dateOptions"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
 							<div class="input-group-addon">到</div>
-							<input type="text" class="form-control" uib-datepicker-popup ng-model="UpdateTaskCtrl.data.endTime" is-open="open2" datepicker-options="dateOptions"
+							<input type="text" class="form-control" placeholder="请输入有效时间结束"  uib-datepicker-popup ng-model="UpdateTaskCtrl.data.endTime" is-open="open2" datepicker-options="dateOptions"
 								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -131,8 +131,11 @@
 						<div class="radio">
 							<label>
 						    <input type="radio" name="timesLimitType" ng-model='UpdateTaskCtrl.data.timesLimitType' value="RECURRENT">
-						    限制周期
-						    &nbsp;周期<input type="text" ng-model='UpdateTaskCtrl.data.timesLimitCycle' ng-disabled="UpdateTaskCtrl.data.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-model='UpdateTaskCtrl.data.timesLimit' ng-disabled="UpdateTaskCtrl.data.timesLimitType=='RECURRENT'" class="input_radio">次
+						    限制周期&nbsp;周期
+							<input type="text" ng-model='UpdateTaskCtrl.data.timesLimitCycle' ng-disabled="UpdateTaskCtrl.data.timesLimitType!='RECURRENT'" class="input_radio">
+							天内
+							<input type="text" ng-model='UpdateTaskCtrl.data.timesLimit' ng-disabled="UpdateTaskCtrl.data.timesLimitType!='RECURRENT'" class="input_radio">
+							次
 						  </label>
 						</div>
 					</div>
@@ -146,14 +149,36 @@
 				<div class="form-title">选择促销商品范围:</div>
 				<div class="form-layout">
 					<label class="radio-inline">
-								<input type="radio" name="productType" value="ALL_PRODUCT" ng-model='UpdateTaskCtrl.data.productType' > 全场通用
-							</label>
+						<input type="radio" name="productType" value="ALL_PRODUCT" ng-model='UpdateTaskCtrl.data.productType' > 全场通用
+					</label>
 					<label class="radio-inline">
-								<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='UpdateTaskCtrl.data.productType' > 限定单品
-							</label>
+						<input type="radio" name="productType" value="SELECTED_PRODUCT" ng-model='UpdateTaskCtrl.data.productType' > 限定单品
+					</label>
 				</div>
 			</div>
 			<goods ng-show="UpdateTaskCtrl.data.productType=='SELECTED_PRODUCT'" returnlist='UpdateTaskCtrl.data.promotionProductList'></goods>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border"  ng-show="UpdateTaskCtrl.data.productType=='SELECTED_PRODUCT'"  >
+		<div class="panel-body">
+			<div class="form-lyout">
+				<div class="form-title">商品限购</div>
+				<div class="form-layout">
+					<div class="radio">
+						<label>
+						    <input type="radio" name="productCountLimit" ng-model='productCountLimit' ng-checked="UpdateTaskCtrl.data.productCountLimit==0"  value="0">
+						    不限数量
+						  </label>
+					</div>
+					<div class="radio">
+						<label>
+						    <input type="radio" name="productCountLimit" ng-model='productCountLimit' value="1">
+						    限制<input type="text" ng-disabled="productCountLimit==0" ng-click="productCountLimit=1" class="input_radio" ng-model='UpdateTaskCtrl.data.productCountLimit'>件
+						  </label>
+						
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="panel panel-default panel-border">
@@ -163,8 +188,8 @@
 				<input type="radio" name="amount" value="false" ng-model='amount' ng-checked="UpdateTaskCtrl.data.amountLimit==0" > 订单无关
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="amount" value="true" ng-model='amount' ng-checked="UpdateTaskCtrl.data.amountLimit!=0" > 订单满
-				<input type="text" class="input_radio" ng-model="UpdateTaskCtrl.data.amountLimit" ng-disabled="!amount" >元
+				<input type="radio" name="amount" value="true" ng-model='UpdateTaskCtrl.data.amount' ng-checked="UpdateTaskCtrl.data.amountLimit!=0" > 订单满
+				<input type="text" class="input_radio" ng-model="UpdateTaskCtrl.data.amountLimit" >元
 			</label>
 		</div>
 	</div>
@@ -177,7 +202,7 @@
 						<label>
 							<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='UpdateTaskCtrl.data.type' > 
 							订单减免
-							<input type="text" ng-disabled="!hide"  ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
+							<input type="text" ng-disabled="UpdateTaskCtrl.data.type!='CUT'"  ng-model='UpdateTaskCtrl.data.formulaParameterMap.cutAmount' class="input_radio">
 							元
 						</label>
 					</div>
@@ -198,16 +223,17 @@
 							<input type="radio" name="type" value="COUPON" ng-model='UpdateTaskCtrl.data.type' > 订单赠品
 						</label>
 					</div>
-					<div class="radio">
+					<!--<div class="radio">
 						<label>
 							<input type="radio" name="type" value="GIFT" ng-model='UpdateTaskCtrl.data.type' > 连贯促销
 						</label>
-					</div>
+					</div>-->
 				</div>
 				<div class="col-xs-10" ng-show="UpdateTaskCtrl.data.type=='RANDOM_CUT'">
 					<div class='panel panel-default panel-border'>
 						<div class="panel-heading">
 							<button class="btn btn-primary" ng-click="UpdateTaskCtrl.Addinterval()">添加</button>
+							<span>ps:1元至5元总概率50%,总规则概率为100%</span>
 						</div>
 						<div class="panel-body">
 							<div class='admin-input-lyout' ng-repeat="list in UpdateTaskCtrl.interval">
@@ -231,7 +257,7 @@
 							赠品列表
 						</div>
 						<div class="panel-body">
-								<prems returnlist='UpdateTaskCtrl.data.promotionGiftList'></prems>
+							<prems returnlist='UpdateTaskCtrl.data.promotionGiftList'></prems>
 						</div>
 					</div>
 				</div>
@@ -244,11 +270,11 @@
 			<button class="btn btn-primary" ng-click="UpdateTaskCtrl.AddcostSources()">添加</button>
 		</div>
 		<div class="panel-body">
-			<div class="input-group col-xs-4 mt10" ng-repeat="item in UpdateTaskCtrl.data.costSources">
+			<div class="input-group col-xs-4 mt10" ng-repeat="item in UpdateTaskCtrl.data.promotionCostSourceList">
 				<div class="input-group-addon">承担方选择</div>
 				<select name="" id="" class="form-control" ng-model='item.costSourceId' ng-options="a.id as a.name for a in UpdateTaskCtrl.resource"
 					style="min-width:150px;">
-						<option value="" selected >请选择</option>
+						<option value="" selected hidden >{{item.costSource.name}}</option>
 					</select>
 				<div class="input-group-addon">|&nbsp;&nbsp;承担比例</div>
 				<input type="text" class="form-control" ng-model='item.ratio'>
@@ -259,6 +285,6 @@
 	</div>
 	<div class="col-xs-12 taskBtn">
 		<a href="javascript:;" class="btn btn-primary" ng-click='UpdateTaskCtrl.UpTask()'>保存</a>
-		<a href="javascript:;" class="btn btn-primary">取消</a>
+		<a href="javascript:;" class="btn btn-primary" onclick="history.go(-1)" >返回</a>
 	</div>
 </div>

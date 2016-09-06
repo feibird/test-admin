@@ -13,7 +13,6 @@ p{margin-bottom: 0;color: #333;}
 td{vertical-align: middle!important;}
 .table{margin-bottom: 0px;}
 .mr10{margin-right: 10px;vertical-align: inherit;}
-.pagination-sm{margin-right: -15px;}
 .ng-table-counts{margin: 20px 0;}
 .input-inline-block{display: inline-block;width: auto;}
 .input-disabled{border:0;box-shadow:none;background-color: transparent!important;cursor: default!important;}
@@ -96,3 +95,7 @@ td{vertical-align: middle!important;}
 .ha{height: auto!important;}
 /****end****/
 .page-container .main-content{padding: 15px 15px 0;background: white;}
+.panel-title{display: table;}
+.panel-title .panel-title-name{display: table-cell;width: 200px;text-align: left;height: 40px;line-height: 40ox;}
+.panel-title .panel-title-body{display: table-cell;height: 40px;line-height: 40px;}
+.panel-title .panel-title-body .ps{height: 40px;display: inline-block;vertical-align: middle;font-size: 14px;}

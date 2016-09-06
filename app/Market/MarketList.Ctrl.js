@@ -17,6 +17,11 @@ function config($stateProvider) {
             templateUrl: "Market/Premiums.html",
             controller: 'PremlistCtrl as PremlistCtrl'
         })
+        .state("gettask", {
+            url: "/market/gettask/{id:string}",
+            templateUrl: "Market/GetMark.html",
+            controller: 'GetMarkCtrl as GetMarkCtrl'
+        })
 }
 MarketListCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource'];
 function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource) {
@@ -80,8 +85,8 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
 
     function chang_time(date) {
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分

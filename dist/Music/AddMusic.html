@@ -69,6 +69,9 @@
 							<span class="input-group-btn">
 								<button type="button" class="btn btn-default time-right" ng-click="open=true"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
+							<div class="input-group-btn">
+								<button class="btn btn-red" ng-click="AddMusicCtrl.music.dates.splice($index)">删除</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -83,6 +86,9 @@
 							<input type="text" class="form-control" placeholder="格式:12-08-30" ng-model='list.startTime'>
 							<div class="input-group-addon">到</div>
 							<input type="text" class="form-control" placeholder="格式:12-08-30" ng-model='list.endTime'>
+							<div class="input-group-btn time-left">
+								<button class="btn btn-red" ng-click="AddMusicCtrl.music.times.splice($index)">删除</button>
+							</div>
 						</div>
 					</div>
 				</div>

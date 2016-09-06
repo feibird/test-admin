@@ -68,9 +68,9 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 								if (scope.list[j].spec.id == scope.returnlist[i].spec.id) {
 									scope.list[j].status = true;
 									scope.list[j].active = false;
-								}
+                                    scope.returnlist.splice(i,1);
+								}                                
 							}
-							scope.returnlist.splice(i,1);
 						}
 					}
 

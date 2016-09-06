@@ -12,10 +12,15 @@ function config($stateProvider) {
       templateUrl: "Finance/Recordedlist.html",
       controller: 'RecordedlistCtrl as RecordedlistCtrl'
     })
+    .state("wallet", {
+      url: "/finance/wallet",
+      templateUrl: "Finance/Wallet.html",
+      controller: 'WalletCtrl as WalletCtrl'
+    })
 }
-DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams','$http',"device","version"];
+DrawlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'StoresResource', 'DrawResource', 'NgTableParams', '$http', "device", "version"];
 /***调用接口***/
-function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams,$http,device,version) {
+function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, StoresResource, DrawResource, NgTableParams, $http, device, version) {
   document.title = "提现管理";
   $rootScope.name = "提现管理";
   $rootScope.childrenName = "提现管理列表";
@@ -41,13 +46,13 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.filer = new Object();
   //获取sessionId
   login();
-1
+  1
   function login() {
     vm.user = PublicResource.seid("admin");
-    if (typeof(vm.user) == "undefined") {
+    if (typeof (vm.user) == "undefined") {
       layer.alert("尚未登录！", {
         icon: 2
-      }, function(index) {
+      }, function (index) {
         layer.close(index);
         PublicResource.Urllogin();
       });
@@ -56,29 +61,29 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     }
   }
 
-  PublicResource.user(vm.seid).then(function(data){
-      vm.Role = data.result;
-      console.log(vm.Role)
+  PublicResource.user(vm.seid).then(function (data) {
+    vm.Role = data.result;
+    console.log(vm.Role)
   })
 
-  PublicResource.RoleUser(vm.seid,vm.Role.id).then(function(data){
-      vm.UserOper = data.result;
-      console.log(vm.UserOper)
-      for(var i in vm.UserOper){
-          if(vm.UserOper[i].name=='财务管理员'){
-            vm.oper = 1;
-          }else if(vm.UserOper[i].name=='运营管理员'){
-             vm.oper = 2;
-          }else if(vm.UserOper[i].name=='后台管理员'){
-            vm.oper = 3;
-          }
+  PublicResource.RoleUser(vm.seid, vm.Role.id).then(function (data) {
+    vm.UserOper = data.result;
+    console.log(vm.UserOper)
+    for (var i in vm.UserOper) {
+      if (vm.UserOper[i].name == '财务管理员') {
+        vm.oper = 1;
+      } else if (vm.UserOper[i].name == '运营管理员') {
+        vm.oper = 2;
+      } else if (vm.UserOper[i].name == '后台管理员') {
+        vm.oper = 3;
       }
-      console.log(vm.oper)
+    }
+    console.log(vm.oper)
   })
 
   //财务审核成功
   function FinanOk() {
-    DrawResource.FinanOk(vm.seid, vm.updateinfo).then(function(data) {
+    DrawResource.FinanOk(vm.seid, vm.updateinfo).then(function (data) {
       layer.msg(data.data.result)
       list();
     })
@@ -86,7 +91,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   //财务审核失败
   function FinanNo() {
-    DrawResource.FinanNo(vm.seid, vm.updateinfo).then(function(data) {
+    DrawResource.FinanNo(vm.seid, vm.updateinfo).then(function (data) {
       layer.msg(data.data.result)
       list();
     })
@@ -94,7 +99,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   //运营审核成功
   function operaOk() {
-    DrawResource.operaOk(vm.seid, vm.updateinfo, 0, 100).then(function(data) {
+    DrawResource.operaOk(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
       layer.msg(data.data.result)
       list();
     })
@@ -102,7 +107,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   //运营审核失败
   function operaNo() {
-    DrawResource.operaNo(vm.seid, vm.updateinfo,0,100).then(function(data) {
+    DrawResource.operaNo(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
       layer.msg(data.data.result)
       list();
     })
@@ -110,33 +115,33 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   //汇总统计
   function count() {
-    DrawResource.count(vm.seid,vm.updateinfo,0,100).then(function(data) {
+    DrawResource.count(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
       vm.count = data.data.result;
     })
   }
 
   //导出表格
   function exel() {
-    var applyStartDate = dateTime(vm.updateinfo.applyStartDate)?dateTime(vm.updateinfo.applyStartDate):"";
-    var applyEndDate = dateTime(vm.updateinfo.applyEndDate)?dateTime(vm.updateinfo.applyEndDate):"";
-    var completetStartDate = dateTime(vm.updateinfo.completetStartDate)?dateTime(vm.updateinfo.completetStartDate):"";
-    var completeEndDate = dateTime(vm.updateinfo.completeEndDate)?dateTime(vm.updateinfo.completeEndDate):"";
-    window.open("/api-admin/report/draw/excel?sessionId="+vm.seid
-      +"&device="+'pc'
-      +"&version="+'2.0.0'
-      +"&status="+vm.updateinfo.status
-      +"&serialNumber="+vm.updateinfo.serialNumber
-      +"&storeId="+vm.updateinfo.storeId
-      +"&applyStartDate="+applyStartDate
-      +"&applyEndDate="+applyEndDate
-      +"&completetStartDate="+completetStartDate
-      +"&completeEndDate="+completeEndDate
-      )
+    var applyStartDate = dateTime(vm.updateinfo.applyStartDate) ? dateTime(vm.updateinfo.applyStartDate) : "";
+    var applyEndDate = dateTime(vm.updateinfo.applyEndDate) ? dateTime(vm.updateinfo.applyEndDate) : "";
+    var completetStartDate = dateTime(vm.updateinfo.completetStartDate) ? dateTime(vm.updateinfo.completetStartDate) : "";
+    var completeEndDate = dateTime(vm.updateinfo.completeEndDate) ? dateTime(vm.updateinfo.completeEndDate) : "";
+    window.open("/api-admin/report/draw/excel?sessionId=" + vm.seid
+      + "&device=" + 'pc'
+      + "&version=" + '2.0.0'
+      + "&status=" + vm.updateinfo.status
+      + "&serialNumber=" + vm.updateinfo.serialNumber
+      + "&storeId=" + vm.updateinfo.storeId
+      + "&applyStartDate=" + applyStartDate
+      + "&applyEndDate=" + applyEndDate
+      + "&completetStartDate=" + completetStartDate
+      + "&completeEndDate=" + completeEndDate
+    )
   }
 
   //确认打款
   function complete() {
-    DrawResource.complete(vm.seid, vm.updateinfo,0,100).then(function(data) {
+    DrawResource.complete(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
       console.log(data);
       if (data.data.status == "OK") {
         layer.msg("操作成功~", {
@@ -151,7 +156,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     });
   }
 
-  vm.statusBtn = function(fusName, id) {
+  vm.statusBtn = function (fusName, id) {
     vm.updateinfo.ids = [];
     vm.fusName = fusName;
     vm.updateinfo.ids.push(id);
@@ -164,64 +169,64 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     });
   };
 
-  vm.Get = function() {
-    vm.updateinfo.completeEndDate=GTM(true,vm.updateinfo.completeEndDate)
-    vm.updateinfo.completeStartDate=GTM(false,vm.updateinfo.completeStartDate)
-    vm.updateinfo.applyStartDate=GTM(false,vm.updateinfo.applyStartDate)
-    vm.updateinfo.applyEndDate=GTM(true,vm.updateinfo.applyEndDate)
+  vm.Get = function () {
+    vm.updateinfo.completeEndDate = GTM(true, vm.updateinfo.completeEndDate)
+    vm.updateinfo.completeStartDate = GTM(false, vm.updateinfo.completeStartDate)
+    vm.updateinfo.applyStartDate = GTM(false, vm.updateinfo.applyStartDate)
+    vm.updateinfo.applyEndDate = GTM(true, vm.updateinfo.applyEndDate)
     list();
   };
 
-  function GTM(is,data){
+  function GTM(is, data) {
     console.log(data)
-    if(typeof(data)=='undefined'||data==""||data==null){
-        return null
-    }else{
-        data = chang_time(data);
-        if(is){
-            data = data+"23:59:59";
-        }
-        return data = new Date(data).getTime();
+    if (typeof (data) == 'undefined' || data == "" || data == null) {
+      return null
+    } else {
+      data = chang_time(data);
+      if (is) {
+        data = data + "23:59:59";
+      }
+      return data = new Date(data).getTime();
     }
-    
+
   }
 
 
-  vm.exel = function(){
-      exel()
+  vm.exel = function () {
+    exel()
   }
 
-  vm.countBtn = function(){
+  vm.countBtn = function () {
     layer.open({
       type: 1,
-      title:'详情',
-      area: ['700px',"550px"], //宽高
-      content:$('.count')
+      title: '详情',
+      area: ['700px', "550px"], //宽高
+      content: $('.count')
     })
     count();
   }
 
-  vm.Credential = function(id) {
+  vm.Credential = function (id) {
     get(id)
     layer.open({
       type: 1,
-      title:'提现详情',
-      area: ['700px',"550px"], //宽高
-      content:$('.credential')
+      title: '提现详情',
+      area: ['700px', "550px"], //宽高
+      content: $('.credential')
     })
   }
 
-  vm.count_detailBtn = function(){
+  vm.count_detailBtn = function () {
     layer.open({
       type: 1,
-      title:'详情',
-      area: ['1000px',"550px"], //宽高
-      content:$('.count-detail')
+      title: '详情',
+      area: ['1000px', "550px"], //宽高
+      content: $('.count-detail')
     })
     count_list();
   }
 
-  vm.alertBtn = function() {
+  vm.alertBtn = function () {
     console.log(vm.updateinfo);
     switch (vm.fusName) {
       case "operaNo":
@@ -232,10 +237,10 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
         break;
       case "FinanNo":
         FinanNo();
-      break;
+        break;
       case "FinanOk":
         FinanOk();
-      break;
+        break;
       case "complete":
         complete();
         break;
@@ -243,7 +248,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     layer.closeAll();
   }
   var num = true;
-  vm.All = function() {
+  vm.All = function () {
     for (var i in vm.list) {
       if (num) {
         vm.list[i].active = true;
@@ -254,7 +259,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     num = !num;
   }
 
-  vm.operaBtn = function(status, fusName) {
+  vm.operaBtn = function (status, fusName) {
     vm.updateinfo.ids = [];
     var x = 0;
     for (var i in vm.list) {
@@ -307,7 +312,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   }
 
   function store() {
-    StoresResource.list(vm.seid, 0, 0).then(function(data) {
+    StoresResource.list(vm.seid, 0, 0).then(function (data) {
       vm.stores = data.data.result.data;
       console.log(vm.stores);
     });
@@ -316,55 +321,55 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   function list() {
 
     vm.tableParams = new NgTableParams({
-        page: 1, // show first page
-        count: 10, // count per page
-        per_page:10
+      page: 1, // show first page
+      count: 10, // count per page
+      per_page: 10
     }, {
         filterDelay: 300,
-        getData: function(info) {
-            vm.skip=vm.limit*(info.page()-1);
-            return $http.get("/api-admin/draw/list", {
-              params: {
-                "device": device,
-                "version": version,
-                "sessionId": vm.seid,
-                "skip": vm.skip,
-                "limit": vm.limit,
-                'storeId': vm.updateinfo.storeId,
-                'status': vm.updateinfo.status,
-                "applyStartDate":vm.updateinfo.applyStartDate,
-                "applyEndDate": vm.updateinfo.applyEndDate,
-                "completeStartDate":vm.updateinfo.completeStartDate,
-                "completeEndDate":vm.updateinfo.completeEndDate,
-                "serialNumber": vm.updateinfo.serialNumber
-              }
-            }).then(function(data){
-                console.log(info.page())
-                info.total(data.data.result.total);
-                info.per_page=10;
-                for(var i in data.data.result.data){
-                  data.data.result.data[i].createDate = chang_time(new Date(data.data.result.data[i].createDate))
-                  data.data.result.data[i].endDate = chang_time(new Date(data.data.result.data[i].endDate))
-                }
-                return data.data.result.data;
-            })
+        getData: function (info) {
+          vm.skip = vm.limit * (info.page() - 1);
+          return $http.get("/api-admin/draw/list", {
+            params: {
+              "device": device,
+              "version": version,
+              "sessionId": vm.seid,
+              "skip": vm.skip,
+              "limit": vm.limit,
+              'storeId': vm.updateinfo.storeId,
+              'status': vm.updateinfo.status,
+              "applyStartDate": vm.updateinfo.applyStartDate,
+              "applyEndDate": vm.updateinfo.applyEndDate,
+              "completeStartDate": vm.updateinfo.completeStartDate,
+              "completeEndDate": vm.updateinfo.completeEndDate,
+              "serialNumber": vm.updateinfo.serialNumber
+            }
+          }).then(function (data) {
+            console.log(info.page())
+            info.total(data.data.result.total);
+            info.per_page = 10;
+            for (var i in data.data.result.data) {
+              data.data.result.data[i].createDate = chang_time(new Date(data.data.result.data[i].createDate))
+              data.data.result.data[i].endDate = chang_time(new Date(data.data.result.data[i].endDate))
+            }
+            return data.data.result.data;
+          })
         }
-    });
+      });
   }
 
-  function get(id){
-    DrawResource.get(vm.seid,id).then(function(data){
+  function get(id) {
+    DrawResource.get(vm.seid, id).then(function (data) {
       vm.credential = data.data.result;
       console.log(vm.credential);
       vm.credential.createDate = chang_time(new Date(vm.credential.createDate));
       if (vm.credential.endDate != null) {
-          vm.credential.endDate = chang_time(new Date(vm.credential.endDate));
-        }
-      })
-   }
+        vm.credential.endDate = chang_time(new Date(vm.credential.endDate));
+      }
+    })
+  }
 
   function count_list() {
-    DrawResource.list(vm.seid, vm.updateinfo, 0, 100).then(function(data) {
+    DrawResource.list(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
       vm.count_detail = data.data.result.data;
       for (var i in vm.list) {
         vm.count_detail[i].active = false;
@@ -379,8 +384,8 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
 
   function chang_time(date) {
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    var Y = date.getFullYear() + '/';
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
     var D = date.getDate() + ' '; //天
     var h = date.getHours() + ':'; //时
     var m = date.getMinutes() + ':'; //分
@@ -396,7 +401,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
       s = "0" + s;
     }
 
-    if (h.length<3) {
+    if (h.length < 3) {
       h = "0" + h;
     }
     return Y + M + D;
@@ -415,7 +420,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   }
 
   function update(status, id) {
-    DrawResource.update(vm.seid, status, id).then(function(data) {
+    DrawResource.update(vm.seid, status, id).then(function (data) {
       console.log(data);
       if (data.data.status == "OK") {
         layer.alert('修改成功', {
@@ -430,14 +435,14 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     });
   }
 
-  $(function(){
-      $(".printBtn").click(function(){
-        var ClassName  = $(this).attr('name');
-        console.log(ClassName);
-        $(this).hide();
-        $(ClassName).jqprint();
-        $(this).show();
-      })
+  $(function () {
+    $(".printBtn").click(function () {
+      var ClassName = $(this).attr('name');
+      console.log(ClassName);
+      $(this).hide();
+      $(ClassName).jqprint();
+      $(this).show();
     })
+  })
 
 }

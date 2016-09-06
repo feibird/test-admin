@@ -20,7 +20,9 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
     $rootScope.name="语音推送管理";
     $rootScope.childrenName="语音推送管理列表";
     var vm = this;
-    vm.seid
+    vm.seid;
+    vm.skip=0;
+    vm.limit=10;
     vm.list;						//对象集合
     vm.getinfo;
 
@@ -97,8 +99,16 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         })
     }
 
+    count();
+    function count(){
+         MusicResource.count(vm.seid).then(function(data){            
+            vm.count = data.data.result;
+            console.log(data)
+        })
+    }
+
     function list(){
-        MusicResource.list(vm.seid,0,0).then(function(data){            
+        MusicResource.list(vm.seid,vm.skip,vm.limit).then(function(data){            
             vm.list = data.data.result.data;
             for(var i in vm.list){
                 for(var j in vm.list[i].voiceDates){
@@ -111,8 +121,8 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
     }
 
     function chang_time(date) {
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分

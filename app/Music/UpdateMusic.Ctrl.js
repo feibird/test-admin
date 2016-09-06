@@ -89,8 +89,8 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     }
 
     function chang_time(date) {
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分

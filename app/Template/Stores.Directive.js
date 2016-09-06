@@ -65,30 +65,24 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 				}
 			}
 
-			
-			//批量删除/删除
-			scope.Del = function (id,index,is) {
+			scope.Del = function (item,index,is) {
 				if (is) {
 					for (var i in scope.returnlist) {
 						if (scope.returnlist[i].active) {
-							for (var j in scope.list) {
-								if (scope.list[j].id == scope.returnlist[i].id) {
-									scope.list[j].status = false;
-									scope.list[j].select = true;
-								}
+							if(scope.list.indexOf(scope.returnlist[i])>-1){
+								scope.returnlist.splice(i,1);
+								scope.list[scope.list.indexOf(scope.returnlist[i])].status=false;
+								scope.list[scope.list.indexOf(scope.returnlist[i])].select=true;
 							}
-							scope.returnlist.splice(i,1);
 						}
 					}
 
 				} else {
-					scope.returnlist.splice(index, 1);
-					for(var i in scope.list){
-						if(scope.list[i].id==id){
-							scope.list[i].status=false;
-							scope.list[i].select=true;
+					if(scope.list.indexOf(item)>-1){
+							scope.list[scope.list.indexOf(id)].status=false;
+							scope.list[scope.list.indexOf(id)].select=true;
+							scope.returnlist.splice(index,1);
 						}
-					}
 				}
 			}
 		}

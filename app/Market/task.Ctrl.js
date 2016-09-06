@@ -24,45 +24,48 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.task.enabled = "";
     vm.task.excluslve = "";
     vm.task.priority = "";
+    vm.task.productCountLimit = 0;
     vm.task.type = "";
-    vm.task.costSources=[];
-    vm.date={}
-    vm.date.minDate = typeof(vm.date.minDate) ? 'undefined' : new Date();
+    vm.task.costSources = [];
+    vm.date = {}
+    vm.date.minDate = typeof (vm.date.minDate) ? 'undefined' : new Date();
     login();
 
-     vm.interval=[{
-            start:0,
-            end:0,
-            count:0
-        }];
-    
-    
-    vm.Addinterval=function(){
-        var add = {start:0,end:0,count:0};
+    vm.interval = [{
+        start: 0,
+        end: 0,
+        count: 0
+    }];
+
+
+    vm.Addinterval = function () {
+        var add = { start: 0, end: 0, count: 0 };
         vm.interval.push(add)
     }
 
-    vm.Delinterval=function(index){
+    vm.Delinterval = function (index) {
         console.log(index)
-        vm.interval.splice(index,1)
+        vm.interval.splice(index, 1)
     }
 
-    vm.AddcostSources=function(){
-        var add = {costSourceId:"",ratio:""};
+    vm.AddcostSources = function () {
+        var add = { costSourceId: "", ratio: "" };
         vm.task.costSources.push(add)
     }
 
-    vm.DelcostSources=function(index){
-        vm.task.costSources.splice(index,1)
+    vm.DelcostSources = function (index) {
+        vm.task.costSources.splice(index, 1)
     }
 
     vm.AddTask = function () {
         console.log(vm.task);
-        if(vm.interval.length>1){
-            for(var i in vm.interval){
-                vm.task.formulaParameter['interval_'+vm.interval[i].start+"_"+vm.interval[i].end] = vm.interval[i].count;
+        if (vm.interval.length > 1) {
+            for (var i in vm.interval) {
+                vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count;
             }
         }
+
+        vm.task.costSources=objstring(vm.task.costSources);
         vm.task.storesIds = ArryString(vm.task.storesId, true);
         vm.task.goodsIds = ArryString(vm.task.goodsId, false);
         vm.task.prems = ArryString(vm.task.prems, true);
@@ -100,13 +103,25 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     }
 
     resource();
-    function resource(){
-        MarketResource.resource(vm.seid,0,0).then(function (data) {
-           vm.resource = data.data.result;
-           console.log(vm.resource)
+    function resource() {
+        MarketResource.resource(vm.seid, 0, 0).then(function (data) {
+            vm.resource = data.data.result;
+            console.log(vm.resource)
         })
     }
 
+    function objstring(obj) {
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var json = new Object();
+            for (var i in obj) {
+                json[obj[i].costSourceId] = obj[i].ratio;
+            }
+            return json;
+        }
+
+    }
 
     function ArryString(obj, status) {
         console.log(obj, typeof (obj))
