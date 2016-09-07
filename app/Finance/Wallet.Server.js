@@ -7,7 +7,7 @@ WalletResource.$inject = ['$http', 'device', 'version'];
 function WalletResource($http, device, version) {
   return {
     list: list,
-    total:total
+    sum:sum
   };
 
 
@@ -30,8 +30,8 @@ function WalletResource($http, device, version) {
     })
   }
 
-  function total(seid){
-      return $http.get('/api-admin/journal/count',{
+  function sum(seid){
+      return $http.get('/api-admin/store/wallet/sum',{
         params:{
           "device": device,
         "version": version,

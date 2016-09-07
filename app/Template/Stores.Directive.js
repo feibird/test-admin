@@ -25,7 +25,7 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 							scope.list[i].select = true;
 							scope.list[i].status = false;
 						}
-
+					vs();
 					scope.pagecount=data.data.result.total;
 				})
 			}
@@ -44,6 +44,17 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
                     break;
                 }
             }
+
+			function vs(){
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].id==scope.returnlist[j].id){
+							scope.list[i].select=false;
+							scope.list[i].status=true;
+						}
+					}
+				}
+			}
 
 			//添加门店
 			scope.Add = function (item) {
@@ -67,22 +78,29 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 
 			scope.Del = function (item,index,is) {
 				if (is) {
+					
 					for (var i in scope.returnlist) {
 						if (scope.returnlist[i].active) {
-							if(scope.list.indexOf(scope.returnlist[i])>-1){
-								scope.returnlist.splice(i,1);
-								scope.list[scope.list.indexOf(scope.returnlist[i])].status=false;
-								scope.list[scope.list.indexOf(scope.returnlist[i])].select=true;
+							scope.returnlist.splice(i,1);
+							for(var j in scope.list){
+								if(scope.list[j].id==scope.returnlist[i].id){
+									console.log(scope.list[i])
+									scope.list[j].status=false;
+									scope.list[j].select=true;
+								}
 							}
 						}
 					}
 
 				} else {
-					if(scope.list.indexOf(item)>-1){
-							scope.list[scope.list.indexOf(id)].status=false;
-							scope.list[scope.list.indexOf(id)].select=true;
-							scope.returnlist.splice(index,1);
+					scope.returnlist.splice(index,1);
+					for(var i in scope.list){
+						if(scope.list[i].id==item.id){
+							scope.list[i].status=false;
+							scope.list[i].select=true;
 						}
+					}
+					
 				}
 			}
 		}

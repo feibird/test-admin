@@ -94,8 +94,8 @@ function MarketResource($http, device, version) {
         "enabled": obj.enabled,
         "exclusive": obj.exclusive,
         "priority": obj.priority,
-        "giftIds":obj.prems,
-        "costSources":JSON.stringify(obj.costSources),
+        "giftIds":obj.premsId,
+        "costSources":JSON.stringify(obj.costSource),
         "type": obj.type,
         "formulaParameter": JSON.stringify(obj.formulaParameter)
       }

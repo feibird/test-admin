@@ -61,14 +61,14 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         console.log(vm.task);
         if (vm.interval.length > 1) {
             for (var i in vm.interval) {
-                vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count;
+                vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count*0.01;
             }
         }
 
-        vm.task.costSources=objstring(vm.task.costSources);
+        vm.task.costSource=objstring(vm.task.costSources);
         vm.task.storesIds = ArryString(vm.task.storesId, true);
         vm.task.goodsIds = ArryString(vm.task.goodsId, false);
-        vm.task.prems = ArryString(vm.task.prems, true);
+        vm.task.premsId = ArryString(vm.task.prems, true);
         if (typeof (vm.task.startTime) != "undefined" && vm.task.startTime != "" && typeof (vm.task.startTime) != 'number') {
             console.log(typeof (vm.task.startTime))
             vm.task.startTime = vm.task.startTime.getTime();
@@ -116,7 +116,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio;
+                json[obj[i].costSourceId] = obj[i].ratio*0.01;
             }
             return json;
         }

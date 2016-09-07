@@ -23,7 +23,8 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
                 GoodResource.list(scope.seid,null,scope.skip,scope.limit).then(function(data){
                     scope.list = data.data.result.data;
                     scope.pagecount = data.data.result.total;
-                    scope.list = ArryAnalysis(scope.list)
+                    scope.list = ArryAnalysis(scope.list);
+                    vs();
                 })
             }
 
@@ -80,6 +81,19 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
 						if(scope.list[i].spec.id==id){
 							scope.list[i].status = true;
                             scope.list[i].active = false;
+						}
+					}
+				}
+			}
+
+            function vs(){
+                console.log(scope.list)
+                console.log(scope.returnlist)
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].spec.id==scope.returnlist[j].spec.id){
+							scope.list[i].status = false;
+							scope.list[i].active = true;
 						}
 					}
 				}

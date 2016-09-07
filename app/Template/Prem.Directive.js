@@ -26,9 +26,23 @@ angular.module('index_area').directive('prems', function (PremResource,$rootScop
                         scope.list[i].status=true;
                         scope.list[i].active=false;
                     }
+                    vs();
                     scope.pagecount = data.data.result.total;
                 })
             }
+
+            function vs(){
+                console.log(scope.list)
+                console.log(scope.returnlist)
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].id==scope.returnlist[j].id){
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+						}
+					}
+				}
+			}
 
             //批量删除,删除
             scope.Add = function(item){
@@ -66,7 +80,7 @@ angular.module('index_area').directive('prems', function (PremResource,$rootScop
 			scope.Del = function (id,index,is) {
 				if (is) {
 					for (var i in scope.returnlist){
-						if (scope.returnlist[i].active) {
+						if (scope.returnlist[i].check) {
 							for (var j in scope.list) {
 								if (scope.list[j].id == scope.returnlist[i].id) {
 									scope.list[j].status = true;

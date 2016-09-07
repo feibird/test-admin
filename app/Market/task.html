@@ -96,14 +96,14 @@
 					<div class="form-layout">
 						<div class="input-group">
 							<div class="input-group-addon">从</div>
-							<input type="text" placeholder="请输入有效时间启始" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.startTime" is-open="open1" datepicker-options="taskCtrl.date"
-								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+							<input type="text" placeholder="请输入有效时间启始" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.startTime" is-open="open1"
+								datepicker-options="taskCtrl.date" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
 							<div class="input-group-addon">到</div>
-							<input type="text" placeholder="请输入有效时间结束" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.endTime" is-open="open2" datepicker-options="taskCtrl.date"
-								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+							<input type="text" placeholder="请输入有效时间结束" class="form-control" uib-datepicker-popup ng-model="taskCtrl.task.endTime" is-open="open2"
+								datepicker-options="taskCtrl.date" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
 							<span class="input-group-btn  vt">
 								<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
@@ -123,16 +123,16 @@
 						</div>
 						<div class="radio">
 							<label>
-						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="CONTINUOUS">
+						    <input type="radio" name="timesLimitType" onkeyup="value=value.replace(/[^\d]/g,'')" ng-model='taskCtrl.task.timesLimitType' value="CONTINUOUS">
 						    限制次数
 						  </label>
-							<input type="text" ng-disabled="taskCtrl.task.timesLimitType!='CONTINUOUS'" class="input_radio" ng-model='taskCtrl.task.timesLimit'>次
+							<input type="text" ng-disabled="taskCtrl.task.timesLimitType!='CONTINUOUS'" onkeyup="value=value.replace(/[^\d]/g,'')" class="input_radio" ng-model='taskCtrl.task.timesLimit'>次
 						</div>
 						<div class="radio">
 							<label>
 						    <input type="radio" name="timesLimitType" ng-model='taskCtrl.task.timesLimitType' value="RECURRENT">
 						    限制周期
-						    &nbsp;周期<input type="text" ng-model="taskCtrl.task.timesLimitCycle" ng-disabled="taskCtrl.task.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-model='taskCtrl.task.timesLimit' ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" class="input_radio">次
+						    &nbsp;周期<input type="text" ng-model="taskCtrl.task.timesLimitCycle" onkeyup="value=value.replace(/[^\d]/g,'')" ng-disabled="taskCtrl.task.timesLimitType!='RECURRENT'" class="input_radio">天内<input type="text" ng-model='taskCtrl.task.timesLimit' ng-disabled="taskCtrl.task.timesLimitType=='CONTINUOUS'" onkeyup="value=value.replace(/[^\d]/g,'')" class="input_radio">次
 						  </label>
 						</div>
 					</div>
@@ -156,7 +156,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel panel-default panel-border" ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'" >
+	<div class="panel panel-default panel-border" ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'">
 		<div class="panel-body">
 			<div class="form-lyout">
 				<div class="form-title">商品限购</div>
@@ -165,8 +165,8 @@
 						<input type="radio" name="timesLimitType" value='0' ng-model='productCountLimit' > 不限数量
 					</label>
 					<label class="radio-inline">
-						<input type="radio" name="timesLimitType" ng-model='productCountLimit' value="1">
-						限制<input type="text"  ng-disabled="productCountLimit=='0'" class="input_radio" onkeyup="value=value.replace(/[^\d]/g,'')"  ng-model='taskCtrl.task.productCountLimit'>件
+						<input type="radio" onkeyup="value=value.replace(/[^\d]/g,'')" name="timesLimitType" ng-model='productCountLimit' value="1">
+						限制<input type="text" onkeyup="value=value.replace(/[^\d]/g,'')" ng-disabled="productCountLimit=='0'" class="input_radio"   ng-model='taskCtrl.task.productCountLimit'>件
 					</label>
 				</div>
 			</div>
@@ -180,7 +180,7 @@
 			</label>
 			<label class="radio-inline">
 					  <input type="radio" name="amount" value='false' ng-model='taskCtrl.task.amount' checked > 订单满
-						<input type="text" class="input_radio" onkeyup="value=value.replace(/[^\d]/g,'')"  ng-model="taskCtrl.task.amountLimit" ng-disabled="!taskCtrl.task.amount" >元
+						<input type="number" class="input_radio"   ng-model="taskCtrl.task.amountLimit" ng-disabled="!taskCtrl.task.amount" >元
 					</label>
 		</div>
 	</div>
@@ -193,7 +193,7 @@
 						<label>
 							<input type="radio" name="type" value="CUT" ng-change="hide=true;hide2=false;hide3=false;" ng-model='taskCtrl.task.type' > 
 							订单减免
-							<input type="text" ng-disabled="!hide" onkeyup="value=value.replace(/[^\d]/g,'')"  ng-model='taskCtrl.task.formulaParameter.cutAmount' class="input_radio">
+							<input type="number" ng-disabled="!hide"   ng-model='taskCtrl.task.formulaParameter.cutAmount' class="input_radio">
 							元
 						</label>
 					</div>

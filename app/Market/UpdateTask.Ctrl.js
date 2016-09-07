@@ -26,7 +26,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     vm.data.excluslve = "";
     vm.data.priority = "";
     vm.data.type = "";
-    vm.data.costSources=[];
+    vm.data.costSources = [];
     login();
     get(vm.id)
 
@@ -34,7 +34,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     vm.UpTask = function () {
         vm.data.storesIds = ArryString(vm.data.promotionStoreList, true);
         vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
-        vm.data.prems = ArryString(vm.data.prems, true);
+        vm.data.prems = ArryString(vm.data.promotionGiftList, true);
         vm.data.costSources = objstring(vm.data.promotionCostSourceList);
         console.log(vm.data)
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
@@ -49,7 +49,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             if (vm.interval.length > 1) {
                 vm.data.formulaParameterMap = {};
                 for (var i in vm.interval) {
-                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count;
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count*0.01;
                 }
             }
         }
@@ -78,12 +78,13 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
 
     function objstring(obj) {
+        console.log(obj)
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio;
+                json[obj[i].costSource.id] = obj[i].ratio * 0.01;
             }
             return json;
         }
@@ -102,11 +103,10 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 }
             } else {
                 for (var i in obj) {
-                    
                     console.log(obj[i].spec)
-                    if(typeof(obj[i].spec)=='undefined'){
-                        StoreArry+=obj[i].productSpecData.id+",";
-                    }else{
+                    if (typeof (obj[i].spec) == 'undefined') {
+                        StoreArry += obj[i].productSpecData.id + ",";
+                    } else {
                         StoreArry += obj[i].spec.id + ",";
                     }
                 }
@@ -126,21 +126,24 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         vm.interval.splice(index, 1)
     }
 
-    vm.AddcostSources=function(){
-        var add = {costSourceId:"",ratio:""};
+    vm.AddcostSources = function () {
+        var add = { costSource: {}, ratio: "" };
         vm.data.promotionCostSourceList.push(add)
     }
 
-    vm.DelcostSources=function(index){
-        vm.data.promotionCostSourceList.splice(index,1)
+    vm.DelcostSources = function (index) {
+        vm.data.promotionCostSourceList.splice(index, 1)
     }
 
     //获取运营数据
     function get(id) {
         MarketResource.get(vm.seid, id).then(function (data) {
             vm.data = data.data.result;
+            for (var i in vm.data.promotionCostSourceList) {
+                vm.data.promotionCostSourceList[i].ratio = vm.data.promotionCostSourceList[i].ratio * 100;
+            }
             vm.data.prems = [];
-            vm.data.costSources=[];
+            vm.data.costSources = [];
             console.log(vm.data);
             Get_interval(vm.data.formulaParameterMap);
             Get_goods(vm.data.promotionProductList);
@@ -148,10 +151,10 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
 
     resource();
-    function resource(){
-        MarketResource.resource(vm.seid,0,0).then(function (data) {
-           vm.resource = data.data.result;
-           console.log(vm.resource)
+    function resource() {
+        MarketResource.resource(vm.seid, 0, 0).then(function (data) {
+            vm.resource = data.data.result;
+            console.log(vm.resource)
         })
     }
 
@@ -163,7 +166,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 var json = new Object();
                 json.start = i.substring(9, i.length).split("_")[0];
                 json.end = i.substring(9, i.length).split("_")[1];
-                json.count = obj[i];
+                json.count = obj[i]*100;
                 vm.interval.push(json);
             }
         }
@@ -176,17 +179,17 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         console.log(obj)
         var goods = [];
         var spec = {};
-        spec.categories={};
-        for(var i in obj){
+        spec.categories = {};
+        for (var i in obj) {
             spec.id = obj[i].productSpecData.id;
             spec.spec = obj[i].productSpecData;
             spec.categories.data = obj[i].categoryList[0];
             spec.categories.children = obj[i].categoryList[1];
-            spec.name=obj[i].baseProduct.name;
+            spec.name = obj[i].baseProduct.name;
             spec.providerBrand = obj[i].brand;
             goods.push(spec);
             spec = {};
-            spec.categories={};
+            spec.categories = {};
         }
         vm.data.promotionProductList = goods;
     }
