@@ -75,16 +75,16 @@ function VirtualResource($http,device,version) {
             return data
         })
 	}
-	
+
 	/**
 	 * 修改商品
 	 */
 	function update(seid,obj){
-		var labels = "";			
-		for(var i in obj.labels){				
-			labels+=obj.labels[i].id+",";				
+		var labels = "";
+		for(var i in obj.labels){
+			labels+=obj.labels[i].id+",";
 		}
-		labels=labels.substring(0,labels.length-1);	
+		labels=labels.substring(0,labels.length-1);
 		return $http({
             url:"/api-admin/virtual/category/"+obj.id+"/update",
             method: 'post',
@@ -95,7 +95,7 @@ function VirtualResource($http,device,version) {
 				"sessionId":seid,
 				"name":obj.name,
 				"backgroundColor":obj.backgroundColor,
-				"storeId":obj.storeId,				
+				"storeId":obj.storeId,
 				"providerBrandIds":obj.providerBrands[0].id,
 				"productCategoryIds":obj.Categorys,
 				"labelIds":labels,
@@ -108,7 +108,7 @@ function VirtualResource($http,device,version) {
              return data
         })
 	}
-	
+
 	/**
 	 * 删除商品
 	 */

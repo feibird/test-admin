@@ -20,7 +20,7 @@ function config($stateProvider) {
             templateUrl: "Good/Format.html",
             controller: 'FormatCtrl as FormatCtrl'
         }).state("gooddetail", {
-            url: "/good/gooddetail/{id:string}&{is:string}",
+            url: "/good/gooddetail/{id:string}",
             templateUrl: "Good/goodDetail.html",
             controller: 'GooddetialCtrl as GooddetialCtrl'
         }).state("storegooddetail", {

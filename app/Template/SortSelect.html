@@ -1,0 +1,18 @@
+<div class="SortDir">
+  <ul class='Sortlist'>
+      <li class='children' ng-repeat='item in list track by $index'>
+          <div class='dataName'>
+              <input type='checkbox' ng-model='item.status' ng-disabled="item.active" ng-true-value='true' ng-false-value='false' ng-change="Status(item)">{{item.data.name}}
+          </div>
+          <div class='chilDiv'>
+              <ul>
+                  <li ng-repeat='is in item.children'>
+                      <div>
+                          <input type='checkbox' ng-model='is.status' ng-disabled="is.active"  ng-true-value='true' ng-false-value='false' ng-change="Status(is)">{{is.data.name}}
+                      <div>
+                  </li>
+              </ul>
+          </div>
+      </li>
+  </ul>
+</div>

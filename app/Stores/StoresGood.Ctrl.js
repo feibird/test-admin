@@ -1,7 +1,7 @@
-angular.module('index_area').controller('VirtualGoodCtrl', VirtualGoodCtrl);
-VirtualGoodCtrl.$inject = ['$scope', '$rootScope', '$state', 'StoresResource', 'PublicResource', '$stateParams', 'VirtualResource','GoodResource','StoresGoodResource'];
+angular.module('index_area').controller('StoresGoodCtrl', StoresGoodCtrl);
+StoresGoodCtrl.$inject = ['$scope', '$rootScope', '$state', 'StoresResource', 'PublicResource', '$stateParams', 'VirtualResource','GoodResource','StoresGoodResource'];
 /***调用接口***/
-function VirtualGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResource, $stateParams, VirtualResource,GoodResource,StoresGoodResource) {
+function StoresGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResource, $stateParams, VirtualResource,GoodResource,StoresGoodResource) {
     document.title = "虚拟分类管理";
     $rootScope.name = "门店管理";
     $rootScope.childrenName = "虚拟分类管理列表";
@@ -13,6 +13,14 @@ function VirtualGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResou
     vm.storeid = $stateParams.id;
     vm.storeName = $stateParams.name;
     vm.brand = $stateParams.brand;
+
+     //分页点击事件
+  vm.pageChanged = function () {
+    vm.skip = (vm.pageint - 1) * vm.limit;
+    get();
+  }
+
+
     vm.delbtn = function (id, storeID) {
         layer.confirm('您确定要删除分类？', {
             btn: ['确定', '取消'] //按钮
@@ -36,8 +44,10 @@ function VirtualGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResou
     get();
     function get() {
         StoresGoodResource.list(vm.seid,vm.storeid,vm.skip, vm.limit).then(function (data) {
+            console.log(data)
             vm.list = data.data.result.data;
             vm.pagecount = data.data.result.total;
+            console.log(vm.pagecount)
             console.log(vm.list)
         })
     }
@@ -68,7 +78,7 @@ function VirtualGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResou
     vm.opera_layer = function(item){
         console.log(item)
         vm.specs =item.specs;
-        vm.name = item.baseProducts.name;
+        vm.name = item.baseProduct.name;
         layer.open({
             title:'商品规格',
             area:['400px','500px'],

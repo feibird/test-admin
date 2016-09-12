@@ -14,12 +14,12 @@ function config($stateProvider){
         url: "/stores/VirtualGet{id:string}",
         templateUrl: "Stores/VirtualGet.html",
         controller: 'VirtualGetCtrl as VirtualGetCtrl'
-    }).state("VirtualGood", {
-        url: "/stores/VirtualGood/{id:string}&{name:string}&{brand:string}",
-        templateUrl: "Stores/VirtualGood.html",
-        controller: 'VirtualGoodCtrl as VirtualGoodCtrl'
+    }).state("storesGood", {
+        url: "/stores/storesGood/{id:string}&{name:string}&{brand:string}",
+        templateUrl: "Stores/storesGood.html",
+        controller: 'StoresGoodCtrl as StoresGoodCtrl'
     }).state("VirtualSort", {
-        url: "/stores/VirtualGood/{id:string}",
+        url: "/stores/StoresGood/{id:string}",
         templateUrl: "Stores/VirtualSort.html",
         controller: 'VirtualSortCtrl as VirtualSortCtrl'
     })
@@ -72,6 +72,10 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
     vm.upBtn = function(){
         update();
+    }
+
+    vm.closeLayer = function(){
+        layer.closeAll();
     }
 
     vm.openBtn = function(status,id){

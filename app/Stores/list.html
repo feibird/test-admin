@@ -22,9 +22,11 @@
                                 </button>
                                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
                                     <li role="menuitem"><a href="javascript:;" ui-sref="Virtual({id:item.id})">虚拟分类管理</a></li>
-                                    <li role="menuitem"><a href="javascript:;" ui-sref="VirtualGood({id:item.id,name:item.name,brand:item.brand.name})">商品管理</a></li>
+                                    <li role="menuitem"><a href="javascript:;" ui-sref="storesGood({id:item.id,name:item.name,brand:item.brand.name})">商品管理</a></li>
                                     <li role="menuitem"><a href="javascript:;" ng-click="StoreslistCtrl.openBtn('get',item.id)">查看</a></li>
                                     <li role="menuitem"><a href="javascript:;" ng-click="StoreslistCtrl.openBtn('update',item.id)">修改</a></li>
+                                    <li role="menuitem"><a href="javascript:;" ng-click="StoreslistCtrl.delBtn(item.id)">管理员管理</a></li>
+                                    <li role="menuitem"><a href="javascript:;" ng-click="StoreslistCtrl.delBtn(item.id)">同步其他门店</a></li>
                                     <li role="menuitem"><a href="javascript:;" ng-click="StoreslistCtrl.delBtn(item.id)">删除</a></li>
                                 </ul>
                             </div>
@@ -152,7 +154,7 @@
         </div>
         <div class="col-xs-12 text-center">
             <button class="btn btn-primary" ng-click="StoreslistCtrl.upBtn()" >保存</button>
-            <button class="btn btn-primary">取消</button>
+            <button class="btn btn-primary" ng-click="StoreslistCtrl.closeLayer()" >取消</button>
         </div>
     </div>
     <div class="add_list display_none">
@@ -228,6 +230,6 @@
         </div>
         <div class="col-xs-12 text-center">
             <button class="btn btn-primary" ng-click="StoreslistCtrl.addBtn()" >保存</button>
-            <button class="btn btn-primary">取消</button>
+            <button class="btn btn-primary" ng-click="StoreslistCtrl.closeLayer()">取消</button>
         </div>
     </div>

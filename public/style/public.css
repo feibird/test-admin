@@ -1,4 +1,5 @@
 .opera_layer{display: none;}
+li{list-style-type: none;}
 .main-content{background: #eee;}
 .fa-icon-right{margin-right: 5px;}
 .fa-icon-left{margin-left: 5px;}
@@ -108,3 +109,10 @@ td{vertical-align: middle!important;}
 .error_input{border:1px solid rgba(204, 63, 68, 0.4)};
 .form-group .form-group-radio{height: 32px;line-height: 32px;}
 .dropdown-menu{min-width: 130px;}
+.add_layer{padding: 10px;}
+.sortDiv{border: 1px solid #e4e4e4;padding: 10px;height: 200px;overflow: auto;}
+.sortDiv .Sortlist{padding: 0;}
+.sortDiv .Sortlist li{}
+.sortDiv .Sortlist li input[type=checkbox]{margin-right:5px;}
+.sortDiv .Sortlist .children{margin: 10px 0;}
+.sortDiv .Sortlist .children .chilDiv ul{padding-left: 10px;}
