@@ -33,7 +33,7 @@ function LabelResource($http,device,version) {
             url:"/api-admin/label/"+info.id+"/update",
             method: 'post',
             headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"name":info.name}
+            data:{"device":device,"version":version,"sessionId":seid,"name":info.name,brandId:info.brand.id}
         })
         .then(function (data) {
              return data

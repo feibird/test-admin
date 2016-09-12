@@ -1,7 +1,7 @@
 angular.module('index_area').controller('BrandStoreslistCtrl',BrandStoreslistCtrl);
-BrandStoreslistCtrl.$inject = ['$state','$scope','$rootScope','NgTableParams','PublicResource','BrandStoresResource','SortResource','$stateParams','FileUploader'];
+BrandStoreslistCtrl.$inject = ['$state','$scope','$rootScope','NgTableParams','PublicResource','BrandStoresResource','SortResource','$stateParams'];
 /***调用接口***/
-function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResource,BrandStoresResource,SortResource,$stateParams,FileUploader) {
+function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResource,BrandStoresResource,SortResource,$stateParams) {
     document.title ="连锁品牌管理";
 	$rootScope.name="连锁品牌管理";
 	$rootScope.childrenName="连锁品牌管理列表";
@@ -9,7 +9,8 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	vm.skip = 0;
 	vm.limit = 12;
 	vm.seid
-	vm.addinfo;																//添加数据对象
+	vm.addinfo = new Object();
+	vm.addinfo.imgUrl="test";														//添加数据对象
 	vm.list;																//数据列表集合
 	vm.sortlist;															//分类列表集合															
 	vm.getlist = new Object();															//修改数据对象
@@ -151,73 +152,5 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 			vm.sortlist = data.data.result.root
 			console.log(vm.sortlist)
 		})
-	}
-
-	var logo = vm.logo = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	logo.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.logo.queue) {
-				vm.logo.queue[i].isSuccess=false;
-				vm.logo.queue[i].isError=true;
-                console.log(vm.logo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.getlist.logo=status.result;
-             vm.logo.queue[0].remove();
-        }
-	}
-	logo.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-	     /**update
-	 * [logo description]
-	 * @type {[type]}
-	 */
-	var logos = vm.logos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	logos.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.logos.queue) {
-				vm.logos.queue[i].isSuccess=false;
-				vm.logos.queue[i].isError=true;
-                console.log(vm.logo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.getlist.logo=status.result;
-             vm.logos.queue[0].remove();
-        }
-	}
-	logo.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
 	}
 }

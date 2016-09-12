@@ -78,6 +78,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             console.log(data)
             if(data.data.status=="OK"){
                 layer.msg('删除成功！',{icon:1});
+                list();
             }else{
                 layer.msg(data.data.message,{icon:2})
             }

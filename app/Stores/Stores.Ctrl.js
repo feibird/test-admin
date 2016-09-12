@@ -3,7 +3,7 @@ config.$inject = ['$stateProvider'];
 function config($stateProvider){
     $stateProvider
     .state("Virtual", {
-        url: "/stores/virtual{id:string}",
+        url: "/stores/virtual/{id:string}",
         templateUrl: "Stores/Virtual.html",
         controller: 'VirtualCtrl as VirtualCtrl'
     }).state("VirtualUpdate", {
@@ -15,18 +15,18 @@ function config($stateProvider){
         templateUrl: "Stores/VirtualGet.html",
         controller: 'VirtualGetCtrl as VirtualGetCtrl'
     }).state("VirtualGood", {
-        url: "/stores/VirtualGood{id:string}",
+        url: "/stores/VirtualGood/{id:string}&{name:string}&{brand:string}",
         templateUrl: "Stores/VirtualGood.html",
         controller: 'VirtualGoodCtrl as VirtualGoodCtrl'
     }).state("VirtualSort", {
-        url: "/stores/VirtualGood{id:string}",
+        url: "/stores/VirtualGood/{id:string}",
         templateUrl: "Stores/VirtualSort.html",
         controller: 'VirtualSortCtrl as VirtualSortCtrl'
     })
 }
-StoreslistCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams'];
+StoreslistCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','BrandStoresResource'];
 /***调用接口***/
-function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams) {
+function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams,BrandStoresResource) {
     document.title ="门店管理";
     $rootScope.name="门店管理";
     $rootScope.childrenName="门店管理列表";
@@ -36,6 +36,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     vm.getinfo;
     vm.skip=0;
     vm.limit=10;
+    vm.area = {}
     //获取sessionId
     login()
     function login(){
@@ -52,12 +53,25 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
     list();
 
+    vm.addBtn=function(){
+        console.log(vm.addinfo);
+        add();
+    }
+
     vm.delBtn = function(id){
         layer.confirm('您确定要删除门店？', {
               btn: ['确定','取消'] //按钮
         }, function(){
              remove(id)
         });
+    }
+
+    vm.area_ser = function(id,sum){
+        area(id,sum)
+    }
+
+    vm.upBtn = function(){
+        update();
     }
 
     vm.openBtn = function(status,id){
@@ -74,15 +88,17 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
                 console.log(vm.getinfo)
             break;
             case 'update':
+                get(id);
                 title='修改门店信息';
                 calssName='.update_list';
+                console.log(vm.getinfo)
             break;
         }
 
         layer.open({
 		  type: 1,
 		  title:title,
-		  area: ['440px', '515px'], //宽高
+		  area: ['440px', '585px'], //宽高
 		  content:$(calssName)
 		});
     }
@@ -95,12 +111,6 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
      
     function list(){
-        // StoresResource.list(vm.seid,0,0).then(function(data){
-        //     console.log(data.data.result);
-        //     vm.list = data.data.result;
-        //     console.log(vm.list.data)
-        // })
-        
         vm.tableParams = new NgTableParams({},{
             getData:function(params){
                 vm.skip=10*(params.page()-1);
@@ -113,23 +123,47 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
             }
         })
     }
+    area(1,1);
+
+
+    function area(id,num){
+        PublicResource.getarea(vm.seid,id).then(function(data){
+            switch(num){
+                case 1:
+                vm.area.area1 = data.result;
+                break;
+                case 2:
+                vm.area.area2 = data.result;
+                break;
+                case 3:
+                vm.area.area3 = data.result;
+                break;
+            }
+        })
+    }
 
     function add(){
-        StoresResource.add(vm.seid,vm.info).then(function(data){
-            console.log(data.data.result);
-            if(data.data.status=="OK"){
-                layer.msg('修改成功~',{icon:1})
+        StoresResource.add(vm.seid,vm.addinfo).then(function(data){
+            console.log(data);
+            if(data.status=="OK"){
+                layer.msg('修改成功~',{icon:1},function(){
+                    layer.closeAll();
+                })
+                list();
             }else{
-                layer.msg(data.data.messages,{icon:2})
+                layer.msg(data.messages,{icon:2})
             }
         })
     }
 
     function update(){
-        StoresResource.update(vm.seid,vm.info).then(function(data){
+        StoresResource.update(vm.seid,vm.getinfo).then(function(data){
             console.log(data.data.result);
             if(data.data.status=="OK"){
-                layer.msg('修改成功~',{icon:1})
+                layer.msg('修改成功~',{icon:1},function(){
+                    layer.closeAll();
+                });
+                list();
             }else{
                 layer.msg(data.data.messages,{icon:2})
             }
@@ -141,10 +175,19 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
             console.log(data.data.result);
             vm.list = data.data.result;
             if(data.data.status=="OK"){
-                layer.msg('删除成功~',{icon:1})
+                layer.msg('删除成功~',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
             }else{
                 layer.msg(data.data.messages,{icon:2})
             }
+        })
+    }
+    brand();
+    function brand(){
+        BrandStoresResource.list(vm.seid,0,0).then(function(data){
+            vm.brand = data.data.result.data;
         })
     }
 

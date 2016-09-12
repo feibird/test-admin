@@ -309,7 +309,7 @@ td{vertical-align: middle!important;}
 .task .task-header .task-sequence{display: inline-block;font-size: 0;}
 .task .task-header .task-sequence .task_list{display: inline-block;width: 40px;height: 40px;line-height: 36px;text-align: center;border-radius: 50%;font-size: 24px;border:2px solid #169BD5;color: #169BD5;margin: 0 25px;}
 .task .task-header .task-sequence span{display: inline-block;margin: 7px -22px;width: 62px;border: 1px dashed #169BD5;}
-.task .taskBtn{background: white;padding: 10px;margin-bottom: 30px;text-align: center;}
+.taskBtn{background: white;padding: 10px;margin-bottom: 30px;text-align: center;}
 
 .Filter-title{height: 40px;line-height: 40px;background: black;color: white;padding-left: 10px;}
 .Filter-title .btn{margin-top: 4px;margin-right: 4px;}
@@ -325,7 +325,11 @@ td{vertical-align: middle!important;}
 .is_title{    height: 32px;margin-bottom: 0;line-height: 32px;text-align: right;}
 .GetTark{width:1100px;margin:0 auto;}
 .GetTark div{color: #333;}
-
+.form-group .form-group-label{height: 32px;text-align: right;}
+.error_text{color: #cc3f44;margin-top: 10px!important;}
+.error_input{border:1px solid rgba(204, 63, 68, 0.4)};
+.form-group .form-group-radio{height: 32px;line-height: 32px;}
+.dropdown-menu{min-width: 130px;}
 .spec-title{
     display: inline-block;
     width: 100px;

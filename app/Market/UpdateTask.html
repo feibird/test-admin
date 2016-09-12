@@ -37,7 +37,7 @@
 						</div>
 						<div class="radio">
 							<label>
-						    <input type="radio" name="exclusive" ng-model='UpdateTaskCtrl.data.exclusive' ng-checked="UpdateTaskCtrl.data.exclusive=='false'"  value="false"  >
+						    <input type="radio" name="exclusive" ng-model='UpdateTaskCtrl.data.exclusive' ng-checked="UpdateTaskCtrl.data.exclusive==false"  value="false" >
 						    否
 						  </label>
 						</div>
@@ -172,7 +172,7 @@
 					</div>
 					<div class="radio">
 						<label>
-						    <input type="radio" name="productCountLimit" ng-model='UpdateTaskCtrl.data.productCountLimit' value="10">
+						    <input type="radio" name="productCountLimit" ng-checked="!UpdateTaskCtrl.data.productCountLimit==0"  ng-model='UpdateTaskCtrl.data.productCountLimit' value="10">
 						    限制<input type="text" ng-disabled="productCountLimit==0" ng-click="productCountLimit=1" class="input_radio" ng-model='UpdateTaskCtrl.data.productCountLimit'>件
 						  </label>
 						

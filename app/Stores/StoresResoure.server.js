@@ -38,7 +38,7 @@ function StoresResource($http,device,version) {
                 "longitude":obj.longitude,
                 "latitude":obj.latitude,
                 "location":obj.location,
-                "areaId":obj.areas[3].id,
+                "areaId":obj.areaId,
                 "legalPerson":obj.legalPerson,
                 "sort":obj.sort,
                 "device":device,

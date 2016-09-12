@@ -6,37 +6,73 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     $rootScope.childrenName = "新建运营活动"
     var vm = this;
     vm.seid;
-    vm.task = new Object();
+    vm.task = new Object();                         //新增数据对象
     vm.task.formulaParameter = new Object();
-    vm.task.productIds = "";
-    vm.task.timesLimit = "";
-    vm.task.amountLimit = ""
-    vm.task.storesId = [];
-    vm.task.goodsId = [];
-    vm.task.prems = [];
-    vm.task.name = "";
-    vm.task.description = "";
-    vm.task.startTime = "";
-    vm.task.userType = "";
-    vm.task.endTime = "";
-    vm.task.timesLimitCycle = "";
-    vm.task.timesLimitType = "";
-    vm.task.enabled = "";
-    vm.task.excluslve = "";
-    vm.task.priority = "";
-    vm.task.productCountLimit = 0;
-    vm.task.type = "";
-    vm.task.costSources = [];
     vm.date = {}
     vm.date.minDate = typeof (vm.date.minDate) ? 'undefined' : new Date();
+    vm.verification = new Object();                 //验证对象
     login();
-
     vm.interval = [{
         start: 0,
         end: 0,
         count: 0
     }];
+    init();
+    function init() {
+        //添加对象
+        vm.task.productIds = "";
+        vm.task.timesLimit = "";
+        vm.task.amountLimit = ""
+        vm.task.storesId = [];
+        vm.task.goodsId = [];
+        vm.task.prems = [];
+        vm.task.name = "";
+        vm.task.description = "";
+        vm.task.startTime = "";
+        vm.task.userType = "";
+        vm.task.endTime = "";
+        vm.task.timesLimitCycle = "";
+        vm.task.timesLimitType = "";
+        vm.task.enabled = "";
+        vm.task.excluslve = "";
+        vm.task.priority = "";
+        vm.task.productCountLimit = 0;
+        vm.task.type = "";
+        vm.task.costSources = [];
+        //验证对象
+        vm.verification.productIds = null;
+        vm.verification.timesLimit = null;
+        vm.verification.exclusive = null;
+        vm.verification.storeType = null;
+        vm.verification.productType = null;
+        vm.verification.amount = null;
+        vm.verification.timesLimit = null;
+        vm.verification.amountLimit = null;
+        vm.verification.storesId = null;
+        vm.verification.prems = null;
+        vm.verification.name = null;
+        vm.verification.description = null;
+        vm.verification.startTime = null;
+        vm.verification.userType = null;
+        vm.verification.endTime = null;
+        vm.verification.timesLimitCycle = null;
+        vm.verification.timesLimitType = null;
+        vm.verification.enabled = null;
+        vm.verification.excluslve = null;
+        vm.verification.priority = null;
+        vm.verification.productCountLimit = null;
+        vm.verification.type = null;
+        vm.verification.costSources = null;
+    }
 
+    vm.blus = function (name, data) {
+        if (data == "" || data == null) {
+            vm.verification[name] = true;
+        } else {
+            vm.verification[name] = false;
+        }
+        console.log(vm.verification)
+    }
 
     vm.Addinterval = function () {
         var add = { start: 0, end: 0, count: 0 };
@@ -59,33 +95,47 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
 
     vm.AddTask = function () {
         console.log(vm.task);
-        if (vm.interval.length > 1) {
-            for (var i in vm.interval) {
-                vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count*0.01;
+        if (iftask()) {
+            if (vm.interval.length > 1) {
+                for (var i in vm.interval) {
+                    vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
+                }
             }
-        }
 
-        vm.task.costSource=objstring(vm.task.costSources);
-        vm.task.storesIds = ArryString(vm.task.storesId, true);
-        vm.task.goodsIds = ArryString(vm.task.goodsId, false);
-        vm.task.premsId = ArryString(vm.task.prems, true);
-        if (typeof (vm.task.startTime) != "undefined" && vm.task.startTime != "" && typeof (vm.task.startTime) != 'number') {
-            console.log(typeof (vm.task.startTime))
-            vm.task.startTime = vm.task.startTime.getTime();
-        }
-        if (typeof (vm.task.endTime) != "undefined" && vm.task.endTime != "" && typeof (vm.task.endTime) != 'number') {
-            console.log(vm.task.endTime)
-            vm.task.endTime = vm.task.endTime.getTime();
-        }
-        console.log(vm.task);
-        MarketResource.add(vm.seid, vm.task).then(function (data) {
-            if (data.data.status == "OK") {
-                layer.msg("保存成功", { icon: 1 })
-            } else {
-                layer.msg(data.data.message, { icon: 2 })
+            vm.task.costSource = objstring(vm.task.costSources);
+            vm.task.storesIds = ArryString(vm.task.storesId, true);
+            vm.task.goodsIds = ArryString(vm.task.goodsId, false);
+            vm.task.premsId = ArryString(vm.task.prems, true);
+            if (typeof (vm.task.startTime) != "undefined" && vm.task.startTime != "" && typeof (vm.task.startTime) != 'number') {
+                console.log(typeof (vm.task.startTime))
+                vm.task.startTime = vm.task.startTime.getTime();
             }
-        })
+            if (typeof (vm.task.endTime) != "undefined" && vm.task.endTime != "" && typeof (vm.task.endTime) != 'number') {
+                console.log(vm.task.endTime)
+                vm.task.endTime = vm.task.endTime.getTime();
+            }
+            console.log(vm.task);
+            MarketResource.add(vm.seid, vm.task).then(function (data) {
+                if (data.data.status == "OK") {
+                    layer.msg("保存成功", { icon: 1 })
+                } else {
+                    layer.msg(data.data.message, { icon: 2 })
+                }
+            })
+        }
         console.log(vm.task)
+    }
+
+    function iftask() {
+        var is = true;
+        for (var i in vm.verification) {
+            if (vm.verification[i] == null || vm.verification[i] == ""&&vm.verification[i]!=false) {
+                console.log(vm.verification[i])
+                vm.verification[i] = true;
+                is = false;
+            }
+        }
+        return is;
     }
 
     function login() {
@@ -116,7 +166,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio*0.01;
+                json[obj[i].costSourceId] = obj[i].ratio * 0.01;
             }
             return json;
         }

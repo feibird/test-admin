@@ -21,17 +21,9 @@ function WalletCtrl($state, $scope, PublicResource, $stateParams, $rootScope, St
 
 
     vm.exel = function () {
-        vm.filer.createStartDate = GTM(false, vm.filer.createStartDate)
-        vm.filer.createEndDate = GTM(true, vm.filer.createEndDate)
-        console.log(vm.filer)
-        window.open("/api-admin/report/trade/detail/excel?sessionId=" + vm.seid
+        window.open("/api-admin/store/wallet/excel?sessionId=" + vm.seid
             + "&device=" + 'pc'
             + "&version=" + '2.0.0'
-            + "&sources=" + vm.filer.sources
-            + "&detail=" + vm.filer.detail
-            + "&storeId=" + vm.filer.storeId
-            + "&completeEndDate=" + vm.filer.createEndDate
-            + "&completeStartDate=" + vm.filer.createStartDate
         )
 
     }
@@ -46,7 +38,6 @@ function WalletCtrl($state, $scope, PublicResource, $stateParams, $rootScope, St
         }
        
     }
-
 
     function login() {
         vm.user = PublicResource.seid("admin");

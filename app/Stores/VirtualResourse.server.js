@@ -1,9 +1,9 @@
 /**
  * 虚拟分类API
  */
-angular.module('index_area').factory('VirtualResourrce', VirtualResourrce);
-VirtualResourrce.$inject = ['$http','device','version'];
-function VirtualResourrce($http,device,version) {
+angular.module('index_area').factory('VirtualResource', VirtualResource);
+VirtualResource.$inject = ['$http','device','version'];
+function VirtualResource($http,device,version) {
     return {
 		list:list,
 		add:add,

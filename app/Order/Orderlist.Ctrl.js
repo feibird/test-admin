@@ -1,7 +1,7 @@
 angular.module('index_area').controller('OrderlistCtrl',OrderlistCtrl);
-OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams'];
+OrderlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','OrderResource','NgTableParams','device','version'];
 /***调用接口***/
-function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams) {
+function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,StoresResource,OrderResource,NgTableParams,device,version) {
     document.title ="订单管理";
     $rootScope.name="订单管理";
 	$rootScope.childrenName="订单管理列表";
@@ -30,30 +30,75 @@ function OrderlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Stor
 		}
 	}
 
-    vm.St_order = function(){
-        list();
+    vm.St_order = function(time){
+        time = chang_time(new Date(time))
+       window.open("api-admin/report/trade/dailyExcel?sessionId="+vm.seid+"&device="+device+"&version="+version+"&date="+time)
     }
 
     list();
 
     function list(){
-        OrderResource.list(vm.seid,vm.get,0,100).then(function(data){
+
+        OrderResource.list(vm.seid,vm.get,0,50).then(function(data){
             vm.list = data.data.result.data;
             vm.tableParams = new NgTableParams({},{dataset:vm.list});   
             vm.pagecount =data.data.result.total;            
             console.log(data);
             for(var i in vm.list){
-                vm.list[i].createDate=change_time(vm.list[i].createDate);
+                vm.list[i].createDate=change_time(new Date(vm.list[i].createDate));
                if(vm.list[i].endDate!=null){
-                    vm.list[i].endDate = change_time(vm.list[i].endDate)
+                    vm.list[i].endDate = change_time(new Date(vm.list[i].endDate))
                }
             }
             console.log(vm.list);
         })
     }
 
-    function change_time(nS){
-        return  new Date(parseInt(nS)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "");
+    function change_time(date) {
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+        if (s < 9||s==9) {
+            s = "0" + s;
+        }
+
+        if (h.length < 3) {
+            h = "0" + h;
+        }
+        return Y + M + D +h+m+s;
+    }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '/';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+
+        if (h.length < 3) {
+            h = "0" + h;
+        }
+        return Y + M + D;
     }
 
     function update(status,id){
