@@ -52,8 +52,10 @@
   </div>
   <div class="input-group col-xs-12 mt10">
     <span class="input-group-addon">商品分类</span>
-    <input type="text" class="form-control">
-    <span ng-repeat='item in VirtualCtrl.info.categorys'>{{item.data.name}}</span>
+    <input type="text" class="form-control po_re">
+    <p class="SortDiv">
+      <span class="Sort_span" ng-repeat='item in VirtualCtrl.info.categorys'>{{item.data.name}}<i class="fa-remove"></i></span>
+    </p>
   </div>
   <div class="col-xs-12 mt10 sortDiv">
     <sort returnlist='VirtualCtrl.info.categorys'></sort>

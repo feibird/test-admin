@@ -45,8 +45,8 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
     vm.addTimes = function () {
         var addlist = {
-            startTime: "11:20",
-            endTime: "12:20"
+            startTime: "11:20:00",
+            endTime: "12:20:00"
         }
         vm.music.times.push(addlist)
         console.log(vm.music.dates)

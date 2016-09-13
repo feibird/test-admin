@@ -1,5 +1,6 @@
 .opera_layer{display: none;}
 li{list-style-type: none;}
+.po_re{position: relative;z-index: 0;}
 .main-content{background: #eee;}
 .fa-icon-right{margin-right: 5px;}
 .fa-icon-left{margin-left: 5px;}
@@ -112,7 +113,10 @@ td{vertical-align: middle!important;}
 .add_layer{padding: 10px;}
 .sortDiv{border: 1px solid #e4e4e4;padding: 10px;height: 200px;overflow: auto;}
 .sortDiv .Sortlist{padding: 0;}
-.sortDiv .Sortlist li{}
 .sortDiv .Sortlist li input[type=checkbox]{margin-right:5px;}
 .sortDiv .Sortlist .children{margin: 10px 0;}
 .sortDiv .Sortlist .children .chilDiv ul{padding-left: 10px;}
+.SortDiv{position: absolute;z-index: 10;left: 0;top: 0px;width: 100%;height: 32px;padding-left: 82px;padding-top: 6px;}
+.Sort_span{width: 50px;display:inline-block;text-align: center;border: 1px solid #e4e4e4;margin-right: 5px;cursor: pointer;}
+.Sort_span i{margin-left: 5px;}
+.table{color: #333;}

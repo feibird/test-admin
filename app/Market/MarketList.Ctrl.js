@@ -22,6 +22,21 @@ function config($stateProvider) {
             templateUrl: "Market/GetMark.html",
             controller: 'GetMarkCtrl as GetMarkCtrl'
         })
+        .state("coupon", {
+            url: "/market/coupon",
+            templateUrl: "Market/Coupon.html",
+            controller: 'CouponCtrl as CouponCtrl'
+        })
+        .state("addcoupon", {
+            url: "/market/addcoupon",
+            templateUrl: "Market/AddCoupon.html",
+            controller: 'AddCouponCtrl as AddCouponCtrl'
+        })
+        .state("updatecoupon", {
+            url: "/market/updatecoupon",
+            templateUrl: "Market/UpdateCoupon.html",
+            controller: 'UpdateCouponCtrl as UpdateCouponCtrl'
+        })
 }
 MarketListCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource'];
 function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource) {
