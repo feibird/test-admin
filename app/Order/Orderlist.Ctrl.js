@@ -75,20 +75,21 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                     })
                 }
             });
+    }
 
-        // OrderResource.list(vm.seid, vm.get, 0, 50).then(function (data) {
-        //     vm.list = data.data.result.data;
-        //     vm.tableParams = new NgTableParams({}, { dataset: vm.list });
-        //     vm.pagecount = data.data.result.total;
-        //     console.log(data);
-        //     for (var i in vm.list) {
-        //         vm.list[i].createDate = change_time(new Date(vm.list[i].createDate));
-        //         if (vm.list[i].endDate != null) {
-        //             vm.list[i].endDate = change_time(new Date(vm.list[i].endDate))
-        //         }
-        //     }
-        //     console.log(vm.list);
-        // })
+    vm.compel = function (id) {
+        layer.confirm('您确定要退款？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            OrderResource.refund(vm.seid, id).then(function (data) {
+                if (data.data.status == "OK") {
+                    layer.msg('退款成功', { icon: 1 });
+                    list();
+                } else {
+                    layer.msg(data.data.message, { icon: 2 })
+                }
+            })
+        });
     }
 
     function change_time(date) {

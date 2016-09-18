@@ -77,5 +77,5 @@ function OrderResource($http,device,version) {
             }}).then(function(data){
             return data
         })
-    }    
+    }
 }

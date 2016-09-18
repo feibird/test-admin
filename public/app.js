@@ -401,6 +401,1026 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('AddGoodCtrl',AddGoodCtrl);
+AddGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','GoodResource',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource",'FileUploader'];
+/***调用接口***/
+function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource,FileUploader) {
+    document.title ="添加规格";
+    $rootScope.name="商品管理";
+    $rootScope.childrenName="添加规格";
+    var vm = this;
+    vm.skip=0;				//起始数据下标FileUploader
+    vm.limit=12;			//最大数据下标
+    vm.cLogo;
+    vm.bLogo;
+    vm.cPhotos;
+    vm.bPhotos;
+    vm.info = new Object();
+    vm.info.cLogo = [];
+    vm.info.bLogo = [];
+    vm.info.cPhotos = [];
+    vm.info.bPhotos = [];
+    vm.info.name="";
+    vm.info.detail = "";
+    vm.info.shortName="";
+    vm.id=$stateParams.id;
+    console.log(vm.id)
+
+    //获取sessionId
+
+
+    login();
+    
+    inital();
+    function inital(){
+        sortlist();
+        brandlist();
+        labellist();
+        logolist();
+    }
+
+    vm.addBtn = function(){
+        console.log(vm.info);
+        add();
+    }
+
+    
+
+    /**
+	 * [bPhotos description]
+	 * @type {[type]}
+	 */
+	var bPhotos = vm.bPhotos = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
+	})
+	bPhotos.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.bPhotos.queue) {
+				vm.bPhotos.queue[i].isSuccess=false;
+				vm.bPhotos.queue[i].isError=true;
+                console.log(vm.bPhotos.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.bPhotos.push(status.result);
+			 vm.bPhotos.queue[0].remove();
+        }
+	}
+	bPhotos.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+	/**
+	 * [cPhotos description]
+	 * @type {[type]}
+	 */
+	var cPhoto = vm.cPhotos = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]
+	})
+
+	cPhoto.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.cPhotos.queue) {
+				vm.cPhotos.queue[i].isSuccess=false;
+				vm.cPhotos.queue[i].isError=true;
+                console.log(vm.cPhotos.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.cPhotos.push(status.result);
+			 vm.cPhotos.queue[0].remove();
+        }
+	}
+	cPhoto.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+
+
+	/**
+	 * bLogo
+	 */
+	 var bLogo = vm.bLogo = new FileUploader({
+	 	url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
+		queueLimit:1
+	 })
+	 bLogo.onSuccessItem = function (data,status) {
+	 	 if(status.status!="OK"){
+            for (var i in vm.bLogo.queue) {
+				vm.bLogo.queue[i].isSuccess=false;
+				vm.bLogo.queue[i].isError=true;
+                console.log(vm.bLogo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.bLogo[0] = status.result;
+			 vm.bLogo.queue[0].remove();
+        }
+	 }
+	 bLogo.onErrorItem= function(){
+		 vm.num = 5;
+		 var time =setInterval(function () {
+			 vm.num--;
+			 console.log(11)
+			 if(vm.num==0){
+				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					 clearInterval(time);
+					 return false;
+				 });
+			 }
+		 },1200)
+	 }
+	/**
+	 * cLogo
+	 */
+	 var cLogo = vm.cLogo = new FileUploader({
+	 	url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
+		queueLimit:1
+	 })
+	 cLogo.onSuccessItem = function (data,status) {
+	 	 if(status.status!="OK"){
+            for (var i in vm.cLogo.queue) {
+				vm.cLogo.queue[i].isSuccess=false;
+				vm.cLogo.queue[i].isError=true;
+                console.log(vm.cLogo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.cLogo[0] = status.result;
+			 vm.cLogo.queue[0].remove();
+        }
+	 }
+	 cLogo.onErrorItem= function(){
+		 vm.num = 5;
+		 var time =setInterval(function () {
+			 vm.num--;
+			 console.log(11)
+			 if(vm.num==0){
+				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					 clearInterval(time);
+					 return false;
+				 });
+			 }
+		 },1200)
+	 }
+     function add(){
+         GoodResource.add(vm.seid,vm.info).then(function(data){
+             console.log(data)
+             if(data.data.status=="OK"){
+                 layer.confirm('商品添加成功~是否添加商品规格？', {
+                        btn: ['确定','取消'] //按钮
+                    }, function(){
+                        layer.closeAll()
+                        $state.go('format',{id:data.data.result})
+                    });
+             }else{
+                 layer.msg(data.data.message,{icon:2})
+             }
+         })
+     }
+     function arrayImage (data) {
+        vm.data.cPhotos =data.cPhotos.split(",");
+        vm.data.bPhotos =data.bPhotos.split(",");
+        console.log(vm.data)
+    }
+
+    function sortlist(){
+       SortResource.list(vm.seid,0,0).then(function(data){
+            console.log(data.data.result);
+            vm.sortlist = data.data.result;
+        })
+    }
+
+    function brandlist(){
+        BrandStoresResource.list(vm.seid,0,0).then(function(data){
+            console.log(data.data.result);
+            vm.brandlist = data.data.result;
+        })
+    }
+
+
+    function logolist(){
+        SupplierLogoResource.list(vm.seid,0,0).then(function(data){
+            console.log(data.data.result);
+            vm.logolist = data.data.result;
+        })
+    }
+
+
+    function labellist(){
+        LabelResource.list(vm.seid,0,0).then(function(data){
+            console.log(data.data.result);
+            vm.labellist = data.data.result;
+        })
+    }
+
+    function login(){
+        vm.user=PublicResource.seid("admin");
+        if(typeof(vm.user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('FormatCtrl',FormatCtrl);
+FormatCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource'];
+/***调用接口***/
+function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource) {
+    document.title ="商品详情";
+    $rootScope.name="商品管理";
+    $rootScope.childrenName="添加基础商品";
+    var vm = this;
+    vm.Addinfo = new Object();
+    vm.seid;
+    vm.id = $stateParams.id;
+
+    vm.addBtn = function(){
+        console.log(vm.Addinfo)
+        add();
+    }
+
+    vm.delBtn = function(id){
+         layer.confirm('是否确认删除此规格？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            remove(id)
+            layer.closeAll()
+           
+        });
+    }
+
+    vm.updateBtn = function(data){
+        if(data.status){
+            if(update(data)){
+                layer.msg('修改成功！',{icon:1});
+                layer.closeAll();
+                data.status=false;
+            }
+        }else{
+            data.status = true;
+        }
+    }
+
+    login();
+    list();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    function add(){
+        FormatResource.add(vm.seid,vm.id,vm.Addinfo).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.msg('添加成功~',{icon:1});
+                list(vm.seid,vm.id)
+            }else{
+                layer.msg(data.data.message)
+            }
+        })
+    }
+
+    function update(info){
+         FormatResource.update(vm.seid,vm.id,info).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.msg('添加成功~',{icon:1});
+                list(vm.seid,vm.id)
+            }else{
+                layer.msg(data.data.message)
+            }
+        })
+    }
+
+    function remove(id){
+        FormatResource.remove(vm.seid,id).then(function(data){
+            console.log(data);
+            if(data.data.status=="OK"){
+                layer.msg('删除成功',{icon:1});
+                list(vm.seid,vm.id)
+            }else{
+
+            }
+        })
+    }
+
+    function list(){
+        FormatResource.list(vm.seid,vm.id).then(function(data){
+            console.log(data);
+            if(data.data.status!="OK"){
+                layer.msg(data.data.message,{icon:2});
+            }
+            vm.list = data.data.result;
+            for(var i in vm.list){
+                vm.list[i].status=false;
+            }
+        })
+    }
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').factory('FormatResource', FormatResource);
+FormatResource.$inject = ['$http','device','version'];
+function FormatResource($http,device,version) {
+    return {
+    	add:add,
+    	list:list,
+    	remove:remove,
+    	get:get,
+    	update:update
+    };
+    
+	
+	function add(seid,id,obj){		
+	 return $http({
+        url:"/api-admin/base/product/spec/add",
+        method: 'post',
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"costPrice":obj.costPrice,
+				"advicePrice":obj.advicePrice,
+				"tradePrice":obj.tradePrice,
+				"spec":obj.spec,
+				"specUnit":obj.specUnit,
+				"baseProductId":id
+			}
+    })
+    .then(function (data) {
+         return data
+    })
+	}
+	
+	function update(seid,id,obj){		
+		 return $http({
+            url:"/api-admin/base/product/spec/"+obj.id+"/update",
+            method: 'post',
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"name":obj.name,
+				"costPrice":obj.costPrice,
+				"advicePrice":obj.advicePrice,
+				"tradePrice":obj.tradePrice,
+				"spec":obj.spec,
+				"specUnit":obj.specUnit,
+				"baseProductId":id
+			}
+        })
+        .then(function (data) {
+             return data
+        })
+	}
+	
+	function list(seid,id){
+		return $http.get("/api-admin/base/product/spec/list",{params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"baseProductId":id
+			}}).then(function(data){
+			return data
+		})
+	}
+	
+	function remove(seid,id){
+		 return $http({
+            url:"/api-admin/base/product/spec/"+id+"/remove",
+            method: 'post',
+			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            data:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"id":id
+			}
+        })
+        .then(function (data) {
+             return data
+        })
+	}
+	function get(seid,id){
+		return $http.get("/api-admin/base/product/spec/"+id+"/get",{params:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"id":id
+			}}).then(function(data){
+			return data
+		})
+	}
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('GooddetialCtrl', GooddetialCtrl);
+GooddetialCtrl.$inject = ['$state', '$rootScope', 'PublicResource', '$stateParams', 'FormatResource', 'GoodResource'];
+/***调用接口***/
+function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, FormatResource, GoodResource) {
+	document.title = "商品详情";
+	$rootScope.name = "商品管理";
+	$rootScope.childrenName = "商品详情";
+    var vm = this;
+    vm.skip = 0;				//起始数据下标
+    vm.limit = 12;			//最大数据下标
+    vm.data;                //规格
+    vm.updata = new Object();
+	vm.matlist = new Array();
+	vm.id = $stateParams.id;
+	console.log(vm.id)
+    //获取sessionId
+
+
+    login();
+    function login() {
+		vm.user = PublicResource.seid("admin");
+		if (typeof (vm.user) == "undefined") {
+			layer.alert("尚未登录！", { icon: 2 }, function (index) {
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		} else {
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+	gooddetail(vm.id)
+
+	/*
+	 * 基本商品
+	 */
+   	function gooddetail(id) {
+		GoodResource.get(vm.seid,id).then(function (data) {
+			if (data.data.status != "OK") {
+
+			} else {
+				vm.data = data.data.result;
+				arrayImage(vm.data)
+			}
+			console.log(vm.data)
+		})
+   	}
+
+
+
+    function arrayImage(data) {
+		vm.data.cPhotos = data.cPhotos.split(",");
+		vm.data.bPhotos = data.bPhotos.split(",");
+		console.log(vm.data)
+    }
+}
+})();
+(function(){
+"use strict"
+/**
+ * 基础商品列表控制器
+ */
+angular.module('index_area').config(config).controller('GoodlistCtrl', GoodlistCtrl);
+/***二级路由***/
+config.$inject = ['$stateProvider'];
+function config($stateProvider) {
+    $stateProvider
+        .state("addgood", {
+            url: "/good/add",
+            templateUrl: "Good/AddGood.html",
+            controller: 'AddGoodCtrl as AddGoodCtrl'
+        })
+        .state("update", {
+            url: "/good/update/{id:string}",
+            templateUrl: "Good/UpdateGood.html",
+            controller: 'UpdateGoodCtrl as UpdateGoodCtrl'
+        }).state("format", {
+            url: "/good/format/{id:string}",
+            templateUrl: "Good/Format.html",
+            controller: 'FormatCtrl as FormatCtrl'
+        }).state("gooddetail", {
+            url: "/good/gooddetail/{id:string}",
+            templateUrl: "Good/goodDetail.html",
+            controller: 'GooddetialCtrl as GooddetialCtrl'
+        }).state("storegooddetail", {
+            url: "/good/storegooddetail/{id:string}",
+            templateUrl: "Good/storegooddetail.html",
+            controller: 'StoreGooddetailCtrl as StoreGooddetailCtrl'
+        })
+}
+GoodlistCtrl.$inject = ['$scope', '$rootScope', '$state', 'GoodResource', 'PublicResource', "$stateParams", 'NgTableParams'];
+function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, $stateParams, NgTableParams) {
+    document.title = "基础商品列表";
+    $rootScope.name = "基础商品"
+    $rootScope.childrenName = "基础商品列表"
+    var vm = this;
+    vm.seid;
+    vm.pagecount;                                                           //分页总数
+    vm.pageint = 1;                                                           //当前分页导航
+    vm.skip = 0                                                               //从第几个开始
+    vm.limit = 12;                                                            //从第几个结束
+    vm.list;
+
+
+
+
+
+    //获取sessionId
+    login();
+    list(vm.seid);
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        } else {
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+
+    vm.delBtn = function (id) {
+        layer.confirm('是否删除商品？', {
+            btn: ["确定", '取消']
+        }, function () {
+            remove(id);
+        })
+    }
+
+    /**
+     * 基础商品集合
+     * @param {Object} seid
+     */
+    function list(seid) {
+        GoodResource.list(seid, null, 0,10).then(function (data) {
+            vm.list = data.data.result;
+            console.log(data)
+            vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });
+            console.log(data.data.result)
+        })
+    }
+
+    function remove(id) {
+        GoodResource.del(vm.seid, id).then(function (data) {
+            console.log(data)
+            if (data.data.status == "OK") {
+                layer.alert('删除成功~', { icon: 1 });
+                list(vm.seid);
+                layer.closeAll();
+            } else {
+                layer.msg('删除异常，请联系管理员~', { icon: 0 });
+            }
+        })
+    }
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').factory('GoodResource', GoodResource);
+GoodResource.$inject = ['$http','device','version'];
+function GoodResource($http,device,version) {
+    return {
+		list:list,
+		add:add,
+		update:update,
+		del:del,
+		get:get
+    };
+    
+	
+	/**
+	 * [list 查询基础商品列表]
+	 * @param  {[string]} seid  [sessionId]
+	 * @param  {[number]} skip  [从下标数开始]
+	 * @param  {[number]} limit [从下标数结束]
+	 * @return {[type]}       [json]
+	 */
+	function list(seid,brandId,skip,limit){		
+		return $http.get("/api-admin/base/product/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+			return data
+		})
+	}
+	
+	/**
+	 * [getlist 获取单个商品数据]
+	 * @param  {[number]} id   [商品ID]
+	 * @param  {[string]} seid [sessionId]
+	 * @return {[type]}      [json]
+	 */
+	function get(seid,id){
+		return $http.get("/api-admin/base/product/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
+			return data
+		})
+	}
+	
+	/**
+	 * 添加基础商品
+	 */
+	function add(seid,obj){
+			console.log(obj)
+			var bPhotos="";
+			var cPhotos="";
+			var lables = "";
+			for(var i in obj.bPhotos){				
+				bPhotos+=obj.bPhotos[i]+",";				
+			}
+			for(var i in obj.cPhotos){				
+				cPhotos+=obj.cPhotos[i]+",";
+			}
+			for(var i in obj.lables){
+				lables+=obj.lables[i].id+","
+			}
+			lables=lables.substring(0,lables.length-1);
+			cPhotos=cPhotos.substring(0,cPhotos.length-1);
+			bPhotos=bPhotos.substring(0,bPhotos.length-1);			
+		return $http({
+        url:"/api-admin/base/product/add",
+        method: 'post',
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"providerBrandId":obj.providerBrandId.id,			
+				"brandId":obj.brandId.id,
+				"name":obj.name,
+				"shortName":obj.shortName,
+				"onSell":obj.onSell,
+				"canSell":true,
+				"categoryId":obj.sortId.data.id,
+				"bLogo":obj.bLogo[0],
+				"cLogo":obj.cLogo[0],
+				"bPhotos":bPhotos,
+				"cPhotos":cPhotos,
+				"terse":obj.terse,
+				"detail":obj.detail,
+				"labelIds":lables
+			}
+    })
+    .then(function (data) {
+         return data
+    })
+	}
+	
+	/**
+	 * 修改商品
+	 */
+	function update(seid,obj){
+		console.log(obj)
+			var bPhotos="";
+			var cPhotos="";
+			var lables = "";			
+			for(var i in obj.bPhotos){				
+				bPhotos+=obj.bPhotos[i]+",";				
+			}
+			for(var i in obj.cPhotos){				
+				cPhotos+=obj.cPhotos[i]+",";
+			}
+			for(var i in obj.labels){
+				lables+=obj.labels[i].id+","
+			}
+			lables=lables.substring(0,lables.length-1);
+			cPhotos=cPhotos.substring(0,cPhotos.length-1);
+			bPhotos=bPhotos.substring(0,bPhotos.length-1);	
+		return $http({
+        url:"/api-admin/base/product/"+obj.id+"/update",
+        method: 'post',
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{
+				"device":device,
+				"version":version,
+				"sessionId":seid,
+				"providerBrandId":obj.providerBrand.id,			
+				"brandId":obj.brand.id,
+				"name":obj.name,
+				"shortName":obj.shortName,
+				"onSell":obj.onSell,
+				"canSell":obj.cancell,
+				"categoryId":obj.categories.children[0].id,
+				"bLogo":obj.bLogo,
+				"cLogo":obj.cLogo,
+				"bPhotos":bPhotos,
+				"cPhotos":cPhotos,
+				"terse":obj.terse,
+				"detail":obj.detail,
+				"labelIds":lables
+			}
+    })
+    .then(function (data) {
+         return data
+    })
+	}
+	
+	/**
+	 * [dellist 删除商品]
+	 * @param  {[type]} id   [商品ID]
+	 * @param  {[type]} seid [sessionId]
+	 * @return {[type]}      [json]
+	 */
+	function del(seid,id){
+		return $http({
+        url:"/api-admin/base/product/"+id+"/remove",
+        method: 'post',
+		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        data:{"device":device,"version":version,"sessionId":seid}
+    })
+    .then(function (data) {
+         return data
+    })
+	}
+}
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('UpdateGoodCtrl',UpdateGoodCtrl);
+UpdateGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource','GoodResource','FileUploader',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource"];
+/***调用接口***/
+function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource,GoodResource,FileUploader,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource) {
+    document.title ="商品详情";
+    $rootScope.name="商品管理";
+    $rootScope.childrenName="商品详情";
+    var vm = this;
+    vm.skip=0;				//起始数据下标
+    vm.limit=12;			//最大数据下标
+    vm.data;                //规格;
+
+    vm.test = {name:"测试",id:1,sic:{name:1,id:2}}
+
+    //获取商品id
+    vm.id=$stateParams.id;
+    console.log(vm.id)
+
+    //获取sessionId
+
+    vm.updateBtn = function(){
+        console.log(vm.data)
+        update();
+    }
+
+    login();
+    init();
+    function login(){
+        vm.user=PublicResource.seid("admin");
+        if(typeof(vm.user)=="undefined"){
+            layer.alert("尚未登录！",{icon:2},function(index){
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        }else{
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
+
+    gooddetail(vm.id)
+
+    /*
+     * 基本商品
+     */
+    function gooddetail(id){
+        GoodResource.get(vm.seid,id).then(function(data){
+            if(data.data.status!="OK"){
+                layer.msg(data.data.message,{icon:1})
+            }else{
+                vm.data = data.data.result;
+                arrayImage(vm.data)
+            }
+            console.log(vm.data)
+        })
+    }
+
+    function arrayImage (data) {
+        vm.data.cPhotos =data.cPhotos.split(",");
+        vm.data.bPhotos =data.bPhotos.split(",");
+        console.log(vm.data)
+    }
+
+    /**
+	 * [bPhotos description]
+	 * @type {[type]}
+	 */
+	var bPhotos = vm.bPhotos = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
+	})
+	bPhotos.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.bPhotos.queue) {
+				vm.bPhotos.queue[i].isSuccess=false;
+				vm.bPhotos.queue[i].isError=true;
+                console.log(vm.bPhotos.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.bPhotos.push(status.result);
+			 vm.bPhotos.queue[0].remove();
+        }
+	}
+	bPhotos.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+	/**
+	 * [cPhotos description]
+	 * @type {[type]}
+	 */
+	var cPhoto = vm.cPhotos = new FileUploader({
+		url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]
+	})
+
+	cPhoto.onSuccessItem = function(data,status){
+		if(status.status!="OK"){
+            for (var i in vm.cPhotos.queue) {
+				vm.cPhotos.queue[i].isSuccess=false;
+				vm.cPhotos.queue[i].isError=true;
+                console.log(vm.cPhotos.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.cPhotos.push(status.result);
+			 vm.cPhotos.queue[0].remove();
+        }
+	}
+	cPhoto.onErrorItem= function(){
+		vm.num = 5;
+		var time =setInterval(function () {
+			vm.num--;
+			console.log(11)
+			if(vm.num==0){
+				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					clearInterval(time);
+					return false;
+				});
+			}
+		},1200)
+	}
+
+
+
+	/**
+	 * bLogo
+	 */
+	 var bLogo = vm.bLogo = new FileUploader({
+	 	url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
+		queueLimit:1
+	 })
+	 bLogo.onSuccessItem = function (data,status) {
+	 	 if(status.status!="OK"){
+            for (var i in vm.bLogo.queue) {
+				vm.bLogo.queue[i].isSuccess=false;
+				vm.bLogo.queue[i].isError=true;
+                console.log(vm.bLogo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.bLogo[0] = status.result;
+			 vm.bLogo.queue[0].remove();
+        }
+	 }
+	 bLogo.onErrorItem= function(){
+		 vm.num = 5;
+		 var time =setInterval(function () {
+			 vm.num--;
+			 console.log(11)
+			 if(vm.num==0){
+				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					 clearInterval(time);
+					 return false;
+				 });
+			 }
+		 },1200)
+	 }
+	/**
+	 * cLogo
+	 */
+	 var cLogo = vm.cLogo = new FileUploader({
+	 	url:"/api-admin/attach/upload",			
+		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
+		queueLimit:1
+	 })
+	 cLogo.onSuccessItem = function (data,status) {
+	 	 if(status.status!="OK"){
+            for (var i in vm.cLogo.queue) {
+				vm.cLogo.queue[i].isSuccess=false;
+				vm.cLogo.queue[i].isError=true;
+                console.log(vm.cLogo.queue[i])
+            }
+            layer.alert(status.message,{icon:2})
+        }else {
+            console.log(status)            
+             vm.info.cLogo[0] = status.result;
+			 vm.cLogo.queue[0].remove();
+        }
+	 }
+	 cLogo.onErrorItem= function(){
+		 vm.num = 5;
+		 var time =setInterval(function () {
+			 vm.num--;
+			 console.log(11)
+			 if(vm.num==0){
+				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
+					 clearInterval(time);
+					 return false;
+				 });
+			 }
+		 },1200)
+	 }
+
+     function update(){
+         GoodResource.update(vm.seid,vm.data).then(function(data){
+             console.log(data);
+             if(data.data.status=="OK"){
+                 layer.msg('修改成功~',{icon:1});
+             }else{
+                 layer.msg(data.data.message,{icon:2})
+             }
+         })
+     }
+
+     function init(){
+         SortResource.list(vm.seid,0,0).then(function(data){
+             vm.sortlist = data.data.result;
+             console.log(vm.sortlist)
+         })
+
+         SupplierLogoResource.list(vm.seid,0,0).then(function(data){
+             vm.brandlist = data.data.result;
+             console.log(vm.brandlist)
+         })
+
+         BrandStoresResource.list(vm.seid,0,0).then(function(data){
+             vm.providerBrandlist = data.data.result;
+             console.log(vm.providerBrandlist)
+         })
+
+         LabelResource.list(vm.seid).then(function(data){
+             vm.labellist = data.data.result;
+             console.log(vm.labellist)
+         })
+     }
+}
+})();
+(function(){
+"use strict"
 angular.module('index_area').controller('DrawDetailCtrl',DrawDetailCtrl);
 DrawDetailCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','StoresResource','DrawResource','NgTableParams'];
 /***调用接口***/
@@ -1852,1026 +2872,6 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('AddGoodCtrl',AddGoodCtrl);
-AddGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','GoodResource',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource",'FileUploader'];
-/***调用接口***/
-function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource,FileUploader) {
-    document.title ="添加规格";
-    $rootScope.name="商品管理";
-    $rootScope.childrenName="添加规格";
-    var vm = this;
-    vm.skip=0;				//起始数据下标FileUploader
-    vm.limit=12;			//最大数据下标
-    vm.cLogo;
-    vm.bLogo;
-    vm.cPhotos;
-    vm.bPhotos;
-    vm.info = new Object();
-    vm.info.cLogo = [];
-    vm.info.bLogo = [];
-    vm.info.cPhotos = [];
-    vm.info.bPhotos = [];
-    vm.info.name="";
-    vm.info.detail = "";
-    vm.info.shortName="";
-    vm.id=$stateParams.id;
-    console.log(vm.id)
-
-    //获取sessionId
-
-
-    login();
-    
-    inital();
-    function inital(){
-        sortlist();
-        brandlist();
-        labellist();
-        logolist();
-    }
-
-    vm.addBtn = function(){
-        console.log(vm.info);
-        add();
-    }
-
-    
-
-    /**
-	 * [bPhotos description]
-	 * @type {[type]}
-	 */
-	var bPhotos = vm.bPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	bPhotos.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.bPhotos.queue) {
-				vm.bPhotos.queue[i].isSuccess=false;
-				vm.bPhotos.queue[i].isError=true;
-                console.log(vm.bPhotos.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bPhotos.push(status.result);
-			 vm.bPhotos.queue[0].remove();
-        }
-	}
-	bPhotos.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-	/**
-	 * [cPhotos description]
-	 * @type {[type]}
-	 */
-	var cPhoto = vm.cPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]
-	})
-
-	cPhoto.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.cPhotos.queue) {
-				vm.cPhotos.queue[i].isSuccess=false;
-				vm.cPhotos.queue[i].isError=true;
-                console.log(vm.cPhotos.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cPhotos.push(status.result);
-			 vm.cPhotos.queue[0].remove();
-        }
-	}
-	cPhoto.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-
-
-	/**
-	 * bLogo
-	 */
-	 var bLogo = vm.bLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 bLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
-            for (var i in vm.bLogo.queue) {
-				vm.bLogo.queue[i].isSuccess=false;
-				vm.bLogo.queue[i].isError=true;
-                console.log(vm.bLogo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bLogo[0] = status.result;
-			 vm.bLogo.queue[0].remove();
-        }
-	 }
-	 bLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
-	/**
-	 * cLogo
-	 */
-	 var cLogo = vm.cLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 cLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
-            for (var i in vm.cLogo.queue) {
-				vm.cLogo.queue[i].isSuccess=false;
-				vm.cLogo.queue[i].isError=true;
-                console.log(vm.cLogo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cLogo[0] = status.result;
-			 vm.cLogo.queue[0].remove();
-        }
-	 }
-	 cLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
-     function add(){
-         GoodResource.add(vm.seid,vm.info).then(function(data){
-             console.log(data)
-             if(data.data.status=="OK"){
-                 layer.confirm('商品添加成功~是否添加商品规格？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
-                        layer.closeAll()
-                        $state.go('format',{id:data.data.result})
-                    });
-             }else{
-                 layer.msg(data.data.message,{icon:2})
-             }
-         })
-     }
-     function arrayImage (data) {
-        vm.data.cPhotos =data.cPhotos.split(",");
-        vm.data.bPhotos =data.bPhotos.split(",");
-        console.log(vm.data)
-    }
-
-    function sortlist(){
-       SortResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
-            vm.sortlist = data.data.result;
-        })
-    }
-
-    function brandlist(){
-        BrandStoresResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
-            vm.brandlist = data.data.result;
-        })
-    }
-
-
-    function logolist(){
-        SupplierLogoResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
-            vm.logolist = data.data.result;
-        })
-    }
-
-
-    function labellist(){
-        LabelResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
-            vm.labellist = data.data.result;
-        })
-    }
-
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        }else{
-            vm.seid = PublicResource.seid(vm.user);
-        }
-    }
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('FormatCtrl',FormatCtrl);
-FormatCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource'];
-/***调用接口***/
-function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource) {
-    document.title ="商品详情";
-    $rootScope.name="商品管理";
-    $rootScope.childrenName="添加基础商品";
-    var vm = this;
-    vm.Addinfo = new Object();
-    vm.seid;
-    vm.id = $stateParams.id;
-
-    vm.addBtn = function(){
-        console.log(vm.Addinfo)
-        add();
-    }
-
-    vm.delBtn = function(id){
-         layer.confirm('是否确认删除此规格？', {
-            btn: ['确定','取消'] //按钮
-        }, function(){
-            remove(id)
-            layer.closeAll()
-           
-        });
-    }
-
-    vm.updateBtn = function(data){
-        if(data.status){
-            if(update(data)){
-                layer.msg('修改成功！',{icon:1});
-                layer.closeAll();
-                data.status=false;
-            }
-        }else{
-            data.status = true;
-        }
-    }
-
-    login();
-    list();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-    function add(){
-        FormatResource.add(vm.seid,vm.id,vm.Addinfo).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.msg('添加成功~',{icon:1});
-                list(vm.seid,vm.id)
-            }else{
-                layer.msg(data.data.message)
-            }
-        })
-    }
-
-    function update(info){
-         FormatResource.update(vm.seid,vm.id,info).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.msg('添加成功~',{icon:1});
-                list(vm.seid,vm.id)
-            }else{
-                layer.msg(data.data.message)
-            }
-        })
-    }
-
-    function remove(id){
-        FormatResource.remove(vm.seid,id).then(function(data){
-            console.log(data);
-            if(data.data.status=="OK"){
-                layer.msg('删除成功',{icon:1});
-                list(vm.seid,vm.id)
-            }else{
-
-            }
-        })
-    }
-
-    function list(){
-        FormatResource.list(vm.seid,vm.id).then(function(data){
-            console.log(data);
-            if(data.data.status!="OK"){
-                layer.msg(data.data.message,{icon:2});
-            }
-            vm.list = data.data.result;
-            for(var i in vm.list){
-                vm.list[i].status=false;
-            }
-        })
-    }
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').factory('FormatResource', FormatResource);
-FormatResource.$inject = ['$http','device','version'];
-function FormatResource($http,device,version) {
-    return {
-    	add:add,
-    	list:list,
-    	remove:remove,
-    	get:get,
-    	update:update
-    };
-    
-	
-	function add(seid,id,obj){		
-	 return $http({
-        url:"/api-admin/base/product/spec/add",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"costPrice":obj.costPrice,
-				"advicePrice":obj.advicePrice,
-				"tradePrice":obj.tradePrice,
-				"spec":obj.spec,
-				"specUnit":obj.specUnit,
-				"baseProductId":id
-			}
-    })
-    .then(function (data) {
-         return data
-    })
-	}
-	
-	function update(seid,id,obj){		
-		 return $http({
-            url:"/api-admin/base/product/spec/"+obj.id+"/update",
-            method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"costPrice":obj.costPrice,
-				"advicePrice":obj.advicePrice,
-				"tradePrice":obj.tradePrice,
-				"spec":obj.spec,
-				"specUnit":obj.specUnit,
-				"baseProductId":id
-			}
-        })
-        .then(function (data) {
-             return data
-        })
-	}
-	
-	function list(seid,id){
-		return $http.get("/api-admin/base/product/spec/list",{params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"baseProductId":id
-			}}).then(function(data){
-			return data
-		})
-	}
-	
-	function remove(seid,id){
-		 return $http({
-            url:"/api-admin/base/product/spec/"+id+"/remove",
-            method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"id":id
-			}
-        })
-        .then(function (data) {
-             return data
-        })
-	}
-	function get(seid,id){
-		return $http.get("/api-admin/base/product/spec/"+id+"/get",{params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"id":id
-			}}).then(function(data){
-			return data
-		})
-	}
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('GooddetialCtrl', GooddetialCtrl);
-GooddetialCtrl.$inject = ['$state', '$rootScope', 'PublicResource', '$stateParams', 'FormatResource', 'GoodResource'];
-/***调用接口***/
-function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, FormatResource, GoodResource) {
-	document.title = "商品详情";
-	$rootScope.name = "商品管理";
-	$rootScope.childrenName = "商品详情";
-    var vm = this;
-    vm.skip = 0;				//起始数据下标
-    vm.limit = 12;			//最大数据下标
-    vm.data;                //规格
-    vm.updata = new Object();
-	vm.matlist = new Array();
-	vm.id = $stateParams.id;
-	console.log(vm.id)
-    //获取sessionId
-
-
-    login();
-    function login() {
-		vm.user = PublicResource.seid("admin");
-		if (typeof (vm.user) == "undefined") {
-			layer.alert("尚未登录！", { icon: 2 }, function (index) {
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		} else {
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-	gooddetail(vm.id)
-
-	/*
-	 * 基本商品
-	 */
-   	function gooddetail(id) {
-		GoodResource.get(vm.seid,id).then(function (data) {
-			if (data.data.status != "OK") {
-
-			} else {
-				vm.data = data.data.result;
-				arrayImage(vm.data)
-			}
-			console.log(vm.data)
-		})
-   	}
-
-
-
-    function arrayImage(data) {
-		vm.data.cPhotos = data.cPhotos.split(",");
-		vm.data.bPhotos = data.bPhotos.split(",");
-		console.log(vm.data)
-    }
-}
-})();
-(function(){
-"use strict"
-/**
- * 基础商品列表控制器
- */
-angular.module('index_area').config(config).controller('GoodlistCtrl', GoodlistCtrl);
-/***二级路由***/
-config.$inject = ['$stateProvider'];
-function config($stateProvider) {
-    $stateProvider
-        .state("addgood", {
-            url: "/good/add",
-            templateUrl: "Good/AddGood.html",
-            controller: 'AddGoodCtrl as AddGoodCtrl'
-        })
-        .state("update", {
-            url: "/good/update/{id:string}",
-            templateUrl: "Good/UpdateGood.html",
-            controller: 'UpdateGoodCtrl as UpdateGoodCtrl'
-        }).state("format", {
-            url: "/good/format/{id:string}",
-            templateUrl: "Good/Format.html",
-            controller: 'FormatCtrl as FormatCtrl'
-        }).state("gooddetail", {
-            url: "/good/gooddetail/{id:string}",
-            templateUrl: "Good/goodDetail.html",
-            controller: 'GooddetialCtrl as GooddetialCtrl'
-        }).state("storegooddetail", {
-            url: "/good/storegooddetail/{id:string}",
-            templateUrl: "Good/storegooddetail.html",
-            controller: 'StoreGooddetailCtrl as StoreGooddetailCtrl'
-        })
-}
-GoodlistCtrl.$inject = ['$scope', '$rootScope', '$state', 'GoodResource', 'PublicResource', "$stateParams", 'NgTableParams'];
-function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, $stateParams, NgTableParams) {
-    document.title = "基础商品列表";
-    $rootScope.name = "基础商品"
-    $rootScope.childrenName = "基础商品列表"
-    var vm = this;
-    vm.seid;
-    vm.pagecount;                                                           //分页总数
-    vm.pageint = 1;                                                           //当前分页导航
-    vm.skip = 0                                                               //从第几个开始
-    vm.limit = 12;                                                            //从第几个结束
-    vm.list;
-
-
-
-
-
-    //获取sessionId
-    login();
-    list(vm.seid);
-    function login() {
-        vm.user = PublicResource.seid("admin");
-        if (typeof (vm.user) == "undefined") {
-            layer.alert("尚未登录！", { icon: 2 }, function (index) {
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        } else {
-            vm.seid = PublicResource.seid(vm.user);
-        }
-    }
-
-    vm.delBtn = function (id) {
-        layer.confirm('是否删除商品？', {
-            btn: ["确定", '取消']
-        }, function () {
-            remove(id);
-        })
-    }
-
-    /**
-     * 基础商品集合
-     * @param {Object} seid
-     */
-    function list(seid) {
-        GoodResource.list(seid, null, 0,10).then(function (data) {
-            vm.list = data.data.result;
-            console.log(data)
-            vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });
-            console.log(data.data.result)
-        })
-    }
-
-    function remove(id) {
-        GoodResource.del(vm.seid, id).then(function (data) {
-            console.log(data)
-            if (data.data.status == "OK") {
-                layer.alert('删除成功~', { icon: 1 });
-                list(vm.seid);
-                layer.closeAll();
-            } else {
-                layer.msg('删除异常，请联系管理员~', { icon: 0 });
-            }
-        })
-    }
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').factory('GoodResource', GoodResource);
-GoodResource.$inject = ['$http','device','version'];
-function GoodResource($http,device,version) {
-    return {
-		list:list,
-		add:add,
-		update:update,
-		del:del,
-		get:get
-    };
-    
-	
-	/**
-	 * [list 查询基础商品列表]
-	 * @param  {[string]} seid  [sessionId]
-	 * @param  {[number]} skip  [从下标数开始]
-	 * @param  {[number]} limit [从下标数结束]
-	 * @return {[type]}       [json]
-	 */
-	function list(seid,brandId,skip,limit){		
-		return $http.get("/api-admin/base/product/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-			return data
-		})
-	}
-	
-	/**
-	 * [getlist 获取单个商品数据]
-	 * @param  {[number]} id   [商品ID]
-	 * @param  {[string]} seid [sessionId]
-	 * @return {[type]}      [json]
-	 */
-	function get(seid,id){
-		return $http.get("/api-admin/base/product/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
-			return data
-		})
-	}
-	
-	/**
-	 * 添加基础商品
-	 */
-	function add(seid,obj){
-			console.log(obj)
-			var bPhotos="";
-			var cPhotos="";
-			var lables = "";
-			for(var i in obj.bPhotos){				
-				bPhotos+=obj.bPhotos[i]+",";				
-			}
-			for(var i in obj.cPhotos){				
-				cPhotos+=obj.cPhotos[i]+",";
-			}
-			for(var i in obj.lables){
-				lables+=obj.lables[i].id+","
-			}
-			lables=lables.substring(0,lables.length-1);
-			cPhotos=cPhotos.substring(0,cPhotos.length-1);
-			bPhotos=bPhotos.substring(0,bPhotos.length-1);			
-		return $http({
-        url:"/api-admin/base/product/add",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"providerBrandId":obj.providerBrandId.id,			
-				"brandId":obj.brandId.id,
-				"name":obj.name,
-				"shortName":obj.shortName,
-				"onSell":obj.onSell,
-				"canSell":true,
-				"categoryId":obj.sortId.data.id,
-				"bLogo":obj.bLogo[0],
-				"cLogo":obj.cLogo[0],
-				"bPhotos":bPhotos,
-				"cPhotos":cPhotos,
-				"terse":obj.terse,
-				"detail":obj.detail,
-				"labelIds":lables
-			}
-    })
-    .then(function (data) {
-         return data
-    })
-	}
-	
-	/**
-	 * 修改商品
-	 */
-	function update(seid,obj){
-		console.log(obj)
-			var bPhotos="";
-			var cPhotos="";
-			var lables = "";			
-			for(var i in obj.bPhotos){				
-				bPhotos+=obj.bPhotos[i]+",";				
-			}
-			for(var i in obj.cPhotos){				
-				cPhotos+=obj.cPhotos[i]+",";
-			}
-			for(var i in obj.labels){
-				lables+=obj.labels[i].id+","
-			}
-			lables=lables.substring(0,lables.length-1);
-			cPhotos=cPhotos.substring(0,cPhotos.length-1);
-			bPhotos=bPhotos.substring(0,bPhotos.length-1);	
-		return $http({
-        url:"/api-admin/base/product/"+obj.id+"/update",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"providerBrandId":obj.providerBrand.id,			
-				"brandId":obj.brand.id,
-				"name":obj.name,
-				"shortName":obj.shortName,
-				"onSell":obj.onSell,
-				"canSell":obj.cancell,
-				"categoryId":obj.categories.children[0].id,
-				"bLogo":obj.bLogo,
-				"cLogo":obj.cLogo,
-				"bPhotos":bPhotos,
-				"cPhotos":cPhotos,
-				"terse":obj.terse,
-				"detail":obj.detail,
-				"labelIds":lables
-			}
-    })
-    .then(function (data) {
-         return data
-    })
-	}
-	
-	/**
-	 * [dellist 删除商品]
-	 * @param  {[type]} id   [商品ID]
-	 * @param  {[type]} seid [sessionId]
-	 * @return {[type]}      [json]
-	 */
-	function del(seid,id){
-		return $http({
-        url:"/api-admin/base/product/"+id+"/remove",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{"device":device,"version":version,"sessionId":seid}
-    })
-    .then(function (data) {
-         return data
-    })
-	}
-}
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('UpdateGoodCtrl',UpdateGoodCtrl);
-UpdateGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource','GoodResource','FileUploader',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource"];
-/***调用接口***/
-function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource,GoodResource,FileUploader,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource) {
-    document.title ="商品详情";
-    $rootScope.name="商品管理";
-    $rootScope.childrenName="商品详情";
-    var vm = this;
-    vm.skip=0;				//起始数据下标
-    vm.limit=12;			//最大数据下标
-    vm.data;                //规格;
-
-    vm.test = {name:"测试",id:1,sic:{name:1,id:2}}
-
-    //获取商品id
-    vm.id=$stateParams.id;
-    console.log(vm.id)
-
-    //获取sessionId
-
-    vm.updateBtn = function(){
-        console.log(vm.data)
-        update();
-    }
-
-    login();
-    init();
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
-                layer.close(index);
-                PublicResource.Urllogin();
-            })
-        }else{
-            vm.seid = PublicResource.seid(vm.user);
-        }
-    }
-
-    gooddetail(vm.id)
-
-    /*
-     * 基本商品
-     */
-    function gooddetail(id){
-        GoodResource.get(vm.seid,id).then(function(data){
-            if(data.data.status!="OK"){
-                layer.msg(data.data.message,{icon:1})
-            }else{
-                vm.data = data.data.result;
-                arrayImage(vm.data)
-            }
-            console.log(vm.data)
-        })
-    }
-
-    function arrayImage (data) {
-        vm.data.cPhotos =data.cPhotos.split(",");
-        vm.data.bPhotos =data.bPhotos.split(",");
-        console.log(vm.data)
-    }
-
-    /**
-	 * [bPhotos description]
-	 * @type {[type]}
-	 */
-	var bPhotos = vm.bPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	bPhotos.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.bPhotos.queue) {
-				vm.bPhotos.queue[i].isSuccess=false;
-				vm.bPhotos.queue[i].isError=true;
-                console.log(vm.bPhotos.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bPhotos.push(status.result);
-			 vm.bPhotos.queue[0].remove();
-        }
-	}
-	bPhotos.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-	/**
-	 * [cPhotos description]
-	 * @type {[type]}
-	 */
-	var cPhoto = vm.cPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]
-	})
-
-	cPhoto.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
-            for (var i in vm.cPhotos.queue) {
-				vm.cPhotos.queue[i].isSuccess=false;
-				vm.cPhotos.queue[i].isError=true;
-                console.log(vm.cPhotos.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cPhotos.push(status.result);
-			 vm.cPhotos.queue[0].remove();
-        }
-	}
-	cPhoto.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
-
-
-
-	/**
-	 * bLogo
-	 */
-	 var bLogo = vm.bLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 bLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
-            for (var i in vm.bLogo.queue) {
-				vm.bLogo.queue[i].isSuccess=false;
-				vm.bLogo.queue[i].isError=true;
-                console.log(vm.bLogo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bLogo[0] = status.result;
-			 vm.bLogo.queue[0].remove();
-        }
-	 }
-	 bLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
-	/**
-	 * cLogo
-	 */
-	 var cLogo = vm.cLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 cLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
-            for (var i in vm.cLogo.queue) {
-				vm.cLogo.queue[i].isSuccess=false;
-				vm.cLogo.queue[i].isError=true;
-                console.log(vm.cLogo.queue[i])
-            }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cLogo[0] = status.result;
-			 vm.cLogo.queue[0].remove();
-        }
-	 }
-	 cLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
-
-     function update(){
-         GoodResource.update(vm.seid,vm.data).then(function(data){
-             console.log(data);
-             if(data.data.status=="OK"){
-                 layer.msg('修改成功~',{icon:1});
-             }else{
-                 layer.msg(data.data.message,{icon:2})
-             }
-         })
-     }
-
-     function init(){
-         SortResource.list(vm.seid,0,0).then(function(data){
-             vm.sortlist = data.data.result;
-             console.log(vm.sortlist)
-         })
-
-         SupplierLogoResource.list(vm.seid,0,0).then(function(data){
-             vm.brandlist = data.data.result;
-             console.log(vm.brandlist)
-         })
-
-         BrandStoresResource.list(vm.seid,0,0).then(function(data){
-             vm.providerBrandlist = data.data.result;
-             console.log(vm.providerBrandlist)
-         })
-
-         LabelResource.list(vm.seid).then(function(data){
-             vm.labellist = data.data.result;
-             console.log(vm.labellist)
-         })
-     }
-}
-})();
-(function(){
-"use strict"
 
 })();
 (function(){
@@ -4037,9 +4037,9 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
 (function(){
 "use strict"
 angular.module('index_area').controller('AddMusicCtrl', AddMusicCtrl);
-AddMusicCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams','MusicResource'];
+AddMusicCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams', 'MusicResource'];
 /***调用接口***/
-function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresResource, NgTableParams,MusicResource) {
+function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresResource, NgTableParams, MusicResource) {
     document.title = "语音推送管理";
     $rootScope.name = "语音推送管理";
     $rootScope.childrenName = "语音推送管理列表";
@@ -4048,8 +4048,14 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.list;						//对象集合
     vm.music = new Object();
     vm.music.dates = new Array();
+    vm.music.dates[0]={};
+    vm.music.dates[0].startTime='';
+    vm.music.dates[0].endTime='';
     vm.music.store = new Array();
     vm.music.times = new Array();
+    vm.music.times[0] = new Object();
+    vm.music.times[0].startDate= "";
+    vm.music.times[0].endDate="";
     vm.stores;
     //获取sessionId
     login()
@@ -4083,29 +4089,68 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
     vm.addTimes = function () {
         var addlist = {
-            startTime: "11:20:00",
-            endTime: "12:20:00"
+            startTime: "",
+            endTime: ""
         }
         vm.music.times.push(addlist)
         console.log(vm.music.dates)
     }
 
-    function startAdd(){
-        vm.music.storeId="";
-        for(var i in vm.music.dates){
-            if(typeof(vm.music.dates[i].startDate)!="number"){
-                vm.music.dates[i].startDate=vm.music.dates[i].startDate.getTime();
+
+
+    function startAdd() {
+        vm.music.storeId = "";
+        for (var i in vm.music.dates) {
+            if (typeof (vm.music.dates[i].startDate) != "number") {
+
+                vm.music.dates[i].startDate = GTM(false, chang_time(new Date(vm.music.dates[i].startDate)))
             }
-            if(typeof(vm.music.dates[i].endDate)!="number"){
-                vm.music.dates[i].endDate=vm.music.dates[i].endDate.getTime();
+            if (typeof (vm.music.dates[i].endDate) != "number") {
+                vm.music.dates[i].endDate = GTM(true, chang_time(new Date(vm.music.dates[i].endDate)))
             }
         }
 
-        for(var i in vm.music.storeid){
-            vm.music.storeId+=vm.music.storeid[i].id+","
+        for (var i in vm.music.storeid) {
+            vm.music.storeId += vm.music.storeid[i].id + ","
         }
-        vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+        vm.music.storeId = vm.music.storeId.substring(0, vm.music.storeId.length - 1);
     }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        console.log(h.length);
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        console.log(D.length + ',' + D);
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+        return Y + M + D;
+    }
+
+    function GTM(is, data) {
+        console.log(data)
+        if (typeof (data) == 'undefined' || data == "" || data == null) {
+            return null
+        } else {
+            if (is) {
+                data = data + "23:59:59";
+            }
+            return data = new Date(data).getTime();
+        }
+
+    }
+
 
     function ArryString(objs) {
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
@@ -4113,22 +4158,22 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
         } else {
             var StoreArry = "";
             for (var i in obj) {
-                    StoreArry += obj[i].id + ",";
-                }
+                StoreArry += obj[i].id + ",";
+            }
             StoreArry = StoreArry.substring(0, StoreArry.length - 1)
             return StoreArry
         }
     }
 
-    function addData(){
-        MusicResource.add(vm.seid,vm.music).then(function(data){
+    function addData() {
+        MusicResource.add(vm.seid, vm.music).then(function (data) {
             console.log(data)
-            if(data.data.status=="OK"){
-                layer.msg('保存成功~',{incon:1},function(){
+            if (data.data.status == "OK") {
+                layer.msg('保存成功~', { icon: 1 }, function () {
                     $state.go('/music/list')
-                });                
-            }else{
-                layer.msg(data.data.message,{icom:2})
+                });
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
@@ -4193,7 +4238,7 @@ function MusicResource($http, device, version) {
                 "sessionId": seid,
                 "name": obj.name,
                 "effective": obj.effective,
-                "type": obj.productType,
+                "type": "SYSTEM",
                 "content": obj.content,
                 "allStore": obj.allStore,
                 "storeIds": obj.storeId,
@@ -4218,7 +4263,7 @@ function MusicResource($http, device, version) {
                 "name": obj.name,
                 'id': obj.id,
                 "effective": obj.effective,
-                "type": obj.type,
+                "type": "SYSTEM",
                 "content": obj.content,
                 "allStore": obj.allStore,
                 "storeIds": obj.storeId,
@@ -4416,6 +4461,258 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
+PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
+/***调用接口***/
+function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
+    document.title ="运营管理";
+    $rootScope.name="运营管理";
+	$rootScope.childrenName="赠品列表";
+    var vm = this;
+    vm.list;
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.addlayer = function(){
+        layer.open({
+            type:1,
+            title:"新增赠品",
+            area:["400px",'300px'],
+            content:$(".add_operk")
+        })
+    }
+
+    vm.delBtn = function(id){
+        layer.confirm('是否删除赠品',{
+            btn:['确定','删除'],
+        },function(){
+            remove(id);
+        })
+    }
+
+     vm.updatelayer = function(id){
+         get(id);
+        layer.open({
+            type:1,
+            title:"修改赠品",
+            area:["400px",'300px'],
+            content:$(".update_operk")
+        })
+    }
+
+    vm.updateBtn = function(){
+        console.log(vm.data);
+        Update();
+    }
+
+    vm.addBtn = function(){
+        console.log(vm.addinfo)
+        Add();
+    }
+    list();
+    good();
+    function list(){
+        PremResource.list(vm.seid,0,100).then(function(data){
+            console.log(data.data.result)
+            vm.list = data.data.result;
+        })
+    }
+
+    function good(){
+        GoodResource.list(vm.seid,null,0,0).then(function(data){
+            vm.goods = data.data.result.data;
+            console.log(vm.goods)
+        })
+    }
+
+    function Add(){
+        PremResource.add(vm.seid,vm.addinfo).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('添加成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function get(id){
+        PremResource.get(vm.seid,id).then(function(data){
+            console.log(data.data.result)
+            vm.data = data.data.result;
+        })
+    }
+
+    function remove(id){
+        PremResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('删除成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function Update(){
+        PremResource.update(vm.seid,vm.data).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('修改成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
+PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
+/***调用接口***/
+function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
+    document.title ="运营管理";
+    $rootScope.name="运营管理";
+	$rootScope.childrenName="赠品列表";
+    var vm = this;
+    vm.list;
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.addlayer = function(){
+        layer.open({
+            type:1,
+            title:"新增赠品",
+            area:["400px",'300px'],
+            content:$(".add_operk")
+        })
+    }
+
+    vm.delBtn = function(id){
+        layer.confirm('是否删除赠品',{
+            btn:['确定','删除'],
+        },function(){
+            remove(id);
+        })
+    }
+
+     vm.updatelayer = function(id){
+         get(id);
+        layer.open({
+            type:1,
+            title:"修改赠品",
+            area:["400px",'300px'],
+            content:$(".update_operk")
+        })
+    }
+
+    vm.updateBtn = function(){
+        console.log(vm.data);
+        Update();
+    }
+
+    vm.addBtn = function(){
+        console.log(vm.addinfo)
+        Add();
+    }
+    list();
+    good();
+    function list(){
+        PremResource.list(vm.seid,0,100).then(function(data){
+            console.log(data.data.result)
+            vm.list = data.data.result;
+        })
+    }
+
+    function good(){
+        GoodResource.list(vm.seid,null,0,0).then(function(data){
+            vm.goods = data.data.result.data;
+            console.log(vm.goods)
+        })
+    }
+
+    function Add(){
+        PremResource.add(vm.seid,vm.addinfo).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('添加成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function get(id){
+        PremResource.get(vm.seid,id).then(function(data){
+            console.log(data.data.result)
+            vm.data = data.data.result;
+        })
+    }
+
+    function remove(id){
+        PremResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('删除成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function Update(){
+        PremResource.update(vm.seid,vm.data).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('修改成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
 angular.module('index_area').controller('UpdateMusicCtrl', UpdateMusicCtrl);
 UpdateMusicCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams', 'MusicResource'];
 /***调用接口***/
@@ -4453,21 +4750,21 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         update()
     }
 
-    function endUpdate(){
-        vm.music.storeId="";
-        for(var i in vm.music.voiceDates){
-            if(typeof(vm.music.voiceDates[i].startDate)!="number"){
-                vm.music.voiceDates[i].startDate=vm.music.voiceDates[i].startDate.getTime();
-            }
-            if(typeof(vm.music.voiceDates[i].endDate)!="number"){
-                vm.music.voiceDates[i].endDate=vm.music.voiceDates[i].endDate.getTime();
-            }
+    function endUpdate() {
+        vm.music.storeId = "";
+        for (var i in vm.music.voiceDates) {
+            vm.music.voiceDates[i].startDate = chang_time(new Date(vm.music.voiceDates[i].startDate));
+            vm.music.voiceDates[i].endDate = chang_time(new Date(vm.music.voiceDates[i].endDate));
         }
-
-        for(var i in vm.music.store){
-            vm.music.storeId+=vm.music.store[i].id+","
+        for (var i in vm.music.voiceDates) {
+            vm.music.voiceDates[i].startDate = GTM(false, vm.music.voiceDates[i].startDate);
+            vm.music.voiceDates[i].endDate = GTM(true, vm.music.voiceDates[i].endDate);
         }
-        vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+        console.log(vm.music.voiceDates)
+        for (var i in vm.music.store) {
+            vm.music.storeId += vm.music.store[i].id + ","
+        }
+        vm.music.storeId = vm.music.storeId.substring(0, vm.music.storeId.length - 1);
     }
 
     vm.addDates = function () {
@@ -4486,29 +4783,41 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     }
 
     function get(id) {
-        MusicResource.get(vm.seid,id).then(function (data) {
+        MusicResource.get(vm.seid, id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
         })
     }
 
+    function GTM(is, data) {
+        console.log(data)
+        if (typeof (data) == 'undefined' || data == "" || data == null) {
+            return null
+        } else {
+            if (is) {
+                data = data + "23:59:59";
+            }
+            return data = new Date(data).getTime();
+        }
+
+    }
 
     function update() {
-        MusicResource.update(vm.seid,vm.music).then(function (data) {
-           if(data.data.status=="OK"){
-               console.log(data)
-               layer.msg('保存成功~',{icon:1},function(){
-                   $state.go('/music/list')
-               })
-           }else{
-               layer.msg(data.data.message,{icon:2})
-           }
+        MusicResource.update(vm.seid, vm.music).then(function (data) {
+            if (data.data.status == "OK") {
+                console.log(data)
+                layer.msg('保存成功~', { icon: 1 }, function () {
+                    $state.go('/music/list')
+                })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
+            }
         })
     }
 
     function chang_time(date) {
-        var Y = date.getFullYear() + '/';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分
@@ -4622,7 +4931,7 @@ function OrderResource($http,device,version) {
             }}).then(function(data){
             return data
         })
-    }    
+    }
 }
 })();
 (function(){
@@ -4704,20 +5013,21 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                     })
                 }
             });
+    }
 
-        // OrderResource.list(vm.seid, vm.get, 0, 50).then(function (data) {
-        //     vm.list = data.data.result.data;
-        //     vm.tableParams = new NgTableParams({}, { dataset: vm.list });
-        //     vm.pagecount = data.data.result.total;
-        //     console.log(data);
-        //     for (var i in vm.list) {
-        //         vm.list[i].createDate = change_time(new Date(vm.list[i].createDate));
-        //         if (vm.list[i].endDate != null) {
-        //             vm.list[i].endDate = change_time(new Date(vm.list[i].endDate))
-        //         }
-        //     }
-        //     console.log(vm.list);
-        // })
+    vm.compel = function (id) {
+        layer.confirm('您确定要退款？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            OrderResource.refund(vm.seid, id).then(function (data) {
+                if (data.data.status == "OK") {
+                    layer.msg('退款成功', { icon: 1 });
+                    list();
+                } else {
+                    layer.msg(data.data.message, { icon: 2 })
+                }
+            })
+        });
     }
 
     function change_time(date) {
@@ -4776,6 +5086,132 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                 layer.alert(data.data.message, { icon: 2 })
             }
             list();
+        })
+    }
+
+}
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
+PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
+/***调用接口***/
+function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
+    document.title ="运营管理";
+    $rootScope.name="运营管理";
+	$rootScope.childrenName="赠品列表";
+    var vm = this;
+    vm.list;
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.addlayer = function(){
+        layer.open({
+            type:1,
+            title:"新增赠品",
+            area:["400px",'300px'],
+            content:$(".add_operk")
+        })
+    }
+
+    vm.delBtn = function(id){
+        layer.confirm('是否删除赠品',{
+            btn:['确定','删除'],
+        },function(){
+            remove(id);
+        })
+    }
+
+     vm.updatelayer = function(id){
+         get(id);
+        layer.open({
+            type:1,
+            title:"修改赠品",
+            area:["400px",'300px'],
+            content:$(".update_operk")
+        })
+    }
+
+    vm.updateBtn = function(){
+        console.log(vm.data);
+        Update();
+    }
+
+    vm.addBtn = function(){
+        console.log(vm.addinfo)
+        Add();
+    }
+    list();
+    good();
+    function list(){
+        PremResource.list(vm.seid,0,100).then(function(data){
+            console.log(data.data.result)
+            vm.list = data.data.result;
+        })
+    }
+
+    function good(){
+        GoodResource.list(vm.seid,null,0,0).then(function(data){
+            vm.goods = data.data.result.data;
+            console.log(vm.goods)
+        })
+    }
+
+    function Add(){
+        PremResource.add(vm.seid,vm.addinfo).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('添加成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function get(id){
+        PremResource.get(vm.seid,id).then(function(data){
+            console.log(data.data.result)
+            vm.data = data.data.result;
+        })
+    }
+
+    function remove(id){
+        PremResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('删除成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function Update(){
+        PremResource.update(vm.seid,vm.data).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('修改成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
         })
     }
 
@@ -5059,6 +5495,132 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 })();
 (function(){
 "use strict"
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
+PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
+/***调用接口***/
+function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
+    document.title ="运营管理";
+    $rootScope.name="运营管理";
+	$rootScope.childrenName="赠品列表";
+    var vm = this;
+    vm.list;
+    //获取sessionId
+     login();
+    function login(){
+		vm.user=PublicResource.seid("admin");			
+		if(typeof(vm.user)=="undefined"){
+			layer.alert("尚未登录！",{icon:2},function(index){
+				layer.close(index);
+				PublicResource.Urllogin();
+			})
+		}else{
+			vm.seid = PublicResource.seid(vm.user);
+		}
+	}
+
+    vm.addlayer = function(){
+        layer.open({
+            type:1,
+            title:"新增赠品",
+            area:["400px",'300px'],
+            content:$(".add_operk")
+        })
+    }
+
+    vm.delBtn = function(id){
+        layer.confirm('是否删除赠品',{
+            btn:['确定','删除'],
+        },function(){
+            remove(id);
+        })
+    }
+
+     vm.updatelayer = function(id){
+         get(id);
+        layer.open({
+            type:1,
+            title:"修改赠品",
+            area:["400px",'300px'],
+            content:$(".update_operk")
+        })
+    }
+
+    vm.updateBtn = function(){
+        console.log(vm.data);
+        Update();
+    }
+
+    vm.addBtn = function(){
+        console.log(vm.addinfo)
+        Add();
+    }
+    list();
+    good();
+    function list(){
+        PremResource.list(vm.seid,0,100).then(function(data){
+            console.log(data.data.result)
+            vm.list = data.data.result;
+        })
+    }
+
+    function good(){
+        GoodResource.list(vm.seid,null,0,0).then(function(data){
+            vm.goods = data.data.result.data;
+            console.log(vm.goods)
+        })
+    }
+
+    function Add(){
+        PremResource.add(vm.seid,vm.addinfo).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('添加成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function get(id){
+        PremResource.get(vm.seid,id).then(function(data){
+            console.log(data.data.result)
+            vm.data = data.data.result;
+        })
+    }
+
+    function remove(id){
+        PremResource.remove(vm.seid,id).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('删除成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+    function Update(){
+        PremResource.update(vm.seid,vm.data).then(function(data){
+            if(data.data.status=="OK"){
+                layer.msg('修改成功',{icon:1},function(){
+                    layer.closeAll();
+                    list();
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+    }
+
+}
 
 })();
 (function(){
@@ -6351,6 +6913,452 @@ function SupplierLogoResource($http,device,version) {
 })();
 (function(){
 "use strict"
+angular.module('index_area').directive('file', function (FileUploader, $rootScope) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            logoname: "@",
+            returndata: '='
+        },
+        templateUrl: 'Template/FileSelect.html',
+        link: function (scope, elem, attr) {
+            scope.seid = $rootScope.seid;
+            var logo = scope.img = new FileUploader({
+                url: "/api-admin/attach/upload",
+                formData: [{ "device": "pc", "version": "1.0.0", "sessionId": scope.seid }]
+            })
+            logo.onSuccessItem = function (data, status) {
+                if (status.status != "OK") {
+                    for (var i in scope.logo.queue) {
+                        scope.logo.queue[i].isSuccess = false;
+                        scope.logo.queue[i].isError = true;
+                        console.log(scope.logo.queue[i])
+                    }
+                    layer.alert(status.message, { icon: 2 })
+                } else {
+                    console.log(status)
+                    scope.infolist.logo = status.result;
+                    scope.logo.queue[0].remove();
+                }
+            }
+            scope.test = function(){
+                console.log(scope.img)
+            }
+        }
+    }
+})
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').directive('goods', function (GoodResource,$rootScope) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            returnlist: '='
+        },
+        templateUrl: 'Template/GoodsSelect.html',
+        link: function (scope, elem, attr) {
+            scope.list = ArryAnalysis(scope.list);
+            scope.pagecount;
+            scope.skip=0;
+            scope.limit=10;
+            scope.seid = $rootScope.seid;
+            Goods();
+
+            scope.pageChanged = function(){
+                scope.skip = (scope.pageint-1)*scope.limit;
+				Goods();
+            }
+
+            function Goods(){
+                GoodResource.list(scope.seid,null,scope.skip,scope.limit).then(function(data){
+                    scope.list = data.data.result.data;
+                    scope.pagecount = data.data.result.total;
+                    scope.list = ArryAnalysis(scope.list);
+                    vs();
+                })
+            }
+
+            //批量删除,删除
+            scope.Add = function(item){
+                if (item) {	
+					item.status = false;
+					item.active = true;
+					scope.returnlist.push(item);
+				} else {
+					for (var i in scope.list) {
+						if (scope.list[i].status == true&&scope.list[i].active==true) {
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+							scope.returnlist.push(scope.list[i])
+						}
+					}
+				}
+            }
+
+            scope.All = function(is,all){
+                switch(all){
+                    case "add":
+                        for(var i in scope.list){
+                            scope.list[i].active=is;
+                        }
+                    break;
+                    case "del":
+                        for(var i in scope.returnlist){
+                            scope.returnlist[i].check=is;
+                        }
+                    break;
+                }
+            }
+
+            //批量删除/删除
+			scope.Del = function (id,index,is) {
+				if (is) {
+					for (var i in scope.returnlist){
+						if (scope.returnlist[i].check) {
+							for (var j in scope.list) {
+								if (scope.list[j].spec.id == scope.returnlist[i].spec.id) {
+									scope.list[j].status = true;
+									scope.list[j].active = false;
+                                    scope.returnlist.splice(i,1);
+								}                                
+							}
+						}
+					}
+
+				} else {
+					scope.returnlist.splice(index, 1);
+					for(var i in scope.list){
+						if(scope.list[i].spec.id==id){
+							scope.list[i].status = true;
+                            scope.list[i].active = false;
+						}
+					}
+				}
+			}
+
+            function vs(){
+                console.log(scope.list)
+                console.log(scope.returnlist)
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].spec.id==scope.returnlist[j].spec.id){
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+						}
+					}
+				}
+			}
+
+            //list转
+            function ArryAnalysis(obj) {
+                var good = new Object();
+                var GoodSpecs = new Array();
+                good.categories = new Object();
+                for (var i in obj) {
+                    for (var j in obj[i].specs) {
+                        good.name = obj[i].name;
+                        good.categories.children = obj[i].categories.children[0].data;
+                        good.categories.data = obj[i].categories.data;
+                        good.providerBrand = obj[i].providerBrand;
+                        good.spec = obj[i].specs[j]
+                        good.status = true;
+                        GoodSpecs.push(good);
+                        good = new Object();
+                        good.categories = new Object();
+                    }
+                }
+                return GoodSpecs;
+            }
+        }
+    }
+})
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').directive('prems', function (PremResource,$rootScope) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            returnlist: '='
+        },
+        templateUrl: 'Template/PremSelect.html',
+        link: function (scope, elem, attr) {
+            scope.pagecount;
+            scope.skip=0;
+            scope.limit=10;
+            scope.seid = $rootScope.seid;
+            Prems();
+
+            scope.pageChanged = function(){
+                scope.skip = (scope.pageint-1)*scope.limit;
+				Prems();
+            }
+
+            function Prems(){
+                PremResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
+                    scope.list = data.data.result;
+                    console.log(scope.list)
+                    for(var i in scope.list){
+                        scope.list[i].status=true;
+                        scope.list[i].active=false;
+                    }
+                    vs();
+                    scope.pagecount = data.data.result.total;
+                })
+            }
+
+            function vs(){
+                console.log(scope.list)
+                console.log(scope.returnlist)
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].id==scope.returnlist[j].id){
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+						}
+					}
+				}
+			}
+
+            //批量删除,删除
+            scope.Add = function(item){
+                if (item) {	
+					item.status = false;
+					item.active = true;
+					scope.returnlist.push(item);
+				} else {
+					for (var i in scope.list) {
+						if (scope.list[i].status == true&&scope.list[i].active==true) {
+							scope.list[i].status = false;
+							scope.list[i].active = true;
+							scope.returnlist.push(scope.list[i])
+						}
+					}
+				}
+            }
+
+            scope.All = function(is,all){
+                switch(all){
+                    case "add":
+                        for(var i in scope.list){
+                            scope.list[i].active=is;
+                        }
+                    break;
+                    case "del":
+                        for(var i in scope.returnlist){
+                            scope.returnlist[i].check=is;
+                        }
+                    break;
+                }
+            }
+
+            //批量删除/删除
+			scope.Del = function (id,index,is) {
+				if (is) {
+					for (var i in scope.returnlist){
+						if (scope.returnlist[i].check) {
+							for (var j in scope.list) {
+								if (scope.list[j].id == scope.returnlist[i].id) {
+									scope.list[j].status = true;
+									scope.list[j].active = false;
+								}
+							}
+							scope.returnlist.splice(i,1);
+						}
+					}
+
+				} else {
+					scope.returnlist.splice(index, 1);
+					for(var i in scope.list){
+						if(scope.list[i].id==id){
+							scope.list[i].status = true;
+                            scope.list[i].active = false;
+						}
+					}
+				}
+			}
+        }
+    }
+})
+
+})();
+(function(){
+"use strict"
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').directive('sort', function (SortResource, $rootScope) {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      returnlist: '='
+    },
+    templateUrl: 'Template/SortSelect.html',
+    link: function (scope, elem, attr) {
+      scope.seid = $rootScope.seid;
+
+      sort();
+
+      scope.Status = function (data) {
+        console.log(data)
+        if (data.status) {
+          scope.returnlist.push(data)
+        } else {
+          for (var i in scope.returnlist) {
+            if (scope.returnlist[i].data.id == data.data.id) {
+              scope.returnlist.splice(i, 1);
+            }
+          }
+        }
+        for (var i in data.children) {
+          if (data.status) {
+            data.children[i].status = true;
+          } else {
+            data.children[i].status = false;
+          }
+        }
+        console.log(scope.returnlist);
+      }
+
+      function sort() {
+        SortResource.list(scope.seid).then(function (data) {
+          scope.list = data.data.result.root.children;
+          for (var i in scope.list) {
+            scope.list[i].status = false;
+            for (var j in scope.list[i].children) {
+              scope.list[i].children[j].status = false;
+            }
+          }
+          console.log(scope.list);
+        })
+      }
+    }
+  }
+})
+
+})();
+(function(){
+"use strict"
+angular.module('index_area').directive('stores', function (StoresResource,$rootScope) {
+	return {
+		restrict: 'E',
+		replace: true,
+		scope: {
+			returnlist: '='
+		},
+		templateUrl: 'Template/StoresSelect.html',
+		link: function (scope, elem, attr) {
+			scope.seid = $rootScope.seid;
+			scope.skip = 0;
+			scope.limit = 10;
+
+			scope.returnlist = new Array();
+			
+			scope.pageChanged = function(){
+				scope.skip = (scope.pageint-1)*scope.limit;
+				store();
+			}
+			store()
+			function store(){
+				StoresResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
+					scope.list = data.data.result.data;
+					for (var i in scope.list) {
+							scope.list[i].select = true;
+							scope.list[i].status = false;
+						}
+					vs();
+					scope.pagecount=data.data.result.total;
+				})
+			}
+
+			scope.All = function(is,all){
+                switch(all){
+                    case "add":
+                        for(var i in scope.list){
+                            scope.list[i].status=is;
+                        }
+                    break;
+                    case "del":
+                        for(var i in scope.returnlist){
+                            scope.returnlist[i].active=is;
+                        }
+                    break;
+                }
+            }
+
+			function vs(){
+				for(var i in scope.list){
+					for(var j in scope.returnlist){
+						if(scope.list[i].id==scope.returnlist[j].id){
+							scope.list[i].select=false;
+							scope.list[i].status=true;
+						}
+					}
+				}
+			}
+
+			//添加门店
+			scope.Add = function (item) {
+				
+				if (item) {
+					item.select = false;
+					item.status = true;
+					item.active = false;
+					scope.returnlist.push(item);
+				} else {
+					for (var i in scope.list) {
+						if (scope.list[i].status == true&&scope.list[i].select==true) {
+							scope.list[i].select = false;
+							scope.list[i].status = true;
+							scope.list[i].active = false;
+							scope.returnlist.push(scope.list[i])
+						}
+					}
+				}
+			}
+
+			scope.Del = function (item,index,is) {
+				if (is) {
+					
+					for (var i in scope.returnlist) {
+						if (scope.returnlist[i].active) {
+							scope.returnlist.splice(i,1);
+							for(var j in scope.list){
+								if(scope.list[j].id==scope.returnlist[i].id){
+									console.log(scope.list[i])
+									scope.list[j].status=false;
+									scope.list[j].select=true;
+								}
+							}
+						}
+					}
+
+				} else {
+					scope.returnlist.splice(index,1);
+					for(var i in scope.list){
+						if(scope.list[i].id==item.id){
+							scope.list[i].status=false;
+							scope.list[i].select=true;
+						}
+					}
+					
+				}
+			}
+		}
+	}
+})
+
+})();
+(function(){
+"use strict"
 angular.module('index_area').factory('OperationResource', OperationResource);
 OperationResource.$inject = ['$http','device','version'];
 function OperationResource($http,device,version) {
@@ -6916,450 +7924,4 @@ function UserResource($http,device,version) {
         })
     }
 }
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('file', function (FileUploader, $rootScope) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            logoname: "@",
-            returndata: '='
-        },
-        templateUrl: 'Template/FileSelect.html',
-        link: function (scope, elem, attr) {
-            scope.seid = $rootScope.seid;
-            var logo = scope.img = new FileUploader({
-                url: "/api-admin/attach/upload",
-                formData: [{ "device": "pc", "version": "1.0.0", "sessionId": scope.seid }]
-            })
-            logo.onSuccessItem = function (data, status) {
-                if (status.status != "OK") {
-                    for (var i in scope.logo.queue) {
-                        scope.logo.queue[i].isSuccess = false;
-                        scope.logo.queue[i].isError = true;
-                        console.log(scope.logo.queue[i])
-                    }
-                    layer.alert(status.message, { icon: 2 })
-                } else {
-                    console.log(status)
-                    scope.infolist.logo = status.result;
-                    scope.logo.queue[0].remove();
-                }
-            }
-            scope.test = function(){
-                console.log(scope.img)
-            }
-        }
-    }
-})
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('goods', function (GoodResource,$rootScope) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            returnlist: '='
-        },
-        templateUrl: 'Template/GoodsSelect.html',
-        link: function (scope, elem, attr) {
-            scope.list = ArryAnalysis(scope.list);
-            scope.pagecount;
-            scope.skip=0;
-            scope.limit=10;
-            scope.seid = $rootScope.seid;
-            Goods();
-
-            scope.pageChanged = function(){
-                scope.skip = (scope.pageint-1)*scope.limit;
-				Goods();
-            }
-
-            function Goods(){
-                GoodResource.list(scope.seid,null,scope.skip,scope.limit).then(function(data){
-                    scope.list = data.data.result.data;
-                    scope.pagecount = data.data.result.total;
-                    scope.list = ArryAnalysis(scope.list);
-                    vs();
-                })
-            }
-
-            //批量删除,删除
-            scope.Add = function(item){
-                if (item) {	
-					item.status = false;
-					item.active = true;
-					scope.returnlist.push(item);
-				} else {
-					for (var i in scope.list) {
-						if (scope.list[i].status == true&&scope.list[i].active==true) {
-							scope.list[i].status = false;
-							scope.list[i].active = true;
-							scope.returnlist.push(scope.list[i])
-						}
-					}
-				}
-            }
-
-            scope.All = function(is,all){
-                switch(all){
-                    case "add":
-                        for(var i in scope.list){
-                            scope.list[i].active=is;
-                        }
-                    break;
-                    case "del":
-                        for(var i in scope.returnlist){
-                            scope.returnlist[i].check=is;
-                        }
-                    break;
-                }
-            }
-
-            //批量删除/删除
-			scope.Del = function (id,index,is) {
-				if (is) {
-					for (var i in scope.returnlist){
-						if (scope.returnlist[i].check) {
-							for (var j in scope.list) {
-								if (scope.list[j].spec.id == scope.returnlist[i].spec.id) {
-									scope.list[j].status = true;
-									scope.list[j].active = false;
-                                    scope.returnlist.splice(i,1);
-								}                                
-							}
-						}
-					}
-
-				} else {
-					scope.returnlist.splice(index, 1);
-					for(var i in scope.list){
-						if(scope.list[i].spec.id==id){
-							scope.list[i].status = true;
-                            scope.list[i].active = false;
-						}
-					}
-				}
-			}
-
-            function vs(){
-                console.log(scope.list)
-                console.log(scope.returnlist)
-				for(var i in scope.list){
-					for(var j in scope.returnlist){
-						if(scope.list[i].spec.id==scope.returnlist[j].spec.id){
-							scope.list[i].status = false;
-							scope.list[i].active = true;
-						}
-					}
-				}
-			}
-
-            //list转
-            function ArryAnalysis(obj) {
-                var good = new Object();
-                var GoodSpecs = new Array();
-                good.categories = new Object();
-                for (var i in obj) {
-                    for (var j in obj[i].specs) {
-                        good.name = obj[i].name;
-                        good.categories.children = obj[i].categories.children[0].data;
-                        good.categories.data = obj[i].categories.data;
-                        good.providerBrand = obj[i].providerBrand;
-                        good.spec = obj[i].specs[j]
-                        good.status = true;
-                        GoodSpecs.push(good);
-                        good = new Object();
-                        good.categories = new Object();
-                    }
-                }
-                return GoodSpecs;
-            }
-        }
-    }
-})
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('prems', function (PremResource,$rootScope) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            returnlist: '='
-        },
-        templateUrl: 'Template/PremSelect.html',
-        link: function (scope, elem, attr) {
-            scope.pagecount;
-            scope.skip=0;
-            scope.limit=10;
-            scope.seid = $rootScope.seid;
-            Prems();
-
-            scope.pageChanged = function(){
-                scope.skip = (scope.pageint-1)*scope.limit;
-				Prems();
-            }
-
-            function Prems(){
-                PremResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
-                    scope.list = data.data.result;
-                    console.log(scope.list)
-                    for(var i in scope.list){
-                        scope.list[i].status=true;
-                        scope.list[i].active=false;
-                    }
-                    vs();
-                    scope.pagecount = data.data.result.total;
-                })
-            }
-
-            function vs(){
-                console.log(scope.list)
-                console.log(scope.returnlist)
-				for(var i in scope.list){
-					for(var j in scope.returnlist){
-						if(scope.list[i].id==scope.returnlist[j].id){
-							scope.list[i].status = false;
-							scope.list[i].active = true;
-						}
-					}
-				}
-			}
-
-            //批量删除,删除
-            scope.Add = function(item){
-                if (item) {	
-					item.status = false;
-					item.active = true;
-					scope.returnlist.push(item);
-				} else {
-					for (var i in scope.list) {
-						if (scope.list[i].status == true&&scope.list[i].active==true) {
-							scope.list[i].status = false;
-							scope.list[i].active = true;
-							scope.returnlist.push(scope.list[i])
-						}
-					}
-				}
-            }
-
-            scope.All = function(is,all){
-                switch(all){
-                    case "add":
-                        for(var i in scope.list){
-                            scope.list[i].active=is;
-                        }
-                    break;
-                    case "del":
-                        for(var i in scope.returnlist){
-                            scope.returnlist[i].check=is;
-                        }
-                    break;
-                }
-            }
-
-            //批量删除/删除
-			scope.Del = function (id,index,is) {
-				if (is) {
-					for (var i in scope.returnlist){
-						if (scope.returnlist[i].check) {
-							for (var j in scope.list) {
-								if (scope.list[j].id == scope.returnlist[i].id) {
-									scope.list[j].status = true;
-									scope.list[j].active = false;
-								}
-							}
-							scope.returnlist.splice(i,1);
-						}
-					}
-
-				} else {
-					scope.returnlist.splice(index, 1);
-					for(var i in scope.list){
-						if(scope.list[i].id==id){
-							scope.list[i].status = true;
-                            scope.list[i].active = false;
-						}
-					}
-				}
-			}
-        }
-    }
-})
-
-})();
-(function(){
-"use strict"
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('sort', function (SortResource, $rootScope) {
-  return {
-    restrict: 'E',
-    replace: true,
-    scope: {
-      returnlist: '='
-    },
-    templateUrl: 'Template/SortSelect.html',
-    link: function (scope, elem, attr) {
-      scope.seid = $rootScope.seid;
-
-      sort();
-
-      scope.Status = function (data) {
-        console.log(data)
-        if (data.status) {
-          scope.returnlist.push(data)
-        } else {
-          for (var i in scope.returnlist) {
-            if (scope.returnlist[i].data.id == data.data.id) {
-              scope.returnlist.splice(i, 1);
-            }
-          }
-        }
-        for (var i in data.children) {
-          if (data.status) {
-            data.children[i].status = true;
-          } else {
-            data.children[i].status = false;
-          }
-        }
-        console.log(scope.returnlist);
-      }
-
-      function sort() {
-        SortResource.list(scope.seid).then(function (data) {
-          scope.list = data.data.result.root.children;
-          for (var i in scope.list) {
-            scope.list[i].status = false;
-            for (var j in scope.list[i].children) {
-              scope.list[i].children[j].status = false;
-            }
-          }
-          console.log(scope.list);
-        })
-      }
-    }
-  }
-})
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('stores', function (StoresResource,$rootScope) {
-	return {
-		restrict: 'E',
-		replace: true,
-		scope: {
-			returnlist: '='
-		},
-		templateUrl: 'Template/StoresSelect.html',
-		link: function (scope, elem, attr) {
-			scope.seid = $rootScope.seid;
-			scope.skip = 0;
-			scope.limit = 10;
-
-			scope.returnlist = new Array();
-			
-			scope.pageChanged = function(){
-				scope.skip = (scope.pageint-1)*scope.limit;
-				store();
-			}
-			store()
-			function store(){
-				StoresResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
-					scope.list = data.data.result.data;
-					for (var i in scope.list) {
-							scope.list[i].select = true;
-							scope.list[i].status = false;
-						}
-					vs();
-					scope.pagecount=data.data.result.total;
-				})
-			}
-
-			scope.All = function(is,all){
-                switch(all){
-                    case "add":
-                        for(var i in scope.list){
-                            scope.list[i].status=is;
-                        }
-                    break;
-                    case "del":
-                        for(var i in scope.returnlist){
-                            scope.returnlist[i].active=is;
-                        }
-                    break;
-                }
-            }
-
-			function vs(){
-				for(var i in scope.list){
-					for(var j in scope.returnlist){
-						if(scope.list[i].id==scope.returnlist[j].id){
-							scope.list[i].select=false;
-							scope.list[i].status=true;
-						}
-					}
-				}
-			}
-
-			//添加门店
-			scope.Add = function (item) {
-				
-				if (item) {
-					item.select = false;
-					item.status = true;
-					item.active = false;
-					scope.returnlist.push(item);
-				} else {
-					for (var i in scope.list) {
-						if (scope.list[i].status == true&&scope.list[i].select==true) {
-							scope.list[i].select = false;
-							scope.list[i].status = true;
-							scope.list[i].active = false;
-							scope.returnlist.push(scope.list[i])
-						}
-					}
-				}
-			}
-
-			scope.Del = function (item,index,is) {
-				if (is) {
-					
-					for (var i in scope.returnlist) {
-						if (scope.returnlist[i].active) {
-							scope.returnlist.splice(i,1);
-							for(var j in scope.list){
-								if(scope.list[j].id==scope.returnlist[i].id){
-									console.log(scope.list[i])
-									scope.list[j].status=false;
-									scope.list[j].select=true;
-								}
-							}
-						}
-					}
-
-				} else {
-					scope.returnlist.splice(index,1);
-					for(var i in scope.list){
-						if(scope.list[i].id==item.id){
-							scope.list[i].status=false;
-							scope.list[i].select=true;
-						}
-					}
-					
-				}
-			}
-		}
-	}
-})
-
 })();

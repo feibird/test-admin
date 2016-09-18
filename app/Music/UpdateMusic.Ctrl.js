@@ -35,21 +35,21 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         update()
     }
 
-    function endUpdate(){
-        vm.music.storeId="";
-        for(var i in vm.music.voiceDates){
-            if(typeof(vm.music.voiceDates[i].startDate)!="number"){
-                vm.music.voiceDates[i].startDate=vm.music.voiceDates[i].startDate.getTime();
-            }
-            if(typeof(vm.music.voiceDates[i].endDate)!="number"){
-                vm.music.voiceDates[i].endDate=vm.music.voiceDates[i].endDate.getTime();
-            }
+    function endUpdate() {
+        vm.music.storeId = "";
+        for (var i in vm.music.voiceDates) {
+            vm.music.voiceDates[i].startDate = chang_time(new Date(vm.music.voiceDates[i].startDate));
+            vm.music.voiceDates[i].endDate = chang_time(new Date(vm.music.voiceDates[i].endDate));
         }
-
-        for(var i in vm.music.store){
-            vm.music.storeId+=vm.music.store[i].id+","
+        for (var i in vm.music.voiceDates) {
+            vm.music.voiceDates[i].startDate = GTM(false, vm.music.voiceDates[i].startDate);
+            vm.music.voiceDates[i].endDate = GTM(true, vm.music.voiceDates[i].endDate);
         }
-        vm.music.storeId = vm.music.storeId.substring(0,vm.music.storeId.length-1);
+        console.log(vm.music.voiceDates)
+        for (var i in vm.music.store) {
+            vm.music.storeId += vm.music.store[i].id + ","
+        }
+        vm.music.storeId = vm.music.storeId.substring(0, vm.music.storeId.length - 1);
     }
 
     vm.addDates = function () {
@@ -68,29 +68,41 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     }
 
     function get(id) {
-        MusicResource.get(vm.seid,id).then(function (data) {
+        MusicResource.get(vm.seid, id).then(function (data) {
             vm.music = data.data.result;
             console.log(vm.music)
         })
     }
 
+    function GTM(is, data) {
+        console.log(data)
+        if (typeof (data) == 'undefined' || data == "" || data == null) {
+            return null
+        } else {
+            if (is) {
+                data = data + "23:59:59";
+            }
+            return data = new Date(data).getTime();
+        }
+
+    }
 
     function update() {
-        MusicResource.update(vm.seid,vm.music).then(function (data) {
-           if(data.data.status=="OK"){
-               console.log(data)
-               layer.msg('保存成功~',{icon:1},function(){
-                   $state.go('/music/list')
-               })
-           }else{
-               layer.msg(data.data.message,{icon:2})
-           }
+        MusicResource.update(vm.seid, vm.music).then(function (data) {
+            if (data.data.status == "OK") {
+                console.log(data)
+                layer.msg('保存成功~', { icon: 1 }, function () {
+                    $state.go('/music/list')
+                })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
+            }
         })
     }
 
     function chang_time(date) {
-        var Y = date.getFullYear() + '/';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
         var D = date.getDate() + ' '; //天
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分

@@ -242,7 +242,11 @@ td{vertical-align: middle!important;}
 .input-disabled{border:0;box-shadow:none;background-color: transparent!important;cursor: default!important;}
 .panel-heading .col-xs-6{  padding: 0;  margin: 0;}
 .mt5{margin: 5px 0;padding: 0 15px;}
-.mt10{  margin: 10px 0;  padding: 0;};
+.mt10{  margin: 10px 0;  padding: 0;}
+.mt15{  margin: 15px 0;  padding: 0;}
+.error-addon{background: #bc070d!important;color: white!important;}
+.error-text{color: #a94442;padding: 5px 0;font-size: 12px;display: inline-block;margin: 0!important;}
+.error-input{border-color: rgba(204, 63, 68, 0.4)!important;}
 .p0{padding: 0;}
 .d_table {  display: table;  margin-top: -7px;
     width: 100%;}
@@ -341,7 +345,43 @@ td{vertical-align: middle!important;}
 .SortDiv{position: absolute;z-index: 10;left: 0;top: 0px;width: 100%;height: 32px;padding-left: 82px;padding-top: 6px;}
 .Sort_span{width: 50px;display:inline-block;text-align: center;border: 1px solid #e4e4e4;margin-right: 5px;cursor: pointer;}
 .Sort_span i{margin-left: 5px;}
+.fs14{display: inline-block;width: 13px;}
 .table{color: #333;}
+.input-groups{display: table;margin: 10px 0;margin-left: -7px;width: 50%;}
+.input-groups .input-groups-addon{display: table-cell;vertical-align:middle;width:80px;text-align: center}
+.input-groups .input-groups-addons{display: table-cell;vertical-align:middle;width:80px;text-align: center;background: #eee;color: #333;}
+.input-groups .input-groups-btn{display: table-cell;vertical-align:middle;padding-left: 10px;}
+.has-error .start{background: #d5080f;color: white;}
+.has-error .end{background: #d5080f;color: white;}
+.has-error .input-groups-addon{color: #d5080f;}
+.form-group label .btn{margin-left: 20px;}
+.d_cell{display:table-cell;}
+.table-row{display: table-row;}
+.input{display: block;width: 50%;font-size: 0;padding: 5px 0;}
+.input .input-tit{display:inline-block;width: 80px;vertical-align: top;text-align: center;line-height: 30px;border: 1px solid #e4e4e4;color: #333;background: #eee;font-size: 12px;border-right: 0;}
+.input .input-text{width:150px;vertical-align: top;height: 32px;padding:0 5px;border: 1px solid #e4e4e4;outline: none;font-size: 14px;color:#333;}
+.input .input-text:focus {border:1px solid rgba(104,184,40,.5);padding: 0 5px;}
+.input .ng-valid{vertical-align: top;display: inline-block;}
+.input .input-btn{vertical-align: top;display: inline-block;margin-right: 5px;}
+.input .error-text{width: 280px;padding-left: 80px;}
+.w100p{width: 100px!important;}
+.w50p{width: 50px!important;}
+#sortlist{padding:0}
+#sortlist .panel{padding:20px 0;padding-top:0;margin-top:20px}
+#sortlist .panel .panel-options{padding-top:10px}
+#sortlist .panel-heading{margin:0}
+#sortlist .table-title{height:50px;line-height:50px;width:100%;display:table;background:#000;text-align:center}
+#sortlist .table-title .name_tit{display:table-cell}
+#sortlist .table-title .btn_tit{width:450px;display:table-cell;text-align:center}
+#sortlist .table-list{padding:0;border:1px solid #DFDFDF;border-bottom: 0;}
+#sortlist .table-list li{display:table;width:100%;height:50px;line-height:50px;border-bottom:1px solid #DFDFDF}
+#sortlist .table-list li .table-name{display:table-cell;padding-left:30px;color:#333;}
+#sortlist .table-list li .table-name i{margin-right:7px;cursor:pointer;font-size: 20px;vertical-align: calc(-2px);}
+#sortlist .table-list li .childrenpy{padding-left:50px}
+#sortlist .table-list li .table-btn{display:table-cell;width:450px;text-align:center}
+#sortlist .table-list li .table-btn .btn-main{display:inline-block;width:230px;text-align:left;}
+#sortlist .table-list li .childrenlist{display:table-row;border-top:1px solid #DFDFDF;}
+
 .spec-title{
     display: inline-block;
     width: 100px;
@@ -379,18 +419,3 @@ td{vertical-align: middle!important;}
     z-index: 1;
     opacity: 0;
 }
-#sortlist{padding:0}
-#sortlist .panel{padding:20px 0;padding-top:0;margin-top:20px}
-#sortlist .panel .panel-options{padding-top:10px}
-#sortlist .panel-heading{margin:0}
-#sortlist .table-title{height:50px;line-height:50px;width:100%;display:table;background:#000;text-align:center}
-#sortlist .table-title .name_tit{display:table-cell}
-#sortlist .table-title .btn_tit{width:450px;display:table-cell;text-align:center}
-#sortlist .table-list{padding:0;border:1px solid #DFDFDF;border-bottom: 0;}
-#sortlist .table-list li{display:table;width:100%;height:50px;line-height:50px;border-bottom:1px solid #DFDFDF}
-#sortlist .table-list li .table-name{display:table-cell;padding-left:30px;color:#333;}
-#sortlist .table-list li .table-name i{margin-right:7px;cursor:pointer;font-size: 20px;vertical-align: calc(-2px);}
-#sortlist .table-list li .childrenpy{padding-left:50px}
-#sortlist .table-list li .table-btn{display:table-cell;width:450px;text-align:center}
-#sortlist .table-list li .table-btn .btn-main{display:inline-block;width:230px;text-align:left;}
-#sortlist .table-list li .childrenlist{display:table-row;border-top:1px solid #DFDFDF;}
