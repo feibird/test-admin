@@ -5,6 +5,8 @@ function CouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource, Co
     $rootScope.name = "运营管理"
     $rootScope.childrenName = "优惠券管理";
     var vm = this;
+    vm.skip=0;
+    vm.limit=10;
     vm.id = $stateParams.id;
     login();
     function login() {
@@ -25,6 +27,11 @@ function CouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource, Co
     function list(){
         CouponResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
             vm.list = data.data.result;
+            for(var i in vm.list){
+                vm.list[i].startTime = chang_time(new Date(vm.list[i].startTime));
+                vm.list[i].endTime = chang_time(new Date(vm.list[i].endTime));
+            }
+            console.log(vm.list)
         })
     }
 
@@ -66,7 +73,7 @@ function CouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource, Co
         if (h.length < 3) {
             h = "0" + h;
         }
-        return Y + M + D;
+        return Y + M + D+h+m+s;
     }
 
     //解析Interbal(随机机制)

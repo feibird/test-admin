@@ -10,7 +10,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.task.formulaParameter = new Object();
     vm.date = {}
     vm.date.minDate = typeof (vm.date.minDate) ? 'undefined' : new Date();
-    vm.verification = new Object();                 //验证对象
     login();
     vm.interval = [{
         start: 0,
@@ -32,37 +31,11 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         vm.task.userType = "";
         vm.task.endTime = "";
         vm.task.timesLimitCycle = "";
-        vm.task.timesLimitType = "";
         vm.task.enabled = "";
         vm.task.excluslve = "";
         vm.task.priority = "";
         vm.task.productCountLimit = 0;
-        vm.task.type = "";
         vm.task.costSources = [];
-        //验证对象
-        vm.verification.productIds = null;
-        vm.verification.timesLimit = null;
-        vm.verification.exclusive = null;
-        vm.verification.storeType = null;
-        vm.verification.productType = null;
-        vm.verification.amount = null;
-        vm.verification.timesLimit = null;
-        vm.verification.amountLimit = null;
-        vm.verification.storesId = null;
-        vm.verification.prems = null;
-        vm.verification.name = null;
-        vm.verification.description = null;
-        vm.verification.startTime = null;
-        vm.verification.userType = null;
-        vm.verification.endTime = null;
-        vm.verification.timesLimitCycle = null;
-        vm.verification.timesLimitType = null;
-        vm.verification.enabled = null;
-        vm.verification.excluslve = null;
-        vm.verification.priority = null;
-        vm.verification.productCountLimit = null;
-        vm.verification.type = null;
-        vm.verification.costSources = null;
     }
 
     vm.blus = function (name, data) {
@@ -94,9 +67,9 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     }
 
     vm.AddTask = function () {
-        console.log(vm.task);
+        console.log(vm.interval);
         if (iftask()) {
-            if (vm.interval.length > 1) {
+            if (vm.interval.length > 0) {
                 for (var i in vm.interval) {
                     vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
                 }
@@ -107,17 +80,17 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
             vm.task.goodsIds = ArryString(vm.task.goodsId, false);
             vm.task.premsId = ArryString(vm.task.prems, true);
             if (typeof (vm.task.startTime) != "undefined" && vm.task.startTime != "" && typeof (vm.task.startTime) != 'number') {
-                console.log(typeof (vm.task.startTime))
-                vm.task.startTime = vm.task.startTime.getTime();
+                vm.task.StartTime = vm.task.startTime.getTime();
             }
             if (typeof (vm.task.endTime) != "undefined" && vm.task.endTime != "" && typeof (vm.task.endTime) != 'number') {
-                console.log(vm.task.endTime)
-                vm.task.endTime = vm.task.endTime.getTime();
+                vm.task.EndTime = vm.task.endTime.getTime();
             }
             console.log(vm.task);
             MarketResource.add(vm.seid, vm.task).then(function (data) {
                 if (data.data.status == "OK") {
-                    layer.msg("保存成功", { icon: 1 })
+                    layer.msg("保存成功", { icon: 1 }, function () {
+                        history.go(-1);
+                    })
                 } else {
                     layer.msg(data.data.message, { icon: 2 })
                 }
@@ -129,7 +102,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     function iftask() {
         var is = true;
         for (var i in vm.verification) {
-            if (vm.verification[i] == null || vm.verification[i] == ""&&vm.verification[i]!=false) {
+            if (vm.verification[i] == null || vm.verification[i] == "" && vm.verification[i] != false) {
                 console.log(vm.verification[i])
                 vm.verification[i] = true;
                 is = false;

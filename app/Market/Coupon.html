@@ -10,20 +10,28 @@
                     <th width='50'><input type="checkbox" /></th>
                     <th>优惠券名称</th>
                     <th width='100'>优先级</th>
-                    <th width='100'>排他性</th>
+                    <th width='200'>排他性</th>
                     <th width='200'>生效时间</th>
                     <th width='100'>优惠券限定</th>
                     <th width='100'>操作</th>
                 </tr>
-                <tr>
+                <tr ng-repeat="item in CouponCtrl.list" >
                     <td><input type="checkbox" /></td>
-                    <td>全场满3-1</td>
-                    <td>50</td>
-                    <td>是</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.priority}}</td>
                     <td>
-                        <p>2016-08-24到2016-23-21</p>
+                        {{item.exclusiveType=='WHITE_LIST'?'白名单中的优惠券可以共存':null}}
+                        {{item.exclusiveType=='EXCLUSIVE'?'只可单独使用':null}}
                     </td>
-                    <td>限定组合</td>
+                    <td>
+                        <div>{{item.startTime}}</div>
+                        <div>到</div>
+                        <div>{{item.endTime}}</div>
+                    </td>
+                    <td>
+                        {{item.specType=='ALL_SPEC'?'全部商品':null}}
+                        {{item.specType=='SELECTED_SPEC'?'限定商品':null}}
+                    </td>
                     <td>
                         <div class="batch-btn c0">
                             <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown">

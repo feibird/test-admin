@@ -119,7 +119,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         if (s < 9) {
             s = "0" + s;
         }
-        return Y + M + D;
+        return Y + M + D+h+m+s;
     }
 
 }

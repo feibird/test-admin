@@ -8,7 +8,10 @@ function RecordedResource($http, device, version) {
   return {
     list: list,
     get: get,
-    total:total
+    total:total,
+    exel:exel,
+    exels:exels,
+    task:task
   };
 
 
@@ -17,7 +20,6 @@ function RecordedResource($http, device, version) {
    * 获取入账列表
    */
   function list(seid, obj, skip, limit) {
-    console.log(obj)
     return $http.get("/api-admin/journal/list", {
       params: {
         "device": device,
@@ -66,6 +68,56 @@ function RecordedResource($http, device, version) {
       return data
     })
   }
+
+  function exel(seid,obj) {
+    console.log(obj)
+    return $http.get("/api-admin/report/trade/product/excel", {
+      params: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "storeId":obj.storeId,
+        "endDate":obj.endDate,
+        "startDate":obj.startDate
+      }
+    }).then(function (data) {
+      return data
+    })
+  }
+
+  function exels(seid,obj) {
+    console.log(obj)
+    return $http.get("/api-admin/report/trade/detail/excel", {
+      params: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "storeId":obj.storeId,
+        "endDate":obj.endDate,
+        "startDate":obj.startDate,
+        "source":obj.sources,
+        'detail':obj.detail,
+        'completeEndDate':obj.createEndDate,
+        "completeStartDate":obj.createStartDate,
+      }
+    }).then(function (data) {
+      return data
+    })
+  }
+
+  function task(seid,task) {
+    return $http.get("/api-admin/report/task/state/", {
+      params: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        'taskId':task
+      }
+    }).then(function (data) {
+      return data
+    })
+  }
+
 
 
 }

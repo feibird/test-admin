@@ -1,5 +1,5 @@
 angular
-    .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap','ngTable','angularFileUpload'])
+    .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap.datetimepicker','ui.bootstrap','ngTable','angularFileUpload'])
     .constant("device","pc")			//定义全局变量:设备编号
     .constant("version","2.0.0")		//定义全局变量:版本号
     .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
