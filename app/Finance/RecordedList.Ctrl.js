@@ -112,10 +112,20 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
         }, 5000);
       } else if (data.data.result.status == 'SUCCESS') {
         layer.closeAll()
-        window.open('/api-admin/report/task/download?sessionId=' + vm.seid
-          + "&device=" + 'pc'
-          + "&version=" + '2.0.0'
-          + '&taskId=' + vm.taskId)
+        layer.confirm('任务已完成,点击确定下载exel', {
+            btn: ["确定", '取消']
+        }, function () {
+          layer.closeAll();
+            window.open('/api-admin/report/task/download?sessionId=' + vm.seid
+              + "&device=" + 'pc'
+              + "&version=" + '2.0.0'
+              + '&taskId=' + vm.taskId)
+        })
+       
+      }else{
+        layer.msg('导出失败',{icon:2},function(){
+          layer.closeAll();
+        })
       }
     })
   }

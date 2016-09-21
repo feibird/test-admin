@@ -40,21 +40,22 @@ function CouponResource($http, device, version) {
                 "id": obj.id,                                    //id
                 "name": obj.name,                               //名称
                 "description": obj.description,                  //描述
-                "startTime": obj.startTime,                     //开始时间
-                "endTime": obj.endTime,                         //结束时间
+                "startTime": obj.StratTime,                     //开始时间
+                "endTime": obj.EndTime,                         //结束时间
                 "storeType": obj.storeType,                      //门店类型
-                "userType": obj.specIds,                         //用户类型
+                "userType": obj.userType,                         //用户类型
                 "specType": obj.specType,                        //商品规格类型
-                "specIds": onj.specIds,                          //商品规格列表
+                "specIds": obj.goodIds,                          //商品规格列表
+                "storeIds": obj.storeIds,                          //商品规格列表
                 "specCountLimit": obj.specCountLimit,            //
                 "exclusiveType": "EXCLUSIVE",              //排他性
-                "whiteListIds": obj.whiteListIds,                //白名单中的优惠券模板id
+                "whiteListIds": "",                //白名单中的优惠券模板id
                 "amountLimit": obj.amountLimit,                  //优惠券金额限制
                 "cutAmount": obj.cutAmount,                      //优惠券优化金额
                 "isEnabled": obj.isEnabled,                      //是否启用
                 "priority": obj.priority,                        //优先级
                 "type": obj.type,                                //类型
-                "costSources": obj.costSources                   //承担方
+                "costSources": JSON.stringify(obj.Sources)                   //承担方
             }
         })
             .then(function (data) {

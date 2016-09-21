@@ -25,21 +25,67 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
     }
 
     get(vm.id)
-    function get(id){
-        CouponResource.get(vm.seid,id).then(function(data){
+    function get(id) {
+        CouponResource.get(vm.seid, id).then(function (data) {
             vm.info = data.data.result;
-            if(vm.info.amountLimit){
-                vm.info.isGood=true;
+            for(var i in vm.info.couponCostSourceList){
+                vm.info.couponCostSourceList[i].ratio=vm.info.couponCostSourceList[i].ratio;
+            }
+            if (vm.info.amountLimit) {
+                vm.info.isGood = true;
             }
             console.log(vm.info)
         })
     }
 
-
-    vm.AddcostSources = function () {
+     vm.AddcostSources = function () {
         var add = { costSourceId: "", ratio: "" };
-        vm.Sources.push(add);
+        vm.info.couponCostSourceList.push(add);
     }
+
+
+    vm.UpdateBtn = function () {
+        vm.info.StratTime = typeof(vm.info.startTime)=='number'?vm.info.startTime:vm.info.startTime.getTime();
+        vm.info.EndTime = typeof(vm.info.endTime)=='number'?vm.info.endTime:vm.info.endTime.getTime();
+        vm.info.Sources = objstring(vm.info.couponCostSourceList);
+        vm.info.storeIds = ArryString(vm.info.storeList, true);
+        vm.info.goodIds = ArryString(vm.info.specList, false);
+        CouponResource.update(vm.seid,vm.info).then(function(data){
+            if(data.data.status=='OK'){
+                layer.msg('修改成功',{icon:1},function(){
+
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+
+    }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+
+        if (h.length < 3) {
+            h = "0" + h;
+        }
+        return Y + M + D + h + m + s;
+    }
+
 
     function objstring(obj) {
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
@@ -47,7 +93,7 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio * 0.01;
+                json[obj[i].costSource.id] = obj[i].ratio;
             }
             return json;
         }

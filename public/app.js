@@ -1364,10 +1364,20 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
         }, 5000);
       } else if (data.data.result.status == 'SUCCESS') {
         layer.closeAll()
-        window.open('/api-admin/report/task/download?sessionId=' + vm.seid
-          + "&device=" + 'pc'
-          + "&version=" + '2.0.0'
-          + '&taskId=' + vm.taskId)
+        layer.confirm('任务已完成,点击确定下载exel', {
+            btn: ["确定", '取消']
+        }, function () {
+          layer.closeAll();
+            window.open('/api-admin/report/task/download?sessionId=' + vm.seid
+              + "&device=" + 'pc'
+              + "&version=" + '2.0.0'
+              + '&taskId=' + vm.taskId)
+        })
+       
+      }else{
+        layer.msg('导出失败',{icon:2},function(){
+          layer.closeAll();
+        })
       }
     })
   }
@@ -3207,21 +3217,22 @@ function CouponResource($http, device, version) {
                 "id": obj.id,                                    //id
                 "name": obj.name,                               //名称
                 "description": obj.description,                  //描述
-                "startTime": obj.startTime,                     //开始时间
-                "endTime": obj.endTime,                         //结束时间
+                "startTime": obj.StratTime,                     //开始时间
+                "endTime": obj.EndTime,                         //结束时间
                 "storeType": obj.storeType,                      //门店类型
-                "userType": obj.specIds,                         //用户类型
+                "userType": obj.userType,                         //用户类型
                 "specType": obj.specType,                        //商品规格类型
-                "specIds": onj.specIds,                          //商品规格列表
+                "specIds": obj.goodIds,                          //商品规格列表
+                "storeIds": obj.storeIds,                          //商品规格列表
                 "specCountLimit": obj.specCountLimit,            //
                 "exclusiveType": "EXCLUSIVE",              //排他性
-                "whiteListIds": obj.whiteListIds,                //白名单中的优惠券模板id
+                "whiteListIds": "",                //白名单中的优惠券模板id
                 "amountLimit": obj.amountLimit,                  //优惠券金额限制
                 "cutAmount": obj.cutAmount,                      //优惠券优化金额
                 "isEnabled": obj.isEnabled,                      //是否启用
                 "priority": obj.priority,                        //优先级
                 "type": obj.type,                                //类型
-                "costSources": obj.costSources                   //承担方
+                "costSources": JSON.stringify(obj.Sources)                   //承担方
             }
         })
             .then(function (data) {
@@ -3890,21 +3901,67 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
     }
 
     get(vm.id)
-    function get(id){
-        CouponResource.get(vm.seid,id).then(function(data){
+    function get(id) {
+        CouponResource.get(vm.seid, id).then(function (data) {
             vm.info = data.data.result;
-            if(vm.info.amountLimit){
-                vm.info.isGood=true;
+            for(var i in vm.info.couponCostSourceList){
+                vm.info.couponCostSourceList[i].ratio=vm.info.couponCostSourceList[i].ratio;
+            }
+            if (vm.info.amountLimit) {
+                vm.info.isGood = true;
             }
             console.log(vm.info)
         })
     }
 
-
-    vm.AddcostSources = function () {
+     vm.AddcostSources = function () {
         var add = { costSourceId: "", ratio: "" };
-        vm.Sources.push(add);
+        vm.info.couponCostSourceList.push(add);
     }
+
+
+    vm.UpdateBtn = function () {
+        vm.info.StratTime = typeof(vm.info.startTime)=='number'?vm.info.startTime:vm.info.startTime.getTime();
+        vm.info.EndTime = typeof(vm.info.endTime)=='number'?vm.info.endTime:vm.info.endTime.getTime();
+        vm.info.Sources = objstring(vm.info.couponCostSourceList);
+        vm.info.storeIds = ArryString(vm.info.storeList, true);
+        vm.info.goodIds = ArryString(vm.info.specList, false);
+        CouponResource.update(vm.seid,vm.info).then(function(data){
+            if(data.data.status=='OK'){
+                layer.msg('修改成功',{icon:1},function(){
+
+                })
+            }else{
+                layer.msg(data.data.message,{icon:2})
+            }
+        })
+
+    }
+
+    function chang_time(date) {
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' '; //天
+        var h = date.getHours() + ':'; //时
+        var m = date.getMinutes() + ':'; //分
+        var s = date.getSeconds();
+        if (D.length < 3) {
+            D = "0" + D;
+        }
+        if (m.length < 3) {
+            m = "0" + m;
+        }
+
+        if (s < 9) {
+            s = "0" + s;
+        }
+
+        if (h.length < 3) {
+            h = "0" + h;
+        }
+        return Y + M + D + h + m + s;
+    }
+
 
     function objstring(obj) {
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
@@ -3912,7 +3969,7 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio * 0.01;
+                json[obj[i].costSource.id] = obj[i].ratio;
             }
             return json;
         }
