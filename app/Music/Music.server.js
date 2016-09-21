@@ -8,7 +8,7 @@ function MusicResource($http, device, version) {
         remove: remove,
         get: get,
         status: status,
-        count:count
+        count: count
     };
 
     function list(seid, skip, limit) {
@@ -108,8 +108,8 @@ function MusicResource($http, device, version) {
             })
     }
 
-    function count(seid){
-         return $http.get("/api-admin/voice/count", { params: { "device": device, "version": version, "sessionId": seid} }).then(function (data) {
+    function count(seid) {
+        return $http.get("/api-admin/voice/count", { params: { "device": device, "version": version, "sessionId": seid } }).then(function (data) {
             return data
         })
     }

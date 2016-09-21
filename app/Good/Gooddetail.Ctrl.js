@@ -35,7 +35,7 @@ function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, Format
 	 * 基本商品
 	 */
    	function gooddetail(id) {
-		GoodResource.get(vm.seid,id).then(function (data) {
+		GoodResource.get(vm.seid, id).then(function (data) {
 			if (data.data.status != "OK") {
 
 			} else {

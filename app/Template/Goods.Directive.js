@@ -103,7 +103,7 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
             function ArryAnalysis(obj) {
                 var good = new Object();
                 var GoodSpecs = new Array();
-                good.categories = new Object();
+                good.categories = new Object();    
                 for (var i in obj) {
                     for (var j in obj[i].specs) {
                         good.name = obj[i].name;

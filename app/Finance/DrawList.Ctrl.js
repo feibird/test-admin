@@ -177,6 +177,8 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     list();
   };
 
+
+  //为结束时间的时分秒修改为23:59:59
   function GTM(is, data) {
     console.log(data)
     if (typeof (data) == 'undefined' || data == "" || data == null) {
@@ -195,6 +197,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.exel = function () {
     exel()
   }
+
 
   vm.countBtn = function () {
     layer.open({

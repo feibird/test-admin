@@ -10,14 +10,14 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.list;						//对象集合
     vm.music = new Object();
     vm.music.dates = new Array();
-    vm.music.dates[0]={};
-    vm.music.dates[0].startTime='';
-    vm.music.dates[0].endTime='';
+    vm.music.dates[0] = {};
+    vm.music.dates[0].startTime = '';
+    vm.music.dates[0].endTime = '';
     vm.music.store = new Array();
     vm.music.times = new Array();
     vm.music.times[0] = new Object();
-    vm.music.times[0].startDate= "";
-    vm.music.times[0].endDate="";
+    vm.music.times[0].startDate = "";
+    vm.music.times[0].endDate = "";
     vm.stores;
     //获取sessionId
     login()

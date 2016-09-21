@@ -26,6 +26,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		});
     }
 
+
 	vm.updateBtn = function(){
 		update();
 	}
@@ -114,6 +115,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//新增
 	function add(){
 		BrandStoresResource.add(vm.addinfo,vm.seid).then(function(data){
 			console.log(data)
@@ -128,6 +130,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//获取
 	function get(id){
 		BrandStoresResource.get(vm.seid,id).then(function(data){
 			vm.getlist = data.data.result;
@@ -135,6 +138,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//删除
 	function remove(id){
 		BrandStoresResource.remove(id,vm.seid).then(function(data){
 			console.log(data);
@@ -147,6 +151,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//列表
 	function sortlist(){
 		SortResource.list(vm.seid).then(function(data){
 			vm.sortlist = data.data.result.root

@@ -1,5 +1,5 @@
 /**
- * 提供功能API封装
+ * 提供财务功能API封装
  */
 angular.module('index_area').factory('DrawResource', DrawResource);
 DrawResource.$inject = ['$http', 'device', 'version'];
@@ -14,7 +14,7 @@ function DrawResource($http, device, version) {
     operaNo: operaNo,
     FinanNo: FinanNo,
     FinanOk: FinanOk,
-    count:count
+    count: count
   };
 
 
@@ -32,13 +32,13 @@ function DrawResource($http, device, version) {
         "limit": limit,
         'storeId': obj.storeId,
         'status': obj.status,
-        "applyStartDate":obj.applyStartDate,
+        "applyStartDate": obj.applyStartDate,
         "applyEndDate": obj.applyEndDate,
-        "completeStartDate":obj.completeStartDate,
-        "completeEndDate":obj.completeEndDate,
+        "completeStartDate": obj.completeStartDate,
+        "completeEndDate": obj.completeEndDate,
         "serialNumber": obj.serialNumber
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
@@ -51,17 +51,17 @@ function DrawResource($http, device, version) {
    */
   function update(seid, status, id) {
     return $http({
-        url: "/api-admin/draw/" + id + "/update",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "status": status,
-          "device": device,
-          "version": version,
-          "sessionId": seid
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/" + id + "/update",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "status": status,
+        "device": device,
+        "version": version,
+        "sessionId": seid
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
@@ -69,138 +69,139 @@ function DrawResource($http, device, version) {
   /**
    * 获取某个订单
    */
-  function get(seid,id) {
+  function get(seid, id) {
     return $http.get("/api-admin/draw/" + id + "/get", {
       params: {
         "device": device,
         "version": version,
-        "sessionId":seid
+        "sessionId": seid
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
 
   //确认打款
   function complete(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/complete",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "ids": ids,
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/complete",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "ids": ids,
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //运营审核通过
   function operaOk(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/approve-operate",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/approve-operate",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //运营审核失败
   function operaNo(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
-    
+
     return $http({
-        url: "/api-admin/draw/reject-operate",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/reject-operate",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //财务审核不通过
   function FinanNo(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/reject-finance",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/reject-finance",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //财务审核通过
   function FinanOk(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/approve-finance",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/approve-finance",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
+
 
   function count(seid, obj, skip, limit) {
     console.log(obj);
@@ -219,14 +220,14 @@ function DrawResource($http, device, version) {
         "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
         "serialNumber": obj.serialNumber
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
 
   //将数组组成字符串
   function arry(obj) {
-    if(typeof(obj)=="undefined"){
+    if (typeof (obj) == "undefined") {
       return obj
     }
     var ids = "";

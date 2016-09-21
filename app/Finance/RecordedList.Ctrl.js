@@ -36,6 +36,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     list();
   }
 
+  
   function GTM(is, data) {
     if (typeof (data) == 'undefined' || data == "" || data == null || typeof (data) == 'number') {
       return data;

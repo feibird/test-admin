@@ -7,7 +7,7 @@ WalletResource.$inject = ['$http', 'device', 'version'];
 function WalletResource($http, device, version) {
   return {
     list: list,
-    sum:sum
+    sum: sum
   };
 
 
@@ -15,7 +15,7 @@ function WalletResource($http, device, version) {
    * list
    * 获取余额列表
    */
-  function list(seid,name, skip, limit) {
+  function list(seid, name, skip, limit) {
     return $http.get("/api-admin/store/wallet/list", {
       params: {
         "device": device,
@@ -23,23 +23,25 @@ function WalletResource($http, device, version) {
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        "name":name
+        "name": name
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function sum(seid){
-      return $http.get('/api-admin/store/wallet/sum',{
-        params:{
-          "device": device,
+
+  //总数
+  function sum(seid) {
+    return $http.get('/api-admin/store/wallet/sum', {
+      params: {
+        "device": device,
         "version": version,
         "sessionId": seid
-        }
-      }).then(function(data){
-          return data
-      })
+      }
+    }).then(function (data) {
+      return data
+    })
   }
 
 }

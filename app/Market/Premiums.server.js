@@ -3,10 +3,10 @@ PremResource.$inject = ['$http', 'device', 'version'];
 function PremResource($http, device, version) {
   return {
 		  list: list,
-        add: add,
-        get: get,
-        update: update,
-        remove: remove
+    add: add,
+    get: get,
+    update: update,
+    remove: remove
   };
 
   function list(seid, skip, limit) {
@@ -25,15 +25,15 @@ function PremResource($http, device, version) {
     return $http({
       url: "/api-admin/gift/update",
       method: 'post',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "id":obj.id,
-        "name":obj.name,
-        "specId":obj.specs,
-        "cost":obj.cost  
+        "id": obj.id,
+        "name": obj.name,
+        "specId": obj.specs,
+        "cost": obj.cost
       }
     })
       .then(function (data) {
@@ -51,8 +51,8 @@ function PremResource($http, device, version) {
         "version": version,
         "sessionId": seid,
         "name": obj.name,
-        "specId":obj.specs,
-        "cost":obj.cost 
+        "specId": obj.specs,
+        "cost": obj.cost
       }
     })
       .then(function (data) {

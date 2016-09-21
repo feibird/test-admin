@@ -98,6 +98,8 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
     }
   }
 
+
+  //时间戳转换2008-08-08:00:00:00格式
   function chang_time(date) {
         var Y = date.getFullYear() + '/';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';

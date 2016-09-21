@@ -74,7 +74,7 @@ function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, 
      * @param {Object} seid
      */
     function list(seid) {
-        GoodResource.list(seid, null, 0,10).then(function (data) {
+        GoodResource.list(seid, null, 0, 10).then(function (data) {
             vm.list = data.data.result;
             console.log(data)
             vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });

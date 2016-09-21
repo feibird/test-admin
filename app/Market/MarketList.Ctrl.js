@@ -33,7 +33,7 @@ function config($stateProvider) {
             controller: 'AddCouponCtrl as AddCouponCtrl'
         })
         .state("updatecoupon", {
-            url: "/market/updatecoupon",
+            url: "/market/updatecoupon/{id:string}",
             templateUrl: "Market/UpdateCoupon.html",
             controller: 'UpdateCouponCtrl as UpdateCouponCtrl'
         })
@@ -55,7 +55,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 icon: 2
             }, function (index) {
                 layer.close(index);
-                PublicResource.Urllogin() ;
+                PublicResource.Urllogin();
             });
         } else {
             vm.seid = PublicResource.seid(vm.user);
@@ -80,26 +80,26 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     }
 
-    vm.delBtn = function(id){
+    vm.delBtn = function (id) {
         layer.confirm('您确定要删除此条？', {
-			  btn: ['确定','取消'] //按钮
-		}, function(){
-			remove(id)
-		});
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            remove(id)
+        });
     }
 
-    function remove(id){
-        MarketResource.remove(vm.seid,id).then(function(data){
+    function remove(id) {
+        MarketResource.remove(vm.seid, id).then(function (data) {
             console.log(data)
-            if(data.data.status=="OK"){
-                layer.msg('删除成功！',{icon:1});
+            if (data.data.status == "OK") {
+                layer.msg('删除成功！', { icon: 1 });
                 list();
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
-
+    //时间戳转换2008-08-08:00:00:00格式
     function chang_time(date) {
         var Y = date.getFullYear() + '/';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
@@ -119,7 +119,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         if (s < 9) {
             s = "0" + s;
         }
-        return Y + M + D+h+m+s;
+        return Y + M + D + h + m + s;
     }
 
 }

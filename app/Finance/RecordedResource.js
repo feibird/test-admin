@@ -8,10 +8,10 @@ function RecordedResource($http, device, version) {
   return {
     list: list,
     get: get,
-    total:total,
-    exel:exel,
-    exels:exels,
-    task:task
+    total: total,
+    exel: exel,
+    exels: exels,
+    task: task
   };
 
 
@@ -27,30 +27,30 @@ function RecordedResource($http, device, version) {
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        "storeId":obj.storeId,
-        "sources":obj.sources,
-        "maxTotalAmount":obj.maxTotalAmount,
-        "minTotalAmount":obj.minTotalAmount,
-        "takeNo":obj.takeNo,
-        "tradeId":obj.tradeId,
-        "createStartDate":obj.createStartDate,
-        "createEndDate":obj.createEndDate
+        "storeId": obj.storeId,
+        "sources": obj.sources,
+        "maxTotalAmount": obj.maxTotalAmount,
+        "minTotalAmount": obj.minTotalAmount,
+        "takeNo": obj.takeNo,
+        "tradeId": obj.tradeId,
+        "createStartDate": obj.createStartDate,
+        "createEndDate": obj.createEndDate
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function total(seid){
-      return $http.get('/api-admin/journal/count',{
-        params:{
-          "device": device,
+  function total(seid) {
+    return $http.get('/api-admin/journal/count', {
+      params: {
+        "device": device,
         "version": version,
         "sessionId": seid
-        }
-      }).then(function(data){
-          return data
-      })
+      }
+    }).then(function (data) {
+      return data
+    })
   }
 
 
@@ -69,49 +69,49 @@ function RecordedResource($http, device, version) {
     })
   }
 
-  function exel(seid,obj) {
+  function exel(seid, obj) {
     console.log(obj)
     return $http.get("/api-admin/report/trade/product/excel", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "storeId":obj.storeId,
-        "endDate":obj.endDate,
-        "startDate":obj.startDate
+        "storeId": obj.storeId,
+        "endDate": obj.endDate,
+        "startDate": obj.startDate
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function exels(seid,obj) {
+  function exels(seid, obj) {
     console.log(obj)
     return $http.get("/api-admin/report/trade/detail/excel", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "storeId":obj.storeId,
-        "endDate":obj.endDate,
-        "startDate":obj.startDate,
-        "source":obj.sources,
-        'detail':obj.detail,
-        'completeEndDate':obj.createEndDate,
-        "completeStartDate":obj.createStartDate,
+        "storeId": obj.storeId,
+        "endDate": obj.endDate,
+        "startDate": obj.startDate,
+        "source": obj.sources,
+        'detail': obj.detail,
+        'completeEndDate': obj.createEndDate,
+        "completeStartDate": obj.createStartDate,
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function task(seid,task) {
+  function task(seid, task) {
     return $http.get("/api-admin/report/task/state/", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        'taskId':task
+        'taskId': task
       }
     }).then(function (data) {
       return data

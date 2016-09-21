@@ -13,6 +13,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
     vm.Coupon.whiteListIds='';
     vm.goodId=[];
     vm.Sources=[];
+    vm.whites=[];
     vm.id = $stateParams.id;
     login();
     function login() {

@@ -3,11 +3,11 @@ MarketResource.$inject = ['$http', 'device', 'version'];
 function MarketResource($http, device, version) {
   return {
 		  list: list,
-    add: add,
-    get: get,
-    update: update,
-    remove: remove,
-    resource:resource
+      add: add,
+      get: get,
+      update: update,
+      remove: remove,
+      resource: resource
   };
 
   function list(seid, skip, limit) {
@@ -22,7 +22,7 @@ function MarketResource($http, device, version) {
     })
   }
 
-  function resource(seid,skip,limit){
+  function resource(seid, skip, limit) {
     return $http.get("/api-admin/costSource/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
       return data
     })
@@ -37,7 +37,7 @@ function MarketResource($http, device, version) {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "id":obj.id,
+        "id": obj.id,
         "name": obj.name,                               //活动名称
         "description": obj.description,                 //活动描述
         "startTime": obj.startTime,                     //开始时间
@@ -51,11 +51,11 @@ function MarketResource($http, device, version) {
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
         "amountLimit": obj.amountLimit,
-        "productCountLimit":obj.productCountLimit,
+        "productCountLimit": obj.productCountLimit,
         "extensibleCriteria": "",
-        "giftIds":obj.prems,
+        "giftIds": obj.prems,
         "enabled": obj.enabled,
-        "costSources":JSON.stringify(obj.costSources),
+        "costSources": JSON.stringify(obj.costSources),
         "exclusive": obj.exclusive,
         "priority": obj.priority,
         "type": obj.type,
@@ -88,14 +88,14 @@ function MarketResource($http, device, version) {
         "productIds": obj.goodsIds,
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
-        "productCountLimit":obj.productCountLimit,
+        "productCountLimit": obj.productCountLimit,
         "amountLimit": obj.amountLimit,
         "extensibleCriteria": "",
         "enabled": obj.enabled,
         "exclusive": obj.exclusive,
         "priority": obj.priority,
-        "giftIds":obj.premsId,
-        "costSources":JSON.stringify(obj.costSource),
+        "giftIds": obj.premsId,
+        "costSources": JSON.stringify(obj.costSource),
         "type": obj.type,
         "formulaParameter": JSON.stringify(obj.formulaParameter)
       }

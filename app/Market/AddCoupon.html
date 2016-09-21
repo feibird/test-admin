@@ -13,7 +13,7 @@
         </select>
         <p class="error-text" ng-if="add.isEnabled.$error.required&&add.isEnabled.$touched">选项不可为空！</p>
     </div>
-    <div class="form-group w100p" ng-class="{'has-error':add.isEnabled.$error.required&&add.isEnabled.$touched}">
+    <!--<div class="form-group w100p" ng-class="{'has-error':add.isEnabled.$error.required&&add.isEnabled.$touched}">
         <label for="">是否排他</label>
         <select name="exclusiveType" id="" class="form-control" ng-model="AddCouponCtrl.Coupon.exclusiveType" required>
             <option value="" selected hidden>请选择</option>
@@ -21,7 +21,8 @@
             <option value="WHITE_LIST">与白名单优惠券共存</option>
         </select>
         <p class="error-text" ng-if="add.isEnabled.$error.required&&add.isEnabled.$touched">选项不可为空！</p>
-    </div>
+    </div>-->
+    <!--<coupon returnlist='AddCouponCtrl.whites' ></coupon>-->
     <div class="form-group" ng-class="{'has-error':add.priority.$error.required&&add.priority.$touched}">
         <label for="">优惠券优先级</label>
         <input type="number" name='priority' required class="form-control" ng-model="AddCouponCtrl.Coupon.priority">
@@ -51,7 +52,7 @@
                 <p class="error-text" ng-if='add.startTime.$error.required&&add.startTime.$touched'>选项为必填</p>
             </div>
             <div class="dropdown dib" style="width:400px;">
-                <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="javascript:;">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="javascript:;">
                     <div class="input-group">
                         <span class="input-group-addon">开始时间</span>
                         <input type="text" class="form-control" name='endTime' required data-ng-model="AddCouponCtrl.Coupon.endTime | date:'yyyy-MM-dd HH:mm'">
@@ -60,7 +61,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <datetimepicker data-ng-model="AddCouponCtrl.Coupon.endTime" modelType='Date' date='Date' data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"
+                    <datetimepicker data-ng-model="AddCouponCtrl.Coupon.endTime" modelType='Date' date='Date' data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"
                     />
                 </ul>
                 <p class="error-text" ng-if='add.startTime.$error.required&&add.startTime.$touched'>选项为必填</p>

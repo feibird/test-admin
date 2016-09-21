@@ -49,7 +49,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             if (vm.interval.length > 1) {
                 vm.data.formulaParameterMap = {};
                 for (var i in vm.interval) {
-                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count*0.01;
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
                 }
             }
         }
@@ -166,7 +166,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 var json = new Object();
                 json.start = i.substring(9, i.length).split("_")[0];
                 json.end = i.substring(9, i.length).split("_")[1];
-                json.count = obj[i]*100;
+                json.count = obj[i] * 100;
                 vm.interval.push(json);
             }
         }

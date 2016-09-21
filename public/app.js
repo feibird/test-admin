@@ -1,132 +1,132 @@
 (function(){
 "use strict"
 angular
-    .module("index_area",["ui.router",'LocalStorageModule','ui.bootstrap.datetimepicker','ui.bootstrap','ngTable','angularFileUpload'])
-    .constant("device","pc")			//定义全局变量:设备编号
-    .constant("version","2.0.0")		//定义全局变量:版本号
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider,$httpProvider) {
+    .module("index_area", ["ui.router", 'LocalStorageModule', 'ui.bootstrap.datetimepicker', 'ui.bootstrap', 'ngTable', 'angularFileUpload'])
+    .constant("device", "pc")			//定义全局变量:设备编号
+    .constant("version", "2.0.0")		//定义全局变量:版本号
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
         $urlRouterProvider.otherwise("/stores/list");
-        
-        $httpProvider.defaults.transformRequest = function(obj){
-     var str = [];
-     for(var p in obj){
-       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-     }
-     return str.join("&");
-   }
 
-   $httpProvider.defaults.headers.post = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-   }
-        
+        $httpProvider.defaults.transformRequest = function (obj) {
+            var str = [];
+            for (var p in obj) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+            return str.join("&");
+        }
+
+        $httpProvider.defaults.headers.post = {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
         $stateProvider
-        .state("/sort/list", {											                       //分类管理
+            .state("/sort/list", {											                       //分类管理
                 url: "/sort/list",
                 templateUrl: "Sort/list.html",
-                 controller: 'SortlistCtrl as SortlistCtrl',
-                 params: {'index':3}
-        })
-        .state("/supplierlogo/list", {									                          //供应商品牌
-                url: "/supplierlogo/list",  
+                controller: 'SortlistCtrl as SortlistCtrl',
+                params: { 'index': 3 }
+            })
+            .state("/supplierlogo/list", {									                          //供应商品牌
+                url: "/supplierlogo/list",
                 templateUrl: "SupplierLogo/list.html",
-                 controller: 'SupplierLogolistCtrl as SupplierLogolistCtrl',
-                 params: {'index':5}
-        })
-         .state("/brandstores/list", {								                        	//连锁品牌
+                controller: 'SupplierLogolistCtrl as SupplierLogolistCtrl',
+                params: { 'index': 5 }
+            })
+            .state("/brandstores/list", {								                        	//连锁品牌
                 url: "/brandstores/list",
                 templateUrl: "BrandStores/list.html",
                 controller: 'BrandStoreslistCtrl as BrandStoreslistCtrl',
-                params: {'index':5}
-        })
-        .state("/stores/list", {                                                                 //门店管理
+                params: { 'index': 5 }
+            })
+            .state("/stores/list", {                                                                 //门店管理
                 url: "/stores/list",
                 templateUrl: "Stores/list.html",
                 controller: 'StoreslistCtrl as StoreslistCtrl',
-                params: {'index':5}
-        })
-    .state("/label/list", {                                                                      //标签管理
+                params: { 'index': 5 }
+            })
+            .state("/label/list", {                                                                      //标签管理
                 url: "/label/list",
                 templateUrl: "Label/list.html",
                 controller: 'LabellistCtrl as LabellistCtrl',
-                params: {'index':5}
-        })
-        .state("/order/orderlist", {                                                              //订单管理
+                params: { 'index': 5 }
+            })
+            .state("/order/orderlist", {                                                              //订单管理
                 url: "/order/orderlist",
                 templateUrl: "Order/Orderlist.html",
                 controller: 'OrderlistCtrl as OrderlistCtrl',
-            params: {'index':5}
-        })
-        .state("/good/list", {                                                                   //商品管理
+                params: { 'index': 5 }
+            })
+            .state("/good/list", {                                                                   //商品管理
                 url: "/good/list",
                 templateUrl: "Good/list.html",
                 controller: 'GoodlistCtrl as GoodlistCtrl',
-                params: {'index':5}
-        })
-        .state("/finance/list", {                                                               //财务管理
+                params: { 'index': 5 }
+            })
+            .state("/finance/list", {                                                               //财务管理
                 url: "/finance/drawlist",
                 templateUrl: "Finance/drawlist.html",
                 controller: 'DrawlistCtrl as DrawlistCtrl',
-                params: {'index':5}
-        })
-        .state("/market/list", {                                                               //运营管理
+                params: { 'index': 5 }
+            })
+            .state("/market/list", {                                                               //运营管理
                 url: "/market/list",
                 templateUrl: "Market/list.html",
                 controller: 'MarketListCtrl as MarketListCtrl',
-                params: {'index':5}
-        })
-        .state("/user/userlist", {                                                               //用户管理
+                params: { 'index': 5 }
+            })
+            .state("/user/userlist", {                                                               //用户管理
                 url: "/user/userlist",
                 templateUrl: "User/Userlist.html",
                 controller: 'UserListCtrl as UserListCtrl',
-                params: {'index':5}
-        })
-        .state("/user/rolelist", {                                                               //角色管理
+                params: { 'index': 5 }
+            })
+            .state("/user/rolelist", {                                                               //角色管理
                 url: "/user/rolelist",
                 templateUrl: "User/Rolelist.html",
                 controller: 'RoleListCtrl as RoleListCtrl',
-                params: {'index':5}
-        })
-        .state("/music/list", {                                                               //语音管理
+                params: { 'index': 5 }
+            })
+            .state("/music/list", {                                                               //语音管理
                 url: "/music/musiclist",
                 templateUrl: "Music/list.html",
                 controller: 'MusicListCtrl as MusicListCtrl',
-                params: {'index':5}
-        })
-          //去掉#号  
+                params: { 'index': 5 }
+            })
+        //去掉#号  
         /*$locationProvider.html5Mode(true);*/
-        
+
     })
     .run(run);
-run.$inject = ['$rootScope', '$state', '$location','localStorageService','PublicResource']
-function run($rootScope, $state, $location, localStorageService,PublicResource) {
+run.$inject = ['$rootScope', '$state', '$location', 'localStorageService', 'PublicResource']
+function run($rootScope, $state, $location, localStorageService, PublicResource) {
     var seid;
     login();
     var userName;
     var user;
-    PublicResource.user(seid).then(function(data){
+    PublicResource.user(seid).then(function (data) {
         userName = data.result.name;
     });
-    $rootScope.userName =userName;
-        function login(){
-        user=PublicResource.seid("admin");           
-        if(typeof(user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
+    $rootScope.userName = userName;
+    function login() {
+        user = PublicResource.seid("admin");
+        if (typeof (user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
                 layer.close(index);
                 PublicResource.Urllogin();
             })
-        }else{
+        } else {
             seid = PublicResource.seid(user);
             $rootScope.seid = seid;
         }
     }
     console.log($rootScope.seid)
-    
 
-    $rootScope.logout = function(){
-        PublicResource.logout(seid).then(function(data){
+
+    $rootScope.logout = function () {
+        PublicResource.logout(seid).then(function (data) {
             console.log(data);
-            if(data.status=='OK'){
-                layer.alert('退出成功~',{icon:1},function(){
+            if (data.status == 'OK') {
+                layer.alert('退出成功~', { icon: 1 }, function () {
                     $.session.remove('admin');
                     $.session.remove(user);
                     layer.closeAll();
@@ -145,96 +145,99 @@ function run($rootScope, $state, $location, localStorageService,PublicResource) 
  * 连锁品牌管理功能API封装
  */
 angular.module('index_area').factory('BrandStoresResource', BrandStoresResource);
-BrandStoresResource.$inject = ['$http','device','version'];
-function BrandStoresResource($http,device,version) {
+BrandStoresResource.$inject = ['$http', 'device', 'version'];
+function BrandStoresResource($http, device, version) {
     return {
-        list:list,
-        add:add,
-        remove:remove,
-        get:get,
-        update:update
+        list: list,
+        add: add,
+        remove: remove,
+        get: get,
+        update: update
     };
-    
+
 	/**
 	 * list
 	 * 获取列表
 	 */
-    function list(seid,skip,limit){    	
-        return $http.get("/api-admin/brand/list",{params:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit
-            }}).then(function(data){
+    function list(seid, skip, limit) {
+        return $http.get("/api-admin/brand/list", {
+            params: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "skip": skip,
+                "limit": limit
+            }
+        }).then(function (data) {
             return data
         })
-    }    
-    
-    /**
-     * 添加分类
-     */
-    function add(obj,seid){  
-        return $http({
-            url:"/api-admin/brand/add",
-            method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                "device":device,
-                "version":version,
-                "sessionId":seid,
-                "name":obj.name,
-                "category.id":obj.category.data.id,
-                "logo":obj.imgUrl,
-                "sort":obj.sort,
-                "serialPrefix":obj.serialPrefix}
-        })
-        .then(function (data) {
-             return data
-        })
     }
-    
-    /**
-     * 删除分类
-     */
-    function remove(id,seid){
-        return $http({
-            url:"/api-admin/brand/"+id+"/remove",
-            method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"id":id}
-        })
-        .then(function (data) {
-             return data
-        })
-    }
-    
-    
-    
-    /**
-     * 获取某个分类
-     */
-    function get(seid,id){    	     	
-         return $http.get("/api-admin/brand/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid,"id":id}}).then(function(data){
-            return data
-        })
-        
-    }
-   
 
-     /**
-     * 修改分类
+    /**
+     * 添加
      */
-    function update(obj,seid){        
-         return $http({
-            url:"/api-admin/brand/"+obj.id+"/update",
+    function add(obj, seid) {
+        return $http({
+            url: "/api-admin/brand/add",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"name":obj.name,"logo":obj.logo,"sort":obj.sort}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "device": device,
+                "version": version,
+                "sessionId": seid,
+                "name": obj.name,
+                "category.id": obj.category.data.id,
+                "logo": obj.imgUrl,
+                "sort": obj.sort,
+                "serialPrefix": obj.serialPrefix
+            }
         })
-        .then(function (data) {
-             return data
+            .then(function (data) {
+                return data
+            })
+    }
+
+    /**
+     * 删除
+     */
+    function remove(id, seid) {
+        return $http({
+            url: "/api-admin/brand/" + id + "/remove",
+            method: 'post',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "id": id }
         })
+            .then(function (data) {
+                return data
+            })
+    }
+
+
+
+    /**
+     * 获取
+     */
+    function get(seid, id) {
+        return $http.get("/api-admin/brand/" + id + "/get", { params: { "device": device, "version": version, "sessionId": seid, "id": id } }).then(function (data) {
+            return data
+        })
+
+    }
+
+
+    /**
+    * 修改
+    */
+    function update(obj, seid) {
+        return $http({
+            url: "/api-admin/brand/" + obj.id + "/update",
+            method: 'post',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "name": obj.name, "logo": obj.logo, "sort": obj.sort }
+        })
+            .then(function (data) {
+                return data
+            })
     }
 
 }
@@ -268,6 +271,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 			remove(id)
 		});
     }
+
 
 	vm.updateBtn = function(){
 		update();
@@ -357,6 +361,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//新增
 	function add(){
 		BrandStoresResource.add(vm.addinfo,vm.seid).then(function(data){
 			console.log(data)
@@ -371,6 +376,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//获取
 	function get(id){
 		BrandStoresResource.get(vm.seid,id).then(function(data){
 			vm.getlist = data.data.result;
@@ -378,6 +384,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//删除
 	function remove(id){
 		BrandStoresResource.remove(id,vm.seid).then(function(data){
 			console.log(data);
@@ -390,6 +397,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 		})
 	}
 
+	//列表
 	function sortlist(){
 		SortResource.list(vm.seid).then(function(data){
 			vm.sortlist = data.data.result.root
@@ -501,6 +509,8 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
     }
   }
 
+
+  //时间戳转换2008-08-08:00:00:00格式
   function chang_time(date) {
         var Y = date.getFullYear() + '/';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
@@ -706,6 +716,8 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     list();
   };
 
+
+  //为结束时间的时分秒修改为23:59:59
   function GTM(is, data) {
     console.log(data)
     if (typeof (data) == 'undefined' || data == "" || data == null) {
@@ -724,6 +736,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   vm.exel = function () {
     exel()
   }
+
 
   vm.countBtn = function () {
     layer.open({
@@ -979,7 +992,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 (function(){
 "use strict"
 /**
- * 提供功能API封装
+ * 提供财务功能API封装
  */
 angular.module('index_area').factory('DrawResource', DrawResource);
 DrawResource.$inject = ['$http', 'device', 'version'];
@@ -994,7 +1007,7 @@ function DrawResource($http, device, version) {
     operaNo: operaNo,
     FinanNo: FinanNo,
     FinanOk: FinanOk,
-    count:count
+    count: count
   };
 
 
@@ -1012,13 +1025,13 @@ function DrawResource($http, device, version) {
         "limit": limit,
         'storeId': obj.storeId,
         'status': obj.status,
-        "applyStartDate":obj.applyStartDate,
+        "applyStartDate": obj.applyStartDate,
         "applyEndDate": obj.applyEndDate,
-        "completeStartDate":obj.completeStartDate,
-        "completeEndDate":obj.completeEndDate,
+        "completeStartDate": obj.completeStartDate,
+        "completeEndDate": obj.completeEndDate,
         "serialNumber": obj.serialNumber
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
@@ -1031,17 +1044,17 @@ function DrawResource($http, device, version) {
    */
   function update(seid, status, id) {
     return $http({
-        url: "/api-admin/draw/" + id + "/update",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "status": status,
-          "device": device,
-          "version": version,
-          "sessionId": seid
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/" + id + "/update",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "status": status,
+        "device": device,
+        "version": version,
+        "sessionId": seid
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
@@ -1049,138 +1062,139 @@ function DrawResource($http, device, version) {
   /**
    * 获取某个订单
    */
-  function get(seid,id) {
+  function get(seid, id) {
     return $http.get("/api-admin/draw/" + id + "/get", {
       params: {
         "device": device,
         "version": version,
-        "sessionId":seid
+        "sessionId": seid
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
 
   //确认打款
   function complete(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/complete",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "ids": ids,
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/complete",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "ids": ids,
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //运营审核通过
   function operaOk(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/approve-operate",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/approve-operate",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //运营审核失败
   function operaNo(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
-    
+
     return $http({
-        url: "/api-admin/draw/reject-operate",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/reject-operate",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //财务审核不通过
   function FinanNo(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/reject-finance",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/reject-finance",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
 
   //财务审核通过
   function FinanOk(seid, obj) {
-    if(typeof(obj.ids)=='undefined'){
+    if (typeof (obj.ids) == 'undefined') {
       var ids = obj.id
-    }else{
+    } else {
       var ids = arry(obj.ids);
     }
     return $http({
-        url: "/api-admin/draw/approve-finance",
-        method: 'post',
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data: {
-          "device": device,
-          "version": version,
-          "sessionId": seid,
-          "ids": ids,
-          "remark": obj.remark
-        }
-      })
-      .then(function(data) {
+      url: "/api-admin/draw/approve-finance",
+      method: 'post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: {
+        "device": device,
+        "version": version,
+        "sessionId": seid,
+        "ids": ids,
+        "remark": obj.remark
+      }
+    })
+      .then(function (data) {
         return data;
       })
   }
+
 
   function count(seid, obj, skip, limit) {
     console.log(obj);
@@ -1199,14 +1213,14 @@ function DrawResource($http, device, version) {
         "completeEndDate": dateTime(obj.completeEndDate) ? dateTime(obj.completeEndDate) : null,
         "serialNumber": obj.serialNumber
       }
-    }).then(function(data) {
+    }).then(function (data) {
       return data
     })
   }
 
   //将数组组成字符串
   function arry(obj) {
-    if(typeof(obj)=="undefined"){
+    if (typeof (obj) == "undefined") {
       return obj
     }
     var ids = "";
@@ -1274,6 +1288,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     list();
   }
 
+  
   function GTM(is, data) {
     if (typeof (data) == 'undefined' || data == "" || data == null || typeof (data) == 'number') {
       return data;
@@ -1438,10 +1453,10 @@ function RecordedResource($http, device, version) {
   return {
     list: list,
     get: get,
-    total:total,
-    exel:exel,
-    exels:exels,
-    task:task
+    total: total,
+    exel: exel,
+    exels: exels,
+    task: task
   };
 
 
@@ -1457,30 +1472,30 @@ function RecordedResource($http, device, version) {
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        "storeId":obj.storeId,
-        "sources":obj.sources,
-        "maxTotalAmount":obj.maxTotalAmount,
-        "minTotalAmount":obj.minTotalAmount,
-        "takeNo":obj.takeNo,
-        "tradeId":obj.tradeId,
-        "createStartDate":obj.createStartDate,
-        "createEndDate":obj.createEndDate
+        "storeId": obj.storeId,
+        "sources": obj.sources,
+        "maxTotalAmount": obj.maxTotalAmount,
+        "minTotalAmount": obj.minTotalAmount,
+        "takeNo": obj.takeNo,
+        "tradeId": obj.tradeId,
+        "createStartDate": obj.createStartDate,
+        "createEndDate": obj.createEndDate
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function total(seid){
-      return $http.get('/api-admin/journal/count',{
-        params:{
-          "device": device,
+  function total(seid) {
+    return $http.get('/api-admin/journal/count', {
+      params: {
+        "device": device,
         "version": version,
         "sessionId": seid
-        }
-      }).then(function(data){
-          return data
-      })
+      }
+    }).then(function (data) {
+      return data
+    })
   }
 
 
@@ -1499,49 +1514,49 @@ function RecordedResource($http, device, version) {
     })
   }
 
-  function exel(seid,obj) {
+  function exel(seid, obj) {
     console.log(obj)
     return $http.get("/api-admin/report/trade/product/excel", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "storeId":obj.storeId,
-        "endDate":obj.endDate,
-        "startDate":obj.startDate
+        "storeId": obj.storeId,
+        "endDate": obj.endDate,
+        "startDate": obj.startDate
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function exels(seid,obj) {
+  function exels(seid, obj) {
     console.log(obj)
     return $http.get("/api-admin/report/trade/detail/excel", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "storeId":obj.storeId,
-        "endDate":obj.endDate,
-        "startDate":obj.startDate,
-        "source":obj.sources,
-        'detail':obj.detail,
-        'completeEndDate':obj.createEndDate,
-        "completeStartDate":obj.createStartDate,
+        "storeId": obj.storeId,
+        "endDate": obj.endDate,
+        "startDate": obj.startDate,
+        "source": obj.sources,
+        'detail': obj.detail,
+        'completeEndDate': obj.createEndDate,
+        "completeStartDate": obj.createStartDate,
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function task(seid,task) {
+  function task(seid, task) {
     return $http.get("/api-admin/report/task/state/", {
       params: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        'taskId':task
+        'taskId': task
       }
     }).then(function (data) {
       return data
@@ -1672,7 +1687,7 @@ WalletResource.$inject = ['$http', 'device', 'version'];
 function WalletResource($http, device, version) {
   return {
     list: list,
-    sum:sum
+    sum: sum
   };
 
 
@@ -1680,7 +1695,7 @@ function WalletResource($http, device, version) {
    * list
    * 获取余额列表
    */
-  function list(seid,name, skip, limit) {
+  function list(seid, name, skip, limit) {
     return $http.get("/api-admin/store/wallet/list", {
       params: {
         "device": device,
@@ -1688,23 +1703,25 @@ function WalletResource($http, device, version) {
         "sessionId": seid,
         "skip": skip,
         "limit": limit,
-        "name":name
+        "name": name
       }
     }).then(function (data) {
       return data
     })
   }
 
-  function sum(seid){
-      return $http.get('/api-admin/store/wallet/sum',{
-        params:{
-          "device": device,
+
+  //总数
+  function sum(seid) {
+    return $http.get('/api-admin/store/wallet/sum', {
+      params: {
+        "device": device,
         "version": version,
         "sessionId": seid
-        }
-      }).then(function(data){
-          return data
-      })
+      }
+    }).then(function (data) {
+      return data
+    })
   }
 
 }
@@ -2072,98 +2089,103 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
 })();
 (function(){
 "use strict"
+//规格API
 angular.module('index_area').factory('FormatResource', FormatResource);
-FormatResource.$inject = ['$http','device','version'];
-function FormatResource($http,device,version) {
+FormatResource.$inject = ['$http', 'device', 'version'];
+function FormatResource($http, device, version) {
     return {
-    	add:add,
-    	list:list,
-    	remove:remove,
-    	get:get,
-    	update:update
+		add: add,
+		list: list,
+		remove: remove,
+		get: get,
+		update: update
     };
-    
-	
-	function add(seid,id,obj){		
-	 return $http({
-        url:"/api-admin/base/product/spec/add",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"costPrice":obj.costPrice,
-				"advicePrice":obj.advicePrice,
-				"tradePrice":obj.tradePrice,
-				"spec":obj.spec,
-				"specUnit":obj.specUnit,
-				"baseProductId":id
+
+
+	function add(seid, id, obj) {
+		return $http({
+			url: "/api-admin/base/product/spec/add",
+			method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"costPrice": obj.costPrice,
+				"advicePrice": obj.advicePrice,
+				"tradePrice": obj.tradePrice,
+				"spec": obj.spec,
+				"specUnit": obj.specUnit,
+				"baseProductId": id
 			}
-    })
-    .then(function (data) {
-         return data
-    })
+		})
+			.then(function (data) {
+				return data
+			})
 	}
-	
-	function update(seid,id,obj){		
-		 return $http({
-            url:"/api-admin/base/product/spec/"+obj.id+"/update",
+
+	function update(seid, id, obj) {
+		return $http({
+            url: "/api-admin/base/product/spec/" + obj.id + "/update",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"costPrice":obj.costPrice,
-				"advicePrice":obj.advicePrice,
-				"tradePrice":obj.tradePrice,
-				"spec":obj.spec,
-				"specUnit":obj.specUnit,
-				"baseProductId":id
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"costPrice": obj.costPrice,
+				"advicePrice": obj.advicePrice,
+				"tradePrice": obj.tradePrice,
+				"spec": obj.spec,
+				"specUnit": obj.specUnit,
+				"baseProductId": id
 			}
         })
-        .then(function (data) {
-             return data
-        })
+			.then(function (data) {
+				return data
+			})
 	}
-	
-	function list(seid,id){
-		return $http.get("/api-admin/base/product/spec/list",{params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"baseProductId":id
-			}}).then(function(data){
+
+	function list(seid, id) {
+		return $http.get("/api-admin/base/product/spec/list", {
+			params: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"baseProductId": id
+			}
+		}).then(function (data) {
 			return data
 		})
 	}
-	
-	function remove(seid,id){
-		 return $http({
-            url:"/api-admin/base/product/spec/"+id+"/remove",
+
+	function remove(seid, id) {
+		return $http({
+            url: "/api-admin/base/product/spec/" + id + "/remove",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"id":id
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"id": id
 			}
         })
-        .then(function (data) {
-             return data
-        })
+			.then(function (data) {
+				return data
+			})
 	}
-	function get(seid,id){
-		return $http.get("/api-admin/base/product/spec/"+id+"/get",{params:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"id":id
-			}}).then(function(data){
+	function get(seid, id) {
+		return $http.get("/api-admin/base/product/spec/" + id + "/get", {
+			params: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"id": id
+			}
+		}).then(function (data) {
 			return data
 		})
 	}
@@ -2208,7 +2230,7 @@ function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, Format
 	 * 基本商品
 	 */
    	function gooddetail(id) {
-		GoodResource.get(vm.seid,id).then(function (data) {
+		GoodResource.get(vm.seid, id).then(function (data) {
 			if (data.data.status != "OK") {
 
 			} else {
@@ -2306,7 +2328,7 @@ function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, 
      * @param {Object} seid
      */
     function list(seid) {
-        GoodResource.list(seid, null, 0,10).then(function (data) {
+        GoodResource.list(seid, null, 0, 10).then(function (data) {
             vm.list = data.data.result;
             console.log(data)
             vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });
@@ -2332,17 +2354,17 @@ function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, 
 (function(){
 "use strict"
 angular.module('index_area').factory('GoodResource', GoodResource);
-GoodResource.$inject = ['$http','device','version'];
-function GoodResource($http,device,version) {
+GoodResource.$inject = ['$http', 'device', 'version'];
+function GoodResource($http, device, version) {
     return {
-		list:list,
-		add:add,
-		update:update,
-		del:del,
-		get:get
+		list: list,
+		add: add,
+		update: update,
+		del: del,
+		get: get
     };
-    
-	
+
+
 	/**
 	 * [list 查询基础商品列表]
 	 * @param  {[string]} seid  [sessionId]
@@ -2350,178 +2372,178 @@ function GoodResource($http,device,version) {
 	 * @param  {[number]} limit [从下标数结束]
 	 * @return {[type]}       [json]
 	 */
-	function list(seid,brandId,skip,limit){		
-		return $http.get("/api-admin/base/product/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+	function list(seid, brandId, skip, limit) {
+		return $http.get("/api-admin/base/product/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
 			return data
 		})
 	}
-	
+
 	/**
 	 * [getlist 获取单个商品数据]
 	 * @param  {[number]} id   [商品ID]
 	 * @param  {[string]} seid [sessionId]
 	 * @return {[type]}      [json]
 	 */
-	function get(seid,id){
-		return $http.get("/api-admin/base/product/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
+	function get(seid, id) {
+		return $http.get("/api-admin/base/product/" + id + "/get", { params: { "device": device, "version": version, "sessionId": seid } }).then(function (data) {
 			return data
 		})
 	}
-	
+
 	/**
 	 * 添加基础商品
 	 */
-	function add(seid,obj){
-			console.log(obj)
-			var bPhotos="";
-			var cPhotos="";
-			var lables = "";
-			for(var i in obj.bPhotos){				
-				bPhotos+=obj.bPhotos[i]+",";				
-			}
-			for(var i in obj.cPhotos){				
-				cPhotos+=obj.cPhotos[i]+",";
-			}
-			for(var i in obj.lables){
-				lables+=obj.lables[i].id+","
-			}
-			lables=lables.substring(0,lables.length-1);
-			cPhotos=cPhotos.substring(0,cPhotos.length-1);
-			bPhotos=bPhotos.substring(0,bPhotos.length-1);			
+	function add(seid, obj) {
+		console.log(obj)
+		var bPhotos = "";
+		var cPhotos = "";
+		var lables = "";
+		for (var i in obj.bPhotos) {
+			bPhotos += obj.bPhotos[i] + ",";
+		}
+		for (var i in obj.cPhotos) {
+			cPhotos += obj.cPhotos[i] + ",";
+		}
+		for (var i in obj.lables) {
+			lables += obj.lables[i].id + ","
+		}
+		lables = lables.substring(0, lables.length - 1);
+		cPhotos = cPhotos.substring(0, cPhotos.length - 1);
+		bPhotos = bPhotos.substring(0, bPhotos.length - 1);
 		return $http({
-        url:"/api-admin/base/product/add",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"providerBrandId":obj.providerBrandId.id,			
-				"brandId":obj.brandId.id,
-				"name":obj.name,
-				"shortName":obj.shortName,
-				"onSell":obj.onSell,
-				"canSell":true,
-				"categoryId":obj.sortId.data.id,
-				"bLogo":obj.bLogo[0],
-				"cLogo":obj.cLogo[0],
-				"bPhotos":bPhotos,
-				"cPhotos":cPhotos,
-				"terse":obj.terse,
-				"detail":obj.detail,
-				"labelIds":lables
+			url: "/api-admin/base/product/add",
+			method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"providerBrandId": obj.providerBrandId.id,
+				"brandId": obj.brandId.id,
+				"name": obj.name,
+				"shortName": obj.shortName,
+				"onSell": obj.onSell,
+				"canSell": true,
+				"categoryId": obj.sortId.data.id,
+				"bLogo": obj.bLogo[0],
+				"cLogo": obj.cLogo[0],
+				"bPhotos": bPhotos,
+				"cPhotos": cPhotos,
+				"terse": obj.terse,
+				"detail": obj.detail,
+				"labelIds": lables
 			}
-    })
-    .then(function (data) {
-         return data
-    })
+		})
+			.then(function (data) {
+				return data
+			})
 	}
-	
+
 	/**
 	 * 修改商品
 	 */
-	function update(seid,obj){
+	function update(seid, obj) {
 		console.log(obj)
-			var bPhotos="";
-			var cPhotos="";
-			var lables = "";			
-			for(var i in obj.bPhotos){				
-				bPhotos+=obj.bPhotos[i]+",";				
-			}
-			for(var i in obj.cPhotos){				
-				cPhotos+=obj.cPhotos[i]+",";
-			}
-			for(var i in obj.labels){
-				lables+=obj.labels[i].id+","
-			}
-			lables=lables.substring(0,lables.length-1);
-			cPhotos=cPhotos.substring(0,cPhotos.length-1);
-			bPhotos=bPhotos.substring(0,bPhotos.length-1);	
+		var bPhotos = "";
+		var cPhotos = "";
+		var lables = "";
+		for (var i in obj.bPhotos) {
+			bPhotos += obj.bPhotos[i] + ",";
+		}
+		for (var i in obj.cPhotos) {
+			cPhotos += obj.cPhotos[i] + ",";
+		}
+		for (var i in obj.labels) {
+			lables += obj.labels[i].id + ","
+		}
+		lables = lables.substring(0, lables.length - 1);
+		cPhotos = cPhotos.substring(0, cPhotos.length - 1);
+		bPhotos = bPhotos.substring(0, bPhotos.length - 1);
 		return $http({
-        url:"/api-admin/base/product/"+obj.id+"/update",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"providerBrandId":obj.providerBrand.id,			
-				"brandId":obj.brand.id,
-				"name":obj.name,
-				"shortName":obj.shortName,
-				"onSell":obj.onSell,
-				"canSell":obj.cancell,
-				"categoryId":obj.categories.children[0].id,
-				"bLogo":obj.bLogo,
-				"cLogo":obj.cLogo,
-				"bPhotos":bPhotos,
-				"cPhotos":cPhotos,
-				"terse":obj.terse,
-				"detail":obj.detail,
-				"labelIds":lables
+			url: "/api-admin/base/product/" + obj.id + "/update",
+			method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"providerBrandId": obj.providerBrand.id,
+				"brandId": obj.brand.id,
+				"name": obj.name,
+				"shortName": obj.shortName,
+				"onSell": obj.onSell,
+				"canSell": obj.cancell,
+				"categoryId": obj.categories.children[0].id,
+				"bLogo": obj.bLogo,
+				"cLogo": obj.cLogo,
+				"bPhotos": bPhotos,
+				"cPhotos": cPhotos,
+				"terse": obj.terse,
+				"detail": obj.detail,
+				"labelIds": lables
 			}
-    })
-    .then(function (data) {
-         return data
-    })
+		})
+			.then(function (data) {
+				return data
+			})
 	}
-	
+
 	/**
 	 * [dellist 删除商品]
 	 * @param  {[type]} id   [商品ID]
 	 * @param  {[type]} seid [sessionId]
 	 * @return {[type]}      [json]
 	 */
-	function del(seid,id){
+	function del(seid, id) {
 		return $http({
-        url:"/api-admin/base/product/"+id+"/remove",
-        method: 'post',
-		headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        data:{"device":device,"version":version,"sessionId":seid}
-    })
-    .then(function (data) {
-         return data
-    })
+			url: "/api-admin/base/product/" + id + "/remove",
+			method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: { "device": device, "version": version, "sessionId": seid }
+		})
+			.then(function (data) {
+				return data
+			})
 	}
 }
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('UpdateGoodCtrl',UpdateGoodCtrl);
-UpdateGoodCtrl.$inject = ['$state','$rootScope','PublicResource','$stateParams','FormatResource','GoodResource','FileUploader',"SortResource","SupplierLogoResource","LabelResource","BrandStoresResource"];
+angular.module('index_area').controller('UpdateGoodCtrl', UpdateGoodCtrl);
+UpdateGoodCtrl.$inject = ['$state', '$rootScope', 'PublicResource', '$stateParams', 'FormatResource', 'GoodResource', 'FileUploader', "SortResource", "SupplierLogoResource", "LabelResource", "BrandStoresResource"];
 /***调用接口***/
-function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource,GoodResource,FileUploader,SortResource,SupplierLogoResource,LabelResource,BrandStoresResource) {
-    document.title ="商品详情";
-    $rootScope.name="商品管理";
-    $rootScope.childrenName="商品详情";
+function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, FormatResource, GoodResource, FileUploader, SortResource, SupplierLogoResource, LabelResource, BrandStoresResource) {
+    document.title = "商品详情";
+    $rootScope.name = "商品管理";
+    $rootScope.childrenName = "商品详情";
     var vm = this;
-    vm.skip=0;				//起始数据下标
-    vm.limit=12;			//最大数据下标
+    vm.skip = 0;				//起始数据下标
+    vm.limit = 12;			//最大数据下标
     vm.data;                //规格;
 
-    vm.test = {name:"测试",id:1,sic:{name:1,id:2}}
+    vm.test = { name: "测试", id: 1, sic: { name: 1, id: 2 } }
 
     //获取商品id
-    vm.id=$stateParams.id;
+    vm.id = $stateParams.id;
     console.log(vm.id)
 
     //获取sessionId
 
-    vm.updateBtn = function(){
+    vm.updateBtn = function () {
         console.log(vm.data)
         update();
     }
 
     login();
     init();
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
                 layer.close(index);
                 PublicResource.Urllogin();
             })
-        }else{
+        } else {
             vm.seid = PublicResource.seid(vm.user);
         }
     }
@@ -2531,11 +2553,11 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
     /*
      * 基本商品
      */
-    function gooddetail(id){
-        GoodResource.get(vm.seid,id).then(function(data){
-            if(data.data.status!="OK"){
-                layer.msg(data.data.message,{icon:1})
-            }else{
+    function gooddetail(id) {
+        GoodResource.get(vm.seid, id).then(function (data) {
+            if (data.data.status != "OK") {
+                layer.msg(data.data.message, { icon: 1 })
+            } else {
                 vm.data = data.data.result;
                 arrayImage(vm.data)
             }
@@ -2543,9 +2565,9 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
         })
     }
 
-    function arrayImage (data) {
-        vm.data.cPhotos =data.cPhotos.split(",");
-        vm.data.bPhotos =data.bPhotos.split(",");
+    function arrayImage(data) {
+        vm.data.cPhotos = data.cPhotos.split(",");
+        vm.data.bPhotos = data.bPhotos.split(",");
         console.log(vm.data)
     }
 
@@ -2553,180 +2575,180 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
 	 * [bPhotos description]
 	 * @type {[type]}
 	 */
-	var bPhotos = vm.bPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]		
-	})
-	bPhotos.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
+    var bPhotos = vm.bPhotos = new FileUploader({
+        url: "/api-admin/attach/upload",
+        formData: [{ "device": "pc", "version": "1.0.0", "sessionId": vm.seid }]
+    })
+    bPhotos.onSuccessItem = function (data, status) {
+        if (status.status != "OK") {
             for (var i in vm.bPhotos.queue) {
-				vm.bPhotos.queue[i].isSuccess=false;
-				vm.bPhotos.queue[i].isError=true;
+                vm.bPhotos.queue[i].isSuccess = false;
+                vm.bPhotos.queue[i].isError = true;
                 console.log(vm.bPhotos.queue[i])
             }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bPhotos.push(status.result);
-			 vm.bPhotos.queue[0].remove();
+            layer.alert(status.message, { icon: 2 })
+        } else {
+            console.log(status)
+            vm.info.bPhotos.push(status.result);
+            vm.bPhotos.queue[0].remove();
         }
-	}
-	bPhotos.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
+    }
+    bPhotos.onErrorItem = function () {
+        vm.num = 5;
+        var time = setInterval(function () {
+            vm.num--;
+            console.log(11)
+            if (vm.num == 0) {
+                layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
+                    clearInterval(time);
+                    return false;
+                });
+            }
+        }, 1200)
+    }
 
 	/**
 	 * [cPhotos description]
 	 * @type {[type]}
 	 */
-	var cPhoto = vm.cPhotos = new FileUploader({
-		url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}]
-	})
+    var cPhoto = vm.cPhotos = new FileUploader({
+        url: "/api-admin/attach/upload",
+        formData: [{ "device": "pc", "version": "1.0.0", "sessionId": vm.seid }]
+    })
 
-	cPhoto.onSuccessItem = function(data,status){
-		if(status.status!="OK"){
+    cPhoto.onSuccessItem = function (data, status) {
+        if (status.status != "OK") {
             for (var i in vm.cPhotos.queue) {
-				vm.cPhotos.queue[i].isSuccess=false;
-				vm.cPhotos.queue[i].isError=true;
+                vm.cPhotos.queue[i].isSuccess = false;
+                vm.cPhotos.queue[i].isError = true;
                 console.log(vm.cPhotos.queue[i])
             }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cPhotos.push(status.result);
-			 vm.cPhotos.queue[0].remove();
+            layer.alert(status.message, { icon: 2 })
+        } else {
+            console.log(status)
+            vm.info.cPhotos.push(status.result);
+            vm.cPhotos.queue[0].remove();
         }
-	}
-	cPhoto.onErrorItem= function(){
-		vm.num = 5;
-		var time =setInterval(function () {
-			vm.num--;
-			console.log(11)
-			if(vm.num==0){
-				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					clearInterval(time);
-					return false;
-				});
-			}
-		},1200)
-	}
+    }
+    cPhoto.onErrorItem = function () {
+        vm.num = 5;
+        var time = setInterval(function () {
+            vm.num--;
+            console.log(11)
+            if (vm.num == 0) {
+                layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
+                    clearInterval(time);
+                    return false;
+                });
+            }
+        }, 1200)
+    }
 
 
 
 	/**
 	 * bLogo
 	 */
-	 var bLogo = vm.bLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 bLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
+    var bLogo = vm.bLogo = new FileUploader({
+        url: "/api-admin/attach/upload",
+        formData: [{ "device": "pc", "version": "1.0.0", "sessionId": vm.seid }],
+        queueLimit: 1
+    })
+    bLogo.onSuccessItem = function (data, status) {
+        if (status.status != "OK") {
             for (var i in vm.bLogo.queue) {
-				vm.bLogo.queue[i].isSuccess=false;
-				vm.bLogo.queue[i].isError=true;
+                vm.bLogo.queue[i].isSuccess = false;
+                vm.bLogo.queue[i].isError = true;
                 console.log(vm.bLogo.queue[i])
             }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.bLogo[0] = status.result;
-			 vm.bLogo.queue[0].remove();
+            layer.alert(status.message, { icon: 2 })
+        } else {
+            console.log(status)
+            vm.info.bLogo[0] = status.result;
+            vm.bLogo.queue[0].remove();
         }
-	 }
-	 bLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
+    }
+    bLogo.onErrorItem = function () {
+        vm.num = 5;
+        var time = setInterval(function () {
+            vm.num--;
+            console.log(11)
+            if (vm.num == 0) {
+                layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
+                    clearInterval(time);
+                    return false;
+                });
+            }
+        }, 1200)
+    }
 	/**
 	 * cLogo
 	 */
-	 var cLogo = vm.cLogo = new FileUploader({
-	 	url:"/api-admin/attach/upload",			
-		formData:[{"device":"pc","version":"1.0.0","sessionId":vm.seid}],
-		queueLimit:1
-	 })
-	 cLogo.onSuccessItem = function (data,status) {
-	 	 if(status.status!="OK"){
+    var cLogo = vm.cLogo = new FileUploader({
+        url: "/api-admin/attach/upload",
+        formData: [{ "device": "pc", "version": "1.0.0", "sessionId": vm.seid }],
+        queueLimit: 1
+    })
+    cLogo.onSuccessItem = function (data, status) {
+        if (status.status != "OK") {
             for (var i in vm.cLogo.queue) {
-				vm.cLogo.queue[i].isSuccess=false;
-				vm.cLogo.queue[i].isError=true;
+                vm.cLogo.queue[i].isSuccess = false;
+                vm.cLogo.queue[i].isError = true;
                 console.log(vm.cLogo.queue[i])
             }
-            layer.alert(status.message,{icon:2})
-        }else {
-            console.log(status)            
-             vm.info.cLogo[0] = status.result;
-			 vm.cLogo.queue[0].remove();
+            layer.alert(status.message, { icon: 2 })
+        } else {
+            console.log(status)
+            vm.info.cLogo[0] = status.result;
+            vm.cLogo.queue[0].remove();
         }
-	 }
-	 cLogo.onErrorItem= function(){
-		 vm.num = 5;
-		 var time =setInterval(function () {
-			 vm.num--;
-			 console.log(11)
-			 if(vm.num==0){
-				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
-					 clearInterval(time);
-					 return false;
-				 });
-			 }
-		 },1200)
-	 }
+    }
+    cLogo.onErrorItem = function () {
+        vm.num = 5;
+        var time = setInterval(function () {
+            vm.num--;
+            console.log(11)
+            if (vm.num == 0) {
+                layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
+                    clearInterval(time);
+                    return false;
+                });
+            }
+        }, 1200)
+    }
 
-     function update(){
-         GoodResource.update(vm.seid,vm.data).then(function(data){
-             console.log(data);
-             if(data.data.status=="OK"){
-                 layer.msg('修改成功~',{icon:1});
-             }else{
-                 layer.msg(data.data.message,{icon:2})
-             }
-         })
-     }
+    function update() {
+        GoodResource.update(vm.seid, vm.data).then(function (data) {
+            console.log(data);
+            if (data.data.status == "OK") {
+                layer.msg('修改成功~', { icon: 1 });
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
+            }
+        })
+    }
 
-     function init(){
-         SortResource.list(vm.seid,0,0).then(function(data){
-             vm.sortlist = data.data.result;
-             console.log(vm.sortlist)
-         })
+    function init() {
+        SortResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.sortlist = data.data.result;
+            console.log(vm.sortlist)
+        })
 
-         SupplierLogoResource.list(vm.seid,0,0).then(function(data){
-             vm.brandlist = data.data.result;
-             console.log(vm.brandlist)
-         })
+        SupplierLogoResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.brandlist = data.data.result;
+            console.log(vm.brandlist)
+        })
 
-         BrandStoresResource.list(vm.seid,0,0).then(function(data){
-             vm.providerBrandlist = data.data.result;
-             console.log(vm.providerBrandlist)
-         })
+        BrandStoresResource.list(vm.seid, 0, 0).then(function (data) {
+            vm.providerBrandlist = data.data.result;
+            console.log(vm.providerBrandlist)
+        })
 
-         LabelResource.list(vm.seid).then(function(data){
-             vm.labellist = data.data.result;
-             console.log(vm.labellist)
-         })
-     }
+        LabelResource.list(vm.seid).then(function (data) {
+            vm.labellist = data.data.result;
+            console.log(vm.labellist)
+        })
+    }
 }
 })();
 (function(){
@@ -2735,66 +2757,66 @@ function UpdateGoodCtrl($state,$rootScope,PublicResource,$stateParams,FormatReso
  * 标签管理功能API封装
  */
 angular.module('index_area').factory('LabelResource', LabelResource);
-LabelResource.$inject = ['$http','device','version'];
-function LabelResource($http,device,version) {
+LabelResource.$inject = ['$http', 'device', 'version'];
+function LabelResource($http, device, version) {
     return {
-        list:list,
-        get:get,
-        update:update,
-        remove:remove,
-        add:add
+        list: list,
+        get: get,
+        update: update,
+        remove: remove,
+        add: add
     };
-    
+
     /**
 	 * list
 	 * 获取列表
 	 */
-    function list(seid,skip,limit,brandId){    	
-       return $http.get("/api-admin/label/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"brandId":brandId}}).then(function(data){
+    function list(seid, skip, limit, brandId) {
+        return $http.get("/api-admin/label/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit, "brandId": brandId } }).then(function (data) {
             return data
         })
     }
 
-    function get (seid,id) {
-        return $http.get("/api-admin/label/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid}}).then(function(data){
+    function get(seid, id) {
+        return $http.get("/api-admin/label/" + id + "/get", { params: { "device": device, "version": version, "sessionId": seid } }).then(function (data) {
             return data
         })
     }
 
-    function update (seid,info) {
+    function update(seid, info) {
         return $http({
-            url:"/api-admin/label/"+info.id+"/update",
+            url: "/api-admin/label/" + info.id + "/update",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"name":info.name,brandId:info.brand.id}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "name": info.name, brandId: info.brand.id }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-    function remove (seid,id) {
+    function remove(seid, id) {
         return $http({
-            url:"/api-admin/label/"+id+"/remove",
+            url: "/api-admin/label/" + id + "/remove",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid }
         })
-        .then(function (data) {
-             return data
-        })        
+            .then(function (data) {
+                return data
+            })
     }
 
-    function add (seid,info) {   
-        console.log(info)     
+    function add(seid, info) {
+        console.log(info)
         return $http({
-            url:"/api-admin/label/add",
+            url: "/api-admin/label/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"name":info.name,"brandId":info.brand.id}
+            params: { "device": device, "version": version, "sessionId": seid, "name": info.name, "brandId": info.brand.id }
         })
-        .then(function (data) {
-             return data
-        })       
+            .then(function (data) {
+                return data
+            })
     }
 }
 })();
@@ -2961,6 +2983,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
     vm.Coupon.whiteListIds='';
     vm.goodId=[];
     vm.Sources=[];
+    vm.whites=[];
     vm.id = $stateParams.id;
     login();
     function login() {
@@ -3151,7 +3174,7 @@ function CouponResource($http, device, version) {
         get: get,
         update: update,
         remove: remove,
-        resource:resource
+        resource: resource
     };
 
     function list(seid, skip, limit) {
@@ -3191,7 +3214,7 @@ function CouponResource($http, device, version) {
                 "specType": obj.specType,                        //商品规格类型
                 "specIds": onj.specIds,                          //商品规格列表
                 "specCountLimit": obj.specCountLimit,            //
-                "exclusiveType": obj.exclusiveType,              //排他性
+                "exclusiveType": "EXCLUSIVE",              //排他性
                 "whiteListIds": obj.whiteListIds,                //白名单中的优惠券模板id
                 "amountLimit": obj.amountLimit,                  //优惠券金额限制
                 "cutAmount": obj.cutAmount,                      //优惠券优化金额
@@ -3220,19 +3243,19 @@ function CouponResource($http, device, version) {
                 "startTime": obj.StratTime,                     //开始时间
                 "endTime": obj.EndTime,                         //结束时间
                 "storeType": obj.storeType,                      //门店类型
-                "storeIds":obj.storeIds,
+                "storeIds": obj.storeIds,
                 "userType": obj.userType,                        //用户类型
                 "specType": obj.specType,                        //商品规格类型
-                "specIds": typeof(obj.goodIds)=='undefined'?'':obj.goodIds,                          //商品规格列表
+                "specIds": typeof (obj.goodIds) == 'undefined' ? '' : obj.goodIds,                          //商品规格列表
                 "specCountLimit": obj.specCountLimit,            //
-                "exclusiveType": obj.exclusiveType,              //排他性
+                "exclusiveType": "EXCLUSIVE",              //排他性
                 "whiteListIds": obj.whiteListIds,                //白名单中的优惠券模板id
-                "amountLimit": typeof(obj.amountLimit)=='undefined'?'':obj.amountLimit,                  //优惠券金额限制
+                "amountLimit": typeof (obj.amountLimit) == 'undefined' ? '' : obj.amountLimit,                  //优惠券金额限制
                 "cutAmount": obj.cutAmount,                      //优惠券优化金额
                 "isEnabled": obj.isEnabled,                      //是否启用
                 "priority": obj.priority,                        //优先级
                 "type": obj.type,                                //类型
-                "costSources":JSON.stringify(obj.Sources)                       //承担方
+                "costSources": JSON.stringify(obj.Sources)                       //承担方
             }
         })
             .then(function (data) {
@@ -3373,7 +3396,7 @@ function config($stateProvider) {
             controller: 'AddCouponCtrl as AddCouponCtrl'
         })
         .state("updatecoupon", {
-            url: "/market/updatecoupon",
+            url: "/market/updatecoupon/{id:string}",
             templateUrl: "Market/UpdateCoupon.html",
             controller: 'UpdateCouponCtrl as UpdateCouponCtrl'
         })
@@ -3395,7 +3418,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 icon: 2
             }, function (index) {
                 layer.close(index);
-                PublicResource.Urllogin() ;
+                PublicResource.Urllogin();
             });
         } else {
             vm.seid = PublicResource.seid(vm.user);
@@ -3420,26 +3443,26 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     }
 
-    vm.delBtn = function(id){
+    vm.delBtn = function (id) {
         layer.confirm('您确定要删除此条？', {
-			  btn: ['确定','取消'] //按钮
-		}, function(){
-			remove(id)
-		});
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            remove(id)
+        });
     }
 
-    function remove(id){
-        MarketResource.remove(vm.seid,id).then(function(data){
+    function remove(id) {
+        MarketResource.remove(vm.seid, id).then(function (data) {
             console.log(data)
-            if(data.data.status=="OK"){
-                layer.msg('删除成功！',{icon:1});
+            if (data.data.status == "OK") {
+                layer.msg('删除成功！', { icon: 1 });
                 list();
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
-
+    //时间戳转换2008-08-08:00:00:00格式
     function chang_time(date) {
         var Y = date.getFullYear() + '/';
         var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '/';
@@ -3459,7 +3482,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         if (s < 9) {
             s = "0" + s;
         }
-        return Y + M + D+h+m+s;
+        return Y + M + D + h + m + s;
     }
 
 }
@@ -3471,11 +3494,11 @@ MarketResource.$inject = ['$http', 'device', 'version'];
 function MarketResource($http, device, version) {
   return {
 		  list: list,
-    add: add,
-    get: get,
-    update: update,
-    remove: remove,
-    resource:resource
+      add: add,
+      get: get,
+      update: update,
+      remove: remove,
+      resource: resource
   };
 
   function list(seid, skip, limit) {
@@ -3490,7 +3513,7 @@ function MarketResource($http, device, version) {
     })
   }
 
-  function resource(seid,skip,limit){
+  function resource(seid, skip, limit) {
     return $http.get("/api-admin/costSource/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
       return data
     })
@@ -3505,7 +3528,7 @@ function MarketResource($http, device, version) {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "id":obj.id,
+        "id": obj.id,
         "name": obj.name,                               //活动名称
         "description": obj.description,                 //活动描述
         "startTime": obj.startTime,                     //开始时间
@@ -3519,11 +3542,11 @@ function MarketResource($http, device, version) {
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
         "amountLimit": obj.amountLimit,
-        "productCountLimit":obj.productCountLimit,
+        "productCountLimit": obj.productCountLimit,
         "extensibleCriteria": "",
-        "giftIds":obj.prems,
+        "giftIds": obj.prems,
         "enabled": obj.enabled,
-        "costSources":JSON.stringify(obj.costSources),
+        "costSources": JSON.stringify(obj.costSources),
         "exclusive": obj.exclusive,
         "priority": obj.priority,
         "type": obj.type,
@@ -3556,14 +3579,14 @@ function MarketResource($http, device, version) {
         "productIds": obj.goodsIds,
         "timesLimitType": obj.timesLimitType,
         "timesLimit": obj.timesLimit,
-        "productCountLimit":obj.productCountLimit,
+        "productCountLimit": obj.productCountLimit,
         "amountLimit": obj.amountLimit,
         "extensibleCriteria": "",
         "enabled": obj.enabled,
         "exclusive": obj.exclusive,
         "priority": obj.priority,
-        "giftIds":obj.premsId,
-        "costSources":JSON.stringify(obj.costSource),
+        "giftIds": obj.premsId,
+        "costSources": JSON.stringify(obj.costSource),
         "type": obj.type,
         "formulaParameter": JSON.stringify(obj.formulaParameter)
       }
@@ -3595,123 +3618,123 @@ function MarketResource($http, device, version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
-PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
+angular.module('index_area').controller('PremlistCtrl', PremlistCtrl);
+PremlistCtrl.$inject = ['$state', '$scope', 'PublicResource', '$stateParams', '$rootScope', 'PremResource', 'GoodResource'];
 /***调用接口***/
-function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
-    document.title ="运营管理";
-    $rootScope.name="运营管理";
-	$rootScope.childrenName="赠品列表";
+function PremlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, PremResource, GoodResource) {
+    document.title = "运营管理";
+    $rootScope.name = "运营管理";
+    $rootScope.childrenName = "赠品列表";
     var vm = this;
     vm.list;
     //获取sessionId
-     login();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
+    login();
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            })
+        } else {
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
 
-    vm.addlayer = function(){
+    vm.addlayer = function () {
         layer.open({
-            type:1,
-            title:"新增赠品",
-            area:["400px",'300px'],
-            content:$(".add_operk")
+            type: 1,
+            title: "新增赠品",
+            area: ["400px", '300px'],
+            content: $(".add_operk")
         })
     }
 
-    vm.delBtn = function(id){
-        layer.confirm('是否删除赠品',{
-            btn:['确定','删除'],
-        },function(){
+    vm.delBtn = function (id) {
+        layer.confirm('是否删除赠品', {
+            btn: ['确定', '删除'],
+        }, function () {
             remove(id);
         })
     }
 
-     vm.updatelayer = function(id){
-         get(id);
+    vm.updatelayer = function (id) {
+        get(id);
         layer.open({
-            type:1,
-            title:"修改赠品",
-            area:["400px",'300px'],
-            content:$(".update_operk")
+            type: 1,
+            title: "修改赠品",
+            area: ["400px", '300px'],
+            content: $(".update_operk")
         })
     }
 
-    vm.updateBtn = function(){
+    vm.updateBtn = function () {
         console.log(vm.data);
         Update();
     }
 
-    vm.addBtn = function(){
+    vm.addBtn = function () {
         console.log(vm.addinfo)
         Add();
     }
     list();
     good();
-    function list(){
-        PremResource.list(vm.seid,0,100).then(function(data){
+    function list() {
+        PremResource.list(vm.seid, 0, 100).then(function (data) {
             console.log(data.data.result)
             vm.list = data.data.result;
         })
     }
 
-    function good(){
-        GoodResource.list(vm.seid,null,0,0).then(function(data){
+    function good() {
+        GoodResource.list(vm.seid, null, 0, 0).then(function (data) {
             vm.goods = data.data.result.data;
             console.log(vm.goods)
         })
     }
 
-    function Add(){
-        PremResource.add(vm.seid,vm.addinfo).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('添加成功',{icon:1},function(){
+    function Add() {
+        PremResource.add(vm.seid, vm.addinfo).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('添加成功', { icon: 1 }, function () {
                     layer.closeAll();
                     list();
                 })
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function get(id){
-        PremResource.get(vm.seid,id).then(function(data){
+    function get(id) {
+        PremResource.get(vm.seid, id).then(function (data) {
             console.log(data.data.result)
             vm.data = data.data.result;
         })
     }
 
-    function remove(id){
-        PremResource.remove(vm.seid,id).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('删除成功',{icon:1},function(){
+    function remove(id) {
+        PremResource.remove(vm.seid, id).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('删除成功', { icon: 1 }, function () {
                     layer.closeAll();
                     list();
                 })
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function Update(){
-        PremResource.update(vm.seid,vm.data).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1},function(){
+    function Update() {
+        PremResource.update(vm.seid, vm.data).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('修改成功', { icon: 1 }, function () {
                     layer.closeAll();
                     list();
                 })
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
@@ -3726,10 +3749,10 @@ PremResource.$inject = ['$http', 'device', 'version'];
 function PremResource($http, device, version) {
   return {
 		  list: list,
-        add: add,
-        get: get,
-        update: update,
-        remove: remove
+    add: add,
+    get: get,
+    update: update,
+    remove: remove
   };
 
   function list(seid, skip, limit) {
@@ -3748,15 +3771,15 @@ function PremResource($http, device, version) {
     return $http({
       url: "/api-admin/gift/update",
       method: 'post',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: {
         "device": device,
         "version": version,
         "sessionId": seid,
-        "id":obj.id,
-        "name":obj.name,
-        "specId":obj.specs,
-        "cost":obj.cost  
+        "id": obj.id,
+        "name": obj.name,
+        "specId": obj.specs,
+        "cost": obj.cost
       }
     })
       .then(function (data) {
@@ -3774,8 +3797,8 @@ function PremResource($http, device, version) {
         "version": version,
         "sessionId": seid,
         "name": obj.name,
-        "specId":obj.specs,
-        "cost":obj.cost 
+        "specId": obj.specs,
+        "cost": obj.cost
       }
     })
       .then(function (data) {
@@ -3840,7 +3863,92 @@ function PromotionsCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgT
 })();
 (function(){
 "use strict"
+angular.module('index_area').controller('UpdateCouponCtrl', UpdateCouponCtrl);
+UpdateCouponCtrl.$inject = ['$scope', '$rootScope', '$stateParams', '$state', 'PublicResource', 'CouponResource'];
+function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource, CouponResource) {
+    document.title = "编辑优惠券";
+    $rootScope.name = "运营管理"
+    $rootScope.childrenName = "编辑优惠券";
+    var vm = this;
+    vm.info = new Object();
+    vm.skip = 0;
+    vm.limit = 10;
+    vm.id = $stateParams.id;
+    login();
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", {
+                icon: 2
+            }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            });
+        } else {
+            vm.seid = PublicResource.seid(vm.user);
+        }
+    }
 
+    get(vm.id)
+    function get(id){
+        CouponResource.get(vm.seid,id).then(function(data){
+            vm.info = data.data.result;
+            if(vm.info.amountLimit){
+                vm.info.isGood=true;
+            }
+            console.log(vm.info)
+        })
+    }
+
+
+    vm.AddcostSources = function () {
+        var add = { costSourceId: "", ratio: "" };
+        vm.Sources.push(add);
+    }
+
+    function objstring(obj) {
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var json = new Object();
+            for (var i in obj) {
+                json[obj[i].costSourceId] = obj[i].ratio * 0.01;
+            }
+            return json;
+        }
+
+    }
+
+    function ArryString(obj, status) {
+        console.log(obj, typeof (obj))
+        if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
+            return obj;
+        } else {
+            var StoreArry = "";
+            if (status) {
+                for (var i in obj) {
+                    StoreArry += obj[i].id + ","
+                }
+            } else {
+                for (var i in obj) {
+                    StoreArry += obj[i].spec.id + ","
+                }
+            }
+            StoreArry = StoreArry.substring(0, StoreArry.length - 1)
+            return StoreArry
+        }
+
+    }
+
+
+    resource();
+    function resource() {
+        CouponResource.resource(vm.seid, 0, 0).then(function (data) {
+            vm.resource = data.data.result;
+            console.log(vm.resource)
+        })
+    }
+}
 })();
 (function(){
 "use strict"
@@ -3895,7 +4003,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             if (vm.interval.length > 1) {
                 vm.data.formulaParameterMap = {};
                 for (var i in vm.interval) {
-                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count*0.01;
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
                 }
             }
         }
@@ -4012,7 +4120,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 var json = new Object();
                 json.start = i.substring(9, i.length).split("_")[0];
                 json.end = i.substring(9, i.length).split("_")[1];
-                json.count = obj[i]*100;
+                json.count = obj[i] * 100;
                 vm.interval.push(json);
             }
         }
@@ -4234,14 +4342,14 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.list;						//对象集合
     vm.music = new Object();
     vm.music.dates = new Array();
-    vm.music.dates[0]={};
-    vm.music.dates[0].startTime='';
-    vm.music.dates[0].endTime='';
+    vm.music.dates[0] = {};
+    vm.music.dates[0].startTime = '';
+    vm.music.dates[0].endTime = '';
     vm.music.store = new Array();
     vm.music.times = new Array();
     vm.music.times[0] = new Object();
-    vm.music.times[0].startDate= "";
-    vm.music.times[0].endDate="";
+    vm.music.times[0].startDate = "";
+    vm.music.times[0].endDate = "";
     vm.stores;
     //获取sessionId
     login()
@@ -4379,7 +4487,7 @@ function MusicResource($http, device, version) {
         remove: remove,
         get: get,
         status: status,
-        count:count
+        count: count
     };
 
     function list(seid, skip, limit) {
@@ -4479,8 +4587,8 @@ function MusicResource($http, device, version) {
             })
     }
 
-    function count(seid){
-         return $http.get("/api-admin/voice/count", { params: { "device": device, "version": version, "sessionId": seid} }).then(function (data) {
+    function count(seid) {
+        return $http.get("/api-admin/voice/count", { params: { "device": device, "version": version, "sessionId": seid } }).then(function (data) {
             return data
         })
     }
@@ -4489,100 +4597,100 @@ function MusicResource($http, device, version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').config(config).controller('MusicListCtrl',MusicListCtrl);
+angular.module('index_area').config(config).controller('MusicListCtrl', MusicListCtrl);
 config.$inject = ['$stateProvider'];
-function config($stateProvider){
+function config($stateProvider) {
     $stateProvider
-    .state("mucadd", {
-        url: "/music/addmusic",
-        templateUrl: "Music/AddMusic.html",
-        controller: 'AddMusicCtrl as AddMusicCtrl'
-    })
-    .state("mucupdate", {
-        url: "/music/updatemusic/{id:string}",
-        templateUrl: "Music/UpdateMusic.html",
-        controller: 'UpdateMusicCtrl as UpdateMusicCtrl'
-    })
+        .state("mucadd", {
+            url: "/music/addmusic",
+            templateUrl: "Music/AddMusic.html",
+            controller: 'AddMusicCtrl as AddMusicCtrl'
+        })
+        .state("mucupdate", {
+            url: "/music/updatemusic/{id:string}",
+            templateUrl: "Music/UpdateMusic.html",
+            controller: 'UpdateMusicCtrl as UpdateMusicCtrl'
+        })
 }
-MusicListCtrl.$inject = ['$rootScope','$state','PublicResource',"$stateParams",'StoresResource','NgTableParams','MusicResource'];
+MusicListCtrl.$inject = ['$rootScope', '$state', 'PublicResource', "$stateParams", 'StoresResource', 'NgTableParams', 'MusicResource'];
 /***调用接口***/
-function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResource,NgTableParams,MusicResource) {
-    document.title ="语音推送管理";
-    $rootScope.name="语音推送管理";
-    $rootScope.childrenName="语音推送管理列表";
+function MusicListCtrl($rootScope, $state, PublicResource, $stateParams, StoresResource, NgTableParams, MusicResource) {
+    document.title = "语音推送管理";
+    $rootScope.name = "语音推送管理";
+    $rootScope.childrenName = "语音推送管理列表";
     var vm = this;
     vm.seid;
-    vm.skip=0;
-    vm.limit=10;
+    vm.skip = 0;
+    vm.limit = 10;
     vm.list;						//对象集合
     vm.getinfo;
 
     //获取sessionId
     login()
     list();
-    function login(){
-        vm.user=PublicResource.seid("admin");
-        if(typeof(vm.user)=="undefined"){
-            layer.alert("尚未登录！",{icon:2},function(index){
+    function login() {
+        vm.user = PublicResource.seid("admin");
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", { icon: 2 }, function (index) {
                 layer.close(index);
                 PublicResource.Urllogin();
             })
-        }else{
+        } else {
             vm.seid = PublicResource.seid(vm.user);
         }
     }
 
 
-    vm.layer = function(id){
+    vm.layer = function (id) {
         get(id)
         layer.open({
-            title:'语音详情',
-            area:['400px','500px'],
-            type:1,
-            content:$('.oper')
+            title: '语音详情',
+            area: ['400px', '500px'],
+            type: 1,
+            content: $('.oper')
         })
     }
 
-    vm.is_effective = function(item){
+    vm.is_effective = function (item) {
         vm.status = new Object();
         vm.status.ids = item.id;
-        layer.confirm('是否修改语音状态？',{
-            btn:['启用','禁用']
-        },function(){
-            vm.status.status=true;
-            MusicResource.status(vm.seid,vm.status).then(function(data){
-               if(data.data.status=="OK"){
-                   layer.msg('修改成功',{icon:1});
-               }else{
-                   layer.msg(data.data.message,{icon:2});
-               }
-               list();
+        layer.confirm('是否修改语音状态？', {
+            btn: ['启用', '禁用']
+        }, function () {
+            vm.status.status = true;
+            MusicResource.status(vm.seid, vm.status).then(function (data) {
+                if (data.data.status == "OK") {
+                    layer.msg('修改成功', { icon: 1 });
+                } else {
+                    layer.msg(data.data.message, { icon: 2 });
+                }
+                list();
             })
-        },function(){
-            vm.status.status=false;
-            MusicResource.status(vm.seid,vm.status).then(function(data){
-                if(data.data.status=="OK"){
-                   layer.msg('修改成功',{icon:1});
-               }else{
-                   layer.msg(data.data.message,{icon:2});
-               }
-               list();
+        }, function () {
+            vm.status.status = false;
+            MusicResource.status(vm.seid, vm.status).then(function (data) {
+                if (data.data.status == "OK") {
+                    layer.msg('修改成功', { icon: 1 });
+                } else {
+                    layer.msg(data.data.message, { icon: 2 });
+                }
+                list();
             })
-        }) 
+        })
     }
 
-    vm.delBtn = function(id){
+    vm.delBtn = function (id) {
         layer.confirm('您确定要删除语音？', {
-				btn: ['确定','取消'] //按钮
-		}, function(){
-			    del(id);
-		});
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            del(id);
+        });
     }
 
-    function get(id){
-        MusicResource.get(vm.seid,id).then(function(data){            
+    function get(id) {
+        MusicResource.get(vm.seid, id).then(function (data) {
             vm.info = data.data.result;
-            for(var j in vm.info.voiceDates){
+            for (var j in vm.info.voiceDates) {
                 vm.info.voiceDates[j].endDate = chang_time(new Date(vm.info.voiceDates[j].endDate));
                 vm.info.voiceDates[j].startDate = chang_time(new Date(vm.info.voiceDates[j].startDate));
             }
@@ -4591,18 +4699,18 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
     }
 
     count();
-    function count(){
-         MusicResource.count(vm.seid).then(function(data){            
+    function count() {
+        MusicResource.count(vm.seid).then(function (data) {
             vm.count = data.data.result;
             console.log(data)
         })
     }
 
-    function list(){
-        MusicResource.list(vm.seid,vm.skip,vm.limit).then(function(data){            
+    function list() {
+        MusicResource.list(vm.seid, vm.skip, vm.limit).then(function (data) {
             vm.list = data.data.result.data;
-            for(var i in vm.list){
-                for(var j in vm.list[i].voiceDates){
+            for (var i in vm.list) {
+                for (var j in vm.list[i].voiceDates) {
                     vm.list[i].voiceDates[j].endDate = chang_time(new Date(vm.list[i].voiceDates[j].endDate));
                     vm.list[i].voiceDates[j].startDate = chang_time(new Date(vm.list[i].voiceDates[j].startDate));
                 }
@@ -4619,151 +4727,25 @@ function MusicListCtrl($rootScope,$state,PublicResource,$stateParams,StoresResou
         var m = date.getMinutes() + ':'; //分
         var s = date.getSeconds();
         if (D.length < 3) {
-        D = "0" + D;
+            D = "0" + D;
         }
         if (m.length < 3) {
-        m = "0" + m;
+            m = "0" + m;
         }
 
         if (s < 9) {
-        s = "0" + s;
+            s = "0" + s;
         }
         return Y + M + D;
     }
 
-    function del(id){
-        MusicResource.remove(vm.seid,id).then(function(data){
-            if(data.data.status =="OK"){
-                layer.msg('删除成功',{icon:1});
+    function del(id) {
+        MusicResource.remove(vm.seid, id).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('删除成功', { icon: 1 });
                 list();
-            }else{
-                layer.msg(data.data.message,{icon:2})
-            }
-        })
-    }
-
-}
-
-})();
-(function(){
-"use strict"
-angular.module('index_area').controller('PremlistCtrl',PremlistCtrl);
-PremlistCtrl.$inject = ['$state','$scope','PublicResource','$stateParams','$rootScope','PremResource','GoodResource'];
-/***调用接口***/
-function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremResource,GoodResource) {
-    document.title ="运营管理";
-    $rootScope.name="运营管理";
-	$rootScope.childrenName="赠品列表";
-    var vm = this;
-    vm.list;
-    //获取sessionId
-     login();
-    function login(){
-		vm.user=PublicResource.seid("admin");			
-		if(typeof(vm.user)=="undefined"){
-			layer.alert("尚未登录！",{icon:2},function(index){
-				layer.close(index);
-				PublicResource.Urllogin();
-			})
-		}else{
-			vm.seid = PublicResource.seid(vm.user);
-		}
-	}
-
-    vm.addlayer = function(){
-        layer.open({
-            type:1,
-            title:"新增赠品",
-            area:["400px",'300px'],
-            content:$(".add_operk")
-        })
-    }
-
-    vm.delBtn = function(id){
-        layer.confirm('是否删除赠品',{
-            btn:['确定','删除'],
-        },function(){
-            remove(id);
-        })
-    }
-
-     vm.updatelayer = function(id){
-         get(id);
-        layer.open({
-            type:1,
-            title:"修改赠品",
-            area:["400px",'300px'],
-            content:$(".update_operk")
-        })
-    }
-
-    vm.updateBtn = function(){
-        console.log(vm.data);
-        Update();
-    }
-
-    vm.addBtn = function(){
-        console.log(vm.addinfo)
-        Add();
-    }
-    list();
-    good();
-    function list(){
-        PremResource.list(vm.seid,0,100).then(function(data){
-            console.log(data.data.result)
-            vm.list = data.data.result;
-        })
-    }
-
-    function good(){
-        GoodResource.list(vm.seid,null,0,0).then(function(data){
-            vm.goods = data.data.result.data;
-            console.log(vm.goods)
-        })
-    }
-
-    function Add(){
-        PremResource.add(vm.seid,vm.addinfo).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('添加成功',{icon:1},function(){
-                    layer.closeAll();
-                    list();
-                })
-            }else{
-                layer.msg(data.data.message,{icon:2})
-            }
-        })
-    }
-
-    function get(id){
-        PremResource.get(vm.seid,id).then(function(data){
-            console.log(data.data.result)
-            vm.data = data.data.result;
-        })
-    }
-
-    function remove(id){
-        PremResource.remove(vm.seid,id).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('删除成功',{icon:1},function(){
-                    layer.closeAll();
-                    list();
-                })
-            }else{
-                layer.msg(data.data.message,{icon:2})
-            }
-        })
-    }
-
-    function Update(){
-        PremResource.update(vm.seid,vm.data).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1},function(){
-                    layer.closeAll();
-                    list();
-                })
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
@@ -5042,13 +5024,13 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
  * 提供功能API封装
  */
 angular.module('index_area').factory('OrderResource', OrderResource);
-OrderResource.$inject = ['$http','device','version'];
-function OrderResource($http,device,version) {
+OrderResource.$inject = ['$http', 'device', 'version'];
+function OrderResource($http, device, version) {
     return {
-        list:list,
-        get:get,
-        refund:refund,
-        Statuslist:Statuslist
+        list: list,
+        get: get,
+        refund: refund,
+        Statuslist: Statuslist
     };
 
 
@@ -5056,31 +5038,34 @@ function OrderResource($http,device,version) {
      * list
      * 获取订单列表
      */
-    function list(seid,obj,skip,limit){
+    function list(seid, obj, skip, limit) {
         return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "takeNo":obj.id,
-                "status":obj.status
-            }}).then(function(data){
-            return data
-        })
+            {
+                params: {
+                    "device": device,
+                    "version": version,
+                    "sessionId": seid,
+                    "skip": skip,
+                    "limit": limit,
+                    "takeNo": obj.id,
+                    "status": obj.status
+                }
+            }).then(function (data) {
+                return data
+            })
     }
 
     /**
      * 获取某个分类
      */
-    function get(seid,id){
+    function get(seid, id) {
         return $.ajax({
-            type:"get",
-            url:"/api-admin/trade/"+id+"/get",
-            dataType:"json",
-            data:{"device":device,"version":version,"sessionId":seid},
-            async:false,
-            success:function(response){
+            type: "get",
+            url: "/api-admin/trade/" + id + "/get",
+            dataType: "json",
+            data: { "device": device, "version": version, "sessionId": seid },
+            async: false,
+            success: function (response) {
                 console.log(response)
                 return response.data;
             }
@@ -5089,34 +5074,37 @@ function OrderResource($http,device,version) {
 
     //退款申请
 
-    function refund(seid,id){
+    function refund(seid, id) {
         return $http({
-            url:"/api-admin/trade/update-to-refund-completed",
+            url: "/api-admin/trade/update-to-refund-completed",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-                  "tradeId":id,
-                  "device":device,
-                  "version":version,
-                  "sessionId":seid
-              }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+                "tradeId": id,
+                "device": device,
+                "version": version,
+                "sessionId": seid
+            }
         })
-        .then(function (data) {
-             return data;
-        })
+            .then(function (data) {
+                return data;
+            })
     }
 
-    function Statuslist(seid,status,skip,limit){
+    function Statuslist(seid, status, skip, limit) {
         return $http.get("/api-admin/trade/list",
-            {params:{"device":device,
-                "version":version,
-                "sessionId":seid,
-                "skip":skip,
-                "limit":limit,
-                "status":status
-            }}).then(function(data){
-            return data
-        })
+            {
+                params: {
+                    "device": device,
+                    "version": version,
+                    "sessionId": seid,
+                    "skip": skip,
+                    "limit": limit,
+                    "status": status
+                }
+            }).then(function (data) {
+                return data
+            })
     }
 }
 })();
@@ -5410,87 +5398,87 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
  * 分类功能API封装
  */
 angular.module('index_area').factory('SortResource', SortResource);
-SortResource.$inject = ['$http','device','version'];
-function SortResource($http,device,version) {
+SortResource.$inject = ['$http', 'device', 'version'];
+function SortResource($http, device, version) {
     return {
-        list:list,
-        add:add,
-        remove:remove,
-        get:get,
-        update:update
+        list: list,
+        add: add,
+        remove: remove,
+        get: get,
+        update: update
     };
-    
+
 	/**
 	 * list
 	 * 获取分类列表
 	 */
-    function list(seid){
-		return $http.get("/api-admin/category/list-all",{params:{device:device,version:version,sessionId:seid}}).then(function(data){
-			return data
-		})
+    function list(seid) {
+        return $http.get("/api-admin/category/list-all", { params: { device: device, version: version, sessionId: seid } }).then(function (data) {
+            return data
+        })
     }
-    
+
     /**
      * 添加分类
      */
-    function add(seid,obj){    	     
+    function add(seid, obj) {
         return $http({
-            url:"/api-admin/category/add",
+            url: "/api-admin/category/add",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"name":obj.name,"targetId":obj.id,"device":device,"version":version,"sessionId":seid,"position":"IN"}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "name": obj.name, "targetId": obj.id, "device": device, "version": version, "sessionId": seid, "position": "IN" }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
-    
+
     /**
      * 修改分类
      * @param {Object} id
      * @param {Object} seid
      * @param {Object} name
      */
-    function update(seid,id,name){
-         return $http({
-            url:"/api-admin/category/"+id+"/update",
+    function update(seid, id, name) {
+        return $http({
+            url: "/api-admin/category/" + id + "/update",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "id": id, "name": name }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
-    
+
     /**
      * 删除分类
      */
-    function remove(seid,id){
-         return $http({
-            url:"/api-admin/category/"+id+"/remove",
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+    function remove(seid, id) {
+        return $http({
+            url: "/api-admin/category/" + id + "/remove",
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             method: 'post',
-            data:{"device":device,"version":version,"sessionId":seid,"id":id,"name":name}
+            data: { "device": device, "version": version, "sessionId": seid, "id": id, "name": name }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
-    
+
     /**
      * 获取某个分类
      */
-    function get(seid,id){
+    function get(seid, id) {
         return $http({
-            url:"/api-admin/category/"+id+"/get",
+            url: "/api-admin/category/" + id + "/get",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"id":id}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "id": id }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 }
 })();
@@ -6245,20 +6233,20 @@ StoresGoodResource.$inject = ['$http', 'device', 'version'];
 function StoresGoodResource($http, device, version) {
     return {
         update: update,
-        list:list
+        list: list
     };
 
 
-    function list(seid,storeid,skip,limit){
-		return $http.get("/api-admin/store/product/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,"storeId":storeid}}).then(function(reponse){
-			return reponse
-		})
-	}
+    function list(seid, storeid, skip, limit) {
+        return $http.get("/api-admin/store/product/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit, "storeId": storeid } }).then(function (reponse) {
+            return reponse
+        })
+    }
 
-    function update(seid,specs) {
+    function update(seid, specs) {
         return $http({
             url: "/api-admin/store/product/spec/update",
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             method: 'post',
             data: {
                 "device": device,
@@ -6515,22 +6503,22 @@ function VirtualGetCtrl($scope,$rootScope,$state,SortResource,PublicResource,$st
  * 虚拟分类API
  */
 angular.module('index_area').factory('VirtualResource', VirtualResource);
-VirtualResource.$inject = ['$http','device','version'];
-function VirtualResource($http,device,version) {
+VirtualResource.$inject = ['$http', 'device', 'version'];
+function VirtualResource($http, device, version) {
     return {
-		list:list,
-		add:add,
-		update:update,
-		remove:remove,
-		get:get
+		list: list,
+		add: add,
+		update: update,
+		remove: remove,
+		get: get
     };
 
 
 	/**
 	 * 虚拟分类列表
 	 */
-	function get(seid,storeId,id){
-		 return $http.get("/api-admin/virtual/category/"+id+"/get",{params:{"device":device,"version":version,"sessionId":seid,"storeId":storeId}}).then(function(data){
+	function get(seid, storeId, id) {
+		return $http.get("/api-admin/virtual/category/" + id + "/get", { params: { "device": device, "version": version, "sessionId": seid, "storeId": storeId } }).then(function (data) {
             return data
         })
 	}
@@ -6538,53 +6526,53 @@ function VirtualResource($http,device,version) {
 	/**
 	 * 添加基础商品
 	 */
-	function add(seid,obj){
+	function add(seid, obj) {
 		console.log(obj)
-		var categoryId=new Object();
+		var categoryId = new Object();
 		categoryId.data = new Object();
-		categoryId.data.id===null;
+		categoryId.data.id === null;
 		console.log(categoryId.data.id)
-		if(typeof(obj.sortId)=='undefined'||obj.sortId==""){
-			categoryId =obj.sorts;
-		}else{
+		if (typeof (obj.sortId) == 'undefined' || obj.sortId == "") {
+			categoryId = obj.sorts;
+		} else {
 			categoryId = obj.sortId;
 		}
-		if(categoryId==null){
+		if (categoryId == null) {
 			categoryId = new Object();
 			categoryId.data = new Object();
 		}
 		var lables = "";
-		for(var i in obj.lables){
-			lables+=obj.lables[i].id+",";
+		for (var i in obj.lables) {
+			lables += obj.lables[i].id + ",";
 		}
-		lables=lables.substring(0,lables.length-1);
+		lables = lables.substring(0, lables.length - 1);
 		return $http({
-            url:"/api-admin/virtual/category/add",
+            url: "/api-admin/virtual/category/add",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"backgroundColor":obj.backgroundColor,
-				"storeId":obj.storeid,
-				"providerBrandIds":obj.providerBrandIds[0].id,
-				"productCategoryIds":categoryId.data.id,
-				"labelIds":lables,
-				"sort":obj.sort,
-				"parentId":obj.parentId,
-				"showInPad":obj.showInPad
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"backgroundColor": obj.backgroundColor,
+				"storeId": obj.storeid,
+				"providerBrandIds": obj.providerBrandIds[0].id,
+				"productCategoryIds": categoryId.data.id,
+				"labelIds": lables,
+				"sort": obj.sort,
+				"parentId": obj.parentId,
+				"showInPad": obj.showInPad
 			}
         })
-        .then(function (data) {
-             return data
-        })
+			.then(function (data) {
+				return data
+			})
 	}
 
 
-	function list(seid,storeid){
-		 return $http.get("/api-admin/virtual/category/get",{params:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}}).then(function(data){
+	function list(seid, storeid) {
+		return $http.get("/api-admin/virtual/category/get", { params: { "device": device, "version": version, "sessionId": seid, "storeId": storeid } }).then(function (data) {
             return data
         })
 	}
@@ -6592,49 +6580,49 @@ function VirtualResource($http,device,version) {
 	/**
 	 * 修改商品
 	 */
-	function update(seid,obj){
+	function update(seid, obj) {
 		var labels = "";
-		for(var i in obj.labels){
-			labels+=obj.labels[i].id+",";
+		for (var i in obj.labels) {
+			labels += obj.labels[i].id + ",";
 		}
-		labels=labels.substring(0,labels.length-1);
+		labels = labels.substring(0, labels.length - 1);
 		return $http({
-            url:"/api-admin/virtual/category/"+obj.id+"/update",
+            url: "/api-admin/virtual/category/" + obj.id + "/update",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"backgroundColor":obj.backgroundColor,
-				"storeId":obj.storeId,
-				"providerBrandIds":obj.providerBrands[0].id,
-				"productCategoryIds":obj.Categorys,
-				"labelIds":labels,
-				"sort":obj.sort,
-				"parentId":obj.parentId,
-				"showInPad":obj.showInPad
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"backgroundColor": obj.backgroundColor,
+				"storeId": obj.storeId,
+				"providerBrandIds": obj.providerBrands[0].id,
+				"productCategoryIds": obj.Categorys,
+				"labelIds": labels,
+				"sort": obj.sort,
+				"parentId": obj.parentId,
+				"showInPad": obj.showInPad
 			},
         })
-        .then(function (data) {
-             return data
-        })
+			.then(function (data) {
+				return data
+			})
 	}
 
 	/**
 	 * 删除商品
 	 */
-	function remove(seid,id,storeid){
+	function remove(seid, id, storeid) {
 		return $http({
-            url:"/api-admin/virtual/category/"+id+"/remove",
+            url: "/api-admin/virtual/category/" + id + "/remove",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,"storeId":storeid}
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, "storeId": storeid }
         })
-        .then(function (data) {
-             return data
-        })
+			.then(function (data) {
+				return data
+			})
 	}
 }
 
@@ -6993,23 +6981,23 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
 })();
 (function(){
 "use strict"
-angular.module('index_area').factory('SupplierLogoResource',SupplierLogoResource);
-SupplierLogoResource.$inject = ['$http','device','version'];
-function SupplierLogoResource($http,device,version) {
+angular.module('index_area').factory('SupplierLogoResource', SupplierLogoResource);
+SupplierLogoResource.$inject = ['$http', 'device', 'version'];
+function SupplierLogoResource($http, device, version) {
     return {
-		list:list,
-		get:get,
-		add:add,
-		update:update,
-		remove:remove
+		list: list,
+		get: get,
+		add: add,
+		update: update,
+		remove: remove
     };
-    
-	
+
+
 	/**
 	 * 基础商品列表	 
 	 */
-	function list(seid,skip,limit){		
-		return $http.get("/api-admin/provider/brand/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
+	function list(seid, skip, limit) {
+		return $http.get("/api-admin/provider/brand/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
 			return data
 		})
 	}
@@ -7020,121 +7008,82 @@ function SupplierLogoResource($http,device,version) {
 	 * @param  {[type]} id   [数据ID]
 	 * @return {[type]}      [description]
 	 */
-	function get(seid,id){		
+	function get(seid, id) {
 		return $.ajax({
-				type:"get",
-				url:"/api-admin/provider/brand/"+id+"/get",
-				async:false,
-				data:{"device":device,"version":version,"sessionId":seid,"id":id},
-				dataType:"json",
-				success:function(response){
-					return response.data;
-				}
+			type: "get",
+			url: "/api-admin/provider/brand/" + id + "/get",
+			async: false,
+			data: { "device": device, "version": version, "sessionId": seid, "id": id },
+			dataType: "json",
+			success: function (response) {
+				return response.data;
+			}
 		});
 	}
-	
+
 	/**
 	 * 添加基础商品
 	 */
-	function add(seid,obj){
+	function add(seid, obj) {
 		return $http({
-            url:"/api-admin/provider/brand/add",
-            method:'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"logo":obj.logo,
-				"sort":obj.sort,
-				"serialPrefix":obj.serialPrefix
+            url: "/api-admin/provider/brand/add",
+            method: 'post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"logo": obj.logo,
+				"sort": obj.sort,
+				"serialPrefix": obj.serialPrefix
 			}
         })
-        .then(function (data) {
-             return data
-        })  
+			.then(function (data) {
+				return data
+			})
 	}
-	
+
 	/**
 	 * 修改商品
 	 */
-	function update(seid,obj){
+	function update(seid, obj) {
 		console.log(obj)
 		return $http({
-            url:"/api-admin/provider/brand/"+obj.id+"/update",
+            url: "/api-admin/provider/brand/" + obj.id + "/update",
             method: 'post',
-			headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{
-				"device":device,
-				"version":version,
-				"sessionId":seid,
-				"name":obj.name,
-				"logo":obj.logo,
-				"sort":obj.sort,
-				"serialPrefix":obj.serialPrefix
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: {
+				"device": device,
+				"version": version,
+				"sessionId": seid,
+				"name": obj.name,
+				"logo": obj.logo,
+				"sort": obj.sort,
+				"serialPrefix": obj.serialPrefix
 			}
         })
-        .then(function (data) {
-             return data
-        })  
+			.then(function (data) {
+				return data
+			})
 	}
-	
+
 	/**
 	 * 删除商品
 	 */
-	function remove(seid,id){
+	function remove(seid, id) {
 		return $.ajax({
-			type:"post",
-			url:"/api-admin/provider/brand/"+id+"/remove",
-			async:false,
-			data:{"device":device,"version":version,"sessionId":seid},
-			dataType:"json",
-			success:function(response){
+			type: "post",
+			url: "/api-admin/provider/brand/" + id + "/remove",
+			async: false,
+			data: { "device": device, "version": version, "sessionId": seid },
+			dataType: "json",
+			success: function (response) {
 				return response.data;
 			}
 		});
 	}
 }
-})();
-(function(){
-"use strict"
-angular.module('index_area').directive('file', function (FileUploader, $rootScope) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            logoname: "@",
-            returndata: '='
-        },
-        templateUrl: 'Template/FileSelect.html',
-        link: function (scope, elem, attr) {
-            scope.seid = $rootScope.seid;
-            var logo = scope.img = new FileUploader({
-                url: "/api-admin/attach/upload",
-                formData: [{ "device": "pc", "version": "1.0.0", "sessionId": scope.seid }]
-            })
-            logo.onSuccessItem = function (data, status) {
-                if (status.status != "OK") {
-                    for (var i in scope.logo.queue) {
-                        scope.logo.queue[i].isSuccess = false;
-                        scope.logo.queue[i].isError = true;
-                        console.log(scope.logo.queue[i])
-                    }
-                    layer.alert(status.message, { icon: 2 })
-                } else {
-                    console.log(status)
-                    scope.infolist.logo = status.result;
-                    scope.logo.queue[0].remove();
-                }
-            }
-            scope.test = function(){
-                console.log(scope.img)
-            }
-        }
-    }
-})
-
 })();
 (function(){
 "use strict"
@@ -7243,7 +7192,7 @@ angular.module('index_area').directive('goods', function (GoodResource,$rootScop
             function ArryAnalysis(obj) {
                 var good = new Object();
                 var GoodSpecs = new Array();
-                good.categories = new Object();
+                good.categories = new Object();    
                 for (var i in obj) {
                     for (var j in obj[i].specs) {
                         good.name = obj[i].name;
@@ -7546,102 +7495,102 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 (function(){
 "use strict"
 angular.module('index_area').factory('OperationResource', OperationResource);
-OperationResource.$inject = ['$http','device','version'];
-function OperationResource($http,device,version) {
+OperationResource.$inject = ['$http', 'device', 'version'];
+function OperationResource($http, device, version) {
     return {
-      list:list,
-      get:get,
-      add:add,
-      del:del
+        list: list,
+        get: get,
+        add: add,
+        del: del
     };
 
     //获取操作列表
-    function list(seid,skip,limit){
-        return $http.get("/api-admin/authority/operation/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-          return data
+    function list(seid, skip, limit) {
+        return $http.get("/api-admin/authority/operation/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
+            return data
         })
     }
 
     //获取角色下的操作
-    function get(seid,id){
-        return $http.get("/api-admin/authority/role/operation/list",{params:{"device":device,"version":version,"sessionId":seid,'roleId':id}}).then(function(data){
-          return data
+    function get(seid, id) {
+        return $http.get("/api-admin/authority/role/operation/list", { params: { "device": device, "version": version, "sessionId": seid, 'roleId': id } }).then(function (data) {
+            return data
         })
     }
 
-    function add(seid,obj){
-      return $http({
-            url:"/api-admin/authority/role/operation/add",
+    function add(seid, obj) {
+        return $http({
+            url: "/api-admin/authority/role/operation/add",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"roleId":obj.id,"operationCode":obj.code}
+            params: { "device": device, "version": version, "sessionId": seid, "roleId": obj.id, "operationCode": obj.code }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-    function del(seid,obj){
-      return $http({
-            url:"/api-admin/authority/role/operation/remove",
+    function del(seid, obj) {
+        return $http({
+            url: "/api-admin/authority/role/operation/remove",
             method: 'post',
-            params:{"device":device,"version":version,"sessionId":seid,"roleId":obj.id,"operationCode":obj.code}
+            params: { "device": device, "version": version, "sessionId": seid, "roleId": obj.id, "operationCode": obj.code }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 }
 })();
 (function(){
 "use strict"
 angular.module('index_area').factory('PublicResource', PublicResource);
-PublicResource.$inject = ['$http','device','version'];
-function PublicResource($http,device,version) {
+PublicResource.$inject = ['$http', 'device', 'version'];
+function PublicResource($http, device, version) {
     return {
-        seid:seid,
-        user:user,
-        Urllogin:Urllogin,
-		getarea:getarea,
-		logout:logout,
-		RoleUser:RoleUser
+        seid: seid,
+        user: user,
+        Urllogin: Urllogin,
+		getarea: getarea,
+		logout: logout,
+		RoleUser: RoleUser
     };
-    
-    
+
+
     /**
      *获取sessionID 
      * @param {Object} user
      * 登录用户名
      */
-	function seid(user){		
-		return $.session.get(user);		
+	function seid(user) {
+		return $.session.get(user);
 	}
-	
-	
+
+
 	/**
 	 * 获取user信息
 	 * seid:当前sessionID
 	 */
-	function user(seid){
-	return $.ajax({
-			type:"get",
-			url:"/api-admin/session/get-user-info",
-			async:false,
-			data:{"sessionId":seid,"device":device,"version":version},
-			dataType:"json",
-			success:function(data){
+	function user(seid) {
+		return $.ajax({
+			type: "get",
+			url: "/api-admin/session/get-user-info",
+			async: false,
+			data: { "sessionId": seid, "device": device, "version": version },
+			dataType: "json",
+			success: function (data) {
 				return data
 			}
 		});
 	}
-	
-	function RoleUser(seid,userid){
+
+	function RoleUser(seid, userid) {
 		return $.ajax({
-			type:"get",
-			url:"/api-admin/authority/user/roles",
-			async:false,
-			data:{"sessionId":seid,"device":device,"version":version,"userId":userid},
-			dataType:"json",
-			success:function(data){
+			type: "get",
+			url: "/api-admin/authority/user/roles",
+			async: false,
+			data: { "sessionId": seid, "device": device, "version": version, "userId": userid },
+			dataType: "json",
+			success: function (data) {
 				return data
 			}
 		});
@@ -7651,36 +7600,36 @@ function PublicResource($http,device,version) {
 	/**
 	 * 跳转到登录页
 	 */
-	function Urllogin(){
-		window.location.href="../User/login.html";
+	function Urllogin() {
+		window.location.href = "../User/login.html";
 	}
-	
+
 
 	//退出
-	function logout(seid){
+	function logout(seid) {
 		return $.ajax({
-			type:"post",
-			url:"/api-admin/session/logout",
-			async:false,
-			data:{"sessionId":seid,"device":device,"version":version},
-			dataType:'json',
-			success:function(data){
+			type: "post",
+			url: "/api-admin/session/logout",
+			async: false,
+			data: { "sessionId": seid, "device": device, "version": version },
+			dataType: 'json',
+			success: function (data) {
 				return data;
 			}
 		})
 	}
-	
+
 	/**
 	 * 地区查询
 	 */
-	function getarea(seid,id){
+	function getarea(seid, id) {
 		return $.ajax({
-			type:"get",
-			url:"/api-admin/area/list-by-parentId",
-			async:false,	
-			data:{"sessionId":seid,"device":device,"version":version,"parentId":id},
-			dataType:"json",
-			success:function(data){
+			type: "get",
+			url: "/api-admin/area/list-by-parentId",
+			async: false,
+			data: { "sessionId": seid, "device": device, "version": version, "parentId": id },
+			dataType: "json",
+			success: function (data) {
 				return data;
 			}
 		})
@@ -7691,12 +7640,12 @@ function PublicResource($http,device,version) {
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('RoleListCtrl',RoleListCtrl);
-RoleListCtrl.$inject = ['$scope','$rootScope','$state','PublicResource',"$stateParams",'NgTableParams','RoleResource','OperationResource'];
-function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTableParams,RoleResource,OperationResource){
-    document.title ="角色管理";
-    $rootScope.name="角色管理"
-    $rootScope.childrenName="角色管理列表"
+angular.module('index_area').controller('RoleListCtrl', RoleListCtrl);
+RoleListCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'RoleResource', 'OperationResource'];
+function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, RoleResource, OperationResource) {
+    document.title = "角色管理";
+    $rootScope.name = "角色管理"
+    $rootScope.childrenName = "角色管理列表"
     var vm = this;
     vm.seid;
     vm.data = new Object();
@@ -7705,166 +7654,166 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
     list();
     function login() {
         vm.user = PublicResource.seid("admin");
-        if (typeof(vm.user) == "undefined") {
-        layer.alert("尚未登录！", {
-            icon: 2
-        }, function(index) {
-            layer.close(index);
-            PublicResource.Urllogin();
-        });
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", {
+                icon: 2
+            }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            });
         } else {
-        vm.seid = PublicResource.seid(vm.user);
+            vm.seid = PublicResource.seid(vm.user);
         }
     }
 
-    vm.operBtn = function(id){
+    vm.operBtn = function (id) {
         vm.data.id = id;
         get(id);
         layer.open({
-            title:'操作管理',
-            type:1,
-		    content:$('.operList')
+            title: '操作管理',
+            type: 1,
+            content: $('.operList')
         })
     }
 
-    vm.statusBtn = function(status,code){
-        vm.data.code=code;
+    vm.statusBtn = function (status, code) {
+        vm.data.code = code;
         console.log(vm.data)
-        if(status){
+        if (status) {
             add()
-        }else{
+        } else {
             del()
         }
     }
 
-    vm.upBtn = function(item){
+    vm.upBtn = function (item) {
         console.log(item);
         vm.addinfo.name = item.name;
         vm.addinfo.id = item.id;
         vm.is = false;
         layer.open({
-            title:'编辑角色',
-            type:1,
-		    content:$('.addRole')
+            title: '编辑角色',
+            type: 1,
+            content: $('.addRole')
         })
     }
 
-    vm.AddRole = function(){
+    vm.AddRole = function () {
         vm.is = true;
         layer.open({
-            title:'编辑角色',
-            type:1,
-		    content:$('.addRole')
+            title: '编辑角色',
+            type: 1,
+            content: $('.addRole')
         })
     }
 
-    vm.infoBtn = function(){
-        if(vm.is){
+    vm.infoBtn = function () {
+        if (vm.is) {
             addRole();
-        }else{
+        } else {
             updateRole();
         }
     }
 
-    vm.delBtn = function(id){
+    vm.delBtn = function (id) {
         layer.confirm('是否删除角色？', {
-            btn: ['确定','取消'] //按钮
-            }, function(){
-                delRole(id)
-            });
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            delRole(id)
+        });
     }
 
-    function list(){
-        RoleResource.list(vm.seid,0,0).then(function(data){
-            if(data.data.status=="OK"){
+    function list() {
+        RoleResource.list(vm.seid, 0, 0).then(function (data) {
+            if (data.data.status == "OK") {
                 vm.list = data.data.result;
-                vm.RoleList = new NgTableParams({},{dataset:vm.list});
+                vm.RoleList = new NgTableParams({}, { dataset: vm.list });
                 console.log(vm.list)
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
 
-        OperationResource.list(vm.seid,0,0).then(function(data){
-            if(data.data.status=="OK"){
+        OperationResource.list(vm.seid, 0, 0).then(function (data) {
+            if (data.data.status == "OK") {
                 vm.operList = data.data.result;
                 console.log(vm.operList)
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function get(id){
-       OperationResource.get(vm.seid,id).then(function(data){
-           vm.info = data.data.result;
-           for(var i in vm.operList){
-               vm.operList[i].status=false;
-               for(var j in vm.info){
-                   if(vm.operList[i].code==vm.info[j].code){
-                        vm.operList[i].status=true;
-                   }
-               }
-           }
-       })
+    function get(id) {
+        OperationResource.get(vm.seid, id).then(function (data) {
+            vm.info = data.data.result;
+            for (var i in vm.operList) {
+                vm.operList[i].status = false;
+                for (var j in vm.info) {
+                    if (vm.operList[i].code == vm.info[j].code) {
+                        vm.operList[i].status = true;
+                    }
+                }
+            }
+        })
     }
 
-    function add(){
+    function add() {
         console.log(vm.data)
-        OperationResource.add(vm.seid,vm.data).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('添加成功',{icon:1});
-            }else{
-                layer.msg(data.data.message,{icon:2})
+        OperationResource.add(vm.seid, vm.data).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('添加成功', { icon: 1 });
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function del(id){
-         OperationResource.del(vm.seid,id).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('删除成功',{icon:1});
-            }else{
-                layer.msg(data.data.message,{icon:2})
+    function del(id) {
+        OperationResource.del(vm.seid, id).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('删除成功', { icon: 1 });
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function addRole(){
-        RoleResource.add(vm.seid,vm.addinfo).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('添加成功',{icon:1},function(){
+    function addRole() {
+        RoleResource.add(vm.seid, vm.addinfo).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('添加成功', { icon: 1 }, function () {
                     layer.closeAll();
                     list();
                 });
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function updateRole(){
-         RoleResource.update(vm.seid,vm.addinfo).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1},function(){
-                     layer.closeAll();
+    function updateRole() {
+        RoleResource.update(vm.seid, vm.addinfo).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('修改成功', { icon: 1 }, function () {
+                    layer.closeAll();
                     list();
                 });
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function delRole(id){
-         RoleResource.del(vm.seid,id).then(function(data){
-            if(data.data.status=="OK"){
-                layer.msg('删除成功',{icon:1},function(){
-                     layer.closeAll();
+    function delRole(id) {
+        RoleResource.del(vm.seid, id).then(function (data) {
+            if (data.data.status == "OK") {
+                layer.msg('删除成功', { icon: 1 }, function () {
+                    layer.closeAll();
                     list();
                 });
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
@@ -7873,216 +7822,216 @@ function RoleListCtrl($scope,$rootScope,$state,PublicResource,$stateParams,NgTab
 (function(){
 "use strict"
 angular.module('index_area').factory('RoleResource', RoleResource);
-RoleResource.$inject = ['$http','device','version'];
-function RoleResource($http,device,version) {
+RoleResource.$inject = ['$http', 'device', 'version'];
+function RoleResource($http, device, version) {
     return {
-		list:list,
-        get:get,
-        add:add,
-        update:update,
-        del:del,
-        addUser:addUser,
-        delUser:delUser
+        list: list,
+        get: get,
+        add: add,
+        update: update,
+        del: del,
+        addUser: addUser,
+        delUser: delUser
     };
 
-    function list(seid,skip,limit){
-        return $http.get("/api-admin/authority/role/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-			return data
-		})
+    function list(seid, skip, limit) {
+        return $http.get("/api-admin/authority/role/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
+            return data
+        })
     }
 
-    function get(seid,id){
-        return $http.get("/api-admin/authority/user/roles",{params:{"device":device,"version":version,"sessionId":seid,"userId":id}}).then(function(data){
-			return data
-		})
+    function get(seid, id) {
+        return $http.get("/api-admin/authority/user/roles", { params: { "device": device, "version": version, "sessionId": seid, "userId": id } }).then(function (data) {
+            return data
+        })
     }
 
 
     //角色添加用户
-    function addUser(seid,userId,roleId){
+    function addUser(seid, userId, roleId) {
         return $http({
-            url:"/api-admin/authority/role/user/add",
+            url: "/api-admin/authority/role/user/add",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, 'userId': userId, 'roleId': roleId }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-     //角色添加用户
-    function delUser(seid,userId,roleId){
+    //角色添加用户
+    function delUser(seid, userId, roleId) {
         return $http({
-            url:"/api-admin/authority/role/user/remove",
+            url: "/api-admin/authority/role/user/remove",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,'userId':userId,'roleId':roleId}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, 'userId': userId, 'roleId': roleId }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-    function add(seid,obj){
+    function add(seid, obj) {
         console.log(obj)
         return $http({
-            url:"/api-admin/authority/role/add",
+            url: "/api-admin/authority/role/add",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, 'name': obj.name }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-    function update(seid,obj){
+    function update(seid, obj) {
         return $http({
-            url:"/api-admin/authority/role/update",
+            url: "/api-admin/authority/role/update",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,'name':obj.name,'roleId':obj.id}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, 'name': obj.name, 'roleId': obj.id }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 
-    function del(seid,id){
+    function del(seid, id) {
         return $http({
-            url:"/api-admin/authority/role/remove",
+            url: "/api-admin/authority/role/remove",
             method: 'post',
-            headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-            data:{"device":device,"version":version,"sessionId":seid,'roleId':id}
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: { "device": device, "version": version, "sessionId": seid, 'roleId': id }
         })
-        .then(function (data) {
-             return data
-        })
+            .then(function (data) {
+                return data
+            })
     }
 }
 })();
 (function(){
 "use strict"
-angular.module('index_area').controller('UserListCtrl',UserListCtrl);
-UserListCtrl.$inject = ['$rootScope','PublicResource','NgTableParams','RoleResource','$http'];
-function UserListCtrl($rootScope,PublicResource,NgTableParams,RoleResource,$http){
-    document.title ="角色管理";
-    $rootScope.name="角色管理"
-    $rootScope.childrenName="角色管理列表"
+angular.module('index_area').controller('UserListCtrl', UserListCtrl);
+UserListCtrl.$inject = ['$rootScope', 'PublicResource', 'NgTableParams', 'RoleResource', '$http'];
+function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $http) {
+    document.title = "角色管理";
+    $rootScope.name = "角色管理"
+    $rootScope.childrenName = "角色管理列表"
     var vm = this;
     vm.skip = 0;
     vm.limit = 50;
     vm.seid;
 
-    vm.get = function(userId){
+    vm.get = function (userId) {
         vm.userId = userId;
-        for(var i in vm.Rolelist){
-            vm.Rolelist[i].status=false;
+        for (var i in vm.Rolelist) {
+            vm.Rolelist[i].status = false;
         }
         get(userId);
         layer.open({
-            title:'权限管理',
-            type:1,
-		    content:$('.RoleDiv')
+            title: '权限管理',
+            type: 1,
+            content: $('.RoleDiv')
         })
     }
 
-    vm.upBtn=function(){
+    vm.upBtn = function () {
         update();
-};
+    };
 
     login();
     list();
     function login() {
         vm.user = PublicResource.seid("admin");
-        if (typeof(vm.user) == "undefined") {
-        layer.alert("尚未登录！", {
-            icon: 2
-        }, function(index) {
-            layer.close(index);
-            PublicResource.Urllogin();
-        });
+        if (typeof (vm.user) == "undefined") {
+            layer.alert("尚未登录！", {
+                icon: 2
+            }, function (index) {
+                layer.close(index);
+                PublicResource.Urllogin();
+            });
         } else {
-        vm.seid = PublicResource.seid(vm.user);
+            vm.seid = PublicResource.seid(vm.user);
         }
     }
-    vm.statusBtn = function(status,id){
-        if(status){
-            addUser(vm.userId,id);
-        }else{
-            delUser(vm.userId,id);
+    vm.statusBtn = function (status, id) {
+        if (status) {
+            addUser(vm.userId, id);
+        } else {
+            delUser(vm.userId, id);
         }
     }
 
-    function list(){
-       /* UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
-            if(data.data.status=="OK"){
-                vm.list = data.data.result;
-                vm.TableList = new NgTableParams({},{dataset:vm.list});
-                console.log(vm.list)
-            }else{
-                layer.msg(data.data.message,{icon:2})
-            }
-        })*/
+    function list() {
+        /* UserResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
+             if(data.data.status=="OK"){
+                 vm.list = data.data.result;
+                 vm.TableList = new NgTableParams({},{dataset:vm.list});
+                 console.log(vm.list)
+             }else{
+                 layer.msg(data.data.message,{icon:2})
+             }
+         })*/
         vm.tableParams = new NgTableParams({
             page: 1, // show first page
             count: 10, // count per page
-            per_page:10
+            per_page: 10
         }, {
-            filterDelay: 300,
-            getData: function(info) {
-                return $http.get("/api-admin/user/list",{params:{"device":'2.0.0',"version":'PC',"sessionId":vm.seid,"skip":vm.skip,"limit":0}}).then(function(data){
-                    console.log(data.data.result);
-                    vm.skip +=vm.limit;
-                    info.per_page=10;
-                    info.total(1000);
-                    return data.data.result
-                })
-            }
-        });
+                filterDelay: 300,
+                getData: function (info) {
+                    return $http.get("/api-admin/user/list", { params: { "device": '2.0.0', "version": 'PC', "sessionId": vm.seid, "skip": vm.skip, "limit": 0 } }).then(function (data) {
+                        console.log(data.data.result);
+                        vm.skip += vm.limit;
+                        info.per_page = 10;
+                        info.total(1000);
+                        return data.data.result
+                    })
+                }
+            });
 
-        RoleResource.list(vm.seid,0,0).then(function(data){
+        RoleResource.list(vm.seid, 0, 0).then(function (data) {
             vm.Rolelist = data.data.result;
             console.log(vm.Rolelist)
         })
 
     }
 
-    function get(id){
-         RoleResource.get(vm.seid,id).then(function(data){
+    function get(id) {
+        RoleResource.get(vm.seid, id).then(function (data) {
             vm.info = data.data.result;
-            for(var i in vm.Rolelist){
-                for(var j in vm.info){
-                    if(vm.Rolelist[i].id == vm.info[j].id){
-                         vm.Rolelist[i].status=true;
-                     }
+            for (var i in vm.Rolelist) {
+                for (var j in vm.info) {
+                    if (vm.Rolelist[i].id == vm.info[j].id) {
+                        vm.Rolelist[i].status = true;
+                    }
                 }
             }
-            
+
         })
     }
 
-    function delUser(userId,roleId){
-        RoleResource.delUser(vm.seid,userId,roleId).then(function(data){
+    function delUser(userId, roleId) {
+        RoleResource.delUser(vm.seid, userId, roleId).then(function (data) {
             console.log(data)
-            if(data.data.status=="OK"){
-                layer.msg('修改成功',{icon:1})
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            if (data.data.status == "OK") {
+                layer.msg('修改成功', { icon: 1 })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
 
-    function addUser(userId,roleId){
+    function addUser(userId, roleId) {
         console.log(userId);
         console.log(roleId)
-       RoleResource.addUser(vm.seid,userId,roleId).then(function(data){
+        RoleResource.addUser(vm.seid, userId, roleId).then(function (data) {
             console.log(data)
-            if(data.data.status=="OK"){
-                layer.msg('添加成功',{icon:1})
-            }else{
-                layer.msg(data.data.message,{icon:2})
+            if (data.data.status == "OK") {
+                layer.msg('添加成功', { icon: 1 })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
@@ -8091,23 +8040,23 @@ function UserListCtrl($rootScope,PublicResource,NgTableParams,RoleResource,$http
 (function(){
 "use strict"
 angular.module('index_area').factory('UserResource', UserResource);
-UserResource.$inject = ['$http','device','version'];
-function UserResource($http,device,version) {
-    return {
-      list:list,
-      get:get
-    };
+UserResource.$inject = ['$http', 'device', 'version'];
+function UserResource($http, device, version) {
+  return {
+    list: list,
+    get: get
+  };
 
-    function list(seid,skip,limit){
-        return $http.get("/api-admin/user/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit}}).then(function(data){
-          return data
-        })
-    }
+  function list(seid, skip, limit) {
+    return $http.get("/api-admin/user/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit } }).then(function (data) {
+      return data
+    })
+  }
 
-    function get(seid,id){
-        return $http.get("/authority/role/user/list",{params:{"device":device,"version":version,"sessionId":seid,"skip":skip,"limit":limit,'roleId':id}}).then(function(data){
-          return data
-        })
-    }
+  function get(seid, id) {
+    return $http.get("/authority/role/user/list", { params: { "device": device, "version": version, "sessionId": seid, "skip": skip, "limit": limit, 'roleId': id } }).then(function (data) {
+      return data
+    })
+  }
 }
 })();
