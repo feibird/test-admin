@@ -1,4 +1,4 @@
-## web-admin (鲜食一号admin)
+## web-admin (鲜食一号Web-admin)
 
 #### 说明:本项目为管理系统用到的所有插件已经框架为以下:
 
