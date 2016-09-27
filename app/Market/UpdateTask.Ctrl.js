@@ -49,14 +49,16 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             if (vm.interval.length > 1) {
                 vm.data.formulaParameterMap = {};
                 for (var i in vm.interval) {
-                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
+                    vm.data.formulaParameterMap['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = numeral(vm.interval[i].count*0.01).format('0.00');
                 }
             }
         }
         console.log(vm.data);
         MarketResource.update(vm.seid, vm.data).then(function (data) {
             if (data.data.status == "OK") {
-                layer.msg("保存成功", { icon: 1 })
+                layer.msg("保存成功", { icon: 1 },function(){
+                    history.go(-1);
+                })
             } else {
                 layer.msg(data.data.message, { icon: 2 })
             }
@@ -84,7 +86,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSource.id] = obj[i].ratio * 0.01;
+                json[obj[i].costSource.id] = numeral(obj[i].ratio*0.01).format("0.0");
             }
             return json;
         }
@@ -166,7 +168,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 var json = new Object();
                 json.start = i.substring(9, i.length).split("_")[0];
                 json.end = i.substring(9, i.length).split("_")[1];
-                json.count = obj[i] * 100;
+                json.count = numeral(obj[i]).format('0%').substring(0,numeral(obj[i]).format('0%').length-1);
                 vm.interval.push(json);
             }
         }

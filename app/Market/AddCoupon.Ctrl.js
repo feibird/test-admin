@@ -41,6 +41,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
         vm.Coupon.Sources = objstring(vm.Sources);
         vm.Coupon.storeIds = ArryString(vm.storesId,true);
         vm.Coupon.goodIds = ArryString(vm.goodId,false);
+        vm.Coupon.specCountLimit = vm.Coupon.specType=="ALL_SPEC"?"":vm.Coupon.specCountLimit;
         console.log(vm.Coupon)
         CouponResource.add(vm.seid,vm.Coupon).then(function(data){
             if(data.data.status =='OK'){

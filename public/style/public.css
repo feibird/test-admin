@@ -147,7 +147,9 @@ td{vertical-align: middle!important;}
 .w100p{width: 100px!important;}
 .w200p{width: 200px!important;}
 .w50p{width: 50px!important;}
+.ml5{margin-left: 5px!important;}
 .dib{display: inline-block;}
+.dtb{display: table;}
 .has-error .input-group-addon{color: white!important;}
 
 /*******/

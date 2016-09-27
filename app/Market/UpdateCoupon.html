@@ -102,7 +102,7 @@
         </select>
         <p class="error-text" ng-if='Update.isGood.$error.required&&Update.isGood.$touched'>选项为必填</p>
     </div>
-    <div ng-if="UpdateCouponCtrl.info.isGood" class="form-group w100p" ng-class="{'has-error':Update.amountLimit.$error.required&&Update.amountLimit.$touched}">
+    <div ng-if="UpdateCouponCtrl.info.isGood=='true'" class="form-group w100p" ng-class="{'has-error':Update.amountLimit.$error.required&&Update.amountLimit.$touched}">
         <label for="">订单满</label>
         <div class="input-group">
             <input type="text" required name='amountLimit' ng-model='UpdateCouponCtrl.info.amountLimit' class="form-control">

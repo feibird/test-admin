@@ -1,4 +1,4 @@
-<form name='add' ng-submit="taskCtrl.add()">
+<form name='add' ng-submit="taskCtrl.AddTask()">
 	<div class="task">
 		<div class="panel panel-default panel-border">
 			<div class="panel-heading">活动基本信息</div>
@@ -111,7 +111,6 @@
 				</div>
 				<stores ng-show="taskCtrl.task.storeType=='SELECTED_STORE'" returnlist='taskCtrl.task.storesId'></stores>
 				<div class="form-group">
-					<pre>{{add.endTime}}</pre>
 					<label for="">有效日期</label>
 					<div>
 						<div class="dropdown dib" style="width:400px;">
@@ -188,16 +187,16 @@
 					<p class="error-text" ng-if='add.productType.$error.required&&add.productType.$touched'>选项为必填</p>
 				</div>
 				<goods returnlist='taskCtrl.task.goodsId' ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'"></goods>
-				<div class="form-group" ng-show="taskCtrl.task.productType=='SELECTED_PRODUCT'" ng-class="{'has-error':add.isBuy.$error.required&&add.isBuy.$touched}">
+				<div class="form-group" ng-if="taskCtrl.task.productType=='SELECTED_PRODUCT'" ng-class="{'has-error':add.isBuy.$error.required&&add.isBuy.$touched}">
 					<label for="">是否商品限购</label>
-					<select name="isBuy" id="" required class="form-control w100p" ng-model='taskCtrl.task.isBuy'>
+					<select name="isBuy" required class="form-control w100p" ng-model='taskCtrl.task.isBuy'>
 						<option value="" selected hidden>请选择</option>
 						<option value="true">是</option>
 						<option value="false">否</option>
 					</select>
 					<p class="error-text" ng-if='add.isBuy.$error.required&&add.isBuy.$touched'>选项为必填</p>
 				</div>
-				<div class="form-group" ng-if="taskCtrl.task.isBuy=='true'" ng-class="{'has-error':add.isBuy.$error.required&&add.isBuy.$touched}">
+				<div class="form-group" ng-if="taskCtrl.task.isBuy.$view=='true'" ng-class="{'has-error':add.isBuy.$error.required&&add.isBuy.$touched}">
 					<label for="">限购次数</label>
 					<div class="input">
 						<div class="input-tit">最多可购</div>
@@ -526,7 +525,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12 taskBtn">
-				<a href="javascript:;" class="btn btn-primary" ng-click='taskCtrl.AddTask()'>保存</a>
+				<button href="javascript:;" class="btn btn-primary">保存</button>
 				<a href="javascript:;" class="btn btn-primary" onclick="history.go(-1)">返回</a>
 			</div>
 		</div>

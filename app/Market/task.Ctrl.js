@@ -69,9 +69,10 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.AddTask = function () {
         console.log(vm.interval);
         if (iftask()) {
+            vm.task.formulaParameter={};
             if (vm.interval.length > 0) {
                 for (var i in vm.interval) {
-                    vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = vm.interval[i].count * 0.01;
+                    vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = numeral(vm.interval[i].count*0.01).format('0.00')
                 }
             }
 
