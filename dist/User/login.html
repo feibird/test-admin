@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Xenon Boostrap Admin Panel" />
+	<meta name="author" content="" />
+
+	<title>鲜食一号-登录</title>
+
+
+	<link rel="stylesheet" href="../public/css/fonts/linecons/css/linecons.css">
+	<link rel="stylesheet" href="../public/css/fonts/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../public/css/frame.min.css">
+	<script src="../public/js/jquery-1.11.1.min.js"></script>
+
+
+</head>
+
+<body class="page-body login-page">
+
+
+	<div class="login-container">
+
+		<div class="row">
+
+			<div class="col-sm-6 col-sm-offset-3">
+
+				<script type="text/javascript">
+					jQuery(document).ready(function($)
+					{
+						// Reveal Login form
+						setTimeout(function(){ $(".fade-in-effect").addClass('in'); }, 1);						
+						// Validation and Ajax action
+						$("form#login").validate({
+							rules: {
+								username: {
+									required: true
+								},
+								
+								passwd: {
+									required: true
+								}
+							},
+							
+							messages: {
+								username: {
+									required: '请输入您的用户名.'
+								},
+								
+								passwd: {
+									required: '请输入您的登录密码.'
+								}
+							},
+							
+							
+							// Form Processing via AJAX
+							submitHandler: function(form)
+							{
+								show_loading_bar(70); // Fill progress bar to 70% (just a given value)								
+								var opts = {
+									"closeButton": true,
+									"debug": false,
+									"positionClass": "toast-top-full-width",
+									"onclick": null,
+									"showDuration": "300",
+									"hideDuration": "1000",
+									"timeOut": "5000",
+									"extendedTimeOut": "1000",
+									"showEasing": "swing",
+									"hideEasing": "linear",
+									"showMethod": "fadeIn",
+									"hideMethod": "fadeOut"
+								};
+								 /**
+								 * 创建sessionID
+								 * @param {Object} status
+								 */
+								
+								function sessionId(user) {
+									$.ajax({
+										type: "post",
+										url: "/api-admin/session/create",
+										dataType: "json",
+										async: false,
+										success: function(data) {
+											seid = data.result;
+											$.session.set("admin",user);
+											$.session.set(user, data.result);
+										}
+									});
+								}
+
+								sessionId($("#username").val())
+								$.ajax({
+									url: "/api-admin/session/login-with-password",
+									method: 'POST',
+									dataType: 'json',
+									data: {	
+										device:"pc",
+										version:"1.0.0",
+										sessionId:$.session.get($(form).find('#username').val()),									
+										phoneNumber: $(form).find('#username').val(),
+										password: $(form).find('#passwd').val(),
+									},
+									success: function(resp)
+									{
+										show_loading_bar({
+											delay: .5,
+											pct: 100,
+											finish: function(){
+												// Redirect after successful login page (when progress bar reaches 100%)
+												if(resp.status=="OK")
+												{
+													window.location.href = '/#/Sort/list.html';
+												}
+												else
+												{
+													toastr.error(resp.message, "登录失败!", opts);													
+												}
+											}
+										});
+										
+																		}
+								});
+								
+							}
+						});
+						
+						// Set Form focus
+						$("form#login .form-group:has(.form-control):first .form-control").focus();
+					});
+				</script>
+
+				<!-- Errors container -->
+				<div class="errors-container">
+				</div>
+
+				<!-- Add class "fade-in-effect" for login form effect -->
+				<form method="post" role="form" id="login" class="login-form fade-in-effect">
+					<div class="login-header">
+						<a href="javascript:;" class="logo">
+							<img src="http://io.bestfood520.com/1615b143-87a7-4196-b85e-37a8fc3c7eab.png" alt="" width="209" />
+						</a>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="username">Username</label>
+						<input type="text" class="form-control input-dark" name="username" id="username" autocomplete="off" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="passwd">Password</label>
+						<input type="password" class="form-control input-dark" name="passwd" id="passwd" autocomplete="off" />
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-dark  btn-block text-left">
+							<i class="fa-lock"></i>
+							登录
+						</button>
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+	<!-- Bottom Scripts -->
+	<script src="../public/js/bootstrap.min.js"></script>
+	<script src="../public/js/TweenMax.min.js"></script>
+	<script src="../public/js/resizeable.js"></script>
+	<script src="../public/js/joinable.js"></script>
+	<script src="../public/js/xenon-api.js"></script>
+	<script src="../public/js/jquery-validate/jquery.validate.js"></script>
+	<script src="../public/js/toastr/toastr.min.js"></script>
+	<!-- JavaScripts initializations and stuff -->
+	<script src="../public/js/xenon-custom.js"></script>
+	<script src="../public/min/jquerysession.js"></script>
+	<script>
+		/**
+		 * 创建sessionID
+		 * @param {Object} status
+		 */
+		$(function(){
+			$(window).keydown(function(event){
+				if(event.keyCode==13){
+					
+					
+				}
+			})
+		})
+		
+	</script>
+</body>
+
+</html>

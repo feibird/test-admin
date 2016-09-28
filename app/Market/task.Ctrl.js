@@ -11,11 +11,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.date = {}
     vm.date.minDate = typeof (vm.date.minDate) ? 'undefined' : new Date();
     login();
-    vm.interval = [{
-        start: 0,
-        end: 0,
-        count: 0
-    }];
+    vm.interval = [];
     init();
     function init() {
         //添加对象
@@ -44,7 +40,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         } else {
             vm.verification[name] = false;
         }
-        console.log(vm.verification)
     }
 
     vm.Addinterval = function () {
@@ -53,7 +48,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     }
 
     vm.Delinterval = function (index) {
-        console.log(index)
         vm.interval.splice(index, 1)
     }
 
@@ -69,10 +63,11 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     vm.AddTask = function () {
         console.log(vm.interval);
         if (iftask()) {
-            vm.task.formulaParameter={};
             if (vm.interval.length > 0) {
+                vm.task.formulaParameter = {};
                 for (var i in vm.interval) {
-                    vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = numeral(vm.interval[i].count*0.01).format('0.00')
+                    console.log(i)
+                    vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = numeral(vm.interval[i].count * 0.01).format('0.00')
                 }
             }
 
@@ -86,7 +81,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
             if (typeof (vm.task.endTime) != "undefined" && vm.task.endTime != "" && typeof (vm.task.endTime) != 'number') {
                 vm.task.EndTime = vm.task.endTime.getTime();
             }
-            console.log(vm.task);
             MarketResource.add(vm.seid, vm.task).then(function (data) {
                 if (data.data.status == "OK") {
                     layer.msg("保存成功", { icon: 1 }, function () {
@@ -97,14 +91,12 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
                 }
             })
         }
-        console.log(vm.task)
     }
 
     function iftask() {
         var is = true;
         for (var i in vm.verification) {
             if (vm.verification[i] == null || vm.verification[i] == "" && vm.verification[i] != false) {
-                console.log(vm.verification[i])
                 vm.verification[i] = true;
                 is = false;
             }
@@ -130,7 +122,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     function resource() {
         MarketResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
-            console.log(vm.resource)
         })
     }
 
@@ -148,7 +139,6 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     }
 
     function ArryString(obj, status) {
-        console.log(obj, typeof (obj))
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {

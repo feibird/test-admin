@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">提现详情</div>
+  <div class="panel-body">
+      <div class="col-xs-6 detail-layout">提现流水号<p>{{DrawDetailCtrl.info.serialNumber}}</p></div>
+      <div class="col-xs-6 detail-layout">提现状态
+        <p>
+            <span ng-show="DrawDetailCtrl.info.status=='INIT'">待审核</span>
+            <span ng-show="DrawDetailCtrl.info.status=='APPROVED'">审核成功</span>
+            <span ng-show="DrawDetailCtrl.info.status=='FAILED'">审核失败</span>
+            <span ng-show="DrawDetailCtrl.info.status=='COMPLETED'">打款成功</span>
+            <span ng-show="DrawDetailCtrl.info.status=='OPERATOR_FAILED'">运营审核失败</span>
+            <span ng-show="DrawDetailCtrl.info.status=='OPERATOR_APPROVED'">运营审核通过</span>
+            <span ng-show="DrawDetailCtrl.info.status=='FINANCE_APPROVED'">财务审核通过</span>
+        </p>
+      </div>
+      <div class="col-xs-6 detail-layout">连锁品牌<p>巴比馒头</p></div>
+      <div class="col-xs-6 detail-layout">提现门店<p>{{DrawDetailCtrl.info.store.name}}</p></div>
+      <div class="col-xs-6 detail-layout">店长姓名<p>{{DrawDetailCtrl.info.store.legalPerson}}</p></div>
+      <div class="col-xs-6 detail-layout">申请人手机号<p>{{DrawDetailCtrl.info.store.legalPersonTelephone}}</p></div>
+      <div class="col-xs-6 detail-layout">申请时间:<p>{{DrawDetailCtrl.info.createDate}}</p></div>
+      <div class="col-xs-6 detail-layout">完成时间:<p>{{DrawDetailCtrl.info.endDate==null?'暂无':DrawDetailCtrl.info.endDate}}</p></div>
+  </div>
+</div>
+<textarea name="name" rows="8" cols="40" ng-disabled="DrawDetailCtrl.info.status=='COMPLETED'" ng-model='DrawDetailCtrl.info.remark' class="form-control" placeholder="请输入相关描述" ></textarea>
+<div class="col-xs-12 mt10">
+    <a href="javascript:;" ng-disabled="DrawDetailCtrl.info.status!='INIT'" ng-click="DrawDetailCtrl.status('operaOk')" class="btn btn-info">运营审核通过</a>
+    <a href="javascript:;" ng-disabled="DrawDetailCtrl.info.status!='OPERATOR_APPROVED'" ng-click="DrawDetailCtrl.status('FinanOk')" class="btn btn-red">财务审核通过</a>
+    <a href="javascript:;" ng-disabled="DrawDetailCtrl.info.status!='FINANCE_APPROVED'" ng-click="DrawDetailCtrl.status('complete')" class="btn btn-primary">打款通过</a>
+</div>

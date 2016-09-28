@@ -1,0 +1,168 @@
+<div class="list">
+	<div class="panel panel-default">
+		<div class="panel-heading">入账列表</div>
+		<div class="panel-body">
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">流水号</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.tradeId' >
+				</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">取餐号</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.takeNo' >
+				</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">门店</div>
+					<select name="" id="" class="form-control" ng-model='RecordedlistCtrl.filer.storeId' ng-options="i.id as i.name for i in RecordedlistCtrl.store" >
+						<option slected value="" >请选择</option>
+					</select>
+				</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">支付来源</div>
+					<select name="" id="" class="form-control" ng-model='RecordedlistCtrl.filer.sources' >
+						<option value="" selected>请选择</option>
+						<option value="STORE">一键支付</option>
+						<option value="APP">一键订餐</option>
+					</select>
+				</div>
+				<div class="input-group col-xs-2 ser_input">
+					<div class="input-group-addon">是否包含具体产品</div>
+					<select name="" id="" class="form-control" ng-model='RecordedlistCtrl.filer.detail' >
+						<option value="" selected>请选择</option>
+						<option value="false">否</option>
+						<option value="true">是</option>
+					</select>
+				</div>	
+			</div>
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+				<div class="input-group col-xs-4 ser_input">
+					<div class="input-group-addon">付款时间</div>
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createStartDate" is-open="open1" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+					<span class="input-group-btn  vt">
+						<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+					<div class="input-group-addon">到</div>
+					<input type="text" class="form-control" uib-datepicker-popup ng-model="RecordedlistCtrl.filer.createEndDate" is-open="open" datepicker-options="dateOptions"
+								ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+					<span class="input-group-btn vt">
+						<button type="button" class="btn btn-default time-right m0" ng-click="open=true"><i class="glyphicon glyphicon-calendar"></i></button>
+					</span>
+				</div>
+				<div class="input-group col-xs-4 ser_input">
+					<div class="input-group-addon">付款金额</div>
+					<input type="text" class="form-control" ng-model='RecordedlistCtrl.filer.minTotalAmount' >
+					<div class="input-group-addon">到</div>
+					<input type="text" class="form-control" ng-model="RecordedlistCtrl.filer.maxTotalAmount">
+					<div class="input-group-addon">元</div>
+				</div>
+			</div>
+			<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;" >
+				<div class="col-xs-10">
+					<button class="btn btn-primary" ng-click='RecordedlistCtrl.filerList()'>查询</button>
+					<button class="btn btn-red" ng-click="RecordedlistCtrl.clearFiler()" >清空</button>
+					<button class="btn btn-orange" ng-click='RecordedlistCtrl.exel()' >导出订单明细</button>
+					<button class="btn btn-orange" ng-click='RecordedlistCtrl.excel()' >导出销售产品统计</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="list-lyout col-xs-12">
+		<div class="list-table">
+			<div class="panel-body">
+				<table class="table table-bordered table-striped table-condensed text-center">
+					<tr>
+						<th><input type="checkbox" style="margin-right:5px;">00</th>
+						<th>流水号</th>
+						<th>取餐号</th>
+						<th>门店名称</th>
+						<th>OpenId</th>
+						<th>订单来源</th>
+						<th>支付方式</th>
+						<th>付款金额</th>
+						<th>到账金额</th>
+						<th>付款时间</th>
+						<th>操作</th>
+					</tr>
+					<tr ng-repeat="item in RecordedlistCtrl.list">
+						<td width='50'><input type="checkbox" ng-true-value='true' ng-false-value='false' ng-model="item.active" ng-click="!item.active" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+						<td><span class="textId">{{item.payment.tradeId}}</span></td>
+						<td>{{item.trade.takeNo}}</td>
+						<td>{{item.store.name}}</td>
+						<td><span class="textId">{{item.user.openId}}</span></td>
+						<td>
+							{{item.trade.source=='STORE'?'一键支付':null}} 
+							{{item.trade.source=='APP'?'一键订餐':null}}
+						</td>
+						<td>
+							{{item.payment.channel=="WECHAT_WEB"?'微信公众号':''}} {{item.payment.channel=="WECHAT_APP"?'微信支付':''}} {{item.payment.channel=="ZHIFUBAO_WEB"?'支付宝网页':''}}
+							{{item.payment.channel=="ZHIFUBAO_APP"?'支付宝应用':''}} {{item.payment.channel==null?'线下支付':''}}
+						</td>
+						<td>{{item.reckoning.paidInAmount==null? '暂无':item.reckoning.paidInAmount}}</td>
+						<td>{{item.reckoning.paidInAmount==null? '暂无':item.reckoning.paidInAmount}}</td>
+						<td>{{item.payment.createDate}}</td>
+						<td>
+							<a href="javascript:;" ng-click="RecordedlistCtrl.open(item)" class="btn btn-primary">查看</a>
+						</td>
+					</tr>
+				</table>
+				<uib-pagination items-per-page="50" max-size="5" boundary-links="true" total-items="RecordedlistCtrl.pagecount" ng-model="RecordedlistCtrl.pageint"
+					class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页" ng-change="RecordedlistCtrl.pageChanged()"></uib-pagination>
+			</div>
+		</div>
+	</div>
+	<div class="open display_none">
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款流水号</div>
+			<div class="form-control">{{RecordedlistCtrl.info.payment.tradeId}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款门店</div>
+			<div class="form-control">{{RecordedlistCtrl.info.store.name}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">用户OpenId</div>
+			<div class="form-control">{{RecordedlistCtrl.info.user.openId}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">订单来源</div>
+			<div class="form-control">
+				{{RecordedlistCtrl.info.trade.source=='STORE'?'一键支付':null}} 
+				{{RecordedlistCtrl.info.trade.source=='APP'?'一键订餐':null}}
+			</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">支付方式</div>
+			<div class="form-control">
+				{{RecordedlistCtrl.info.payment.channel=="WECHAT_WEB"?'微信公众号':''}}
+				{{RecordedlistCtrl.info.payment.channel=="WECHAT_APP"?'微信支付':''}}
+				{{RecordedlistCtrl.info.payment.channel=="ZHIFUBAO_WEB"?'支付宝网页':''}}
+				{{RecordedlistCtrl.info.payment.channel=="ZHIFUBAO_APP"?'支付宝应用':''}}
+				{{RecordedlistCtrl.info.payment.channel==null?'线下支付':''}}
+			</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">到账金额</div>
+			<div class="form-control">{{RecordedlistCtrl.info.reckoning.paidInAmount==null? '暂无':RecordedlistCtrl.info.reckoning.paidInAmount}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">付款时间</div>
+			<div class="form-control">{{RecordedlistCtrl.info.payment.createDate}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">用户昵称</div>
+			<div class="form-control">{{RecordedlistCtrl.info.user.nickname}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">订单号</div>
+			<div class="form-control">{{RecordedlistCtrl.info.reckoning.id}}</div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">取餐号</div>
+			<div class="form-control"></div>
+		</div>
+		<div class="input-group mt10 form-lyout">
+			<div class="input-group-addon w100">支付号</div>
+			<div class="form-control"></div>
+		</div>
+	</div>

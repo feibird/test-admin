@@ -1,0 +1,97 @@
+<div class="GoodDetail">
+	<div class="panel panel-default panel-border detail-spec">
+		<div class="panel-heading">查看详情</div>
+		<div class="panel-body">
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">商品名称：</span>
+				<span>{{GooddetialCtrl.data.name}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">分类：</span>
+				<span>{{GooddetialCtrl.data.categories.data.name}}-{{GooddetialCtrl.data.categories.children[0].data.name}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">商品编号：</span>
+				<span>{{GooddetialCtrl.data.serialNumber}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">供应商品牌：</span>
+				<span>{{GooddetialCtrl.data.providerBrand.name}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">商品简称：</span>
+				<span>{{GooddetialCtrl.data.shortName}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">连锁品牌：</span>
+				<span>{{GooddetialCtrl.data.brand.name}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">商品简介：</span>
+				<span>{{GooddetialCtrl.data.terse}}</span>
+			</div>
+			<div class="col-xs-6 mt10">
+				<span class="spec-title">商品标签：</span>
+				<span ng-repeat="list in GooddetialCtrl.data.labels" class="label-span">{{list.name}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border ">
+		<div class="panel-heading">
+			<div class="col-xs-6">C端logo照片</div>
+			<div class="col-xs-6">B端logo照片</div>
+		</div>
+		<div class="panel-body">
+			<div class="col-xs-6"><img ng-src={{GooddetialCtrl.data.cLogo}} alt="" width="150" ></div>
+			<div class="col-xs-6"><img ng-src={{GooddetialCtrl.data.bLogo}} alt="" width="150" ></div>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">C端商品详情照片</div>
+		<div class="panel-body">
+			<img ng-repeat="image in GooddetialCtrl.data.cPhotos"  ng-src={{image}} alt="" width="200" >
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">客户端商品详情照片</div>
+		<div class="panel-body">
+			<img ng-repeat="image in GooddetialCtrl.data.bPhotos" ng-src={{image}} alt="" width="200" >
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">商品详情介绍</div>
+		<div class="panel-body">
+			{{GooddetialCtrl.data.detail}}
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">商品状态</div>
+		<div class="panel-body">
+			<div class="col-xs-6">
+				<span>上下架状态</span>
+				<span>{{GooddetialCtrl.data.onSell==true ? '是':'否'}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default panel-border">
+		<div class="panel-heading">商品规格</div>
+		<div class="panel-body text-center">
+			<table class="table table-striped table-hover detail-table">
+				<tr>
+					<th>规格</th>
+					<th>规格数量</th>
+					<th>规格单位</th>
+					<th>成本价</th>
+					<th>销售价</th>
+				</tr>
+				<tr ng-repeat="list in GooddetialCtrl.data.specs">
+					<td>{{list.name}}</td>
+					<td>{{list.specUnit}}</td>
+					<td>{{list.spec}}</td>
+					<td>{{list.costPrice}}</td>
+					<td>{{list.advicePrice}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

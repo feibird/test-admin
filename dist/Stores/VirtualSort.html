@@ -1,0 +1,170 @@
+<div class="list col-xs-12" id="supplier">
+    <div class="list-header col-xs-12">
+    	 <div class="col-xs-6">
+    	 	<a href="javascript:;" class="btn btn-primary" ng-click="SupplierLogolistCtrl.opermask('add')">新增</a>
+    	 </div>
+    </div>
+    <div class="list-lyout col-xs-12">
+        <div class="list-table list-hidden">
+            <table ng-table="SupplierLogolistCtrl.tableParams" class="table table-bordered table-hover table-striped table-condensed text-center">
+                <tr ng-repeat="item in $data">
+                    <td data-title="'品牌名称'" filter="{name: 'text'}" sortable="'name'">{{item.name}}</td>
+                    <td data-title="'品牌简写'" filter="{serialPrefix: 'text'}" sortable="'serialPrefix'">{{item.serialPrefix}}</td>
+                    <td data-title="'排序'" filter="{sort: 'number'}" sortable="'sort'">{{item.sort}}</td>
+                    <td data-title="'操作'"  filter="{id: 'number'}"  sortable="'id'">
+                        <a href="javascript:;" class="btn btn-turquoise" ng-click="SupplierLogolistCtrl.opermask('get',item.id)" ><span class="fa-eye fa-icon-right"></span>查看</a>
+                        <a href="javascript:;" class="btn btn-primary" ng-click="SupplierLogolistCtrl.opermask('update',item.id)"><span class="fa-edit fa-icon-right"></span>编辑</a>
+                        <a href="javascript:;" class="btn btn-red" ng-click="SupplierLogolistCtrl.delopen(item.id)"><span class="fa-trash fa-icon-right"></span>删除</a>	
+                    </td>		        	
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="add_div opera_layer ">
+    <div class="update-lyout">
+        <div class="input-group">
+            <div class="input-group-addon">品牌名称</div>
+            <input type="text" class="form-control"ng-model="SupplierLogolistCtrl.infolist.name">			      
+        </div>
+    </div>
+    <div class="update-lyout">
+        <div class="input-group">
+            <div class="input-group-addon">排序</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.infolist.sort">			      
+        </div>
+    </div>
+    <div class="update-lyout">
+            <div class="input-group">
+            <div class="input-group-addon">品牌前缀</div>
+            <input type="text" class="form-control"  ng-model="SupplierLogolistCtrl.infolist.serialPrefix" >			      
+        </div>
+    </div>            
+    <div class="update-lyout">
+        <div class="input-group z0">
+            <span class="input-group-addon">品牌logo</span>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" ng-model="SupplierLogolistCtrl.logo.queue[SupplierLogolistCtrl.logo.queue.length-1].file.name">
+            <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button">浏览..</button>
+            </span>
+        </div>
+        <input type="file" class="upload" nv-file-select="" uploader="SupplierLogolistCtrl.logo">
+        <table class="table" ng-show="SupplierLogolistCtrl.logo.queue[0]" >
+            <tbody>
+                <tr class="text-center">
+                    <th>文件名</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <!-- ngRepeat: list in SupplierLogolistCtrl.cLogo.queue --><tr class="text-center" ng-repeat="list in SupplierLogolistCtrl.logo.queue" class="text-center ng-scope">
+                    <td class="ng-binding">{{list.file.name}}</td>
+                    <td>
+                        <span ng-show="list.file.isSuccess" class="ng-hide"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span ng-show="list.file.isCancel" class="ng-hide"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span ng-show="list.file.isError" class="ng-hide"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-xs" ng-click="list.upload(BslistCtrl.info=0)" ng-disabled="list.isReady || list.isUploading || list.isSuccess">上传</button>
+                        <button class="btn btn-danger btn-xs" ng-click="list.remove()">撤销</button>
+                    </td>
+                </tr><!-- end ngRepeat: list in SupplierLogolistCtrl.cLogo.queue -->
+            </tbody>
+        </table>
+        <img ng-src="{{SupplierLogolistCtrl.infolist.logo}}" alt="" height="200" >
+    </div>
+    <div class="update-lyout">
+        <div class="lyout-btn text-center">
+            <a href="javascript:;" class="btn btn-primary" ng-click="SupplierLogolistCtrl.addBtn()">保存</a>                    
+            <a href="javascript:;" class="btn btn-primary">取消</a>
+        </div>
+    </div>
+</div>
+<div class="update_div opera_layer ">
+    <div class="update-lyout">
+        <div class="input-group">
+            <div class="input-group-addon">品牌名称</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.name">			      
+        </div>
+    </div>
+    <div class="update-lyout">
+        <div class="input-group">
+            <div class="input-group-addon">排序</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.sort">			      
+        </div>
+    </div>
+    <div class="update-lyout">
+            <div class="input-group">
+            <div class="input-group-addon">品牌前缀</div>
+            <input type="text" class="form-control"  ng-model="SupplierLogolistCtrl.getlist.serialPrefix" disabled="true" >			      
+        </div>
+    </div>            
+    <div class="update-lyout">
+        <div class="input-group z0">
+            <span class="input-group-addon">品牌logo</span>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" ng-model="SupplierLogolistCtrl.logo.queue[SupplierLogolistCtrl.logo.queue.length-1].file.name">
+            <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button">浏览..</button>
+            </span>
+        </div>
+        <input type="file" class="upload" nv-file-select="" uploader="SupplierLogolistCtrl.logos">
+        <table class="table" ng-show="SupplierLogolistCtrl.logos.queue[0]" >
+            <tbody>
+                <tr class="text-center">
+                    <th>文件名</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <!-- ngRepeat: list in SupplierLogolistCtrl.cLogo.queue --><tr class="text-center" ng-repeat="list in SupplierLogolistCtrl.logos.queue" class="text-center ng-scope">
+                    <td class="ng-binding">{{list.file.name}}</td>
+                    <td>
+                        <span ng-show="list.file.isSuccess" class="ng-hide"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span ng-show="list.file.isCancel" class="ng-hide"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span ng-show="list.file.isError" class="ng-hide"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-xs" ng-click="list.upload(BslistCtrl.info=0)" ng-disabled="list.isReady || list.isUploading || list.isSuccess">上传</button>
+                        <button class="btn btn-danger btn-xs" ng-click="list.remove()">撤销</button>
+                    </td>
+                </tr><!-- end ngRepeat: list in SupplierLogolistCtrl.cLogo.queue -->
+            </tbody>
+        </table>
+        <img ng-src="{{SupplierLogolistCtrl.getlist.logo}}" alt="">
+    </div>
+    <div class="update-lyout">
+        <div class="lyout-btn text-center">
+            <a href="javascript:;" class="btn btn-primary" ng-click="SupplierLogolistCtrl.updateBtn()">保存</a>                    
+            <a href="javascript:;" class="btn btn-primary">取消</a>
+        </div>
+    </div>
+</div>
+
+<div class="get_div opera_layer">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <div class="input-group-addon">商品名称</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.name" disabled="disabled">			      
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="input-group">
+            <div class="input-group-addon">排序</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.sort" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="input-group">
+            <div class="input-group-addon">品牌前缀</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.serialPrefix" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="input-group">
+            <div class="input-group-addon">品牌分类</div>
+            <input type="text" class="form-control" ng-model="SupplierLogolistCtrl.getlist.name" disabled="disabled" />
+        </div>
+    </div>
+    <div class="col-xs-12 text-center">
+        <div class="input-group-addon spantitle">logo</div>
+        <img ng-src={{SupplierLogolistCtrl.getlist.logo}} class="" width="200"  >
+    </div>
+</div>

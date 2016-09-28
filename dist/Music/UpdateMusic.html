@@ -1,0 +1,134 @@
+<form name='update' ng-submit="UpdateMusicCtrl.update()">
+    <div class="mt10">
+        <div class="panel panel-default panel-border">
+            <div class="panel-heading">编辑语音推送</div>
+            <div class="panel-body">
+                
+                <div class="form-group" ng-class="{'has-error':update.name.$error.required&&update.name.$touched}">
+                    <label for="">语音名称</label>
+                    <input type="text" class='form-control' name="name" required ng-model='UpdateMusicCtrl.music.name' placeholder="请输入语音名称">
+                    <p ng-if='update.name.$error.required&&update.name.$touched'  class="error-text">名称不能为空</p>
+                </div>
+
+                <div class="form-group">
+					<label for="">是否有效</label>
+					<select name="" id="" ng-required='true' class="form-control" name='effective' ng-model='UpdateMusicCtrl.music.effective'>
+						<option value="" selected hidden>请选择</option>
+						<option value="false">否</option>
+						<option value="true">是</option>
+					</select>
+				</div>
+
+                <div class="form-group" ng-class="{'has-error':update.content.$error.required&&update.content.$touched}">
+					<label for="">语音内容</label>
+					<textarea name="content" class='form-control' ng-model='UpdateMusicCtrl.music.content' required id="" cols="30" rows="10"></textarea>
+					<p ng-if='update.content.$error.required&&update.content.$touched' class="error-text">内容不能为空</p>
+				</div>
+                <div class="form-group">
+					<label for="">参与区域</label>
+					<select  ng-required='true' class="form-control" name='effective' ng-model='UpdateMusicCtrl.music.allStore'>
+						<option value="" selected hidden>请选择</option>
+						<option value="true">全部门店</option>
+						<option value="false">部分门店</option>
+					</select>
+				</div>
+                <div class="form-lyout">
+                    <div class="form-title">门店筛选</div>
+                    <div class="form-layout">
+                        <stores returnlist="UpdateMusicCtrl.music.store" ng-show="UpdateMusicCtrl.music.allStore=='false'||UpdateMusicCtrl.music.allStore==false"></stores>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+					<label for="">
+						播放日期
+						<a href="javascript:;" ng-click='UpdateMusicCtrl.addDates()' class="btn btn-primary">添加</a>
+					</label>
+					<div class="input" ng-repeat='list in UpdateMusicCtrl.music.voiceDates' >
+						<div class="input-tit" ng-class="{'error-addon':update.{{'startTime'+$index}}.$error.required&&update.{{'startTime'+$index}}.$touched}" >开始时间{{$index+1}}</div>
+						<input type="text" 
+							class="input-text" 
+							ng-class="{'error-input':update.{{'startTime'+$index}}.$error.required&&update.{{'startTime'+$index}}.$touched}" 
+							name={{'startTime'+$index}} 
+							required 
+							uib-datepicker-popup 
+							ng-model="list.startDate" 
+							is-open="open$index"
+							datepicker-options="dateOptions" 
+							ng-required="true" 
+							close-text="关闭" 
+							clear-text='清空' 
+							current-text='今天' />
+						<span class="input-btn">
+							<button type="button" class="btn btn-default time-right" ng-click="open$index=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+						<div class="input-tit" ng-class="{'error-addon':update.{{'endTime'+$index}}.$error.required&&update.{{'endTime'+$index}}.$touched}" >结束时间{{$index+1}}</div>
+						<input type="text"
+							class="input-text" 
+							ng-class="{'error-input':update.{{'endTime'+$index}}.$error.required&&update.{{'endTime'+$index}}.$touched}" 
+							name={{'endTime'+$index}} 
+							uib-datepicker-popup 
+							ng-model="list.endDate" 
+							is-open="open" 
+							datepicker-options="dateOptions"
+							ng-required="true" 
+							close-text="关闭" 
+							clear-text='清空' 
+							current-text='今天' />
+						<span class="input-btn">
+							<button type="button" class="btn btn-default time-right" ng-click="open=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+						<div class="input-btn">
+							<button class="btn btn-red" ng-click="UpdateMusicCtrl.music.voiceDates.splice($index,1)">删除</button>
+						</div>
+						<p class='error-text'>
+							<span ng-show="update.{{'startTime'+$index}}.$error.required&&update.{{'startTime'+$index}}.$touched" >开始日期不能为空！</span>
+						</p>
+						<p class="error-text">
+							<span ng-show="update.{{'endTime'+$index}}.$error.required&&update.{{'endTime'+$index}}.$touched" >结束日期不能为空！</span>
+							<span ng-show="update.{{'endTime'+$index}}.$viewValue<update.{{'startTime'+$index}}.$viewValue" >
+								结束日期不能小于开始日期
+							</span>
+						</p>
+					</div>
+				</div>
+
+                <div class="form-group">
+					<label>
+						播放时间
+						<a href="javascript:;" ng-click='UpdateMusicCtrl.addTimes()' class="btn btn-primary">添加</a>&nbsp;&nbsp;&nbsp;实例:12:00:00
+					</label>
+					<div class="input" ng-repeat='list in UpdateMusicCtrl.music.voiceTimes' >
+						<div class="input-tit"  ng-class="{'error-addon':update.{{'startDate'+$index}}.$error.required&&update.{{'startDate'+$index}}.$touched}"  >开始时间{{$index+1}}</div>
+						<input type="text" ng-class="{'error-input':update.{{'startDate'+$index}}.$error.required&&update.{{'startDate'+$index}}.$touched}" class="input-text" name={{'startDate'+$index}} placeholder="格式:12:00" required ng-model='list.startTime'>
+						<div class="input-tit"  ng-class="{'error-addon':update.{{'endDate'+$index}}.$error.required&&update.{{'endDate'+$index}}.$touched}" >结束时间{{$index+1}}</div>
+						<input type="text"  ng-class="{'error-input':update.{{'endDate'+$index}}.$error.required&&update.{{'endDate'+$index}}.$touched}"  class="input-text" name={{'endDate'+$index}} placeholder="格式:12:00" required ng-model='list.endTime'>
+						<div class="input-btn">
+							<button class="btn btn-red" ng-click="UpdateMusicCtrl.music.voiceTimes.splice($index,1)">删除</button>
+						</div>
+						<p class='error-text' style="width:233px;">
+							<span ng-show="update.{{'startDate'+$index}}.$error.required&&update.{{'startDate'+$index}}.$touched" >开始时间不能为空！</span>
+							<span ng-show="update.{{'startDate'+$index}}.$viewValue.indexOf(':')<0&&!update.{{'startDate'+$index}}.$error.required" >
+								时间格式不正确
+							</span>
+						</p>
+						<p class='error-text' style="width:233px;">
+							<span ng-show="update.{{'endDate'+$index}}.$error.required&&update.{{'endDate'+$index}}.$touched" >结束时间不能为空！</span>
+							<span ng-show="update.{{'endDate'+$index}}.$viewValue<update.{{'startDate'+$index}}.$viewValue&&!update.{{'endDate'+$index}}.$error.required" >
+								结束时间不能小于开始时间
+							</span>
+							<span ng-show="update.{{'endDate'+$index}}.$viewValue.indexOf(':')<0&&!update.{{'endDate'+$index}}.$error.required" >
+								时间格式不正确
+							</span>
+						</p>
+					</div>
+				</div>
+
+            </div>
+        </div>
+        <div class="col-xs-12 text-center ">
+            <a href="javascript:;" ng-click='UpdateMusicCtrl.updata()' id='addBtn' class="btn btn-primary">保存</a>
+            <a href="javascript:;" onclick="history.go(-1)" id='addBtn' class="btn btn-primary">返回</a>
+        </div>
+    </div>
+</form>

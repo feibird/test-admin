@@ -1,0 +1,290 @@
+<div class="list">
+	<div class="panel p0 panel-default">
+		<div class="panel-heading">提现列表</div>
+		<div class="panel-body">
+			<div class="col-xs-12 ser_lyout ">
+				<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+					<div class="input-group col-xs-2 ser_input">
+						<div class="input-group-addon">提现状态</div>
+						<select name="" id="" class="form-control" ng-model="DrawlistCtrl.updateinfo.status">
+							<option value="" selected>请选择</option>
+							<option value="INIT" >提交审核中</option>
+							<option value="FINANCE_APPROVED" >财务审核成功</option>
+							<option value="FINANCE_FAILED" >财务审核失败</option>
+							<option value="COMPLETED" >打款成功</option>
+							<option value="OPERATOR_FAILED" >运营审核失败</option>
+							<option value="OPERATOR_APPROVED" >运营审核通过</option>
+						</select>
+					</div>
+					<div class="input-group col-xs-2 ser_input">
+						<div class="input-group-addon">门店</div>
+						<select name="" id="" class="form-control" ng-model='DrawlistCtrl.updateinfo.storeId' ng-options="a.id as a.name for a in DrawlistCtrl.stores">
+							<option selected value='' >请选择</option>
+						</select>
+					</div>
+					<div class="input-group col-xs-2 ser_input">
+						<div class="input-group-addon">提现流水号</div>
+						<input type="text" class="form-control" ng-model="DrawlistCtrl.updateinfo.serialNumber">
+					</div>
+				</div>
+				<div class="ser_lyoutDiv col-xs-12" style="border-bottom:1px dashed #ccc;">
+					<div class="input-group col-xs-5 ser_input">
+						<span class="input-group-addon">申请时间</span>
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.applyStartDate" is-open="open1"
+							datepicker-options="dateOptions" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open1=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+						<span class="input-group-addon">到</span>
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.applyEndDate" is-open="open2"
+							datepicker-options="dateOptions" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open2=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+					</div>
+					<div class="input-group col-xs-5 ser_input">
+						<span class="input-group-addon">结束时间</span>
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.completeStartDate" is-open="open3"
+							datepicker-options="dateOptions" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open3=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+						<span class="input-group-addon">到</span>
+						<input type="text" class="form-control" uib-datepicker-popup ng-model="DrawlistCtrl.updateinfo.completeEndDate" is-open="open4"
+							datepicker-options="dateOptions" ng-required="true" close-text="关闭" clear-text='清空' current-text='今天' />
+						<span class="input-group-btn  vt">
+							<button type="button" class="btn btn-default time-right m0" ng-click="open4=true"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+					</div>
+				</div>
+				<div class="ser_lyoutDiv col-xs-12" style="margin-top:10px;padding-left:20px;">
+					<a href="javascript:;" class="btn btn-secondary cr_date" ng-click="DrawlistCtrl.Get()">查询</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.exel()' class="btn btn-orange  cr_date">报表导出</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.countBtn()' class="btn btn-info cr_date">汇总凭据打印</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.count_detailBtn()' class="btn cr_date btn-blue">明细凭据打印</a>
+					<a href="javascript:;" ng-click='DrawlistCtrl.updateinfo=null' class="btn cr_date btn-red">清空</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 c0">
+		<div class="batch-btn c0">
+			<button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown">
+					批量操作 <span class="caret"></span>
+				</button>
+
+			<ul class="dropdown-menu dropdown-red no-spacing">
+				<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('INIT','operaOk')">批量运营审核成功</a></li>
+				<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','FinanOk')">批量财务审核成功</a></li>
+				<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('INIT','operaNo')">批量运营审核打回</a></li>
+				<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-click="DrawlistCtrl.operaBtn('OPERATOR_APPROVED','operaNo')">批量财务审核打回</a></li>
+				<li><a href="javascript:;" ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-click="DrawlistCtrl.operaBtn('FINANCE_APPROVED','complete')">批量打款</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="list-lyout col-xs-12">
+		<div class="list-table">
+			<div class="panel-body">
+				<table ng-table="DrawlistCtrl.tableParams" class="table table-bordered table-striped table-condensed text-center">
+					<tr ng-repeat="item in $data">
+						<td width='50' header="'checkbox.html'"><input type="checkbox" style="margin-right:5px;">{{$index+1>9?$index+1:'0'+($index+1)}}</td>
+						<td><span ng-class="{false:'textId',true:'textId-hover'}[ishover]" class="textId">{{item.serialNumber}}</span></td>
+						<td data-title="'门店名称'">{{item.store.name}}</td>
+						<td data-title="'联系法人'">{{item.store.legalPerson}}</td>
+						<td data-title="'提现金额'">{{item.amount}}</td>
+						<td data-title="'申请时间'">{{item.createDate}}</td>
+						<td data-title="'结束时间'">{{item.endDate==null? '暂无':item.endDate}}</td>
+						<td data-title="'提现状态'" width='150'>
+							<span ng-show="item.status=='INIT'">待审核</span>
+							<span ng-show="item.status=='FINANCE_FAILED'">财务审核失败</span>
+							<span ng-show="item.status=='COMPLETED'">打款成功</span>
+							<span ng-show="item.status=='OPERATOR_FAILED'">运营审核失败</span>
+							<span ng-show="item.status=='OPERATOR_APPROVED'">运营审核通过</span>
+							<span ng-show="item.status=='FINANCE_APPROVED'">财务审核通过</span>
+						</td>
+						<td data-title="'备注'">
+							<p class="textId" ng-show="item.status=='OPERATOR_FAILED'||item.status=='OPERATOR_APPROVED'">{{item.operatorRemark}}</p>
+							<p class="textId" ng-show="item.status=='FINANCE_APPROVED'||item.status=='FINANCE_FAILED'">{{item.financeRemark}}</p>
+							<p class="textId" ng-show="item.status=='COMPLETED'">{{item.financeRemark}}</p>
+						</td>
+						<td data-title="'操作'">
+							<div class="batch-btn">
+								<button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
+									操作 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-default no-spacing">
+									<li><a href="javascript:;" ui-sref="detail({id:item.id})"><span class="fa-eye fa-icon-right"></span>查看</a></li>
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='INIT'">
+										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaOk',item.id)"><span class="fa-edit fa-icon-right"></span>运营审核通过</a>
+									</li>
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-hide="item.status!='OPERATOR_APPROVED'">
+										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('FinanOk',item.id)"><span class="fa-eye fa-icon-right"></span>财务审核通过</a>
+									</li>
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='FINANCE_APPROVED'">
+										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('complete',item.id)"><span class="fa-trash fa-icon-right"></span>确认打款</a>
+									</li>
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==2" ng-hide="item.status!='INIT'">
+										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('operaNo',item.id)"><span class="fa-eye fa-icon-right"></span>运营打回申请</a>
+									</li>
+									<li ng-show="DrawlistCtrl.oper==3||DrawlistCtrl.oper==1" ng-hide="item.status!='OPERATOR_APPROVED'">
+										<a href="javascript:;" ng-click="DrawlistCtrl.statusBtn('FinanNo',item.id)"><span class="fa-eye fa-icon-right"></span>财务打回申请</a>
+									</li>
+									<li><a href="javascript:;" ng-click='DrawlistCtrl.Credential(item.id)'><span class="fa-edit fa-icon-right"></span>打印凭证</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="alertDiv">
+		<div class="alertDiv-tit">您即将对{{DrawlistCtrl.updateinfo.ids.length}}条数据进行批量操作</div>
+		<p>您可以填写备注</p>
+		<textarea name="name" class="form-control" rows="8" ng-model="DrawlistCtrl.updateinfo.remark" cols="40"></textarea>
+		<div class="col-xs-12 text-center">
+			<a href="javascript:;" ng-click="DrawlistCtrl.alertBtn()" class="btn btn-blue">确定</a>
+		</div>
+	</div>
+	<div class="count">
+		<p class="count-title">提现日汇总凭据<a href="javascript:;" name='.count' class="btn printBtn btn-black">打印明细</a></p>
+		<div class="count-lyout">
+			<table>
+				<tr>
+					<td class='text-center'>提现日期</td>
+					<td>2016-08-19</td>
+					<td class='text-center'>连锁品牌</td>
+					<td>芭比馒头</td>
+				</tr>
+				<tr>
+					<td class='text-center'>提现笔数</td>
+					<td>{{DrawlistCtrl.count.count}}笔</td>
+					<td class='text-center'>申请提现总额</td>
+					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfApply}}</td>
+				</tr>
+				<tr>
+					<td class='text-center'>提现门店总数</td>
+					<td>{{DrawlistCtrl.count.storeNum}}</td>
+					<td class='text-center'>审核通过笔数</td>
+					<td>{{DrawlistCtrl.count.approve}}笔</td>
+				</tr>
+				<tr>
+					<td class='text-center'>审核拒绝笔数</td>
+					<td>{{DrawlistCtrl.count.reject}}笔</td>
+					<td class='text-center'>打款总额</td>
+					<td><i>￥</i>{{DrawlistCtrl.count.amountOfMoneyOfComplete}}</td>
+				</tr>
+				<tr>
+					<td class='text-center'>运营审核人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.COMPLETE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center'>财务审核人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.FINANCE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center'>运营打款人员</td>
+					<td colspan="3">
+						<p ng-repeat="item in DrawlistCtrl.count.audits.OPERATE">{{user.name==null?'未知':user.name}}总计{{item.amount}}笔,{{item.count}}元</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="count-detail">
+		<div class="detail-title">明细凭据<a href="javascript:;" name='.count-detail' class="btn printBtn btn-black">打印明细</a></div>
+		<div class="detail-lyout">
+			<table>
+				<tr>
+					<th width='150'>申请时间</th>
+					<th width='150'>流水号</th>
+					<th width='100'>提现金额</th>
+					<th width='150'>提现门店</th>
+					<th width='70'>店长姓名</th>
+					<th width='120'>手机号</th>
+					<th width='70'>运营人员</th>
+					<th width='70'>财务人员</th>
+					<th width='70'>打款人员</th>
+					<th width='150'>打款时间</th>
+				</tr>
+				<tr ng-repeat='item in DrawlistCtrl.count_detail'>
+					<td class='w50'>{{item.createDate}}</td>
+					<td><span class="w100">{{item.serialNumber}}</span></td>
+					<td class='w10'><i>￥</i>{{item.amount}}</td>
+					<td><span class='w80'>{{item.store.name}}</span></td>
+					<td class='w50'>{{item.applyUser.name}}</td>
+					<td>{{item.applyUser.phoneNumber}}</td>
+					<td class='w50'>{{item.operatorUser.name==null?'暂无':item.operatorUser.name}}</td>
+					<td class='w50'>{{item.financeUser.name==null?'暂无':item.financeUser.name}}</td>
+					<td class='w50'>{{item.completeUser.name==null?'暂无':item.completeUser.name}}</td>
+					<td>{{item.endDate==null?'暂无':item.endDate}}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="credential">
+		<div class="credential-title">
+			提现详情单
+			<a href="javascript:;" name='.credential' class="btn printBtn btn-black">打印明细</a>
+		</div>
+		<div class="credential-content">
+			<table>
+				<tr>
+					<td class='text-center'>提现流水号</td>
+					<td colspan='3'>{{DrawlistCtrl.credential.serialNumber}}</td>
+				</tr>
+				<tr>
+					<td class='text-center'>提现门店</td>
+					<td>{{DrawlistCtrl.credential.store.name}}</td>
+					<td class='text-center'>连锁品牌</td>
+					<td>巴比馒头</td>
+				</tr>
+				<tr>
+					<td class='text-center'>店长姓名</td>
+					<td>{{DrawlistCtrl.credential.store.legalPerson}}</td>
+					<td class='text-center'>申请人手机号</td>
+					<td>{{DrawlistCtrl.credential.store.legalPersonTelephone}}</td>
+				</tr>
+				<tr>
+					<td class='text-center'>提现金额</td>
+					<td><i>￥</i>{{DrawlistCtrl.credential.amount}}</td>
+					<td class='text-center'>申请时间</td>
+					<td>{{DrawlistCtrl.credential.createDate}}</td>
+				</tr>
+				<tr>
+					<td class='text-center'>运营审核人员</td>
+					<td colspan="1">
+						{{DrawlistCtrl.credential.operatorUser==null?'暂无':DrawlistCtrl.credential.operatorUser.name}}
+					</td>
+					<td colspan="2">
+						<span class='mr10'>备注:</span>{{DrawlistCtrl.credential.operatorRemark}}
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center'>财务审核人员</td>
+					<td colspan="1">
+						{{DrawlistCtrl.credential.financeUser==null?'暂无':DrawlistCtrl.credential.financeUser.name}}
+					</td>
+					<td colspan="2">
+						<span class='mr10'>备注:</span>{{DrawlistCtrl.credential.completeRemark}}
+					</td>
+				</tr>
+				<tr>
+					<td class='text-center'>运营打款人员</td>
+					<td colspan="1">
+						{{DrawlistCtrl.credential.completeUser==null?'暂无':DrawlistCtrl.credential.completeUser.name}}
+					</td>
+					<td colspan="2">
+						<span class='mr10'>备注:</span>{{DrawlistCtrl.credential.completeRemark}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script type="text/ng-template" id="checkbox.html">
+		<input type="checkbox" ng-click="DrawlistCtrl.All()" style="margin-right:5px;" >00
+	</script>

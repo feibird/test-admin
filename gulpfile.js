@@ -90,7 +90,7 @@ gulp.task('updateUrl', function () {
     .pipe(replace('public/style.css', 'style.min.css'))
     .pipe(replace('/libs/angular-ui-router.js', '/min/angular-ui-router.min.js'))
     .pipe(replace('/libs/angular-local-storage.js', '/min/angular-local-storage.min.js'))
-    .pipe(replace('public/app.js', 'app.js'))
+    .pipe(replace('public/app.js', 'app.js'))    
     .pipe(gulp.dest('dist/'))
     .pipe(notify({ message: '路径替换成功' }));
 })

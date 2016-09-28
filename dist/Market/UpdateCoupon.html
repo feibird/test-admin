@@ -1,0 +1,163 @@
+<form name='Update' ng-submit="UpdateCouponCtrl.UpdateBtn()">
+    <div class="form-group" ng-class="{'has-error':Update.name.$error.required&&Update.name.$touched}">
+        <label for="">优惠券名称</label>
+        <input type="text" required name='name' ng-model="UpdateCouponCtrl.info.name" class="form-control">
+        <p class="error-text" ng-if="Update.name.$error.required&&Update.name.$touched">选项不可为空！</p>
+    </div>
+    <div class="form-group w100p" ng-class="{'has-error':Update.isEnabled.$error.required&&Update.isEnabled.$touched}">
+        <label for="">是否有效</label>
+        <select name="isEnabled" id="" class="form-control" ng-model="UpdateCouponCtrl.info.isEnabled" required>
+            <option value="" selected hidden>请选择</option>
+            <option value="true">是</option>
+            <option value="false">否</option>
+        </select>
+        <p class="error-text" ng-if="Update.isEnabled.$error.required&&Update.isEnabled.$touched">选项不可为空！</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error':Update.priority.$error.required&&Update.priority.$touched}">
+        <label for="">优惠券优先级</label>
+        <input type="number" name='priority' required class="form-control" ng-model="UpdateCouponCtrl.info.priority">
+        <p class="error-text" ng-if="Update.priority.$error.required&&Update.priority.$touched">选项不可为空！</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error':Update.description.$error.required&&Update.description.$touched}">
+        <label for="">优惠券描述</label>
+        <textarea name="description" id="" required cols="30" ng-model='UpdateCouponCtrl.info.description' rows="10" class="form-control"></textarea>
+        <p class="error-text" ng-if="Update.description.$error.required&&Update.description.$touched">选项不可为空！</p>
+    </div>
+    <div class="form-group">
+        <label for="">有效时间</label>
+        <div>
+            <div class="dropdown dib" style="width:400px;">
+                <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="javascript:;">
+                    <div class="input-group">
+                        <span class="input-group-addon">开始时间</span>
+                        <input type="text" class="form-control" name='startTime' required data-ng-model="UpdateCouponCtrl.info.startTime | date:'yyyy-MM-dd HH:mm'">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="UpdateCouponCtrl.info.startTime" modelType='Date' date='Date' data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"
+                    />
+                </ul>
+                <p class="error-text" ng-if='Update.startTime.$error.required&&Update.startTime.$touched'>选项为必填</p>
+            </div>
+            <div class="dropdown dib" style="width:400px;">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="javascript:;">
+                    <div class="input-group">
+                        <span class="input-group-addon">开始时间</span>
+                        <input type="text" class="form-control" name='endTime' required data-ng-model="UpdateCouponCtrl.info.endTime | date:'yyyy-MM-dd HH:mm'">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="UpdateCouponCtrl.info.endTime" modelType='Date' date='Date' data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"
+                    />
+                </ul>
+                <p class="error-text" ng-if='Update.startTime.$error.required&&Update.startTime.$touched'>选项为必填</p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group w100p" ng-class="{'has-error':Update.userType.$error.required&&Update.userType.$touched}">
+        <label for="">参与用户</label>
+        <select name="userType" id="" required ng-model='UpdateCouponCtrl.info.userType' class="form-control">
+            <option value="" selected hidden>请选择</option>
+            <option value="ALL_USER">全部用户</option>
+            <option value="NEW_USER">新注册用户</option>
+        </select>
+        <p class="error-text" ng-if='Update.userType.$error.required&&Update.userType.$touched'>选项为必填</p>
+    </div>
+    <div class="form-group w100p" ng-class="{'has-error':Update.storeType.$error.required&&Update.storeType.$touched}">
+        <label for="">参与区域</label>
+        <select name="storeType" required id="" class="form-control" ng-model="UpdateCouponCtrl.info.storeType">
+            <option value="" selected hidden>请选择</option>
+            <option value="ALL_STORE">全部门店</option>
+            <option value="SELECTED_STORE">部分门店</option>
+        </select>
+        <p class="error-text" ng-if='Update.storeType.$error.required&&Update.storeType.$touched'>选项为必填</p>
+    </div>
+    <stores ng-show="UpdateCouponCtrl.info.storeType=='SELECTED_STORE'" returnlist='UpdateCouponCtrl.info.storeList'></stores>
+    <div class="form-group w100p" ng-class="{'has-error':Update.specType.$error.required&&Update.specType.$touched}">
+        <label for="">商品范围</label>
+        <select name="specType" id="" required ng-model='UpdateCouponCtrl.info.specType' class="form-control">
+            <option value="" selected hidden>请选择</option>
+            <option value="ALL_SPEC">全场通用</option>
+            <option value="SELECTED_SPEC">限定单品</option>
+        </select>
+        <p class="error-text" ng-if='Update.specType.$error.required&&Update.specType.$touched'>选项为必填</p>
+    </div>
+    <goods ng-show="UpdateCouponCtrl.info.specType=='SELECTED_SPEC'" returnlist='UpdateCouponCtrl.info.specList'></goods>
+    <div class="form-group w200p" ng-if="UpdateCouponCtrl.info.specType=='SELECTED_SPEC'" ng-class="{'has-error':Update.specCountLimit.$error.required&&Update.specCountLimit.$touched}">
+        <label for="">商品满</label>
+        <div class="input-group">
+            <input type="text" required name='specCountLimit' ng-model='UpdateCouponCtrl.info.specCountLimit' class="form-control">
+            <div class="input-group-addon">个可使用</div>
+        </div>
+        <p class="error-text" ng-if='Update.specCountLimit.$error.required&&Update.specCountLimit.$touched'>选项为必填</p>
+    </div>
+    <div class="form-group w100p" ng-class="{'has-error':Update.isGood.$error.required&&Update.isGood.$touched}">
+        <label for="">请选择订单条件</label>
+        <select name="isGood" ng-model="UpdateCouponCtrl.info.isGood" id="" class="form-control">
+            <option value="" hidden selected >请选择</option>
+            <option value="false">订单无关</option>
+            <option value="true">订单金额</option>
+        </select>
+        <p class="error-text" ng-if='Update.isGood.$error.required&&Update.isGood.$touched'>选项为必填</p>
+    </div>
+    <div ng-if="UpdateCouponCtrl.info.isGood=='true'" class="form-group w100p" ng-class="{'has-error':Update.amountLimit.$error.required&&Update.amountLimit.$touched}">
+        <label for="">订单满</label>
+        <div class="input-group">
+            <input type="text" required name='amountLimit' ng-model='UpdateCouponCtrl.info.amountLimit' class="form-control">
+            <div class="input-group-addon">元</div>
+        </div>
+        <p class="error-text" ng-if='Update.amountLimit.$error.required&&Update.amountLimit.$touched'>选项为必填</p>
+    </div>
+    <div class="form-group w100p" ng-class="{'has-error':Update.type.$error.required&&Update.type.$touched}">
+        <label for="">请选择优惠方式</label>
+        <select name="type" required ng-model='UpdateCouponCtrl.info.type' id="" class="form-control">
+            <option value="" selected>请选择</option>
+            <option value="CUT">满减</option>
+        </select>
+        <p class="error-text" ng-if='Update.type.$error.required&&Update.type.$touched'>选项为必填</p>
+    </div>
+    <div class="form-group w100p" ng-if="UpdateCouponCtrl.info.type=='CUT'" ng-class="{'has-error':Update.cutAmount.$error.required&&Update.cutAmount.$touched}">
+        <label for="">满减金额</label>
+        <div class="input-group">
+            <input type="text" name='cutAmount' class="form-control" required ng-model='UpdateCouponCtrl.info.cutAmount'>
+            <div class="input-group-addon">元</div>
+        </div>
+        <p class="error-text" ng-if='Update.cutAmount.$error.required&&Update.cutAmount.$touched'>选项为必填</p>
+    </div>
+    <div class="form-group">
+        <label for="">
+            请填写活动成本承担方和承担比例
+            <a class="btn btn-primary" ng-click='UpdateCouponCtrl.AddcostSources()' >添加</a>
+        </label>
+        <div class="input" ng-repeat="item in UpdateCouponCtrl.info.couponCostSourceList">
+            <div class="input-tit">承担方选择</div>
+            <select name={{ 'costSourceId'+$index}} id="" ng-class="{'error-input':Update.{{'costSourceId'+$index}}.$error.required&&Update.{{'costSourceId'+$index}}.$touched}"
+                required ng-model='item.costSource.id' class="input-text" ng-options="a.id as a.name for a in UpdateCouponCtrl.resource">
+                <option value="" hidden selected >请选择</option>
+            </select>
+            <div class="input-tit">承担比例</div>
+            <input type="text" class="input-text" required ng-model='item.ratio' name={{ 'ratio'+$index}} ng-class="{'error-input':Update.{{'ratio'+$index}}.$error.required&&Update.{{'ratio'+$index}}.$touched}">
+            <div class="input-btn">
+                %&nbsp;&nbsp;
+                <a class="btn btn-red" ng-click="UpdateCouponCtrl.Sources.splice($index,1)">删除</a>
+            </div>
+            <div class="table-row">
+                <div class="d_cell"></div>
+                <div class="d_cell error-text" style="width:230px;">
+                    <span ng-show="Update.{{'costSourceId'+$index}}.$error.required&&Update.{{'costSourceId'+$index}}.$touched">选项为必填</span>
+                </div>
+                <div class="d_cell"></div>
+                <div class="d_cell error-text" style="width:230px;">
+                    <span ng-show="Update.{{'ratio'+$index}}.$error.required&&Update.{{'ratio'+$index}}.$touched">选项为必填</span>
+                    <span ng-show="Update.{{'ratio'+$index}}.$error.required&&Update.{{'ratio'+$index}}.$touched">选项为必填</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <button class="btn btn-primary">保存</button>
+        <button class="btn btn-primary">取消</button>
+    </div>
+</form>

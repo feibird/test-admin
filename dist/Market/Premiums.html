@@ -1,0 +1,87 @@
+<div class="panel panel-default panel-border">
+    <div class="panel-heading">
+        赠品列表
+        <button class="btn btn-primary" ng-click="PremlistCtrl.addlayer()" >新增</button>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-condensed text-center">
+            <tr>
+                <th>赠品名称</th>
+                <th>商品名称</th>
+                <th>成本价</th>
+                <th>销售价</th>
+                <th>结算价</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="item in PremlistCtrl.list" >
+                <td>{{item.name}}</td>
+                <td>{{item.product.baseProduct.name}}</td>
+                <td>{{item.product.productSpecData.advicePrice}}</td>
+                <td>{{item.product.productSpecData.tradePrice}}</td>
+                <td>{{item.cost}}</td>
+                <td>{{}}</td>
+                <td>
+                    <button ng-click="PremlistCtrl.updatelayer(item.id)" class="btn btn-primary">编辑</button>
+                    <button class="btn btn-red" ng-click="PremlistCtrl.delBtn(item.id)" >删除</button>
+                </td>
+            </tr>
+        </table>
+        <uib-pagination items-per-page="50" max-size="5" boundary-links="true" total-items="RecordedlistCtrl.pagecount" ng-model="RecordedlistCtrl.pageint"
+					class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页" ng-change="RecordedlistCtrl.pageChanged()">
+        </uib-pagination>
+    </div>
+</div>
+<div class="add_operk display_none">
+    <div class="input-group mt10">
+        <div class="input-group-addon">赠品名称</div>
+        <input type="text" class="form-control" ng-model="PremlistCtrl.addinfo.name" placeholder="请输入赠品名称" >
+    </div>
+    <div class="input-group mt10">
+        <div class="input-group-addon">基础商品</div>
+        <select name="" id="" class="form-control" ng-model='PremlistCtrl.addinfo.good' ng-options="a.specs as a.name for a in PremlistCtrl.goods" >
+            <option value='' selected>请选择</option>
+        </select>
+    </div>
+    <div class="input-group mt10">
+        <div class="input-group-addon">商品规格</div>
+        <select name="" id="" class="form-control" ng-model='PremlistCtrl.addinfo.specs' ng-options="a.id as a.costPrice for a in PremlistCtrl.addinfo.good" >
+            <option value=''  selected>请选择</option>
+        </select>
+    </div>
+    <div class="input-group col-xs-12 mt10">
+        <div class="input-group-addon" style="width:77px;">结算价</div>
+        <input type="number" class="form-control" placeholder="请输入结算价" ng-model='PremlistCtrl.addinfo.cost' >
+    </div>
+    <div class="mt10 text-center">
+        <button class="btn btn-primary" ng-click="PremlistCtrl.addBtn()" >确定</button>
+        <button class="btn btn-primary">取消</button>
+    </div>
+</div>
+
+<div class="update_operk display_none">
+    <div class="input-group mt10">
+        <div class="input-group-addon">赠品名称</div>
+        <input type="text" class="form-control" ng-model="PremlistCtrl.data.name" placeholder="请输入赠品名称" >
+    </div>
+    <div class="input-group mt10">
+        <div class="input-group-addon">基础商品</div>
+        <select name="" id="" class="form-control" ng-model='PremlistCtrl.data.good' ng-options="a.specs as a.name for a in PremlistCtrl.goods" >
+            <option value='' selected>请选择</option>
+        </select>
+    </div>
+    <div class="input-group mt10">
+        <div class="input-group-addon">商品规格</div>
+        <select name="" id="" class="form-control" ng-model='PremlistCtrl.data.specs' ng-options="a.id as a.name for a in PremlistCtrl.data.good" >
+            <option value=''  selected>请选择</option>
+        </select>
+    </div>
+    <div class="input-group col-xs-12 mt10">
+        <div class="input-group-addon" style="width:77px;">结算价</div>
+        <input type="number" class="form-control" placeholder="请输入结算价" ng-model='PremlistCtrl.data.cost' >
+    </div>
+    <div class="mt10 text-center">
+        <button class="btn btn-primary" ng-click="PremlistCtrl.updateBtn()" >确定</button>
+        <button class="btn btn-primary">取消</button>
+    </div>
+</div>

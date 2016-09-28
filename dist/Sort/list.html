@@ -1,0 +1,68 @@
+<div class="col-xs-12" id="sortlist">
+	<div class="input-group input-group-minimal col-xs-4 col-xs-offset-8">
+		<input type="text" class="form-control" placeholder="Search for something…">
+		<span class="input-group-addon">
+			<i class="linecons-search"></i>
+		</span>
+	</div>
+	<div class="panel panel-color panel-black">
+		<div class="panel-heading">
+			分类列表
+		</div>
+		<div class="panel-body">
+			<div class="table-title">
+				<span class="name_tit">分类列表</span>
+				<span class="btn_tit">操作</span>
+			</div>
+			<ul class="table-list">
+				<li ng-show="SortlistCtrl.isBtn">
+					<div class="table-name">
+						<i style="margin-left:2px;">&nbsp;</i>
+						<input type="text" ng-model="SortlistCtrl.addinfo.name" class="form-control input-inline-block" >
+					</div>
+					<div class="table-btn">
+						<div class="btn-main">
+							<a href="javascript:;" ng-click="SortlistCtrl.addbtn(SortlistCtrl.addinfo)" class="btn btn-primary">保存</a>
+						</div>
+					</div>
+				</li>
+				<li ng-repeat="item in SortlistCtrl.list.children">
+					<div class="table-name" ng-click="SortlistCtrl.toggle(item)">
+						<i ng-show="item.children.length>0" ng-class="{'true':{'fa-angle-down':item.status==1,'fa-angle-right':item.status==0}}[item.children.length>0]" ></i>
+						<input type="text" ng-model="item.data.name" class="form-control input-inline-block input-disabled" ng-class="{true:'input-border'}[item.isedit]" ng-disabled="!item.isedit" >
+					</div>
+					<div class="table-btn">
+						<div class="btn-main">
+							<a href="javascript:;" ng-click="isChildren=true" class="btn btn-primary">新增子类</a>
+							<a href="javascript:;" ng-click="SortlistCtrl.edit(item)" class="btn btn-primary">{{item.btnName}}</a>
+							<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(item.data.id)">删除</a>
+						</div>
+					</div>
+					<div class="childrenlist" ng-show="isChildren">
+						<div class="table-name childrenpy">
+							<i style="margin-left:2px;">&nbsp;</i>
+							<input type="text" ng-model="SortlistCtrl.addinfo.name" class="form-control input-inline-block">
+						</div>
+						<div class="table-btn">
+							<div class="btn-main">
+								<a href="javascript:;" ng-click="SortlistCtrl.addinfo.id=item.data.id;SortlistCtrl.addbtn(SortlistCtrl.addinfo)" class="btn btn-primary">保存</a>
+							</div>
+						</div>
+					</div>
+					<div class="childrenlist" ng-repeat="list in item.children" ng-hide="item.status==0">
+						<div class="table-name childrenpy">
+							<i style="margin-left:2px;">&nbsp;</i>
+							<input type="text" ng-model="list.data.name" class="form-control input-inline-block input-disabled" ng-class="{true:'input-border'}[list.isedit]" ng-disabled="!list.isedit" >
+						</div>
+						<div class="table-btn">
+							<div class="btn-main">
+								<a href="javascript:;" ng-click="SortlistCtrl.edit(list)" class="btn btn-primary">{{list.btnName}}</a>
+								<a href="javascript:;" class="btn btn-red" ng-click="SortlistCtrl.del(list.data.id)">删除</a>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

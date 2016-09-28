@@ -357,7 +357,7 @@ td{vertical-align: middle!important;}
 .form-group label .btn{margin-left: 20px;}
 .d_cell{display:table-cell;}
 .table-row{display: table-row;}
-.input{display: block;width: 50%;font-size: 0;padding: 5px 0;}
+.input{display: block;width: 65%;font-size: 0;padding: 5px 0;}
 .input .input-tit{display:inline-block;width: 80px;vertical-align: top;text-align: center;line-height: 30px;border: 1px solid #e4e4e4;color: #333;background: #eee;font-size: 12px;border-right: 0;}
 .has-error .input-tit{background: #a94442;color: white;}
 .has-error .input-input{border-color: rgba(204, 63, 68, 0.4);}

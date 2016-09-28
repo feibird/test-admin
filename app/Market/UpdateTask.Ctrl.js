@@ -144,6 +144,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             for (var i in vm.data.promotionCostSourceList) {
                 vm.data.promotionCostSourceList[i].ratio = vm.data.promotionCostSourceList[i].ratio * 100;
             }
+            vm.data.isDetail=vm.data.amountLimit==0?false:true;
             vm.data.prems = [];
             vm.data.costSources = [];
             console.log(vm.data);

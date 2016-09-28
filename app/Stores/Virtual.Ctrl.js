@@ -7,8 +7,6 @@ function VirtualCtrl($scope,$rootScope,$state,PublicResource,$stateParams,Virtua
 	$rootScope.childrenName="虚拟分类管理列表";
     var vm = this;
     vm.storename="";
-    vm.skip=0;				//起始数据下标
-    vm.limit=10;			//最大数据下标
     vm.list;
     vm.info={};
     vm.info.categorys=[]

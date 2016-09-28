@@ -107,11 +107,9 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分
         var s = date.getSeconds();
-        console.log(h.length);
         if (D.length < 3) {
             D = "0" + D;
         }
-        console.log(D.length + ',' + D);
         if (m.length < 3) {
             m = "0" + m;
         }
