@@ -32,13 +32,46 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
         }
     }
 
+    //初始化
+    vm.init = function(){
+        vm.get.source="";
+        vm.get.status="";
+        vm.get.storeId="";
+        vm.get.id="";
+        vm.get.createStartDate="";
+        vm.get.createEndDate="";
+        vm.get.completeStartDate="";
+        vm.get.completeEndDate="";
+    }
+
     vm.execl = function (time) {
         time = chang_time(new Date(time))
         window.open("api-admin/report/trade/dailyExcel?sessionId=" + vm.seid + "&device=" + device + "&version=" + version + "&date=" + time)
     }
 
     vm.St_order = function (time) {
+        vm.get.source=typeof(vm.get.source)=='undefined'? "":vm.get.source;
+        vm.get.status=typeof(vm.get.status)=='undefined'? "":vm.get.status;
+        vm.get.storeId=typeof(vm.get.storeId)=='undefined'? "":vm.get.storeId;
+        vm.get.id=typeof(vm.get.id)=='undefined'? "":vm.get.id;
+        vm.get.createStartDate=GetTime(vm.get.createStartDate)
+        vm.get.createEndDate=GetTime(vm.get.createEndDate)
+        vm.get.completeStartDate=GetTime(vm.get.completeStartDate)
+        vm.get.completeEndDate=GetTime(vm.get.completeEndDate)
+        console.log(vm.get);
         list();
+    }
+
+    function GetTime(date){
+        if(typeof(date)=='undefined'){
+            return ""
+        }else{
+             if(typeof(date)=='object'){
+                return date.getTime();
+            }else{
+                return date
+            }
+        }
     }
 
     list();
@@ -61,12 +94,23 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                             "skip": vm.skip,
                             "limit": vm.limit,
                             "takeNo": vm.get.id,
-                            "status": vm.get.status
+                            "status": vm.get.status,
+                            "source": vm.get.source,
+                            "storeId": vm.get.storeId,
+                            "phoneNumber":vm.get.phone,
+                            'createEndDate':vm.get.createEndDate,
+                            'createStartDate':vm.get.createStartDate,
+                            'completeStartDate':vm.get.completeStartDate,
+                            'completeEndDate':vm.get.completeEndDate,
                         }
                     }).then(function (data) {
+                        if(data.data.status=='ERROR'){
+                            layer.msg(data.data.message,{icon:2})
+                            return false;
+                        }
                         info.total(data.data.result.total);
                         for (var i in data.data.result.data) {
-                            data.data.result.data[i].createDate = change_time(new Date(data.data.result.data[i].createDate));
+                            data.data.result.data[i].lastModifyDate = change_time(new Date(data.data.result.data[i].lastModifyDate));
                             if (data.data.result.data[i].endDate != null) {
                                 data.data.result.data[i].endDate = change_time(new Date(data.data.result.data[i].endDate))
                             }
@@ -90,6 +134,14 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                 }
             })
         });
+    }
+
+    store();
+    function store(){
+        StoresResource.list(vm.seid,0,0).then(function(data){
+            vm.stores = data.data.result.data;
+            console.log(vm.stores)
+        })
     }
 
     function change_time(date) {

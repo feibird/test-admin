@@ -11,9 +11,9 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	vm.seid
 	vm.addinfo = new Object();
 	vm.addinfo.imgUrl="test";														//添加数据对象
-	vm.list;																//数据列表集合
-	vm.sortlist;															//分类列表集合															
-	vm.getlist = new Object();															//修改数据对象
+	vm.list;																		//数据列表集合
+	vm.sortlist;																	//分类列表集合															
+	vm.getlist = new Object();														//修改数据对象
     /**
      * 删除
      */

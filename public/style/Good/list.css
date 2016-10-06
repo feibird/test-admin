@@ -12,9 +12,9 @@
     font-size: 12px;
     cursor: pointer;
 }
-.colmt10{
-    margin: 10px 0;}
-.colmt10 .input-group{
+.colmt20{
+    margin: 20px 0;position: relative;}
+.colmt20 .input-group{
     width: 100%;}
 .detail-spec-title{
     width: 100px;text-align: right;}

@@ -1,54 +1,60 @@
-<div class="AddGood">
+<form name='add' class="AddGood" >
     <div class="panel panel-default panel-border detail-spec">
         <div class="panel-heading">查看详情</div>
         <div class="panel-body">
-            <div class="col-xs-6 colmt10">
-                <div class="input-group">
+            <div class="col-xs-6 colmt20" >
+                <div class="input-group" ng-class="{'has-error':add.name.$error.required&&add.name.$touched}">
                     <div class="input-group-addon detail-spec-title">商品名称</div>
-                    <input type="text" class="form-control" placeholder="请输入商品名称" ng-model="AddGoodCtrl.info.name" >
+                    <input type="text" name="name" class="form-control" required placeholder="请输入商品名称" ng-model="AddGoodCtrl.info.name" >
+                    <div class="tips-error" ng-if="add.name.$error.required&&add.name.$touched" >
+                        <span class="d_cell"></span>
+                        <span class="d_cell">选项不可为空</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">分类</div>
-                    <input type="text" ng-model="AddGoodCtrl.info.sort" uib-typeahead="a as a.data.name for a in AddGoodCtrl.sortlist.root.children" class="form-control select-control-calc" >
-                    <span class="input-group-addon fa-sort"></span>
-                    <input type="text" ng-model="AddGoodCtrl.info.sortId"  uib-typeahead="a as a.data.name for a in AddGoodCtrl.info.sort.children" class="form-control select-control-calc">
-                    <span class="input-group-addon fa-sort"></span>
+                    <input type="text" required name='data' ng-class="input-error" ng-model="AddGoodCtrl.info.sort" uib-typeahead="a as a.data.name for a in AddGoodCtrl.sortlist.root.children" class="form-control select-control-calc" style="border-right:0px;" >
+                    <input type="text" required name='children' ng-model="AddGoodCtrl.info.sortId"  uib-typeahead="a as a.data.name for a in AddGoodCtrl.info.sort.children" class="form-control select-control-calc">
+                    <div class="tips-error" ng-if="add.name.$error.required&&add.name.$touched" >
+                        <span class="d_cell"></span>
+                        <span class="d_cell">选项不可为空</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">供应商品牌</div>
                     <input type="text" ng-model="AddGoodCtrl.info.providerBrandId" typeahead-min-length="0" typeahead-show-hint="true"  uib-typeahead="state as state.name for state in AddGoodCtrl.logolist.data | filter:$viewValue | limitTo:10" class="form-control">
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">连锁品牌</div>
                     <input type="text" ng-model="AddGoodCtrl.info.brandId" uib-typeahead="state as state.name for state in AddGoodCtrl.brandlist.data | filter:$viewValue | limitTo:10" class="form-control">
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">商品简称</div>
                     <input type="text" class="form-control" ng-model="AddGoodCtrl.info.shortName" >
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">商品简介</div>
                     <input type="text" class="form-control" ng-model="AddGoodCtrl.info.terse" >
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">商品标签</div>
                     <!--<input type="text" class="form-control">-->
                     <input type="text" ng-model="selected" uib-typeahead="state.name for state in AddGoodCtrl.labellist.data | filter:$viewValue | limitTo:8" class="form-control" typeahead-should-select="AddGoodCtrl.test(this,selected)" >
                 </div>
             </div>
-            <div class="col-xs-6 colmt10">
+            <div class="col-xs-6 colmt20">
                 <div class="input-group">
                     <div class="input-group-addon detail-spec-title">已选择标签</div>
                     <div class="form-control">
@@ -241,4 +247,4 @@
     <div class="col-xs-12 text-center">
         <a href="javascript:;" class="btn btn-primary" ng-click="AddGoodCtrl.addBtn()" >提交</a>
     </div>
-</div>
+</form>

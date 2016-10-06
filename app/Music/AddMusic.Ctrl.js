@@ -11,13 +11,9 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.music = new Object();
     vm.music.dates = new Array();
     vm.music.dates[0] = {};
-    vm.music.dates[0].startTime = '';
-    vm.music.dates[0].endTime = '';
     vm.music.store = new Array();
     vm.music.times = new Array();
     vm.music.times[0] = new Object();
-    vm.music.times[0].startDate = "";
-    vm.music.times[0].endDate = "";
     vm.stores;
     //获取sessionId
     login()
@@ -62,16 +58,16 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
 
     function startAdd() {
         vm.music.storeId = "";
+        console.log(vm.music.dates);
         for (var i in vm.music.dates) {
             if (typeof (vm.music.dates[i].startDate) != "number") {
-
                 vm.music.dates[i].startDate = GTM(false, chang_time(new Date(vm.music.dates[i].startDate)))
             }
             if (typeof (vm.music.dates[i].endDate) != "number") {
                 vm.music.dates[i].endDate = GTM(true, chang_time(new Date(vm.music.dates[i].endDate)))
             }
         }
-
+        console.log(vm.music.dates);
         for (var i in vm.music.storeid) {
             vm.music.storeId += vm.music.storeid[i].id + ","
         }
@@ -101,10 +97,10 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
 
     function GTM(is, data) {
-        console.log(data)
         if (typeof (data) == 'undefined' || data == "" || data == null) {
             return null
         } else {
+            data = data.replace(/-/g,'/');
             if (is) {
                 data = data + "23:59:59";
             }

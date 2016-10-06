@@ -119,12 +119,12 @@ function run($rootScope, $state, $location, localStorageService, PublicResource)
             $rootScope.seid = seid;
         }
     }
-    console.log($rootScope.seid)
+    
 
 
     $rootScope.logout = function () {
         PublicResource.logout(seid).then(function (data) {
-            console.log(data);
+            
             if (data.status == 'OK') {
                 layer.alert('退出成功~', { icon: 1 }, function () {
                     $.session.remove('admin');
@@ -257,14 +257,14 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	vm.seid
 	vm.addinfo = new Object();
 	vm.addinfo.imgUrl="test";														//添加数据对象
-	vm.list;																//数据列表集合
-	vm.sortlist;															//分类列表集合															
-	vm.getlist = new Object();															//修改数据对象
+	vm.list;																		//数据列表集合
+	vm.sortlist;																	//分类列表集合															
+	vm.getlist = new Object();														//修改数据对象
     /**
      * 删除
      */
     vm.delBtn = function(id){
-    	console.log(id)
+    	
     	layer.confirm('您确定要删除品牌？', {
 			  btn: ['确定','取消'] //按钮
 		}, function(){
@@ -294,7 +294,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
     
      //当前用户状态
    /* PublicResource.verification(vm.seid).then(function(data){
-    	console.log(data)
+    	
     })*/
     
     //查询分类列表
@@ -343,12 +343,12 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	    	vm.list=data.data.result;
 			vm.tableParams = new NgTableParams({},{dataset:vm.list.data});
 	    	vm.pagecount = data.data.result.total
-	    	console.log(data)
+	    	
 	    })
 	}
 
 	function update(){
-		console.log(vm.getlist)
+		
 		BrandStoresResource.update(vm.getlist,vm.seid).then(function(data){
 			if (data.data.status=="OK") {
 				layer.msg("修改成功~",{icon:1},function(){
@@ -364,7 +364,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	//新增
 	function add(){
 		BrandStoresResource.add(vm.addinfo,vm.seid).then(function(data){
-			console.log(data)
+			
 			if (data.data.status=="OK") {
 				layer.alert("上传成功~",{icon:1},function(){
 					layer.closeAll();
@@ -380,14 +380,14 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	function get(id){
 		BrandStoresResource.get(vm.seid,id).then(function(data){
 			vm.getlist = data.data.result;
-			console.log(data)
+			
 		})
 	}
 
 	//删除
 	function remove(id){
 		BrandStoresResource.remove(id,vm.seid).then(function(data){
-			console.log(data);
+			
 			if (data.data.status=="OK") {					
 				layer.alert('删除成功~',{icon: 1});					
 			} else{
@@ -401,7 +401,7 @@ function BrandStoreslistCtrl($state,$scope,$rootScope,NgTableParams,PublicResour
 	function sortlist(){
 		SortResource.list(vm.seid).then(function(data){
 			vm.sortlist = data.data.result.root
-			console.log(vm.sortlist)
+			
 		})
 	}
 }
@@ -426,7 +426,7 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
    function get(){
    	DrawResource.get(vm.seid,vm.id).then(function(data){
    		vm.info = data.data.result;
-   		console.log(vm.info);
+   		
    		vm.info.createDate = chang_time(new Date(vm.info.createDate));
    		if (vm.info.endDate != null) {
           vm.info.endDate = chang_time(new Date(vm.info.endDate));
@@ -465,7 +465,7 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
  //确认打款
   function complete() {
     DrawResource.complete(vm.seid, vm.info).then(function(data) {
-      console.log(data);
+      
       if (data.data.status == "OK") {
         layer.msg("操作成功~", {
           icon: 1
@@ -518,11 +518,11 @@ function DrawDetailCtrl($state,$scope,PublicResource,$stateParams,$rootScope,Sto
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分
         var s = date.getSeconds();
-        console.log(h.length);
+        
         if (D.length < 3) {
           D = "0" + D;
         }
-        console.log(D.length + ',' + D);
+        
         if (m.length < 3) {
           m = "0" + m;
         }
@@ -602,12 +602,12 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   PublicResource.user(vm.seid).then(function (data) {
     vm.Role = data.result;
-    console.log(vm.Role)
+    
   })
 
   PublicResource.RoleUser(vm.seid, vm.Role.id).then(function (data) {
     vm.UserOper = data.result;
-    console.log(vm.UserOper)
+    
     for (var i in vm.UserOper) {
       if (vm.UserOper[i].name == '财务管理员') {
         vm.oper = 1;
@@ -617,7 +617,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
         vm.oper = 3;
       }
     }
-    console.log(vm.oper)
+    
   })
 
   //财务审核成功
@@ -681,7 +681,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   //确认打款
   function complete() {
     DrawResource.complete(vm.seid, vm.updateinfo, 0, 100).then(function (data) {
-      console.log(data);
+      
       if (data.data.status == "OK") {
         layer.msg("操作成功~", {
           icon: 1
@@ -699,7 +699,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     vm.updateinfo.ids = [];
     vm.fusName = fusName;
     vm.updateinfo.ids.push(id);
-    console.log(vm.updateinfo)
+    
     layer.open({
       type: 1,
       title: "信息",
@@ -719,7 +719,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
   //为结束时间的时分秒修改为23:59:59
   function GTM(is, data) {
-    console.log(data)
+    
     if (typeof (data) == 'undefined' || data == "" || data == null) {
       return null
     } else {
@@ -769,7 +769,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   }
 
   vm.alertBtn = function () {
-    console.log(vm.updateinfo);
+    
     switch (vm.fusName) {
       case "operaNo":
         operaNo();
@@ -856,7 +856,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   function store() {
     StoresResource.list(vm.seid, 0, 0).then(function (data) {
       vm.stores = data.data.result.data;
-      console.log(vm.stores);
+      
     });
   }
 
@@ -886,7 +886,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
               "serialNumber": vm.updateinfo.serialNumber
             }
           }).then(function (data) {
-            console.log(info.page())
+            
             info.total(data.data.result.total);
             info.per_page = 10;
             for (var i in data.data.result.data) {
@@ -902,7 +902,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   function get(id) {
     DrawResource.get(vm.seid, id).then(function (data) {
       vm.credential = data.data.result;
-      console.log(vm.credential);
+      
       vm.credential.createDate = chang_time(new Date(vm.credential.createDate));
       if (vm.credential.endDate != null) {
         vm.credential.endDate = chang_time(new Date(vm.credential.endDate));
@@ -920,7 +920,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
           vm.count_detail[i].endDate = chang_time(new Date(vm.count_detail[i].endDate));
         }
       }
-      console.log(vm.count_detail);
+      
     });
   }
 
@@ -954,16 +954,16 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     if (data == null || data.length < 1) {
       return false;
     }
-    console.log(data)
+    
     var date = data.split('-');
     var time = new Date(date[0], date[1] - 1, date[2]).getTime();
-    console.log(time)
+    
     return time;
   }
 
   function update(status, id) {
     DrawResource.update(vm.seid, status, id).then(function (data) {
-      console.log(data);
+      
       if (data.data.status == "OK") {
         layer.alert('修改成功', {
           icon: 1
@@ -980,7 +980,7 @@ function DrawlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
   $(function () {
     $(".printBtn").click(function () {
       var ClassName = $(this).attr('name');
-      console.log(ClassName);
+      
       $(this).hide();
       $(ClassName).jqprint();
       $(this).show();
@@ -1197,7 +1197,7 @@ function DrawResource($http, device, version) {
 
 
   function count(seid, obj, skip, limit) {
-    console.log(obj);
+    
     return $http.get("/api-admin/draw/sum", {
       params: {
         "device": device,
@@ -1227,7 +1227,7 @@ function DrawResource($http, device, version) {
     for (var i in obj) {
       ids += obj[i] + ","
     }
-    console.log(ids);
+    
     ids = ids.substring(0, ids.length - 1);
 
     return ids;
@@ -1238,9 +1238,9 @@ function DrawResource($http, device, version) {
     if (data == null || data.length < 1) {
       return false;
     }
-    console.log(data)
+    
     var date = data.split('-');
-    console.log(date);
+    
     var time = new Date(date[0], date[1] - 1, date[2]).getTime();
     return time;
   }
@@ -1284,7 +1284,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   vm.filerList = function () {
     vm.filer.createStartDate = GTM(false, vm.filer.createStartDate)
     vm.filer.createEndDate = GTM(true, vm.filer.createEndDate)
-    console.log(vm.filer);
+    
     list();
   }
 
@@ -1294,7 +1294,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
       return data;
     } else {
       data = chang_time(data);
-      console.log(data)
+      
       if (is) {
         data = data + "23:59:59";
       }
@@ -1329,7 +1329,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
     
     vm.filer.createStartDate = GTM(false, vm.filer.createStartDate)
     vm.filer.createEndDate = GTM(true, vm.filer.createEndDate)
-    console.log(vm.filer);
+    
     RecordedResource.exels(vm.seid, vm.filer).then(function (data) {
       vm.taskId = data.data.result;
       layer.load(1, {
@@ -1403,12 +1403,12 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   //入账列表
   function list() {
     RecordedResource.list(vm.seid, vm.filer, vm.skip, vm.limit).then(function (data) {
-      console.log(data.data)
+      
       vm.list = data.data.result;
       for (var i in vm.list) {
         vm.list[i].payment.createDate = chang_time(new Date(vm.list[i].payment.createDate));
       }
-      console.log(vm.list)
+      
     })
   }
 
@@ -1416,7 +1416,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   function total() {
     RecordedResource.total(vm.seid).then(function (data) {
       vm.pagecount = data.data.result;
-      console.log(vm.pagecount)
+      
     })
   }
 
@@ -1424,7 +1424,7 @@ function RecordedlistCtrl($state, $scope, PublicResource, $stateParams, $rootSco
   function stores() {
     StoresResource.list(vm.seid, 0, 0).then(function (data) {
       vm.store = data.data.result.data;
-      console.log(vm.store)
+      
     })
   }
 
@@ -1525,7 +1525,7 @@ function RecordedResource($http, device, version) {
   }
 
   function exel(seid, obj) {
-    console.log(obj)
+    
     return $http.get("/api-admin/report/trade/product/excel", {
       params: {
         "device": device,
@@ -1541,7 +1541,7 @@ function RecordedResource($http, device, version) {
   }
 
   function exels(seid, obj) {
-    console.log(obj)
+    
     return $http.get("/api-admin/report/trade/detail/excel", {
       params: {
         "device": device,
@@ -1640,10 +1640,10 @@ function WalletCtrl($state, $scope, PublicResource, $stateParams, $rootScope, St
     //入账列表
     function list() {
         WalletResource.list(vm.seid,vm.name, vm.skip, vm.limit).then(function (data) {
-            console.log(data.data)
+            
             vm.list = data.data.result.data;
             vm.pagecount = data.data.result.total;
-            console.log(vm.list)
+            
         })
     }
 
@@ -1659,7 +1659,7 @@ function WalletCtrl($state, $scope, PublicResource, $stateParams, $rootScope, St
     function stores() {
         StoresResource.list(vm.seid,0,0).then(function (data) {
             vm.store = data.data.result.data;
-            console.log(vm.store)
+            
         })
     }
 
@@ -1761,7 +1761,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
     vm.info.detail = "";
     vm.info.shortName="";
     vm.id=$stateParams.id;
-    console.log(vm.id)
+    
 
     //获取sessionId
 
@@ -1777,7 +1777,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
     }
 
     vm.addBtn = function(){
-        console.log(vm.info);
+        
         add();
     }
 
@@ -1796,11 +1796,11 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
             for (var i in vm.bPhotos.queue) {
 				vm.bPhotos.queue[i].isSuccess=false;
 				vm.bPhotos.queue[i].isError=true;
-                console.log(vm.bPhotos.queue[i])
+                
             }
             layer.alert(status.message,{icon:2})
         }else {
-            console.log(status)            
+            
              vm.info.bPhotos.push(status.result);
 			 vm.bPhotos.queue[0].remove();
         }
@@ -1809,7 +1809,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 		vm.num = 5;
 		var time =setInterval(function () {
 			vm.num--;
-			console.log(11)
+			
 			if(vm.num==0){
 				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
 					clearInterval(time);
@@ -1833,11 +1833,11 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
             for (var i in vm.cPhotos.queue) {
 				vm.cPhotos.queue[i].isSuccess=false;
 				vm.cPhotos.queue[i].isError=true;
-                console.log(vm.cPhotos.queue[i])
+                
             }
             layer.alert(status.message,{icon:2})
         }else {
-            console.log(status)            
+            
              vm.info.cPhotos.push(status.result);
 			 vm.cPhotos.queue[0].remove();
         }
@@ -1846,7 +1846,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 		vm.num = 5;
 		var time =setInterval(function () {
 			vm.num--;
-			console.log(11)
+			
 			if(vm.num==0){
 				layer.msg("请求超时,请撤销重试~",{icon:2},function () {
 					clearInterval(time);
@@ -1871,11 +1871,11 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
             for (var i in vm.bLogo.queue) {
 				vm.bLogo.queue[i].isSuccess=false;
 				vm.bLogo.queue[i].isError=true;
-                console.log(vm.bLogo.queue[i])
+                
             }
             layer.alert(status.message,{icon:2})
         }else {
-            console.log(status)            
+            
              vm.info.bLogo[0] = status.result;
 			 vm.bLogo.queue[0].remove();
         }
@@ -1884,7 +1884,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 		 vm.num = 5;
 		 var time =setInterval(function () {
 			 vm.num--;
-			 console.log(11)
+			 
 			 if(vm.num==0){
 				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
 					 clearInterval(time);
@@ -1906,11 +1906,11 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
             for (var i in vm.cLogo.queue) {
 				vm.cLogo.queue[i].isSuccess=false;
 				vm.cLogo.queue[i].isError=true;
-                console.log(vm.cLogo.queue[i])
+                
             }
             layer.alert(status.message,{icon:2})
         }else {
-            console.log(status)            
+            
              vm.info.cLogo[0] = status.result;
 			 vm.cLogo.queue[0].remove();
         }
@@ -1919,7 +1919,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 		 vm.num = 5;
 		 var time =setInterval(function () {
 			 vm.num--;
-			 console.log(11)
+			 
 			 if(vm.num==0){
 				 layer.msg("请求超时,请撤销重试~",{icon:2},function () {
 					 clearInterval(time);
@@ -1930,7 +1930,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 	 }
      function add(){
          GoodResource.add(vm.seid,vm.info).then(function(data){
-             console.log(data)
+             
              if(data.data.status=="OK"){
                  layer.confirm('商品添加成功~是否添加商品规格？', {
                         btn: ['确定','取消'] //按钮
@@ -1946,19 +1946,19 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
      function arrayImage (data) {
         vm.data.cPhotos =data.cPhotos.split(",");
         vm.data.bPhotos =data.bPhotos.split(",");
-        console.log(vm.data)
+        
     }
 
     function sortlist(){
        SortResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
+            
             vm.sortlist = data.data.result;
         })
     }
 
     function brandlist(){
         BrandStoresResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
+            
             vm.brandlist = data.data.result;
         })
     }
@@ -1966,7 +1966,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 
     function logolist(){
         SupplierLogoResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
+            
             vm.logolist = data.data.result;
         })
     }
@@ -1974,7 +1974,7 @@ function AddGoodCtrl($state,$rootScope,PublicResource,$stateParams,GoodResource,
 
     function labellist(){
         LabelResource.list(vm.seid,0,0).then(function(data){
-            console.log(data.data.result);
+            
             vm.labellist = data.data.result;
         })
     }
@@ -2007,7 +2007,7 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
     vm.id = $stateParams.id;
 
     vm.addBtn = function(){
-        console.log(vm.Addinfo)
+        
         add();
     }
 
@@ -2049,7 +2049,7 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
 
     function add(){
         FormatResource.add(vm.seid,vm.id,vm.Addinfo).then(function(data){
-            console.log(data);
+            
             if(data.data.status=="OK"){
                 layer.msg('添加成功~',{icon:1});
                 list(vm.seid,vm.id)
@@ -2061,7 +2061,7 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
 
     function update(info){
          FormatResource.update(vm.seid,vm.id,info).then(function(data){
-            console.log(data);
+            
             if(data.data.status=="OK"){
                 layer.msg('添加成功~',{icon:1});
                 list(vm.seid,vm.id)
@@ -2073,7 +2073,7 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
 
     function remove(id){
         FormatResource.remove(vm.seid,id).then(function(data){
-            console.log(data);
+            
             if(data.data.status=="OK"){
                 layer.msg('删除成功',{icon:1});
                 list(vm.seid,vm.id)
@@ -2085,7 +2085,7 @@ function FormatCtrl($state,$rootScope,PublicResource,$stateParams,FormatResource
 
     function list(){
         FormatResource.list(vm.seid,vm.id).then(function(data){
-            console.log(data);
+            
             if(data.data.status!="OK"){
                 layer.msg(data.data.message,{icon:2});
             }
@@ -2217,7 +2217,7 @@ function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, Format
     vm.updata = new Object();
 	vm.matlist = new Array();
 	vm.id = $stateParams.id;
-	console.log(vm.id)
+	
     //获取sessionId
 
 
@@ -2247,7 +2247,7 @@ function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, Format
 				vm.data = data.data.result;
 				arrayImage(vm.data)
 			}
-			console.log(vm.data)
+			
 		})
    	}
 
@@ -2256,7 +2256,7 @@ function GooddetialCtrl($state, $rootScope, PublicResource, $stateParams, Format
     function arrayImage(data) {
 		vm.data.cPhotos = data.cPhotos.split(",");
 		vm.data.bPhotos = data.bPhotos.split(",");
-		console.log(vm.data)
+		
     }
 }
 })();
@@ -2340,15 +2340,15 @@ function GoodlistCtrl($scope, $rootScope, $state, GoodResource, PublicResource, 
     function list(seid) {
         GoodResource.list(seid, null, 0, 10).then(function (data) {
             vm.list = data.data.result;
-            console.log(data)
+            
             vm.tableParams = new NgTableParams({}, { dataset: vm.list.data });
-            console.log(data.data.result)
+            
         })
     }
 
     function remove(id) {
         GoodResource.del(vm.seid, id).then(function (data) {
-            console.log(data)
+            
             if (data.data.status == "OK") {
                 layer.alert('删除成功~', { icon: 1 });
                 list(vm.seid);
@@ -2404,7 +2404,7 @@ function GoodResource($http, device, version) {
 	 * 添加基础商品
 	 */
 	function add(seid, obj) {
-		console.log(obj)
+		
 		var bPhotos = "";
 		var cPhotos = "";
 		var lables = "";
@@ -2453,7 +2453,7 @@ function GoodResource($http, device, version) {
 	 * 修改商品
 	 */
 	function update(seid, obj) {
-		console.log(obj)
+		
 		var bPhotos = "";
 		var cPhotos = "";
 		var lables = "";
@@ -2535,12 +2535,12 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
 
     //获取商品id
     vm.id = $stateParams.id;
-    console.log(vm.id)
+    
 
     //获取sessionId
 
     vm.updateBtn = function () {
-        console.log(vm.data)
+        
         update();
     }
 
@@ -2571,14 +2571,14 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
                 vm.data = data.data.result;
                 arrayImage(vm.data)
             }
-            console.log(vm.data)
+            
         })
     }
 
     function arrayImage(data) {
         vm.data.cPhotos = data.cPhotos.split(",");
         vm.data.bPhotos = data.bPhotos.split(",");
-        console.log(vm.data)
+        
     }
 
     /**
@@ -2594,11 +2594,11 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
             for (var i in vm.bPhotos.queue) {
                 vm.bPhotos.queue[i].isSuccess = false;
                 vm.bPhotos.queue[i].isError = true;
-                console.log(vm.bPhotos.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.info.bPhotos.push(status.result);
             vm.bPhotos.queue[0].remove();
         }
@@ -2607,7 +2607,7 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -2631,11 +2631,11 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
             for (var i in vm.cPhotos.queue) {
                 vm.cPhotos.queue[i].isSuccess = false;
                 vm.cPhotos.queue[i].isError = true;
-                console.log(vm.cPhotos.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.info.cPhotos.push(status.result);
             vm.cPhotos.queue[0].remove();
         }
@@ -2644,7 +2644,7 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -2669,11 +2669,11 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
             for (var i in vm.bLogo.queue) {
                 vm.bLogo.queue[i].isSuccess = false;
                 vm.bLogo.queue[i].isError = true;
-                console.log(vm.bLogo.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.info.bLogo[0] = status.result;
             vm.bLogo.queue[0].remove();
         }
@@ -2682,7 +2682,7 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -2704,11 +2704,11 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
             for (var i in vm.cLogo.queue) {
                 vm.cLogo.queue[i].isSuccess = false;
                 vm.cLogo.queue[i].isError = true;
-                console.log(vm.cLogo.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.info.cLogo[0] = status.result;
             vm.cLogo.queue[0].remove();
         }
@@ -2717,7 +2717,7 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -2729,7 +2729,7 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
 
     function update() {
         GoodResource.update(vm.seid, vm.data).then(function (data) {
-            console.log(data);
+            
             if (data.data.status == "OK") {
                 layer.msg('修改成功~', { icon: 1 });
             } else {
@@ -2741,22 +2741,22 @@ function UpdateGoodCtrl($state, $rootScope, PublicResource, $stateParams, Format
     function init() {
         SortResource.list(vm.seid, 0, 0).then(function (data) {
             vm.sortlist = data.data.result;
-            console.log(vm.sortlist)
+            
         })
 
         SupplierLogoResource.list(vm.seid, 0, 0).then(function (data) {
             vm.brandlist = data.data.result;
-            console.log(vm.brandlist)
+            
         })
 
         BrandStoresResource.list(vm.seid, 0, 0).then(function (data) {
             vm.providerBrandlist = data.data.result;
-            console.log(vm.providerBrandlist)
+            
         })
 
         LabelResource.list(vm.seid).then(function (data) {
             vm.labellist = data.data.result;
-            console.log(vm.labellist)
+            
         })
     }
 }
@@ -2818,7 +2818,7 @@ function LabelResource($http, device, version) {
     }
 
     function add(seid, info) {
-        console.log(info)
+        
         return $http({
             url: "/api-admin/label/add",
             method: 'post',
@@ -2862,11 +2862,11 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
     
      //当前用户状态
    /* PublicResource.verification(vm.seid).then(function(data){
-    	console.log(data)
+    	
     })*/
     
 	vm.updateBtn = function(data){
-		console.log(data)
+		
 		if(data.status){
 			data.status=false;
 			if(update(data)){
@@ -2879,7 +2879,7 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 	}
 	
 	vm.addBtn = function(list){
-		console.log(list)
+		
 		add(list);
 	}
 
@@ -2906,7 +2906,7 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 			for(var i in vm.list){
 				vm.list[i].status=false;
 			}	  
-	    	console.log(vm.list);
+	    	
 	    	vm.tableParams = new NgTableParams({},{dataset:vm.list});  	
 	    })
 	}
@@ -2917,7 +2917,7 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 	function logo () {
 		 BrandStoresResource.list(vm.seid,0,0).then(function (data) {
 		 	vm.logolist = data.data.result.data;
-		 	 console.log(vm.logolist)
+		 	 
 		 }) 
 	}
 
@@ -2928,11 +2928,11 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 	function get(id){		
 		LabelResource.get(vm.seid,id).then(function(data){			
 			vm.info = data.data.result;
-			console.log(vm.info)
+			
 		})
 	}
 	function add (info) {
-		console.log(info)
+		
 		 LabelResource.add(vm.seid,info).then(function(data){			
 			if(data.data.status="OK"){
 				layer.msg("添加成功~",{icon:1},function (index) {
@@ -2942,7 +2942,7 @@ function LabellistCtrl($scope,$state,$rootScope,PublicResource,LabelResource,$st
 			}else {
 				layer.msg(data.data.message,{icon:2})
 			}
-			console.log(vm.info)
+			
 		})  
 	}
 
@@ -3022,7 +3022,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
         vm.Coupon.storeIds = ArryString(vm.storesId,true);
         vm.Coupon.goodIds = ArryString(vm.goodId,false);
         vm.Coupon.specCountLimit = vm.Coupon.specType=="ALL_SPEC"?"":vm.Coupon.specCountLimit;
-        console.log(vm.Coupon)
+        
         CouponResource.add(vm.seid,vm.Coupon).then(function(data){
             if(data.data.status =='OK'){
                 layer.msg('添加成功',{icon:1},function(){
@@ -3048,7 +3048,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
     }
 
     function ArryString(obj, status) {
-        console.log(obj, typeof (obj))
+        
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
@@ -3073,7 +3073,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
     function resource() {
         CouponResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
-            console.log(vm.resource)
+            
         })
     }
 }
@@ -3113,7 +3113,7 @@ function CouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource, Co
                 vm.list[i].startTime = chang_time(new Date(vm.list[i].startTime));
                 vm.list[i].endTime = chang_time(new Date(vm.list[i].endTime));
             }
-            console.log(vm.list)
+            
         })
     }
 
@@ -3327,7 +3327,7 @@ function GetMarkCtrl($scope, $rootScope, $stateParams, $state, PublicResource, M
             vm.task.startTime = chang_time(new Date(vm.task.startTime));
             vm.task.endTime = chang_time(new Date(vm.task.endTime));
             vm.task.interval = Get_interval(vm.task.formulaParameterMap)
-            console.log(vm.task)
+            
         })
     }
 
@@ -3438,7 +3438,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
     function list() {
         MarketResource.list(vm.seid, 0, 0).then(function (data) {
-            console.log(data.data.result)
+            
             vm.list = data.data.result;
             for (var i in vm.list) {
                 vm.list[i].startTime = chang_time(new Date(vm.list[i].startTime));
@@ -3465,7 +3465,7 @@ function MarketListCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     function remove(id) {
         MarketResource.remove(vm.seid, id).then(function (data) {
-            console.log(data)
+            
             if (data.data.status == "OK") {
                 layer.msg('删除成功！', { icon: 1 });
                 list();
@@ -3679,19 +3679,19 @@ function PremlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     }
 
     vm.updateBtn = function () {
-        console.log(vm.data);
+        
         Update();
     }
 
     vm.addBtn = function () {
-        console.log(vm.addinfo)
+        
         Add();
     }
     list();
     good();
     function list() {
         PremResource.list(vm.seid, 0, 100).then(function (data) {
-            console.log(data.data.result)
+            
             vm.list = data.data.result;
         })
     }
@@ -3699,7 +3699,7 @@ function PremlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
     function good() {
         GoodResource.list(vm.seid, null, 0, 0).then(function (data) {
             vm.goods = data.data.result.data;
-            console.log(vm.goods)
+            
         })
     }
 
@@ -3718,7 +3718,7 @@ function PremlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope, 
 
     function get(id) {
         PremResource.get(vm.seid, id).then(function (data) {
-            console.log(data.data.result)
+            
             vm.data = data.data.result;
         })
     }
@@ -3909,7 +3909,7 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
             if (vm.info.amountLimit) {
                 vm.info.isGood = true;
             }
-            console.log(vm.info)
+            
         })
     }
 
@@ -3976,7 +3976,7 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
     }
 
     function ArryString(obj, status) {
-        console.log(obj, typeof (obj))
+        
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
@@ -4001,7 +4001,7 @@ function UpdateCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResour
     function resource() {
         CouponResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
-            console.log(vm.resource)
+            
         })
     }
 }
@@ -4046,13 +4046,13 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         vm.data.goodsIds = ArryString(vm.data.promotionProductList, false);
         vm.data.prems = ArryString(vm.data.promotionGiftList, true);
         vm.data.costSources = objstring(vm.data.promotionCostSourceList);
-        console.log(vm.data)
+        
         if (typeof (vm.data.startTime) != "undefined" && vm.data.startTime != "" && typeof (vm.data.startTime) != 'number') {
-            console.log(typeof (vm.data.startTime))
+            
             vm.data.startTime = vm.data.startTime.getTime();
         }
         if (typeof (vm.data.endTime) != "undefined" && vm.data.endTime != "" && typeof (vm.data.endTime) != 'number') {
-            console.log(vm.data.endTime)
+            
             vm.data.endTime = vm.data.endTime.getTime();
         }
         if (vm.data.type == 'RANDOM_CUT') {
@@ -4063,7 +4063,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 }
             }
         }
-        console.log(vm.data);
+        
         MarketResource.update(vm.seid, vm.data).then(function (data) {
             if (data.data.status == "OK") {
                 layer.msg("保存成功", { icon: 1 },function(){
@@ -4090,7 +4090,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
 
     function objstring(obj) {
-        console.log(obj)
+        
         if (typeof (obj) == 'stirng' || typeof (obj) == 'undefined' || typeof (obj) == null) {
             return obj;
         } else {
@@ -4115,7 +4115,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
                 }
             } else {
                 for (var i in obj) {
-                    console.log(obj[i].spec)
+                    
                     if (typeof (obj[i].spec) == 'undefined') {
                         StoreArry += obj[i].productSpecData.id + ",";
                     } else {
@@ -4134,7 +4134,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     }
 
     vm.Delinterval = function (index) {
-        console.log(index)
+        
         vm.interval.splice(index, 1)
     }
 
@@ -4157,7 +4157,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             vm.data.isDetail=vm.data.amountLimit==0?false:true;
             vm.data.prems = [];
             vm.data.costSources = [];
-            console.log(vm.data);
+            
             Get_interval(vm.data.formulaParameterMap);
             Get_goods(vm.data.promotionProductList);
         })
@@ -4167,7 +4167,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
     function resource() {
         MarketResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
-            console.log(vm.resource)
+            
         })
     }
 
@@ -4189,7 +4189,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
 
     //解析规格list
     function Get_goods(obj) {
-        console.log(obj)
+        
         var goods = [];
         var spec = {};
         spec.categories = {};
@@ -4273,12 +4273,12 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     }
 
     vm.AddTask = function () {
-        console.log(vm.interval);
+        
         if (iftask()) {
             if (vm.interval.length > 0) {
                 vm.task.formulaParameter = {};
                 for (var i in vm.interval) {
-                    console.log(i)
+                    
                     vm.task.formulaParameter['interval_' + vm.interval[i].start + "_" + vm.interval[i].end] = numeral(vm.interval[i].count * 0.01).format('0.00')
                 }
             }
@@ -4393,13 +4393,9 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.music = new Object();
     vm.music.dates = new Array();
     vm.music.dates[0] = {};
-    vm.music.dates[0].startTime = '';
-    vm.music.dates[0].endTime = '';
     vm.music.store = new Array();
     vm.music.times = new Array();
     vm.music.times[0] = new Object();
-    vm.music.times[0].startDate = "";
-    vm.music.times[0].endDate = "";
     vm.stores;
     //获取sessionId
     login()
@@ -4420,7 +4416,7 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     vm.add = function () {
         startAdd();
         addData();
-        console.log(vm.music)
+        
     }
 
     vm.addDates = function () {
@@ -4429,7 +4425,7 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
             endDate: ""
         }
         vm.music.dates.push(addlist)
-        console.log(vm.music.dates)
+        
     }
     vm.addTimes = function () {
         var addlist = {
@@ -4437,23 +4433,23 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
             endTime: ""
         }
         vm.music.times.push(addlist)
-        console.log(vm.music.dates)
+        
     }
 
 
 
     function startAdd() {
         vm.music.storeId = "";
+        
         for (var i in vm.music.dates) {
             if (typeof (vm.music.dates[i].startDate) != "number") {
-
                 vm.music.dates[i].startDate = GTM(false, chang_time(new Date(vm.music.dates[i].startDate)))
             }
             if (typeof (vm.music.dates[i].endDate) != "number") {
                 vm.music.dates[i].endDate = GTM(true, chang_time(new Date(vm.music.dates[i].endDate)))
             }
         }
-
+        
         for (var i in vm.music.storeid) {
             vm.music.storeId += vm.music.storeid[i].id + ","
         }
@@ -4467,11 +4463,11 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分
         var s = date.getSeconds();
-        console.log(h.length);
+        
         if (D.length < 3) {
             D = "0" + D;
         }
-        console.log(D.length + ',' + D);
+        
         if (m.length < 3) {
             m = "0" + m;
         }
@@ -4483,10 +4479,10 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
     }
 
     function GTM(is, data) {
-        console.log(data)
         if (typeof (data) == 'undefined' || data == "" || data == null) {
             return null
         } else {
+            data = data.replace(/-/g,'/');
             if (is) {
                 data = data + "23:59:59";
             }
@@ -4511,7 +4507,7 @@ function AddMusicCtrl($rootScope, $state, PublicResource, $stateParams, StoresRe
 
     function addData() {
         MusicResource.add(vm.seid, vm.music).then(function (data) {
-            console.log(data)
+            
             if (data.data.status == "OK") {
                 layer.msg('保存成功~', { icon: 1 }, function () {
                     $state.go('/music/list')
@@ -4571,7 +4567,7 @@ function MusicResource($http, device, version) {
     }
 
     function add(seid, obj) {
-        console.log(obj)
+        
         return $http({
             url: "/api-admin/voice/add",
             method: 'post',
@@ -4744,7 +4740,7 @@ function MusicListCtrl($rootScope, $state, PublicResource, $stateParams, StoresR
                 vm.info.voiceDates[j].endDate = chang_time(new Date(vm.info.voiceDates[j].endDate));
                 vm.info.voiceDates[j].startDate = chang_time(new Date(vm.info.voiceDates[j].startDate));
             }
-            console.log(vm.info)
+            
         })
     }
 
@@ -4752,7 +4748,7 @@ function MusicListCtrl($rootScope, $state, PublicResource, $stateParams, StoresR
     function count() {
         MusicResource.count(vm.seid).then(function (data) {
             vm.count = data.data.result;
-            console.log(data)
+            
         })
     }
 
@@ -4765,7 +4761,7 @@ function MusicListCtrl($rootScope, $state, PublicResource, $stateParams, StoresR
                     vm.list[i].voiceDates[j].startDate = chang_time(new Date(vm.list[i].voiceDates[j].startDate));
                 }
             }
-            console.log(vm.list)
+            
         })
     }
 
@@ -4856,19 +4852,19 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     }
 
     vm.updateBtn = function(){
-        console.log(vm.data);
+        
         Update();
     }
 
     vm.addBtn = function(){
-        console.log(vm.addinfo)
+        
         Add();
     }
     list();
     good();
     function list(){
         PremResource.list(vm.seid,0,100).then(function(data){
-            console.log(data.data.result)
+            
             vm.list = data.data.result;
         })
     }
@@ -4876,7 +4872,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){
             vm.goods = data.data.result.data;
-            console.log(vm.goods)
+            
         })
     }
 
@@ -4895,7 +4891,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
 
     function get(id){
         PremResource.get(vm.seid,id).then(function(data){
-            console.log(data.data.result)
+            
             vm.data = data.data.result;
         })
     }
@@ -4944,7 +4940,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     vm.getinfo;
     vm.selectList = new Array();
     vm.id = $stateParams.id;
-    console.log(vm.id)
+    
     //获取sessionId
     login()
     get(vm.id)
@@ -4964,7 +4960,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     //提交修改资料
     vm.updata = function () {
         endUpdate();
-        console.log(vm.music);
+        
         update()
     }
 
@@ -4978,7 +4974,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
             vm.music.voiceDates[i].startDate = GTM(false, vm.music.voiceDates[i].startDate);
             vm.music.voiceDates[i].endDate = GTM(true, vm.music.voiceDates[i].endDate);
         }
-        console.log(vm.music.voiceDates)
+        
         for (var i in vm.music.store) {
             vm.music.storeId += vm.music.store[i].id + ","
         }
@@ -5003,15 +4999,16 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     function get(id) {
         MusicResource.get(vm.seid, id).then(function (data) {
             vm.music = data.data.result;
-            console.log(vm.music)
+            
         })
     }
 
     function GTM(is, data) {
-        console.log(data)
+        
         if (typeof (data) == 'undefined' || data == "" || data == null) {
             return null
         } else {
+            data = data.replace(/-/g,'/');
             if (is) {
                 data = data + "23:59:59";
             }
@@ -5023,7 +5020,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
     function update() {
         MusicResource.update(vm.seid, vm.music).then(function (data) {
             if (data.data.status == "OK") {
-                console.log(data)
+                
                 layer.msg('保存成功~', { icon: 1 }, function () {
                     $state.go('/music/list')
                 })
@@ -5040,11 +5037,11 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         var h = date.getHours() + ':'; //时
         var m = date.getMinutes() + ':'; //分
         var s = date.getSeconds();
-        console.log(h.length);
+        
         if (D.length < 3) {
             D = "0" + D;
         }
-        console.log(D.length + ',' + D);
+        
         if (m.length < 3) {
             m = "0" + m;
         }
@@ -5059,9 +5056,9 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         if (data == null || data.length < 1) {
             return false;
         }
-        console.log(data)
+        
         var date = data.split('-');
-        console.log(date);
+        
         var time = new Date(date[0], date[1] - 1, date[2]).getTime();
         return time;
     }
@@ -5116,7 +5113,7 @@ function OrderResource($http, device, version) {
             data: { "device": device, "version": version, "sessionId": seid },
             async: false,
             success: function (response) {
-                console.log(response)
+                
                 return response.data;
             }
         });
@@ -5194,13 +5191,46 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
         }
     }
 
+    //初始化
+    vm.init = function(){
+        vm.get.source="";
+        vm.get.status="";
+        vm.get.storeId="";
+        vm.get.id="";
+        vm.get.createStartDate="";
+        vm.get.createEndDate="";
+        vm.get.completeStartDate="";
+        vm.get.completeEndDate="";
+    }
+
     vm.execl = function (time) {
         time = chang_time(new Date(time))
         window.open("api-admin/report/trade/dailyExcel?sessionId=" + vm.seid + "&device=" + device + "&version=" + version + "&date=" + time)
     }
 
     vm.St_order = function (time) {
+        vm.get.source=typeof(vm.get.source)=='undefined'? "":vm.get.source;
+        vm.get.status=typeof(vm.get.status)=='undefined'? "":vm.get.status;
+        vm.get.storeId=typeof(vm.get.storeId)=='undefined'? "":vm.get.storeId;
+        vm.get.id=typeof(vm.get.id)=='undefined'? "":vm.get.id;
+        vm.get.createStartDate=GetTime(vm.get.createStartDate)
+        vm.get.createEndDate=GetTime(vm.get.createEndDate)
+        vm.get.completeStartDate=GetTime(vm.get.completeStartDate)
+        vm.get.completeEndDate=GetTime(vm.get.completeEndDate)
+        
         list();
+    }
+
+    function GetTime(date){
+        if(typeof(date)=='undefined'){
+            return ""
+        }else{
+             if(typeof(date)=='object'){
+                return date.getTime();
+            }else{
+                return date
+            }
+        }
     }
 
     list();
@@ -5223,12 +5253,23 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                             "skip": vm.skip,
                             "limit": vm.limit,
                             "takeNo": vm.get.id,
-                            "status": vm.get.status
+                            "status": vm.get.status,
+                            "source": vm.get.source,
+                            "storeId": vm.get.storeId,
+                            "phoneNumber":vm.get.phone,
+                            'createEndDate':vm.get.createEndDate,
+                            'createStartDate':vm.get.createStartDate,
+                            'completeStartDate':vm.get.completeStartDate,
+                            'completeEndDate':vm.get.completeEndDate,
                         }
                     }).then(function (data) {
+                        if(data.data.status=='ERROR'){
+                            layer.msg(data.data.message,{icon:2})
+                            return false;
+                        }
                         info.total(data.data.result.total);
                         for (var i in data.data.result.data) {
-                            data.data.result.data[i].createDate = change_time(new Date(data.data.result.data[i].createDate));
+                            data.data.result.data[i].lastModifyDate = change_time(new Date(data.data.result.data[i].lastModifyDate));
                             if (data.data.result.data[i].endDate != null) {
                                 data.data.result.data[i].endDate = change_time(new Date(data.data.result.data[i].endDate))
                             }
@@ -5252,6 +5293,14 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
                 }
             })
         });
+    }
+
+    store();
+    function store(){
+        StoresResource.list(vm.seid,0,0).then(function(data){
+            vm.stores = data.data.result.data;
+            
+        })
     }
 
     function change_time(date) {
@@ -5303,7 +5352,7 @@ function OrderlistCtrl($state, $scope, PublicResource, $stateParams, $rootScope,
 
     function update(status, id) {
         OrderResource.update(vm.seid, status, id).then(function (data) {
-            console.log(data);
+            
             if (data.data.status == "OK") {
                 layer.alert('修改成功', { icon: 1 })
             } else {
@@ -5369,19 +5418,19 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     }
 
     vm.updateBtn = function(){
-        console.log(vm.data);
+        
         Update();
     }
 
     vm.addBtn = function(){
-        console.log(vm.addinfo)
+        
         Add();
     }
     list();
     good();
     function list(){
         PremResource.list(vm.seid,0,100).then(function(data){
-            console.log(data.data.result)
+            
             vm.list = data.data.result;
         })
     }
@@ -5389,7 +5438,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){
             vm.goods = data.data.result.data;
-            console.log(vm.goods)
+            
         })
     }
 
@@ -5408,7 +5457,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
 
     function get(id){
         PremResource.get(vm.seid,id).then(function(data){
-            console.log(data.data.result)
+            
             vm.data = data.data.result;
         })
     }
@@ -5573,9 +5622,9 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	
 	//新增子类
 	vm.childrenbtn = function(has){
-		console.log(has )
+		
 		SortResource.addlist(vm.addinfo,vm.seid).then(function(data){			
-			console.log(data)
+			
 			if(data.data.status=="OK"){				
 				if(!has){
 					layer.closeAll();
@@ -5620,7 +5669,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	 * 展开分类
 	 */
 	vm.toggle = function(item){
-		console.log(item);
+		
 		if(item.status==1){
 			item.status=0;
 			vm.open=true;
@@ -5630,7 +5679,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	}
 
 	vm.addbtn = function(data,is){	
-		console.log(data);
+		
 		add(data)
 	}
 
@@ -5652,7 +5701,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	 * 添加
 	 */
 	function add(datainfo){		
-		console.log(datainfo)
+		
 		SortResource.add(vm.seid,datainfo).then(function(data){
 			if(data.data.status=="OK"){
 				layer.msg('添加成功',{icon:1});
@@ -5668,7 +5717,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	 */
 	function update(id,name){
 		SortResource.update(vm.seid,id,name).then(function(data){
-			console.log(data.data.result);
+			
 			if(data.data.status=="OK"){
 				layer.msg("修改成功",{icon:1});
 			}else{
@@ -5694,7 +5743,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 					vm.list.children[item].children[list].btnName="编辑";
 				}
 	    	}
-	    	console.log(vm.list)
+	    	
 	    })
 	}
 
@@ -5702,7 +5751,7 @@ function SortlistCtrl($scope,$rootScope,$state,SortResource,PublicResource,$stat
 	 * 删除
 	 */
 	function remove(id){
-		console.log(id);
+		
 		SortResource.remove(vm.seid,id).then(function(data){				
 			if (data.data.status=="OK") {					
 				layer.alert('删除成功~', {icon: 1});
@@ -5774,19 +5823,19 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     }
 
     vm.updateBtn = function(){
-        console.log(vm.data);
+        
         Update();
     }
 
     vm.addBtn = function(){
-        console.log(vm.addinfo)
+        
         Add();
     }
     list();
     good();
     function list(){
         PremResource.list(vm.seid,0,100).then(function(data){
-            console.log(data.data.result)
+            
             vm.list = data.data.result;
         })
     }
@@ -5794,7 +5843,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
     function good(){
         GoodResource.list(vm.seid,null,0,0).then(function(data){
             vm.goods = data.data.result.data;
-            console.log(vm.goods)
+            
         })
     }
 
@@ -5813,7 +5862,7 @@ function PremlistCtrl($state,$scope,PublicResource,$stateParams,$rootScope,PremR
 
     function get(id){
         PremResource.get(vm.seid,id).then(function(data){
-            console.log(data.data.result)
+            
             vm.data = data.data.result;
         })
     }
@@ -5882,7 +5931,7 @@ function StoresAdminResource($http, device, version) {
      * 添加门店
      */
     function add(seid, obj) {
-        console.log(obj)
+        
         return $.ajax({
             type: "post",
             url: "/api-admin/store/add",
@@ -5916,7 +5965,7 @@ function StoresAdminResource($http, device, version) {
      * @param {Object} name
      */
     function update(seid, obj) {
-        console.log(obj)
+        
         return $http({
             url: "/api-admin/store/" + obj.id + "/update",
             method: 'post',
@@ -6036,7 +6085,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     list();
 
     vm.addBtn=function(){
-        console.log(vm.addinfo);
+        
         add();
     }
 
@@ -6071,13 +6120,13 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
                 get(id);
                 title='门店信息';
                 calssName='.get_list';
-                console.log(vm.getinfo)
+                
             break;
             case 'update':
                 get(id);
                 title='修改门店信息';
                 calssName='.update_list';
-                console.log(vm.getinfo)
+                
             break;
         }
 
@@ -6091,7 +6140,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
     function get(id){
         StoresResource.get(vm.seid,id).then(function(data){ 
             vm.getinfo = data.result;
-            console.log(vm.getinfo)
+            
         })
     }
 
@@ -6101,9 +6150,9 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
             getData:function(params){
                 vm.skip=10*(params.page()-1);
                 return StoresResource.list(vm.seid,vm.skip,vm.limit).then(function(data){
-                    console.log(data.data.result);
+                    
                     params.total(data.data.result.total)
-                    console.log(params.page())
+                    
                     return data.data.result.data;
                 })
             }
@@ -6130,7 +6179,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
     function add(){
         StoresResource.add(vm.seid,vm.addinfo).then(function(data){
-            console.log(data);
+            
             if(data.status=="OK"){
                 layer.msg('修改成功~',{icon:1},function(){
                     layer.closeAll();
@@ -6144,7 +6193,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
     function update(){
         StoresResource.update(vm.seid,vm.getinfo).then(function(data){
-            console.log(data.data.result);
+            
             if(data.data.status=="OK"){
                 layer.msg('修改成功~',{icon:1},function(){
                     layer.closeAll();
@@ -6158,7 +6207,7 @@ function StoreslistCtrl($rootScope,$state,PublicResource,$stateParams,StoresReso
 
     function remove(id){
         StoresResource.remove(vm.seid,id).then(function(data){
-            console.log(data.data.result);
+            
             vm.list = data.data.result;
             if(data.data.status=="OK"){
                 layer.msg('删除成功~',{icon:1},function(){
@@ -6227,18 +6276,18 @@ function StoresGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResour
     get();
     function get() {
         StoresGoodResource.list(vm.seid,vm.storeid,vm.skip, vm.limit).then(function (data) {
-            console.log(data)
+            
             vm.list = data.data.result.data;
             vm.pagecount = data.data.result.total;
-            console.log(vm.pagecount)
-            console.log(vm.list)
+            
+            
         })
     }
 
     vm.upbtn = function(){
         var all=[];
         var obj={}
-        console.log(vm.specs)
+        
         for(var i in vm.specs){
             obj.id = vm.specs[i].id;
             obj.price = vm.specs[i].price;
@@ -6246,7 +6295,7 @@ function StoresGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResour
             obj={}
         }
         StoresGoodResource.update(vm.seid,all).then(function(data){
-    		console.log(data)
+    		
     		if(data.data.status=="OK"){
                 layer.alert("修改成功",{icon:1},function(){
                     layer.closeAll();
@@ -6259,7 +6308,7 @@ function StoresGoodCtrl($scope, $rootScope, $state, StoresResource, PublicResour
     }
 
     vm.opera_layer = function(item){
-        console.log(item)
+        
         vm.specs =item.specs;
         vm.name = item.baseProduct.name;
         layer.open({
@@ -6342,7 +6391,7 @@ function StoresResource($http,device,version) {
      * 添加门店
      */
     function add(seid,obj){
-        console.log(obj)
+        
         return $.ajax({
             type:"post",
             url:"/api-admin/store/add",
@@ -6374,7 +6423,7 @@ function StoresResource($http,device,version) {
      * @param {Object} name
      */
     function update(seid,obj){
-        console.log(obj)
+        
         return $http({
             url:"/api-admin/store/"+obj.id+"/update",
             method: 'post',
@@ -6492,13 +6541,13 @@ function VirtualCtrl($scope,$rootScope,$state,PublicResource,$stateParams,Virtua
     function list(storeid){
     	VirtualResource.list(vm.seid,storeid).then(function(data){
             vm.list = data.data.result;
-            console.log(vm.list);
+            
         })
     }
 
     function remove(id,storeid){
     	VirtualResourrce.remove(vm.seid,id).then(function(data){
-            console.log(data)
+            
         })
     }
 }
@@ -6575,11 +6624,11 @@ function VirtualResource($http, device, version) {
 	 * 添加基础商品
 	 */
 	function add(seid, obj) {
-		console.log(obj)
+		
 		var categoryId = new Object();
 		categoryId.data = new Object();
 		categoryId.data.id === null;
-		console.log(categoryId.data.id)
+		
 		if (typeof (obj.sortId) == 'undefined' || obj.sortId == "") {
 			categoryId = obj.sorts;
 		} else {
@@ -6792,11 +6841,11 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
             for (var i in vm.logo.queue) {
                 vm.logo.queue[i].isSuccess = false;
                 vm.logo.queue[i].isError = true;
-                console.log(vm.logo.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.infolist.logo = status.result;
             vm.logo.queue[0].remove();
         }
@@ -6805,7 +6854,7 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -6828,11 +6877,11 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
             for (var i in vm.logo.queue) {
                 vm.logos.queue[i].isSuccess = false;
                 vm.logos.queue[i].isError = true;
-                console.log(vm.logo.queue[i])
+                
             }
             layer.alert(status.message, { icon: 2 })
         } else {
-            console.log(status)
+            
             vm.getlist.logo = status.result;
             vm.logos.queue[0].remove();
         }
@@ -6841,7 +6890,7 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
         vm.num = 5;
         var time = setInterval(function () {
             vm.num--;
-            console.log(11)
+            
             if (vm.num == 0) {
                 layer.msg("请求超时,请撤销重试~", { icon: 2 }, function () {
                     clearInterval(time);
@@ -6910,7 +6959,7 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
     }
 
     vm.delopen = function (id) {
-        console.log(id)
+        
         layer.confirm('您确定要删除数据？', {
             btn: ['确定', '取消'] //按钮
         }, function () {
@@ -6957,7 +7006,7 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
     function get(id) {
         SupplierLogoResource.get(vm.seid, id).then(function (data) {
             vm.getlist = data.result;
-            console.log(vm.getlist)
+            
         })
     }
 
@@ -7003,7 +7052,7 @@ function SupplierLogolistCtrl($scope, $state, $rootScope, NgTableParams, PublicR
             vm.list = data.data.result.data;
             vm.tableParams = new NgTableParams({}, { dataset: vm.list });
             vm.pagecount = data.data.result.total;
-            console.log(vm.list)
+            
         })
     }
 
@@ -7096,7 +7145,7 @@ function SupplierLogoResource($http, device, version) {
 	 * 修改商品
 	 */
 	function update(seid, obj) {
-		console.log(obj)
+		
 		return $http({
             url: "/api-admin/provider/brand/" + obj.id + "/update",
             method: 'post',
@@ -7224,7 +7273,7 @@ angular.module('index_area').directive('goods', function (GoodResource, $rootSco
             }
 
             function vs() {
-                console.log(scope.returnlist)
+                
                 for (var i in scope.list) {
                     for (var j in scope.returnlist) {
                         scope.returnlist[j].name = scope.returnlist[j].product.name;
@@ -7285,7 +7334,7 @@ angular.module('index_area').directive('prems', function (PremResource,$rootScop
             function Prems(){
                 PremResource.list(scope.seid,scope.skip,scope.limit).then(function(data){
                     scope.list = data.data.result;
-                    console.log(scope.list)
+                    
                     for(var i in scope.list){
                         scope.list[i].status=true;
                         scope.list[i].active=false;
@@ -7296,8 +7345,8 @@ angular.module('index_area').directive('prems', function (PremResource,$rootScop
             }
 
             function vs(){
-                console.log(scope.list)
-                console.log(scope.returnlist)
+                
+                
 				for(var i in scope.list){
 					for(var j in scope.returnlist){
 						if(scope.list[i].id==scope.returnlist[j].id){
@@ -7390,7 +7439,7 @@ angular.module('index_area').directive('sort', function (SortResource, $rootScop
       sort();
 
       scope.Status = function (data) {
-        console.log(data)
+        
         if (data.status) {
           scope.returnlist.push(data)
         } else {
@@ -7407,7 +7456,7 @@ angular.module('index_area').directive('sort', function (SortResource, $rootScop
             data.children[i].status = false;
           }
         }
-        console.log(scope.returnlist);
+        
       }
 
       function sort() {
@@ -7419,7 +7468,7 @@ angular.module('index_area').directive('sort', function (SortResource, $rootScop
               scope.list[i].children[j].status = false;
             }
           }
-          console.log(scope.list);
+          
         })
       }
     }
@@ -7515,7 +7564,7 @@ angular.module('index_area').directive('stores', function (StoresResource,$rootS
 							scope.returnlist.splice(i,1);
 							for(var j in scope.list){
 								if(scope.list[j].id==scope.returnlist[i].id){
-									console.log(scope.list[i])
+									
 									scope.list[j].status=false;
 									scope.list[j].select=true;
 								}
@@ -7725,7 +7774,7 @@ function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, 
 
     vm.statusBtn = function (status, code) {
         vm.data.code = code;
-        console.log(vm.data)
+        
         if (status) {
             add()
         } else {
@@ -7734,7 +7783,7 @@ function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, 
     }
 
     vm.upBtn = function (item) {
-        console.log(item);
+        
         vm.addinfo.name = item.name;
         vm.addinfo.id = item.id;
         vm.is = false;
@@ -7775,7 +7824,7 @@ function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, 
             if (data.data.status == "OK") {
                 vm.list = data.data.result;
                 vm.RoleList = new NgTableParams({}, { dataset: vm.list });
-                console.log(vm.list)
+                
             } else {
                 layer.msg(data.data.message, { icon: 2 })
             }
@@ -7784,7 +7833,7 @@ function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, 
         OperationResource.list(vm.seid, 0, 0).then(function (data) {
             if (data.data.status == "OK") {
                 vm.operList = data.data.result;
-                console.log(vm.operList)
+                
             } else {
                 layer.msg(data.data.message, { icon: 2 })
             }
@@ -7806,7 +7855,7 @@ function RoleListCtrl($scope, $rootScope, $state, PublicResource, $stateParams, 
     }
 
     function add() {
-        console.log(vm.data)
+        
         OperationResource.add(vm.seid, vm.data).then(function (data) {
             if (data.data.status == "OK") {
                 layer.msg('添加成功', { icon: 1 });
@@ -7921,7 +7970,7 @@ function RoleResource($http, device, version) {
     }
 
     function add(seid, obj) {
-        console.log(obj)
+        
         return $http({
             url: "/api-admin/authority/role/add",
             method: 'post',
@@ -8016,7 +8065,7 @@ function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $
              if(data.data.status=="OK"){
                  vm.list = data.data.result;
                  vm.TableList = new NgTableParams({},{dataset:vm.list});
-                 console.log(vm.list)
+                 
              }else{
                  layer.msg(data.data.message,{icon:2})
              }
@@ -8029,7 +8078,7 @@ function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $
                 filterDelay: 300,
                 getData: function (info) {
                     return $http.get("/api-admin/user/list", { params: { "device": '2.0.0', "version": 'PC', "sessionId": vm.seid, "skip": vm.skip, "limit": 0 } }).then(function (data) {
-                        console.log(data.data.result);
+                        
                         vm.skip += vm.limit;
                         info.per_page = 10;
                         info.total(1000);
@@ -8040,7 +8089,7 @@ function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $
 
         RoleResource.list(vm.seid, 0, 0).then(function (data) {
             vm.Rolelist = data.data.result;
-            console.log(vm.Rolelist)
+            
         })
 
     }
@@ -8061,7 +8110,7 @@ function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $
 
     function delUser(userId, roleId) {
         RoleResource.delUser(vm.seid, userId, roleId).then(function (data) {
-            console.log(data)
+            
             if (data.data.status == "OK") {
                 layer.msg('修改成功', { icon: 1 })
             } else {
@@ -8071,10 +8120,10 @@ function UserListCtrl($rootScope, PublicResource, NgTableParams, RoleResource, $
     }
 
     function addUser(userId, roleId) {
-        console.log(userId);
-        console.log(roleId)
+        
+        
         RoleResource.addUser(vm.seid, userId, roleId).then(function (data) {
-            console.log(data)
+            
             if (data.data.status == "OK") {
                 layer.msg('添加成功', { icon: 1 })
             } else {

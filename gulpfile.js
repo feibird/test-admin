@@ -6,11 +6,12 @@ var concat = require('gulp-concat');                                  //多个�
 var templateCache = require('gulp-angular-templatecache');            //
 var wrap = require("gulp-wrap");                                      //
 var minify = require('gulp-minify-css');                              //压缩css
+var minjs = require('gulp-uglify');                                   //压缩js
 var rename = require('gulp-rename');                                  //重命名
 var nodemon = require('gulp-nodemon');                                //node本地服务
 var notify = require('gulp-notify');                                  //提示信息
 var less = require('gulp-less');                                      //编译less
-var replace = require("gulp-replace");                                  //替换字符串
+var replace = require("gulp-replace");                                //替换字符串
 var zip = require('gulp-zip');                                        //打包
 var gulpSequence = require('gulp-sequence');                          //控制tasl顺序
 
@@ -44,6 +45,7 @@ gulp.task('concat', function () {
   return gulp.src(files.app)
     .pipe(wrap('(function(){\n"use strict"\n<%= contents %>\n})();'))
     .pipe(concat('app.js'))
+    .pipe(replace(/console.log(.+)/g,""))
     .pipe(gulp.dest('public/'))
     .pipe(gulp.dest('dist/'))
 })
@@ -70,8 +72,8 @@ gulp.task('frame', function () {
 
 //html压缩
 gulp.task('min-html', function () {
-  gulp.src('app/**/**.html')  //要压缩的html文件
-    /*.pipe(minhtml())//压缩*/
+  return gulp.src('app/**/**.html')  //要压缩的html文件
+    .pipe(minhtml())//压缩
     .pipe(gulp.dest('dist'))
 })
 
@@ -81,9 +83,10 @@ gulp.task("copy", function () {
     .pipe(gulp.dest('dist'))
 });
 
+
 //替换文件地址
 gulp.task('updateUrl', function () {
-  gulp.src('dist/index.html')
+  return gulp.src('dist/index.html')
     .pipe(replace('../public/', 'public/'))
     // .pipe(replace('/libs/angular.js','/min/angular.min.js'))
     .pipe(replace('public/libs/angular.js', 'public/min/angular.js'))
@@ -102,17 +105,12 @@ gulp.task("zip", function () {
     .pipe(gulp.dest('zip'))
 })
 
-gulp.task('browser', function () {
-  browserSync.init({
-    server: {
-      baseDir: './'
-    }
-  })
-})
+//删除调试信息
+
 
 //删除
 gulp.task('del', function () {
-  del([
+ return del([
     "**/dist/public/less",
     "**/dist/public/libs",
     "**/dist/public/style",
@@ -121,16 +119,14 @@ gulp.task('del', function () {
     "**/dist/public/style.min.css",
     "**/dist/public/style.css"
   ]);
-  console.log("删除成功")
 })
 
 //删除
 gulp.task('del-dist', function () {
-  del([
+  return del([
     "zip/",
     "dist/",
   ]);
-  console.log("删除成功")
 })
 
 /**
@@ -142,7 +138,7 @@ gulp.task('del-dist', function () {
  * Urltest ：修改index.js引用
  * zip     ：
  */
-gulp.task("test", gulpSequence('concat', 'css', 'min-html', 'copy', ['updateUrl', 'del']))
+gulp.task("test", gulpSequence('del-dist',['concat', 'css', 'min-html', 'copy'], ['updateUrl', 'del'],'zip'))
 //Beep only for OSX
 function beep() {
   var exec = require('child_process').exec;

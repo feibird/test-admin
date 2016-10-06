@@ -79,6 +79,7 @@ function UpdateMusicCtrl($rootScope, $state, PublicResource, $stateParams, Store
         if (typeof (data) == 'undefined' || data == "" || data == null) {
             return null
         } else {
+            data = data.replace(/-/g,'/');
             if (is) {
                 data = data + "23:59:59";
             }
