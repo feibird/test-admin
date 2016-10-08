@@ -8,12 +8,12 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
     vm.skip = 0;
     vm.limit = 10;
     vm.Coupon = new Object();
-    vm.Coupon.goodIds='';
-    vm.Coupon.storeIds='';
-    vm.Coupon.whiteListIds='';
-    vm.goodId=[];
-    vm.Sources=[];
-    vm.whites=[];
+    vm.Coupon.goodIds = '';
+    vm.Coupon.storeIds = '';
+    vm.Coupon.whiteListIds = '';
+    vm.goodId = [];
+    vm.Sources = [];
+    vm.whites = [];
     vm.id = $stateParams.id;
     login();
     function login() {
@@ -35,21 +35,21 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
         vm.Sources.push(add);
     }
 
-    vm.AddBtn = function(){
+    vm.AddBtn = function () {
         vm.Coupon.StratTime = vm.Coupon.startTime.getTime();
         vm.Coupon.EndTime = vm.Coupon.endTime.getTime();
         vm.Coupon.Sources = objstring(vm.Sources);
-        vm.Coupon.storeIds = ArryString(vm.storesId,true);
-        vm.Coupon.goodIds = ArryString(vm.goodId,false);
-        vm.Coupon.specCountLimit = vm.Coupon.specType=="ALL_SPEC"?"":vm.Coupon.specCountLimit;
+        vm.Coupon.storeIds = ArryString(vm.storesId, true);
+        vm.Coupon.goodIds = ArryString(vm.goodId, false);
+        vm.Coupon.specCountLimit = vm.Coupon.specType == "ALL_SPEC" ? "" : vm.Coupon.specCountLimit;
         console.log(vm.Coupon)
-        CouponResource.add(vm.seid,vm.Coupon).then(function(data){
-            if(data.data.status =='OK'){
-                layer.msg('添加成功',{icon:1},function(){
+        CouponResource.add(vm.seid, vm.Coupon).then(function (data) {
+            if (data.data.status == 'OK') {
+                layer.msg('添加成功', { icon: 1 }, function () {
                     history.go(-1);
                 })
-            }else{
-                 layer.msg(data.data.message, { icon: 2 })
+            } else {
+                layer.msg(data.data.message, { icon: 2 })
             }
         })
     }
