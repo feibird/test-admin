@@ -60,7 +60,7 @@ function AddCouponCtrl($scope, $rootScope, $stateParams, $state, PublicResource,
         } else {
             var json = new Object();
             for (var i in obj) {
-                json[obj[i].costSourceId] = obj[i].ratio * 0.01;
+                json[obj[i].costSourceId] = obj[i].ratio;
             }
             return json;
         }

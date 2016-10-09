@@ -1,6 +1,6 @@
 angular.module('index_area').controller('UpdateTaskCtrl', UpdateTaskCtrl);
-UpdateTaskCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource', 'StoresResource', 'GoodResource'];
-function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource, StoresResource, GoodResource) {
+UpdateTaskCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource', 'StoresResource', 'GoodResource','CouponResource'];
+function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource, StoresResource, GoodResource,CouponResource) {
     document.title = "编辑运营活动";
     $rootScope.name = "运营管理"
     $rootScope.childrenName = "编辑运营活动"
@@ -147,6 +147,7 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
             vm.data.isDetail=vm.data.amountLimit==0?false:true;
             vm.data.prems = [];
             vm.data.costSources = [];
+            vm.data.couponTemplateId = vm.data.couponTemplate.id
             console.log(vm.data);
             Get_interval(vm.data.formulaParameterMap);
             Get_goods(vm.data.promotionProductList);
@@ -158,6 +159,14 @@ function UpdateTaskCtrl($scope, $rootScope, $state, PublicResource, $stateParams
         MarketResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
             console.log(vm.resource)
+        })
+    }
+
+     coupon();
+    function coupon(){
+        CouponResource.list(vm.seid,0,0).then(function(data){
+            vm.CouponList = data.data.result;
+            console.log(vm.CouponList)
         })
     }
 

@@ -45,7 +45,7 @@ gulp.task('concat', function () {
   return gulp.src(files.app)
     .pipe(wrap('(function(){\n"use strict"\n<%= contents %>\n})();'))
     .pipe(concat('app.js'))
-    .pipe(replace(/console.log(.+)/g,""))
+    // .pipe(replace(/console.log(.+)/g,""))
     .pipe(gulp.dest('public/'))
     .pipe(gulp.dest('dist/'))
 })

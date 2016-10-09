@@ -283,14 +283,14 @@
 				<div class="panel-body">
 					<div class="form-group w200p">
 						<label for="">订单金额</label>
-						<select name="" id=""  ng-model="UpdateTaskCtrl.data.isDetail" class="form-control">
+						<select name="" id="" ng-model="UpdateTaskCtrl.data.isDetail" class="form-control">
 							<option value="" selected hidden>请选择</option>
 							<option value="false">订单无关</option>
 							<option value="true">订单到一定金额</option>
 						</select>
 					</div>
 
-					<div class="input-group w200p" ng-if="UpdateTaskCtrl.data.isDetail==true"  ng-class="{'has-error':update.amountLimit.$error.required&&update.amountLimit.$touched}" >
+					<div class="input-group w200p" ng-if="UpdateTaskCtrl.data.isDetail==true" ng-class="{'has-error':update.amountLimit.$error.required&&update.amountLimit.$touched}">
 						<input type="text" name="amountLimit" required ng-model="UpdateTaskCtrl.data.amountLimit" class="form-control">
 						<div class="input-group-addon">元</div>
 					</div>
@@ -319,6 +319,7 @@
 									<option value="CUT">订单减免</option>
 									<option value="RANDOM_CUT">随机减免</option>
 									<option value="GIFT">订单赠品</option>
+									<option value="COUPON">优惠券</option>
 								</select>
 							</div>
 
@@ -354,7 +355,12 @@
 							</div>
 							<p class="error-text" ng-if='update.cutAmount.$error.required&&update.cutAmount.$touched'>优惠方式为订单减免时此项为必填项</p>
 						</div>
-
+						<div class="col-xs-8 p0" ng-if="UpdateTaskCtrl.data.type=='COUPON'" >
+							<label for="">优惠券列表</label>
+							<select name="" id="" ng-model='UpdateTaskCtrl.data.couponTemplateId' class="form-control" ng-options="a.id as a.name for a in UpdateTaskCtrl.CouponList">
+								<option value="" selected hidden >{{UpdateTaskCtrl.data.couponTemplate.name}}</option>
+							</select>
+						</div>
 						<div class="col-xs-8 P0" ng-if="UpdateTaskCtrl.data.type=='RANDOM_CUT'">
 							<div class='panel panel-default panel-border'>
 								<div class="panel-heading">
@@ -365,16 +371,15 @@
 									<div class='admin-input-lyout' ng-repeat="list in UpdateTaskCtrl.interval">
 										<div class="admin-input-title">规则:</div>
 										<div class='admin-input'>
-											<input type="text" ng-model='list.start' required name={{'start'+$index}} ng-class="{'error-input':update.{{'start'+$index}}.$error.required&&update.{{'start'+$index}}.$touched}">
+											<input type="text" ng-model='list.start' required name={{ 'start'+$index}} ng-class="{'error-input':update.{{'start'+$index}}.$error.required&&update.{{'start'+$index}}.$touched}">
 											<span>元至</span>
-											<input type="text" ng-model="list.end" required name={{'end'+$index}} ng-class="{'error-input':update.{{'end'+$index}}.$error.required&&update.{{'end'+$index}}.$touched}">
+											<input type="text" ng-model="list.end" required name={{ 'end'+$index}} ng-class="{'error-input':update.{{'end'+$index}}.$error.required&&update.{{'end'+$index}}.$touched}">
 											<span>元总概率</span>
-											<input type="text" ng-model="list.count" required name={{'count'+$index}} ng-class="{'error-input':update.{{'count'+$index}}.$error.required&&update.{{'count'+$index}}.$touched}">
+											<input type="text" ng-model="list.count" required name={{ 'count'+$index}} ng-class="{'error-input':update.{{'count'+$index}}.$error.required&&update.{{'count'+$index}}.$touched}">
 											<span>%</span>
 											<a class="btn btn-red" ng-click="UpdateTaskCtrl.Delinterval($index)">删除</a>
 											<p>
-												<span  
-													ng-show="update.{{'start'+$index}}.$error.required&&update.{{'start'+$index}}.$touched||update.{{'end'+$index}}.$error.required&&update.{{'end'+$index}}.$touched||update.{{'count'+$index}}.$error.required&&update.{{'count'+$index}}.$touched" 
+												<span ng-show="update.{{'start'+$index}}.$error.required&&update.{{'start'+$index}}.$touched||update.{{'end'+$index}}.$error.required&&update.{{'end'+$index}}.$touched||update.{{'count'+$index}}.$error.required&&update.{{'count'+$index}}.$touched"
 													style="padding-left:10px;display:block;" class="error-text">
 													选项不可为空!&nbsp;&nbsp;ps:1元至5元总概率为20%
 												</span>
@@ -402,16 +407,12 @@
 						</label>
 						<div class="input" ng-repeat="item in UpdateTaskCtrl.data.promotionCostSourceList">
 							<div class="input-tit">承担方选择</div>
-							<select name={{'costSourceId'+$index}} 
-									ng-class="{'error-input':update.{{'costSourceId'+$index}}.$error.required&&update.{{'costSourceId'+$index}}.$touched}"
-									required 
-									ng-model='item.costSource.id' 
-									class="input-text" 
-									ng-options="a.id as a.name for a in UpdateTaskCtrl.resource">
+							<select name={{ 'costSourceId'+$index}} ng-class="{'error-input':update.{{'costSourceId'+$index}}.$error.required&&update.{{'costSourceId'+$index}}.$touched}"
+								required ng-model='item.costSource.id' class="input-text" ng-options="a.id as a.name for a in UpdateTaskCtrl.resource">
 								<option value="" hidden selected >请选择</option>
 							</select>
 							<div class="input-tit">承担比例</div>
-							<input type="text" class="input-text" required ng-model='item.ratio' name={{'ratio'+$index}} ng-class="{'error-input':update.{{'ratio'+$index}}.$error.required&&update.{{'ratio'+$index}}.$touched}">
+							<input type="text" class="input-text" required ng-model='item.ratio' name={{ 'ratio'+$index}} ng-class="{'error-input':update.{{'ratio'+$index}}.$error.required&&update.{{'ratio'+$index}}.$touched}">
 							<div class="input-btn">
 								%&nbsp;&nbsp;
 								<a class="btn btn-red" ng-click="UpdateTaskCtrl.data.promotionCostSourceList.splice($index,1)">删除</a>
@@ -450,7 +451,7 @@
 				</div>
 			</div>
 
-			
+
 
 			<div class="col-xs-12 taskBtn">
 				<button class="btn btn-primary">保存</button>

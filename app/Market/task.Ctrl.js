@@ -1,6 +1,6 @@
 angular.module('index_area').controller('taskCtrl', taskCtrl);
-taskCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource', 'StoresResource', 'GoodResource'];
-function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource, StoresResource, GoodResource) {
+taskCtrl.$inject = ['$scope', '$rootScope', '$state', 'PublicResource', "$stateParams", 'NgTableParams', 'MarketResource', 'StoresResource', 'GoodResource','CouponResource'];
+function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTableParams, MarketResource, StoresResource, GoodResource,CouponResource) {
     document.title = "新建运营活动";
     $rootScope.name = "运营管理"
     $rootScope.childrenName = "新建运营活动"
@@ -27,6 +27,7 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
         vm.task.userType = "";
         vm.task.endTime = "";
         vm.task.timesLimitCycle = "";
+        vm.task.couponTemplateId="";
         vm.task.enabled = "";
         vm.task.excluslve = "";
         vm.task.priority = "";
@@ -122,6 +123,14 @@ function taskCtrl($scope, $rootScope, $state, PublicResource, $stateParams, NgTa
     function resource() {
         MarketResource.resource(vm.seid, 0, 0).then(function (data) {
             vm.resource = data.data.result;
+        })
+    }
+
+    coupon();
+    function coupon(){
+        CouponResource.list(vm.seid,0,0).then(function(data){
+            vm.CouponList = data.data.result;
+            console.log(vm.CouponList)
         })
     }
 

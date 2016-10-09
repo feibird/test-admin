@@ -137,7 +137,7 @@
             <div class="input-group-addon">元</div>
         </div>
         <p class="error-text" ng-if='add.cutAmount.$error.required&&add.cutAmount.$touched'>选项为必填</p>
-        <p class="error-text" ng-if='add.cutAmount.$viewValue>add.amountLimit.$viewValue&&add.cutAmount.$touched'>满减金额必须小于或者等于订单金额</p>
+        <p class="error-text" ng-if='add.cutAmount.$viewValue<=add.amountLimit.$viewValue&&add.cutAmount.$touched'>满减金额必须小于或者等于订单金额</p>
     </div>
     <div class="form-group">
         <label for="">
@@ -169,6 +169,6 @@
     </div>
     <div class="form-group text-center">
         <button class="btn btn-primary">保存</button>
-        <button class="btn btn-primary">取消</button>
+        <button class="btn btn-primary" onclick='history.go(-1)' >取消</button>
     </div>
 </form>

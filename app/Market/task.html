@@ -231,18 +231,15 @@
 							<option value="CUT">订单减免</option>
 							<option value="RANDOM_CUT">随机减免</option>
 							<option value="GIFT">订单赠品</option>
-							<option value="ss22">优惠券</option>
+							<option value="COUPON">优惠券</option>
 						</select>
 						<p class="error-text" ng-if='add.type.$error.required&&add.type.$touched'>选项为必填</p>
 					</div>
 					<div class="col-xs-6 p0" ng-if="!add.type.$error.required">
 						<label for="">优惠选项</label>
-						<div class="input-group" ng-if="taskCtrl.task.type=='CUT'" name='' ng-class="{'has-error':add.cutAmount.$error.required&&add.cutAmount.$touched}">
-							<div class="input-group-addon">订单减免</div>
-							<input type="text" name="cutAmount" required ng-model='taskCtrl.task.formulaParameter.cutAmount' class="form-control">
-							<div class="input-group-addon">元</div>
-						</div>
-						<p class="error-text" ng-if='add.cutAmount.$error.required&&add.cutAmount.$touched'>选项为必填</p>
+						<select name="" id="" ng-model='taskCtrl.task.couponTemplateId' class="form-control" ng-options="a.id as a.name for a in taskCtrl.CouponList">
+							<option value="">请选择</option>
+						</select>
 						<div class='panel panel-default panel-border' ng-if="taskCtrl.task.type=='RANDOM_CUT'">
 							<div class="panel-heading">
 								<a href="javascript:;" class="btn btn-primary" ng-click="taskCtrl.Addinterval()">添加</a>
